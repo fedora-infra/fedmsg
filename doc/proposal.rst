@@ -140,6 +140,9 @@ AMQP, QMF, and 0mq
  - introduce QMF
  - introduce 0mq
 
+   - calculate network load -
+     http://lists.zeromq.org/pipermail/zeromq-dev/2010-August/005254.html
+
 Examples of reorganization
 --------------------------
 
