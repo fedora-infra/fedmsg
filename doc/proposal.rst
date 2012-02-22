@@ -140,8 +140,14 @@ AMQP, QMF, and 0mq
  - introduce QMF
  - introduce 0mq
 
+   - critical and statistical buses (critical is subset of statistical).
    - calculate network load -
      http://lists.zeromq.org/pipermail/zeromq-dev/2010-August/005254.html
+   - auth (func has certs laying around already).
+   - service discovery
+
+     - dns
+     - txt file
 
 Examples of reorganization
 --------------------------
@@ -151,6 +157,9 @@ Examples of reorganization
  - present flow diagram
  - AMQP flow diagram
  - various 0mq flow diagrams
+
+   - example of building a relay that condenses messages from `n` proxies and
+     re-emits them.
 
 Code Examples
 =============
