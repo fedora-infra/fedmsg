@@ -123,6 +123,10 @@ Other benefits
 
 *TODO* -- infrastructure-wide analytics
 
+Others -
+ - hook the bus(es) up to an IRC channel so we can watch messages flow by
+ - hook the bus(es) up to an identi.ca account?  #fedora-firehose
+
 Glossary of components
 ======================
 
