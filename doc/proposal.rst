@@ -131,6 +131,54 @@ By adopting a messaging strategy for Fedora Infrastructure we could gain:
  - An irc channel, #fedora-firehose that echoes every message on the bus.
  - An identi.ca account, @fedora-firehose, that echoes every message on the bus.
 
+
+
+AMQP, QMF, and 0mq
+==================
+
+
+*TODO*
+ - introduce AMQP
+
+   - introduce QMF
+
+ - introduce 0mq
+
+   - critical and statistical buses (critical is subset of statistical).
+   - calculate network load -
+     http://lists.zeromq.org/pipermail/zeromq-dev/2010-August/005254.html
+   - auth (func has certs laying around already).
+   - service discovery
+
+     - dns
+     - txt file
+
+Examples of reorganization
+--------------------------
+
+*TODO*:
+
+ - present flow diagram
+ - AMQP flow diagram
+ - various 0mq flow diagrams
+
+   - example of building a relay that condenses messages from `n` proxies and
+     re-emits them.
+
+Code Examples
+=============
+
+Examples of emitting events
+---------------------------
+
+.. make these into doc-tests where possible
+
+*TODO* -- bugzilla-push - https://github.com/LegNeato/bugzilla-push
+
+Examples of consuming events
+----------------------------
+
+
 Systems and Events
 ==================
 
@@ -200,6 +248,12 @@ event is followed by a list of services that will likely consume that event.
 
    - ``org.fedoraproject.scm.checkin`` -> fcomm, autoqa
 
+ - Tagger
+
+   - ``org.fedoraproject.tagger.tag.update`` -> fcomm, pkgdb
+   - ``org.fedoraproject.tagger.tag.new`` -> fcomm, pkgdb
+   - ``org.fedoraproject.tagger.user.rank.update`` -> fcomm
+
  - XTeddy
 
    - ``org.fedoraproject.xteddy.love`` -> everyone
@@ -207,54 +261,3 @@ event is followed by a list of services that will likely consume that event.
  - Zabbix
 
    - ``org.fedoraproject.zabbix.service.update`` -> fcomm
-
-
-
-
-AMQP, QMF, and 0mq
-==================
-
-
-*TODO*
- - introduce AMQP
-
-   - introduce QMF
-
- - introduce 0mq
-
-   - critical and statistical buses (critical is subset of statistical).
-   - calculate network load -
-     http://lists.zeromq.org/pipermail/zeromq-dev/2010-August/005254.html
-   - auth (func has certs laying around already).
-   - service discovery
-
-     - dns
-     - txt file
-
-Examples of reorganization
---------------------------
-
-*TODO*:
-
- - present flow diagram
- - AMQP flow diagram
- - various 0mq flow diagrams
-
-   - example of building a relay that condenses messages from `n` proxies and
-     re-emits them.
-
-Code Examples
-=============
-
-Examples of emitting events
----------------------------
-
-.. make these into doc-tests where possible
-
-*TODO* -- bugzilla-push - https://github.com/LegNeato/bugzilla-push
-
-Examples of consuming events
-----------------------------
-
-Broad tasks
-===========
