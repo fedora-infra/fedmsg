@@ -112,36 +112,114 @@ implementation of the rest of the infrastructure.  We could replace `bugzilla`
 with `pivotal` and bodhi would never know the difference - a ticket is a
 ticket.
 
-*TODO* -- enumerate the cons of an objected-oriented topic namespace.
+TODO - Decide: which namespace convention will we adopt?
 
 Other benefits
 ==============
 
-*TODO* -- libnotify notifications
+By adopting a messaging strategy for Fedora Infrastructure we could gain:
 
-*TODO* -- fedmsg.wsgi middleware
+ - A stream of data which we can watch and from which we can garner statistics
+ - The de-coupling of services from one another.
+ - libnotify notifications to developers' desktops.
+ - jquery.gritter.js notifications to web interfaces.
 
-*TODO* -- infrastructure-wide analytics
+   - this could be generalized to a ``fedmsg.wsgi`` middleware layer that
+     injects a fedora messaging dashboard header into every page served by apps
+     `X`, `Y`, and `Z`.
 
-Others -
- - hook the bus(es) up to an IRC channel so we can watch messages flow by
- - hook the bus(es) up to an identi.ca account?  #fedora-firehose
+ - An irc channel, #fedora-firehose that echoes every message on the bus.
+ - An identi.ca account, @fedora-firehose, that echoes every message on the bus.
 
-Glossary of components
-======================
+Systems and Events
+==================
 
-Systems
--------
+All messages will be transmitted as stringified JSON.
 
-Events
-------
+List of systems, their events, and associated fields
+----------------------------------------------------
+
+Each item here is a service followed by the list of events that it emits.  Each
+event is followed by a list of services that will likely consume that event.
+
+.. note:: This could use a lot of help.  For instance, should the
+   ``org.fedoraproject.koji.package.testing.complete`` event really be emitted
+   from koji?  Or renamed and emitted from AutoQA for consumption by koji?
+
+----
+
+ - AutoQA
+
+   - ``org.fedoraproject.autoqa.package.complete`` -> koji, bodhi, fcomm
+
+ - Bodhi
+
+   - ``org.fedoraproject.bodhi.update.request`` -> fcomm, autoqa
+   - ``org.fedoraproject.bodhi.update.push`` -> fcomm
+   - ``org.fedoraproject.bodhi.update.remove`` -> fcomm
+
+ - Bugzilla
+
+   - ``org.fedoraproject.bugzilla.bug.new`` -> fcomm
+   - ``org.fedoraproject.bugzilla.bug.update`` -> fcomm
+
+ - Compose
+
+   - ``org.fedoraproject.compose.complete`` -> mirrormanager, autoqa
+
+ - FAS
+
+   - ``org.fedoraproject.fas.user.update`` -> fcomm
+
+ - Koji
+
+   - ``org.fedoraproject.koji.tag.build`` -> secondary arch koji
+   - ``org.fedoraproject.koji.tag.create`` -> secondary arch koji
+   - ``org.fedoraproject.koji.package.build.complete`` -> fcomm, secondary arch koji,
+     SCM, autoqa, sigul
+   - ``org.fedoraproject.koji.package.build.start`` -> fcomm
+   - ``org.fedoraproject.koji.package.build.fail`` -> fcomm
+   - ``org.fedoraproject.koji.package.new`` -> secondary arch koji
+   - ``org.fedoraproject.koji.package.owner.update`` -> secondary arch koji
+   - ``org.fedoraproject.koji.package.remove`` -> secondary arch koji
+
+ - NetApp
+
+   - ``org.fedoraproject.netapp.sync.stop`` -> mirrormanager
+   - ``org.fedoraproject.netapp.sync.resume`` -> mirrormanager
+
+ - PkgDB
+
+   - ``org.fedoraproject.pkgdb.package.new`` -> koji, bugzilla
+   - ``org.fedoraproject.pkgdb.package.remove`` -> koji
+   - ``org.fedoraproject.pkgdb.package.rename`` -> bugzilla
+   - ``org.fedoraproject.pkgdb.package.retire`` -> SCM
+   - ``org.fedoraproject.pkgdb.package.owner.update`` -> koji, bugzilla
+
+ - SCM
+
+   - ``org.fedoraproject.scm.checkin`` -> fcomm, autoqa
+
+ - XTeddy
+
+   - ``org.fedoraproject.xteddy.love`` -> everyone
+
+ - Zabbix
+
+   - ``org.fedoraproject.zabbix.service.update`` -> fcomm
+
+
+
 
 AMQP, QMF, and 0mq
 ==================
 
+
 *TODO*
  - introduce AMQP
- - introduce QMF
+
+   - introduce QMF
+
  - introduce 0mq
 
    - critical and statistical buses (critical is subset of statistical).
