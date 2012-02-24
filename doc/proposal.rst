@@ -112,7 +112,14 @@ implementation of the rest of the infrastructure.  We could replace `bugzilla`
 with `pivotal` and bodhi would never know the difference - a ticket is a
 ticket.
 
-TODO - Decide: which namespace convention will we adopt?
+At the time of this writing, we are moving ahead with the object-oriented
+approach where event topics will follow the rule::
+
+ org.fedoraproject.OBJECT[.SUBOBJECT].EVENT
+
+Where ``OBJECT`` is something like `package`, `user`, or `tag`, ``SUBOBJECT`` is something like
+`owner` or `build` (in the case where ``OBJECT`` is `package`), and ``EVENT`` is
+something like `update`, `new`, or `complete`.
 
 Other benefits
 ==============
@@ -198,18 +205,18 @@ event is followed by a list of services that will likely consume that event.
 
  - AutoQA
 
-   - ``org.fedoraproject.autoqa.package.complete`` -> koji, bodhi, fcomm
+   - ``org.fedoraproject.package.tests.complete`` -> koji, bodhi, fcomm
 
  - Bodhi
 
-   - ``org.fedoraproject.bodhi.update.request`` -> fcomm, autoqa
-   - ``org.fedoraproject.bodhi.update.push`` -> fcomm
-   - ``org.fedoraproject.bodhi.update.remove`` -> fcomm
+   - ``org.fedoraproject.update.request`` -> fcomm, autoqa
+   - ``org.fedoraproject.update.push`` -> fcomm
+   - ``org.fedoraproject.update.remove`` -> fcomm
 
  - Bugzilla
 
-   - ``org.fedoraproject.bugzilla.bug.new`` -> fcomm
-   - ``org.fedoraproject.bugzilla.bug.update`` -> fcomm
+   - ``org.fedoraproject.bug.new`` -> fcomm
+   - ``org.fedoraproject.bug.update`` -> fcomm
 
  - Compose
 
@@ -217,32 +224,31 @@ event is followed by a list of services that will likely consume that event.
 
  - FAS
 
-   - ``org.fedoraproject.fas.user.update`` -> fcomm
+   - ``org.fedoraproject.user.update`` -> fcomm
 
- - Koji
+ - Koji -- FIXME, `tags` from ``koji`` conflict with `tags` from ``tagger``
 
-   - ``org.fedoraproject.koji.tag.build`` -> secondary arch koji
-   - ``org.fedoraproject.koji.tag.create`` -> secondary arch koji
-   - ``org.fedoraproject.koji.package.build.complete`` -> fcomm, secondary arch koji,
+   - ``org.fedoraproject.tag.build`` -> secondary arch koji
+   - ``org.fedoraproject.tag.create`` -> secondary arch koji
+   - ``org.fedoraproject.package.build.complete`` -> fcomm, secondary arch koji,
      SCM, autoqa, sigul
-   - ``org.fedoraproject.koji.package.build.start`` -> fcomm
-   - ``org.fedoraproject.koji.package.build.fail`` -> fcomm
-   - ``org.fedoraproject.koji.package.new`` -> secondary arch koji
-   - ``org.fedoraproject.koji.package.owner.update`` -> secondary arch koji
-   - ``org.fedoraproject.koji.package.remove`` -> secondary arch koji
+   - ``org.fedoraproject.package.build.start`` -> fcomm
+   - ``org.fedoraproject.package.build.fail`` -> fcomm
 
- - NetApp
+ - NetApp -- FIXME, the topics from netapp should be reviewed.  They seem
+   ambiguous.
 
-   - ``org.fedoraproject.netapp.sync.stop`` -> mirrormanager
-   - ``org.fedoraproject.netapp.sync.resume`` -> mirrormanager
+   - ``org.fedoraproject.sync.stop`` -> mirrormanager
+   - ``org.fedoraproject.sync.resume`` -> mirrormanager
 
  - PkgDB
 
-   - ``org.fedoraproject.pkgdb.package.new`` -> koji, bugzilla
-   - ``org.fedoraproject.pkgdb.package.remove`` -> koji
-   - ``org.fedoraproject.pkgdb.package.rename`` -> bugzilla
-   - ``org.fedoraproject.pkgdb.package.retire`` -> SCM
-   - ``org.fedoraproject.pkgdb.package.owner.update`` -> koji, bugzilla
+   - ``org.fedoraproject.package.new`` -> koji, secondary arch koji, bugzilla
+   - ``org.fedoraproject.package.remove`` -> koji, secondary arch koji,
+   - ``org.fedoraproject.package.rename`` -> bugzilla
+   - ``org.fedoraproject.package.retire`` -> SCM
+   - ``org.fedoraproject.package.owner.update`` -> koji, secondary arch koji, bugzilla
+   - TODO - lots of ``org.fp.user...`` events to detail here.
 
  - SCM
 
@@ -250,14 +256,10 @@ event is followed by a list of services that will likely consume that event.
 
  - Tagger
 
-   - ``org.fedoraproject.tagger.tag.update`` -> fcomm, pkgdb
-   - ``org.fedoraproject.tagger.tag.new`` -> fcomm, pkgdb
-   - ``org.fedoraproject.tagger.user.rank.update`` -> fcomm
-
- - XTeddy
-
-   - ``org.fedoraproject.xteddy.love`` -> everyone
+   - ``org.fedoraproject.tag.update`` -> fcomm, pkgdb
+   - ``org.fedoraproject.tag.new`` -> fcomm, pkgdb
+   - ``org.fedoraproject.user.rank.update`` -> fcomm, (pkgdb?)
 
  - Zabbix
 
-   - ``org.fedoraproject.zabbix.service.update`` -> fcomm
+   - ``org.fedoraproject.service.update`` -> fcomm
