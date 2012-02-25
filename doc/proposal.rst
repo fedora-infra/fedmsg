@@ -88,6 +88,143 @@ post-update hook (instead of coupling its own implementation with fedpkg's).
 A message bus architecture, once complete, would dramatically reduce the work
 required to update and maintain services in the Fedora infrastructure.
 
+Other benefits
+--------------
+
+By adopting a messaging strategy for Fedora Infrastructure we could gain:
+
+ - A stream of data which we can watch and from which we can garner statistics
+   about infrastructure activity.
+ - The de-coupling of services from one another.
+ - libnotify notifications to developers' desktops.
+ - jquery.gritter.js notifications to web interfaces.
+
+   - this could be generalized to a ``fedmsg.wsgi`` middleware layer that
+     injects a fedora messaging dashboard header into every page served by apps
+     `X`, `Y`, and `Z`.
+
+ - An irc channel, #fedora-firehose that echoes every message on the bus.
+ - An identi.ca account, @fedora-firehose, that echoes every message on the bus.
+
+AMQP, QMF, and 0mq
+==================
+
+AMQP and QMF or "Broker?  Damn near killed 'er!"
+------------------------------------------------
+
+When discussions on the `Fedora Messaging SIG
+<http://fedoraproject.org/wiki/Messaging_SIG>`_ began, AMQP was the choice by
+default.  Since then members of the SIG have become attracted to an alternative
+messaging interface called `0mq <http://www.zeromq.org>`_.
+
+Recommended reading:
+
+ - `What's wrong with AMQP
+   <http://www.imatix.com/articles:whats-wrong-with-amqp>`_
+
+The following is recreated from J5's Publish/Subscribe Messaging Proposal
+as an example of how Fedora Infrastructure could be reorganized with AMQP
+and a set of federated AMQP brokers (qpid).
+
+.. image:: _static/reorganize-amqp-j5.png
+
+The gist is that each service in the Fedora Infrastructure would have the
+address of a central message broker on hand.  On startup, each service would
+connect to that broker, ask the broker to establish its outgoing queues, and
+begin publishing messages.  Similarly, each service would ask the broker to
+establish incoming queues for them.  The broker would handle the routing of
+messages based on ``routing_keys`` (otherwise known as `topics`) from each
+service to the others.
+
+The downshot, in short, is that AMQP requires standing up a single central
+broker and thus a single-point-of-failure.  In the author's work on `narcissus
+<http://narcissus.rc.rit.edu>`_ I found that for even the most simple of AMQP
+configurations, my qpid brokers' queues would bloat over time until \*pop\*,
+the broker would fall over.
+
+TODO -- write about QMF
+
+0mq or "Going for Broke(rless)"
+-------------------------------
+
+0mq is developed by a team that had a hand in the original development of AMQP.
+It claims to be a number of things: an "intelligent transport layer",
+a "socket library that acts as a concurrency framework", and the `sine qua non`
+"Extra Spicy Sockets!"
+
+Recommended reading:
+ - `The Z-guide <http://zguide.zeromq.org/page:all>`_
+
+The following depicts an overview of a subset of Fedora Infrastructure
+organized with a decentralized 0mq bus parallel to the spirit of J5's
+recreated diagram in the AMQP section above.
+
+.. image:: _static/reorganize-0mq-overview.png
+
+No broker.  The gist is that each service will open a port and begin
+publishing messages ("bind to" in zmq-language).  Each other service will
+connect to that port to begin consuming messages.  Without a central broker
+doing `all the things
+<http://www.imatix.com/articles:whats-wrong-with-amqp>`_, 0mq can afford a high
+throughput.  For instance, in initial tests of a 0mq-enabled `moksha hub
+<http://moksha.fedorahosted.org>`_, the Fedora Engineering Team achieved a
+100-fold speedup over AMQP.
+
+Service discovery
+~~~~~~~~~~~~~~~~~
+
+Shortly after you begin thinking over how to enable Fedora Infrastructure to
+pass messages over a `fabric` instead of to a `broker`, you arrive at the
+problem we'll call "service discovery".
+
+In reality, (almost) every service both `produces` and `consumes` messages.  For
+the sake of argument, we'll talk here just about a separate `producing
+service` and some `consuming services`.
+
+Scenario:  the producing service starts up, producing socket (with a hidden
+queue), and begins producing messages.  Consuming services `X`, `Y`, and `Z`
+are interested in this and they would like to connect.
+
+With AMQP, this is simplified.  You have one central broker and each consuming
+service need only know it's one address.  They connect and the match-making is
+handled for them.  With 0mq, each consuming service needs to somehow
+`discover` its producer(s) address(es).
+
+TODO - working here.
+- write our own broker
+- dns
+- txt file
+
+sparse topics
+-------------
+
+Different buses
+---------------
+
+- critical and statistical buses (critical is subset of statistical).
+
+Authn, authz
+------------
+
+(func has certs laying around already).
+
+network load
+------------
+
+- calculate network load -
+http://lists.zeromq.org/pipermail/zeromq-dev/2010-August/005254.html
+
+fringe services
+---------------
+
+- example of building a relay that condenses messages from `n` proxies and
+re-emits them.
+- example of bridging amqp and 0mq
+- bugzilla-push - https://github.com/LegNeato/bugzilla-push
+
+
+
+
 Namespace considerations
 ------------------------
 
@@ -112,75 +249,28 @@ implementation of the rest of the infrastructure.  We could replace `bugzilla`
 with `pivotal` and bodhi would never know the difference - a ticket is a
 ticket.
 
+The scheme
+----------
+
 At the time of this writing, we are moving ahead with the object-oriented
 approach where event topics will follow the rule::
 
  org.fedoraproject.OBJECT[.SUBOBJECT].EVENT
 
-Where ``OBJECT`` is something like `package`, `user`, or `tag`, ``SUBOBJECT`` is something like
-`owner` or `build` (in the case where ``OBJECT`` is `package`), and ``EVENT`` is
-something like `update`, `new`, or `complete`.
+Where:
 
-Other benefits
-==============
-
-By adopting a messaging strategy for Fedora Infrastructure we could gain:
-
- - A stream of data which we can watch and from which we can garner statistics
- - The de-coupling of services from one another.
- - libnotify notifications to developers' desktops.
- - jquery.gritter.js notifications to web interfaces.
-
-   - this could be generalized to a ``fedmsg.wsgi`` middleware layer that
-     injects a fedora messaging dashboard header into every page served by apps
-     `X`, `Y`, and `Z`.
-
- - An irc channel, #fedora-firehose that echoes every message on the bus.
- - An identi.ca account, @fedora-firehose, that echoes every message on the bus.
+ - ``OBJECT`` is something like `package`, `user`, or `tag`
+ - ``SUBOBJECT`` is something like `owner` or `build` (in the case where
+   ``OBJECT`` is `package`, for instance)
+ - ``EVENT`` is something like `update`, `new`, or `complete`
 
 
 
-AMQP, QMF, and 0mq
-==================
-
-
-*TODO*
- - introduce AMQP
-
-   - introduce QMF
-
- - introduce 0mq
-
-   - critical and statistical buses (critical is subset of statistical).
-   - calculate network load -
-     http://lists.zeromq.org/pipermail/zeromq-dev/2010-August/005254.html
-   - auth (func has certs laying around already).
-   - service discovery
-
-     - dns
-     - txt file
-
-Examples of reorganization
---------------------------
-
-*TODO*:
-
- - present flow diagram
- - AMQP flow diagram
- - various 0mq flow diagrams
-
-   - example of building a relay that condenses messages from `n` proxies and
-     re-emits them.
-
-Code Examples
-=============
+Code Examples - 0mq and ``fedmsg``
+==================================
 
 Examples of emitting events
 ---------------------------
-
-.. make these into doc-tests where possible
-
-*TODO* -- bugzilla-push - https://github.com/LegNeato/bugzilla-push
 
 Examples of consuming events
 ----------------------------
