@@ -190,10 +190,35 @@ service need only know it's one address.  They connect and the match-making is
 handled for them.  With 0mq, each consuming service needs to somehow
 `discover` its producer(s) address(es).
 
-TODO - working here.
-- write our own broker
-- dns
-- txt file
+There are a number of ways to address this:
+
+ - *Write our own broker*; this would not be that difficult.  We could (more
+   simply) scale back the project and write our own directory lookup service
+   that would match consumers with their providers.  This could be done in
+   surprisingly few lines of python.  This issue is that we re-introduce the
+   sticking point of AMQP, a single point of failure.
+
+ - *Use DNS*; There is a helpful `blog post
+   <http://www.ceondo.com/ecte/2011/12/dns-zeromq-services>`_ on how to do this
+   with `djbdns`.  DNS is always there anyways: if DNS goes down, we have bigger
+   things to worry about than distributing updates to our messaging topology.
+
+ - *Share a raw text file*; This at first appears crude and cumbersome:
+
+   - Maintain a list of all `fedmsg`-enabled producers in a text file
+   - Make sure that file is accessible from every consuming service.
+   - Have each consuming service read in the file and connect to every
+     (relevant) producer in the list
+
+In my opinion, using DNS is generally speaking the most elegant solution.
+However, for Fedora Infrastructure in particular, pushing updates to DNS and
+pushing a raw text file to every server involves much-the-same workflow:
+`puppet`.  Because much of the overhead of updating the text file falls in-line
+with the rest of Infrastructure work, it makes more sense to go with the third
+option.  Better not to touch DNS when we don't have to.
+
+TODO -- where exactly will that file live?
+TODO -- what is that file's format?
 
 sparse topics
 -------------
