@@ -324,7 +324,8 @@ event is followed by a list of services that will likely consume that event.
 
  - Bodhi
 
-   - ``org.fedoraproject.update.request`` -> fcomm, autoqa
+   - ``org.fedoraproject.update.request{.TYPE}`` -> fcomm, autoqa
+   - ``org.fedoraproject.update.complete{.TYPE}`` -> fcomm, autoqa
    - ``org.fedoraproject.update.push`` -> fcomm
    - ``org.fedoraproject.update.remove`` -> fcomm
 
@@ -371,9 +372,11 @@ event is followed by a list of services that will likely consume that event.
 
  - Tagger
 
-   - ``org.fedoraproject.tag.update`` -> fcomm, pkgdb
    - ``org.fedoraproject.tag.new`` -> fcomm, pkgdb
+   - ``org.fedoraproject.tag.remove`` -> fcomm, pkgdb
+   - ``org.fedoraproject.tag.update`` -> fcomm, pkgdb
    - ``org.fedoraproject.user.rank.update`` -> fcomm, (pkgdb?)
+   - ``org.fedoraproject.login.tagger`` -> ??
 
  - Zabbix
 
