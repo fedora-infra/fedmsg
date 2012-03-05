@@ -325,10 +325,6 @@ List of systems, their events, and associated fields
 Each item here is a service followed by the list of events that it emits.  Each
 event is followed by a list of services that will likely consume that event.
 
-.. note:: This could use a lot of help.  For instance, should the
-   ``org.fedoraproject.koji.package.testing.complete`` event really be emitted
-   from koji?  Or renamed and emitted from AutoQA for consumption by koji?
-
 ----
 
  - AutoQA
