@@ -242,8 +242,8 @@ http://lists.zeromq.org/pipermail/zeromq-dev/2010-August/005254.html
 fringe services
 ---------------
 
-- example of building a relay that condenses messages from `n` proxies and
-re-emits them.
+- example of building a relay that condenses messages from `n`
+  proxies and re-emits them.
 - example of bridging amqp and 0mq
 - bugzilla-push - https://github.com/LegNeato/bugzilla-push
 
