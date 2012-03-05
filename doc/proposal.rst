@@ -291,7 +291,7 @@ Event topics will follow the rule::
 
 Where:
 
- - ``SERVICE`` is something like `koji`, `bodhi`, or `tagger`
+ - ``SERVICE`` is something like `koji`, `bodhi`, or `fedoratagger`
  - ``OBJECT`` is something like `package`, `user`, or `tag`
  - ``SUBOBJECT`` is something like `owner` or `build` (in the case where
    ``OBJECT`` is `package`, for instance)
@@ -307,12 +307,57 @@ All 'fields' in a topic **must**:
 Code Examples - 0mq and ``fedmsg``
 ==================================
 
+This package (the `package containing the docs you are reading right now
+<http://github.com/ralphbean/fedmsg>`_) is ``fedmsg``.  It aims to be a wrapper
+around calls to the `moksha hub <http://moksha.fedorahosted.org>`_ API that:
+
+ - Handles Fedora-Infra authn/authz
+ - Handles Fedora-Infra service discovery
+ - Helps you avoid topic and message content typos.
+ - Gets in your way as little as possible
+
 Examples of emitting events
 ---------------------------
+
+Here's a real dummy test::
+
+    >>> import fedmsg
+    >>> import fedmsg.schema
+    >>> fedmsg.send_message(topic='testing', guess_modname=False, msg={
+    ...     fedmsg.schema.TEST: "Hello World",
+    ... })
+
+The above snippet will send the message ``'{test: "Hello World"}'`` message
+over the ``org.fedoraproject.testing`` topic.  The ``guess_modname`` argument
+will be omitted in most use cases.  It argues that ``fedmsg`` not be
+`too smart` when enhancing your topic.
+
+Here's an example from
+`fedora-tagger <http://github.com/ralphbean/fedora-tagger>`_ that sends the
+information about a new tag over the
+``org.fedoraproject.fedoratagger.topic.new``::
+
+    >>> import fedmsg
+    >>> import fedmsg.schema
+    >>> fedmsg.send_message(topic='tag.update', msg={
+    ...     fedmsg.schema.USER: user,
+    ...     fedmsg.schema.TAG: tag,
+    ... })
+
+Note that the `tag` and `user` objects are SQLAlchemy objects defined by
+tagger.  They both have ``.__json__()`` methods which ``.send_message``
+uses to convert both objects to stringified JSON for you.
+
+``fedmsg`` has also guessed the module name (``modname``) of it's caller and
+inserted it into the topic for you.  The code from which we stole the above
+snippet lives in ``fedoratagger.controllers.root``.  ``fedmsg`` figured that
+out and stripped it down to just ``fedoratagger`` for the final topic of
+``org.fedoraproject.fedoratagger.tag.update``.
 
 Examples of consuming events
 ----------------------------
 
+TODO
 
 Systems and Events
 ==================
@@ -391,11 +436,11 @@ event is followed by a list of services that will likely consume that event.
 
  - Tagger
 
-   - ``org.fedoraproject.tagger.tag.new`` -> fcomm, pkgdb
-   - ``org.fedoraproject.tagger.tag.remove`` -> fcomm, pkgdb
-   - ``org.fedoraproject.tagger.tag.update`` -> fcomm, pkgdb
-   - ``org.fedoraproject.tagger.user.rank.update`` -> fcomm, (pkgdb?)
-   - ``org.fedoraproject.tagger.login`` -> ??
+   - ``org.fedoraproject.fedoratagger.tag.new`` -> fcomm, pkgdb
+   - ``org.fedoraproject.fedoratagger.tag.remove`` -> fcomm, pkgdb
+   - ``org.fedoraproject.fedoratagger.tag.update`` -> fcomm, pkgdb
+   - ``org.fedoraproject.fedoratagger.user.rank.update`` -> fcomm, (pkgdb?)
+   - ``org.fedoraproject.fedoratagger.login`` -> ??
 
  - Wiki
 
