@@ -4,3 +4,5 @@ dist
 *.pyc
 *.pyo
 *.swp
+*.pdf
+_build

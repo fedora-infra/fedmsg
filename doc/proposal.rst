@@ -74,12 +74,12 @@ callback, and respond to events.
 
 For instance, instead of having koji scrape pkgdb on an interval for changed
 email addresses, pkgdb could emit messages to the
-``org.fedoraproject.services.pkgdb`` topic whenever an account's email address
+``org.fedoraproject.service.pkgdb`` topic whenever an account's email address
 changes.  koji could subscribe to the same topic and provide a callback that
 updates its local email aliases when invoked.
 
 In another case, the git (fedpkg) post-update hook could publish messages to
-the ``org.fedoraproject.services.fedpkg.post-update`` topic.  AutoQA could
+the ``org.fedoraproject.service.fedpkg.post-update`` topic.  AutoQA could
 subscribe to the same.  Now if we wanted to enable another service to act when
 updates are pushed to fedpkg, that service need only subscribe to the topic and
 implement its own callback instead of appending its own call to fedpkg's
@@ -88,13 +88,175 @@ post-update hook (instead of coupling its own implementation with fedpkg's).
 A message bus architecture, once complete, would dramatically reduce the work
 required to update and maintain services in the Fedora infrastructure.
 
+Other benefits
+--------------
+
+By adopting a messaging strategy for Fedora Infrastructure we could gain:
+
+ - A stream of data which we can watch and from which we can garner statistics
+   about infrastructure activity.
+ - The de-coupling of services from one another.
+ - libnotify notifications to developers' desktops.
+ - jquery.gritter.js notifications to web interfaces.
+
+   - this could be generalized to a ``fedmsg.wsgi`` middleware layer that
+     injects a fedora messaging dashboard header into every page served by apps
+     `X`, `Y`, and `Z`.
+
+ - An irc channel, #fedora-firehose that echoes every message on the bus.
+ - An identi.ca account, @fedora-firehose, that echoes every message on the bus.
+
+AMQP, QMF, and 0mq
+==================
+
+AMQP and QMF or "Broker?  Damn near killed 'er!"
+------------------------------------------------
+
+When discussions on the `Fedora Messaging SIG
+<http://fedoraproject.org/wiki/Messaging_SIG>`_ began, AMQP was the choice by
+default.  Since then members of the SIG have become attracted to an alternative
+messaging interface called `0mq <http://www.zeromq.org>`_.
+
+Recommended reading:
+
+ - `What's wrong with AMQP
+   <http://www.imatix.com/articles:whats-wrong-with-amqp>`_
+
+The following is recreated from J5's Publish/Subscribe Messaging Proposal
+as an example of how Fedora Infrastructure could be reorganized with AMQP
+and a set of federated AMQP brokers (qpid).
+
+.. image:: _static/reorganize-amqp-j5.png
+
+The gist is that each service in the Fedora Infrastructure would have the
+address of a central message broker on hand.  On startup, each service would
+connect to that broker, ask the broker to establish its outgoing queues, and
+begin publishing messages.  Similarly, each service would ask the broker to
+establish incoming queues for them.  The broker would handle the routing of
+messages based on ``routing_keys`` (otherwise known as `topics`) from each
+service to the others.
+
+The downshot, in short, is that AMQP requires standing up a single central
+broker and thus a single-point-of-failure.  In the author's work on `narcissus
+<http://narcissus.rc.rit.edu>`_ I found that for even the most simple of AMQP
+configurations, my qpid brokers' queues would bloat over time until \*pop\*,
+the broker would fall over.
+
+TODO -- write about QMF
+
+0mq or "Going for Broke(rless)"
+-------------------------------
+
+0mq is developed by a team that had a hand in the original development of AMQP.
+It claims to be a number of things: an "intelligent transport layer",
+a "socket library that acts as a concurrency framework", and the `sine qua non`
+"Extra Spicy Sockets!"
+
+Recommended reading:
+ - `The Z-guide <http://zguide.zeromq.org/page:all>`_
+
+The following depicts an overview of a subset of Fedora Infrastructure
+organized with a decentralized 0mq bus parallel to the spirit of J5's
+recreated diagram in the AMQP section above.
+
+.. image:: _static/reorganize-0mq-overview.png
+
+No broker.  The gist is that each service will open a port and begin
+publishing messages ("bind to" in zmq-language).  Each other service will
+connect to that port to begin consuming messages.  Without a central broker
+doing `all the things
+<http://www.imatix.com/articles:whats-wrong-with-amqp>`_, 0mq can afford a high
+throughput.  For instance, in initial tests of a 0mq-enabled `moksha hub
+<http://moksha.fedorahosted.org>`_, the Fedora Engineering Team achieved a
+100-fold speedup over AMQP.
+
+Service discovery
+~~~~~~~~~~~~~~~~~
+
+Shortly after you begin thinking over how to enable Fedora Infrastructure to
+pass messages over a `fabric` instead of to a `broker`, you arrive at the
+problem we'll call "service discovery".
+
+In reality, (almost) every service both `produces` and `consumes` messages.  For
+the sake of argument, we'll talk here just about a separate `producing
+service` and some `consuming services`.
+
+Scenario:  the producing service starts up, producing socket (with a hidden
+queue), and begins producing messages.  Consuming services `X`, `Y`, and `Z`
+are interested in this and they would like to connect.
+
+With AMQP, this is simplified.  You have one central broker and each consuming
+service need only know it's one address.  They connect and the match-making is
+handled for them.  With 0mq, each consuming service needs to somehow
+`discover` its producer(s) address(es).
+
+There are a number of ways to address this:
+
+ - *Write our own broker*; this would not be that difficult.  We could (more
+   simply) scale back the project and write our own directory lookup service
+   that would match consumers with their providers.  This could be done in
+   surprisingly few lines of python.  This issue is that we re-introduce the
+   sticking point of AMQP, a single point of failure.
+
+ - *Use DNS*; There is a helpful `blog post
+   <http://www.ceondo.com/ecte/2011/12/dns-zeromq-services>`_ on how to do this
+   with `djbdns`.  DNS is always there anyways: if DNS goes down, we have bigger
+   things to worry about than distributing updates to our messaging topology.
+
+ - *Share a raw text file*; This at first appears crude and cumbersome:
+
+   - Maintain a list of all `fedmsg`-enabled producers in a text file
+   - Make sure that file is accessible from every consuming service.
+   - Have each consuming service read in the file and connect to every
+     (relevant) producer in the list
+
+In my opinion, using DNS is generally speaking the most elegant solution.
+However, for Fedora Infrastructure in particular, pushing updates to DNS and
+pushing a raw text file to every server involves much-the-same workflow:
+`puppet`.  Because much of the overhead of updating the text file falls in-line
+with the rest of Infrastructure work, it makes more sense to go with the third
+option.  Better not to touch DNS when we don't have to.
+
+TODO -- where exactly will that file live?
+TODO -- what is that file's format?
+
+sparse topics
+-------------
+
+Different buses
+---------------
+
+- critical and statistical buses (critical is subset of statistical).
+
+Authn, authz
+------------
+
+(func has certs laying around already).
+
+network load
+------------
+
+- calculate network load -
+http://lists.zeromq.org/pipermail/zeromq-dev/2010-August/005254.html
+
+fringe services
+---------------
+
+- example of building a relay that condenses messages from `n`
+  proxies and re-emits them.
+- example of bridging amqp and 0mq
+- bugzilla-push - https://github.com/LegNeato/bugzilla-push
+
+
+
+
 Namespace considerations
 ------------------------
 
 In the above examples, the topic names are derived from the service names.
 For instance, pkgdb publishes messages to
-``org.fedoraproject.services.pkgdb*``, AutoQA presumably publishes messages
-to ``org.fedoraproject.services.autoqa*``, and so on.
+``org.fedoraproject.service.pkgdb*``, AutoQA presumably publishes messages
+to ``org.fedoraproject.service.autoqa*``, and so on.
 
 This convention, while clear-cut, has its limitations.  Say we wanted to
 replace pkgdb whole-sale with our shiney new `threebean-db` (tm).  Here,
@@ -106,30 +268,96 @@ described in the first section.
 The above `service-oriented` topic namespace is one option.
 Consider an `object-oriented` topic namespace where the objects are things
 like users, packages, builds, updates, tests, tickets, and composes.  Having
-bodhi subscribe to ``org.fedoraproject.objects.tickets`` and
-``org.fedoraproject.objects.builds`` leaves us less tied down to the current
+bodhi subscribe to ``org.fedoraproject.object.tickets`` and
+``org.fedoraproject.object.builds`` leaves us less tied down to the current
 implementation of the rest of the infrastructure.  We could replace `bugzilla`
 with `pivotal` and bodhi would never know the difference - a ticket is a
 ticket.
 
-TODO - Decide: which namespace convention will we adopt?
+That would be nice; but there are too many objects in Fedora Infrastructure that
+would step on each other.  For instance, Koji **tags** packages and Tagger
+**tags** packages; these two are very different things.  Koji and Tagger cannot
+**both** emit events over ``org.fedoraproject.package.tag.*`` without widespread
+misery.
 
-Other benefits
-==============
+Consequently, our namespace follows a `service-oriented` pattern.
 
-By adopting a messaging strategy for Fedora Infrastructure we could gain:
+The scheme
+----------
 
- - A stream of data which we can watch and from which we can garner statistics
- - The de-coupling of services from one another.
- - libnotify notifications to developers' desktops.
- - jquery.gritter.js notifications to web interfaces.
+Event topics will follow the rule::
 
-   - this could be generalized to a ``fedmsg.wsgi`` middleware layer that
-     injects a fedora messaging dashboard header into every page served by apps
-     `X`, `Y`, and `Z`.
+ org.fedoraproject.SERVICE.OBJECT[.SUBOBJECT].EVENT
 
- - An irc channel, #fedora-firehose that echoes every message on the bus.
- - An identi.ca account, @fedora-firehose, that echoes every message on the bus.
+Where:
+
+ - ``SERVICE`` is something like `koji`, `bodhi`, or `fedoratagger`
+ - ``OBJECT`` is something like `package`, `user`, or `tag`
+ - ``SUBOBJECT`` is something like `owner` or `build` (in the case where
+   ``OBJECT`` is `package`, for instance)
+ - ``EVENT`` is something like `update`, `new`, or `complete`
+
+All 'fields' in a topic **must**:
+
+ - Be `singular` (Use `package`, not `packages`)
+ - Use existing fields as much as possible (since `complete` is already used
+   by other topics, use that instead of using `finished`).
+
+
+Code Examples - 0mq and ``fedmsg``
+==================================
+
+This package (the `package containing the docs you are reading right now
+<http://github.com/ralphbean/fedmsg>`_) is ``fedmsg``.  It aims to be a wrapper
+around calls to the `moksha hub <http://moksha.fedorahosted.org>`_ API that:
+
+ - Handles Fedora-Infra authn/authz
+ - Handles Fedora-Infra service discovery
+ - Helps you avoid topic and message content typos.
+ - Gets in your way as little as possible
+
+Examples of emitting events
+---------------------------
+
+Here's a real dummy test::
+
+    >>> import fedmsg
+    >>> import fedmsg.schema
+    >>> fedmsg.send_message(topic='testing', guess_modname=False, msg={
+    ...     fedmsg.schema.TEST: "Hello World",
+    ... })
+
+The above snippet will send the message ``'{test: "Hello World"}'`` message
+over the ``org.fedoraproject.testing`` topic.  The ``guess_modname`` argument
+will be omitted in most use cases.  It argues that ``fedmsg`` not be
+`too smart` when enhancing your topic.
+
+Here's an example from
+`fedora-tagger <http://github.com/ralphbean/fedora-tagger>`_ that sends the
+information about a new tag over the
+``org.fedoraproject.fedoratagger.topic.new``::
+
+    >>> import fedmsg
+    >>> import fedmsg.schema
+    >>> fedmsg.send_message(topic='tag.update', msg={
+    ...     fedmsg.schema.USER: user,
+    ...     fedmsg.schema.TAG: tag,
+    ... })
+
+Note that the `tag` and `user` objects are SQLAlchemy objects defined by
+tagger.  They both have ``.__json__()`` methods which ``.send_message``
+uses to convert both objects to stringified JSON for you.
+
+``fedmsg`` has also guessed the module name (``modname``) of it's caller and
+inserted it into the topic for you.  The code from which we stole the above
+snippet lives in ``fedoratagger.controllers.root``.  ``fedmsg`` figured that
+out and stripped it down to just ``fedoratagger`` for the final topic of
+``org.fedoraproject.fedoratagger.tag.update``.
+
+Examples of consuming events
+----------------------------
+
+TODO
 
 Systems and Events
 ==================
@@ -142,19 +370,16 @@ List of systems, their events, and associated fields
 Each item here is a service followed by the list of events that it emits.  Each
 event is followed by a list of services that will likely consume that event.
 
-.. note:: This could use a lot of help.  For instance, should the
-   ``org.fedoraproject.koji.package.testing.complete`` event really be emitted
-   from koji?  Or renamed and emitted from AutoQA for consumption by koji?
-
 ----
 
  - AutoQA
 
-   - ``org.fedoraproject.autoqa.package.complete`` -> koji, bodhi, fcomm
+   - ``org.fedoraproject.autoqa.package.tests.complete`` -> koji, bodhi, fcomm
 
  - Bodhi
 
-   - ``org.fedoraproject.bodhi.update.request`` -> fcomm, autoqa
+   - ``org.fedoraproject.bodhi.update.request{.TYPE}`` -> fcomm, autoqa
+   - ``org.fedoraproject.bodhi.update.complete{.TYPE}`` -> fcomm, autoqa
    - ``org.fedoraproject.bodhi.update.push`` -> fcomm
    - ``org.fedoraproject.bodhi.update.remove`` -> fcomm
 
@@ -165,13 +390,18 @@ event is followed by a list of services that will likely consume that event.
 
  - Compose
 
-   - ``org.fedoraproject.compose.complete`` -> mirrormanager, autoqa
+   - ``org.fedoraproject.compose.compose.complete`` -> mirrormanager, autoqa
+
+ - Elections (TODO -- what is the app called?)
+
+   - ``org.fedoraproject.elections...``  <-- TODO.  Objects and events?
 
  - FAS
 
    - ``org.fedoraproject.fas.user.update`` -> fcomm
+   - ``org.fedoraproject.fas.group.update`` -> fcomm
 
- - Koji
+ - Koji -- FIXME, `tags` from ``koji`` conflict with `tags` from ``tagger``
 
    - ``org.fedoraproject.koji.tag.build`` -> secondary arch koji
    - ``org.fedoraproject.koji.tag.create`` -> secondary arch koji
@@ -179,82 +409,43 @@ event is followed by a list of services that will likely consume that event.
      SCM, autoqa, sigul
    - ``org.fedoraproject.koji.package.build.start`` -> fcomm
    - ``org.fedoraproject.koji.package.build.fail`` -> fcomm
-   - ``org.fedoraproject.koji.package.new`` -> secondary arch koji
-   - ``org.fedoraproject.koji.package.owner.update`` -> secondary arch koji
-   - ``org.fedoraproject.koji.package.remove`` -> secondary arch koji
 
- - NetApp
+ - MeetBot (supybot?)
+
+   - ``org.fedoraproject.irc.meeting.start``
+   - ``org.fedoraproject.irc.meeting.complete``
+
+ - NetApp -- FIXME, the topics from netapp should be reviewed.  They seem
+   ambiguous.
 
    - ``org.fedoraproject.netapp.sync.stop`` -> mirrormanager
    - ``org.fedoraproject.netapp.sync.resume`` -> mirrormanager
 
  - PkgDB
 
-   - ``org.fedoraproject.pkgdb.package.new`` -> koji, bugzilla
-   - ``org.fedoraproject.pkgdb.package.remove`` -> koji
+   - ``org.fedoraproject.pkgdb.package.new`` -> koji, secondary arch koji, bugzilla
+   - ``org.fedoraproject.pkgdb.package.remove`` -> koji, secondary arch koji,
    - ``org.fedoraproject.pkgdb.package.rename`` -> bugzilla
    - ``org.fedoraproject.pkgdb.package.retire`` -> SCM
-   - ``org.fedoraproject.pkgdb.package.owner.update`` -> koji, bugzilla
+   - ``org.fedoraproject.pkgdb.package.owner.update`` -> koji, secondary arch koji, bugzilla
+   - TODO - lots of ``org.fp.user...`` events to detail here.
 
  - SCM
 
-   - ``org.fedoraproject.scm.checkin`` -> fcomm, autoqa
+   - ``org.fedoraproject.scm.repo.checkin`` -> fcomm, autoqa
 
- - XTeddy
+ - Tagger
 
-   - ``org.fedoraproject.xteddy.love`` -> everyone
+   - ``org.fedoraproject.fedoratagger.tag.new`` -> fcomm, pkgdb
+   - ``org.fedoraproject.fedoratagger.tag.remove`` -> fcomm, pkgdb
+   - ``org.fedoraproject.fedoratagger.tag.update`` -> fcomm, pkgdb
+   - ``org.fedoraproject.fedoratagger.user.rank.update`` -> fcomm, (pkgdb?)
+   - ``org.fedoraproject.fedoratagger.login`` -> ??
+
+ - Wiki
+
+   - ``org.fedoraproject.wiki....``
 
  - Zabbix
 
    - ``org.fedoraproject.zabbix.service.update`` -> fcomm
-
-
-
-
-AMQP, QMF, and 0mq
-==================
-
-
-*TODO*
- - introduce AMQP
-
-   - introduce QMF
-
- - introduce 0mq
-
-   - critical and statistical buses (critical is subset of statistical).
-   - calculate network load -
-     http://lists.zeromq.org/pipermail/zeromq-dev/2010-August/005254.html
-   - auth (func has certs laying around already).
-   - service discovery
-
-     - dns
-     - txt file
-
-Examples of reorganization
---------------------------
-
-*TODO*:
-
- - present flow diagram
- - AMQP flow diagram
- - various 0mq flow diagrams
-
-   - example of building a relay that condenses messages from `n` proxies and
-     re-emits them.
-
-Code Examples
-=============
-
-Examples of emitting events
----------------------------
-
-.. make these into doc-tests where possible
-
-*TODO* -- bugzilla-push - https://github.com/LegNeato/bugzilla-push
-
-Examples of consuming events
-----------------------------
-
-Broad tasks
-===========

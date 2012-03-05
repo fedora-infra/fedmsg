@@ -1,0 +1,58 @@
+# Run the following command to re-generate the master diagrams.png
+#
+#   $ rm _static/diagrams.png
+#   $ ditaa diagrams.txt
+#   $ mv diagrams.png _static/diagrams.png
+#
+
+Recreated from J5's PubSub Notification Proposal
+================================================
+
+ /-------+ /-------+ /-------+ /-------+
+ | FAS   | | Bodhi | | Koji  | | PkgDB |
+ +-------/ +-------/ +-------/ +-------/
+       |        |        |       |
+       V        V        V       V
+    /--------------------------------\
+    |    Fedora Infrastructure       |
+    |    AMQP Broker (qpid)          |
+    \--------------------------------/
+        |                     |
+        |                     |
+        V                     V
+  /-------------\      /-------------\
+  | Fedora      |      | FAS User    |
+  | Community   |      | AMQP Broker |  
+  | AMQP Broker |      | (qpid)      |
+  | (qpid)      |      \-------------/
+  \-------------/             |
+        |                     |
+        V                     V
+ /--------------\     /--------------\
+ | Web Frontend |     | gnome-shell  |
+ \--------------/     \--------------/
+
+
+0mq Proposal; Decentralized Bus
+===============================
+
+Overview
+                                           /-------------\
+ /-------+         /-------+               | Fedora      |
+ | FAS   |<------->| Bodhi |  . . . --+    | Community   |
+ +-------/         +-------/          |    +-----------+ |
+   ^  ^             ^   ^             +--> | Moksha Hub| |
+   |  |             |   |                  +-----------+ |
+   |  | +-----------+   |                  \-------------/
+   |  | |               |                  /-------------\
+   |  +-+-------------+ |     . . . -----> | Bus Monitor |
+   |    |             | |                  \-------------/
+   V    V             V V                  /-------------\
+ /-------+         /-------+  . . . -----> | FAS User    |
+ | Koji  |<------->| PkgDB |  . . . <--+   | 0mq Repeater|
+ +-------/         +-------/           |   \-------------/
+                                       |   /-------------\
+                                       +-> | Bugzilla    |
+                                           | 0mq<->AMQP  |
+                                           | Bridge      |
+                                           \-------------/
