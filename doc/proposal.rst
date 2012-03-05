@@ -74,12 +74,12 @@ callback, and respond to events.
 
 For instance, instead of having koji scrape pkgdb on an interval for changed
 email addresses, pkgdb could emit messages to the
-``org.fedoraproject.services.pkgdb`` topic whenever an account's email address
+``org.fedoraproject.service.pkgdb`` topic whenever an account's email address
 changes.  koji could subscribe to the same topic and provide a callback that
 updates its local email aliases when invoked.
 
 In another case, the git (fedpkg) post-update hook could publish messages to
-the ``org.fedoraproject.services.fedpkg.post-update`` topic.  AutoQA could
+the ``org.fedoraproject.service.fedpkg.post-update`` topic.  AutoQA could
 subscribe to the same.  Now if we wanted to enable another service to act when
 updates are pushed to fedpkg, that service need only subscribe to the topic and
 implement its own callback instead of appending its own call to fedpkg's
@@ -255,8 +255,8 @@ Namespace considerations
 
 In the above examples, the topic names are derived from the service names.
 For instance, pkgdb publishes messages to
-``org.fedoraproject.services.pkgdb*``, AutoQA presumably publishes messages
-to ``org.fedoraproject.services.autoqa*``, and so on.
+``org.fedoraproject.service.pkgdb*``, AutoQA presumably publishes messages
+to ``org.fedoraproject.service.autoqa*``, and so on.
 
 This convention, while clear-cut, has its limitations.  Say we wanted to
 replace pkgdb whole-sale with our shiney new `threebean-db` (tm).  Here,
@@ -268,8 +268,8 @@ described in the first section.
 The above `service-oriented` topic namespace is one option.
 Consider an `object-oriented` topic namespace where the objects are things
 like users, packages, builds, updates, tests, tickets, and composes.  Having
-bodhi subscribe to ``org.fedoraproject.objects.tickets`` and
-``org.fedoraproject.objects.builds`` leaves us less tied down to the current
+bodhi subscribe to ``org.fedoraproject.object.tickets`` and
+``org.fedoraproject.object.builds`` leaves us less tied down to the current
 implementation of the rest of the infrastructure.  We could replace `bugzilla`
 with `pivotal` and bodhi would never know the difference - a ticket is a
 ticket.
@@ -297,6 +297,11 @@ Where:
    ``OBJECT`` is `package`, for instance)
  - ``EVENT`` is something like `update`, `new`, or `complete`
 
+All 'fields' in a topic **must**:
+
+ - Be `singular` (Use `package`, not `packages`)
+ - Use existing fields as much as possible (since `complete` is already used
+   by other topics, use that instead of using `finished`).
 
 
 Code Examples - 0mq and ``fedmsg``
