@@ -338,9 +338,14 @@ event is followed by a list of services that will likely consume that event.
 
    - ``org.fedoraproject.compose.complete`` -> mirrormanager, autoqa
 
+ - Elections (TODO -- what is the app called?)
+
+   - ``org.fedoraproject.elections...``
+
  - FAS
 
    - ``org.fedoraproject.user.update`` -> fcomm
+   - ``org.fedoraproject.group.update`` -> fcomm
 
  - Koji -- FIXME, `tags` from ``koji`` conflict with `tags` from ``tagger``
 
@@ -350,6 +355,11 @@ event is followed by a list of services that will likely consume that event.
      SCM, autoqa, sigul
    - ``org.fedoraproject.package.build.start`` -> fcomm
    - ``org.fedoraproject.package.build.fail`` -> fcomm
+
+ - MeetBot (supybot?)
+
+   - ``org.fedoraproject.irc.meeting.start``
+   - ``org.fedoraproject.irc.meeting.complete``
 
  - NetApp -- FIXME, the topics from netapp should be reviewed.  They seem
    ambiguous.
@@ -377,6 +387,10 @@ event is followed by a list of services that will likely consume that event.
    - ``org.fedoraproject.tag.update`` -> fcomm, pkgdb
    - ``org.fedoraproject.user.rank.update`` -> fcomm, (pkgdb?)
    - ``org.fedoraproject.login.tagger`` -> ??
+
+ - Wiki
+
+   - ``org.fedoraproject....``
 
  - Zabbix
 
