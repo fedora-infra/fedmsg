@@ -1,10 +1,12 @@
 import atexit
+import inspect
 import simplejson
 import time
 import warnings
 import zmq
 
 import fedmsg.schema
+import fedmsg.json
 
 TOPIC_PREFIX = "org.fedoraproject."
 
@@ -32,7 +34,13 @@ class FedMsgContext(object):
     def subscribe(self, topic, callback, **kw):
         raise NotImplementedError
 
-    def send_message(self, topic, msg, **kw):
+    def send_message(self, topic, msg, guess_modname=True, **kw):
+
+        if guess_modname:
+            frame = inspect.stack()[2][0]
+            modname = frame.f_globals['__name__'].split('.')[0]
+            topic = modname + '.' + topic
+
         if topic[:len(TOPIC_PREFIX)] != TOPIC_PREFIX:
             topic = TOPIC_PREFIX + topic
 
@@ -40,4 +48,4 @@ class FedMsgContext(object):
             if key not in fedmsg.schema.keys:
                 warnings.warn("%r not one of %r" % (key, fedmsg.schema.keys))
 
-        self.publisher.send_multipart([topic, simplejson.dumps(msg)])
+        self.publisher.send_multipart([topic, fedmsg.json.dumps(msg)])
