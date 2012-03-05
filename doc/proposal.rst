@@ -335,7 +335,7 @@ will be omitted in most use cases.  It argues that ``fedmsg`` not be
 Here's an example from
 `fedora-tagger <http://github.com/ralphbean/fedora-tagger>`_ that sends the
 information about a new tag over the
-``org.fedoraproject.fedoratagger.topic.new``::
+``org.fedoraproject.fedoratagger.tag.update``::
 
     >>> import fedmsg
     >>> import fedmsg.schema
