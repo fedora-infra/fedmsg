@@ -12,11 +12,22 @@ __context = None
 
 
 def init(**kw):
+
     global __context
     if __context:
         raise ValueError("fedmsg already initialized")
 
-    __context = fedmsg.core.FedMsgContext(**kw)
+    # Here's our list of default config values
+    defaults = {
+        'publish_endpoint': 'tcp://*:6543',
+        'active': False,
+        'config': None,  # dynamically lookup fedmsg.ini
+    }
+
+    # Override the defaults with whatever the user explicitly passes in.
+    defaults.update(kw)
+
+    __context = fedmsg.core.FedMsgContext(**defaults)
     return __context
 
 

@@ -35,4 +35,9 @@ setup(
     packages=['fedmsg'],
     include_package_data=True,
     zip_safe=False,
+    entry_points = {
+        'console_scripts': [
+            "fedmsg-logger=fedmsg.commands.logger:main",
+        ],
+    }
 )

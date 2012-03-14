@@ -13,12 +13,12 @@ TOPIC_PREFIX = "org.fedoraproject."
 
 class FedMsgContext(object):
     def __init__(self, **kw):
-        super(FedMsgContext, self).__init__(**kw)
+        super(FedMsgContext, self).__init__()
 
         # Prepare our context and publisher
         self.context = zmq.Context(1)
         self.publisher = self.context.socket(zmq.PUB)
-        self.publisher.bind(kw.get("publish_endpoint", "tcp://*:6543"))
+        self.publisher.bind(kw["publish_endpoint"])
 
         # Define and register a 'destructor'.
         def destructor():
