@@ -17,8 +17,14 @@ class FedMsgContext(object):
 
         # Prepare our context and publisher
         self.context = zmq.Context(1)
-        self.publisher = self.context.socket(zmq.PUB)
-        self.publisher.bind(kw["publish_endpoint"])
+        if kw.get("publish_endpoint", None):
+            self.publisher = self.context.socket(zmq.PUB)
+            self.publisher.bind(kw["publish_endpoint"])
+        elif kw.get("relay", None):
+            self.publisher = self.context.socket(zmq.PUB)
+            self.publisher.connect(kw["relay"])
+        else:
+            raise ValueError("FedMsgContext was misconfigured.")
 
         # Define and register a 'destructor'.
         def destructor():
