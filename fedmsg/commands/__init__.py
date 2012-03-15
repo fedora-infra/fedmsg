@@ -13,11 +13,11 @@ class command(object):
     def __call__(self, func):
 
         def wrapper():
-            args = fedmsg.config.process_arguments(self.extra_args)
+            args = fedmsg.config.process_arguments(
+                self.extra_args,
+                func.__doc__,
+            )
             kwargs = dict(args._get_kwargs())
             return func(**kwargs)
-
-        # TODO -- this doesn't work.
-        wrapper.__doc__ = func.__doc__
 
         return wrapper

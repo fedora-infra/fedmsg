@@ -1,15 +1,9 @@
 import argparse
 import inspect
 
-def get_calling_docstring(n=1):
-    """ Print the docstring of the calling function """
-    frame = inspect.stack()[n][0]
-    #return frame.f_globals[frame.f_code.co_name].__doc__
-    return "docstring inspection doesn't work with decorator yet."
 
-
-def process_arguments(declared_args):
-    parser = argparse.ArgumentParser(description=get_calling_docstring(2))
+def process_arguments(declared_args, doc):
+    parser = argparse.ArgumentParser(description=doc)
 
     # TODO -- put arguments that belong to *all* commands here.
     #parser.add_argument(
