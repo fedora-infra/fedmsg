@@ -15,7 +15,7 @@ def _log_message(kw, message):
 extra_args = [
     (['--relay'], {
         'dest': 'relay',
-        'help': "endpoint of the log relay fedmsg-hub to connect to",
+        'help': "Endpoint of the log relay fedmsg-hub to connect to",
         'default': "tcp://127.0.0.1:3002",
     }),
     (['--message'], {
@@ -25,7 +25,7 @@ extra_args = [
     ([], {
         'dest': 'topic',
         'metavar': "TOPIC",
-        'help': "org.fedoraproject.logger.TOPIC",
+        'help': "Think org.fedoraproject.logger.TOPIC",
     }),
 ]
 
