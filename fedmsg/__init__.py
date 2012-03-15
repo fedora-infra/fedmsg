@@ -30,7 +30,19 @@ def init(**kw):
     __context = fedmsg.core.FedMsgContext(**defaults)
     return __context
 
+def API_function(func):
 
+    def _wrapper(*args, **kw):
+
+        global __context
+        if not __context:
+            init()
+            assert(__context)
+
+        return func(*args, **kw)
+    return _wrapper
+
+@API_function
 def send_message(topic, msg, **kw):
     """ Send a message over the publishing zeromq socket.
 
@@ -55,14 +67,10 @@ def send_message(topic, msg, **kw):
 
     """
 
-    global __context
-    if not __context:
-        init()
-        assert(__context)
-
     return __context.send_message(topic, msg, **kw)
 
 
+@API_function
 def subscribe(topic, callback, **kw):
     """ Subscribe a callback to a zeromq topic.
 
@@ -71,10 +79,5 @@ def subscribe(topic, callback, **kw):
      - If the zeromq context is not initialized, initialize it.
      - 'org.fedorahosted.' is prepended to the topic.
     """
-
-    global __context
-    if not __context:
-        init()
-        assert(__context)
 
     return __context.subscribe(topic, callback, **kw)
