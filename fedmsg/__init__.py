@@ -17,6 +17,7 @@ def init(**kw):
     if __context:
         raise ValueError("fedmsg already initialized")
 
+    # TODO -- pull this from fedmsg.config
     # Here's our list of default config values
     defaults = {
         'publish_endpoint': 'tcp://*:6543',
@@ -30,17 +31,19 @@ def init(**kw):
     __context = fedmsg.core.FedMsgContext(**defaults)
     return __context
 
+
 def API_function(func):
 
     def _wrapper(*args, **kw):
 
         global __context
         if not __context:
-            init()
+            init(**kw)
             assert(__context)
 
         return func(*args, **kw)
     return _wrapper
+
 
 @API_function
 def send_message(topic, msg, **kw):
@@ -81,3 +84,13 @@ def subscribe(topic, callback, **kw):
     """
 
     return __context.subscribe(topic, callback, **kw)
+
+
+@API_function
+def have_pulses(endpoints, timeout, **kw):
+    """
+    Returns a dict of endpoint->bool mappings indicating which endpoints
+    are emitting detectable heartbeats.
+    """
+
+    return __context.have_pulses(endpoints, timeout, **kw)

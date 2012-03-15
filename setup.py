@@ -29,6 +29,7 @@ setup(
     install_requires=[
         'pyzmq',
         'simplejson',
+        'fabulous',
     ],
     tests_require=['nose'],
     test_suite='nose.collector',
@@ -37,7 +38,8 @@ setup(
     zip_safe=False,
     entry_points = {
         'console_scripts': [
-            "fedmsg-logger=fedmsg.commands.logger:main",
+            "fedmsg-logger=fedmsg.commands.logger:logger",
+            "fedmsg-status=fedmsg.commands.status:status",
         ],
     }
 )

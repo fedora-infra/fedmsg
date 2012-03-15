@@ -15,7 +15,10 @@ class FedMsgContext(object):
     def __init__(self, **kw):
         super(FedMsgContext, self).__init__()
 
+        self.subscription_endpoints = kw.get('subscription_endpoints', [])
+
         # Prepare our context and publisher
+        # '1' is the number of io_threads.  Make this configurable.
         self.context = zmq.Context(1)
         if kw.get("publish_endpoint", None):
             self.publisher = self.context.socket(zmq.PUB)
@@ -24,11 +27,15 @@ class FedMsgContext(object):
             self.publisher = self.context.socket(zmq.PUB)
             self.publisher.connect(kw["relay"])
         else:
-            raise ValueError("FedMsgContext was misconfigured.")
+            # fedmsg is not configured to send any messages
+            #raise ValueError("FedMsgContext was misconfigured.")
+            pass
 
         # Define and register a 'destructor'.
         def destructor():
-            self.publisher.close()
+            if hasattr(self, 'publisher'):
+                self.publisher.close()
+
             self.context.term()
 
         atexit.register(destructor)
@@ -55,3 +62,36 @@ class FedMsgContext(object):
                 warnings.warn("%r not one of %r" % (key, fedmsg.schema.keys))
 
         self.publisher.send_multipart([topic, fedmsg.json.dumps(msg)])
+
+    def have_pulses(self, endpoints, timeout, **kw):
+        """
+        Returns a dict of endpoint->bool mappings indicating which endpoints
+        are emitting detectable heartbeats.
+        """
+
+        timeout = timeout / 1000.0
+        topic = TOPIC_PREFIX + 'heartbeat'
+        subscribers = {}
+        for endpoint in endpoints:
+            subscriber = self.context.socket(zmq.SUB)
+            subscriber.setsockopt(zmq.SUBSCRIBE, topic)
+            subscriber.connect(endpoint)
+            subscribers[endpoint] = subscriber
+
+        results = dict(zip(endpoints, [False]*len(endpoints)))
+        tic = time.time()
+        while not all(results.values()) and (time.time() - tic) < timeout:
+            for e in endpoints:
+                if results[e]:
+                    continue
+
+                try:
+                    subscribers[e].recv_multipart(zmq.NOBLOCK)
+                    results[e] = True
+                except zmq.ZMQError:
+                    pass
+
+        for endpoint in endpoints:
+            subscribers[endpoint].close()
+
+        return results
