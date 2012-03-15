@@ -2,7 +2,7 @@ import sys
 
 import fedmsg
 import fedmsg.schema
-import fedmsg.decorators
+from fedmsg.commands import command
 
 def _log_message(args, message):
     fedmsg.send_message(
@@ -28,7 +28,7 @@ extra_args = [
     }),
 ]
 
-@fedmsg.decorators.command(extra_args=extra_args)
+@command(extra_args=extra_args)
 def main(args):
     """ Emit log messages to the FI bus.
 
