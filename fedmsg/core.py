@@ -8,24 +8,21 @@ import zmq
 import fedmsg.schema
 import fedmsg.json
 
-TOPIC_PREFIX = "org.fedoraproject."
-
 
 class FedMsgContext(object):
-    def __init__(self, **kw):
+    def __init__(self, **config):
         super(FedMsgContext, self).__init__()
 
-        self.subscription_endpoints = kw.get('subscription_endpoints', [])
+        self.c = config
 
         # Prepare our context and publisher
-        # '1' is the number of io_threads.  Make this configurable.
-        self.context = zmq.Context(1)
-        if kw.get("publish_endpoint", None):
+        self.context = zmq.Context(config['io_threads'])
+        if config.get("publish_endpoint", None):
             self.publisher = self.context.socket(zmq.PUB)
-            self.publisher.bind(kw["publish_endpoint"])
-        elif kw.get("relay", None):
+            self.publisher.bind(config["publish_endpoint"])
+        elif config.get("relay", None):
             self.publisher = self.context.socket(zmq.PUB)
-            self.publisher.connect(kw["relay"])
+            self.publisher.connect(config["relay"])
         else:
             # fedmsg is not configured to send any messages
             #raise ValueError("FedMsgContext was misconfigured.")
@@ -42,20 +39,20 @@ class FedMsgContext(object):
 
         # Sleep just to make sure that the socket gets set up before anyone
         # tries anything.  This is a documented zmq 'feature'.
-        time.sleep(1)
+        time.sleep(config['post_init_sleep'])
 
-    def subscribe(self, topic, callback, **kw):
+    def subscribe(self, topic, callback):
         raise NotImplementedError
 
-    def send_message(self, topic, msg, guess_modname=True, **kw):
+    def send_message(self, topic, msg, guess_modname=True):
 
         if guess_modname:
             frame = inspect.stack()[2][0]
             modname = frame.f_globals['__name__'].split('.')[0]
             topic = modname + '.' + topic
 
-        if topic[:len(TOPIC_PREFIX)] != TOPIC_PREFIX:
-            topic = TOPIC_PREFIX + topic
+        if topic[:len(self.c['topic_prefix'])] != self.c['topic_prefix']:
+            topic = self.c['topic_prefix'] + '.' + topic
 
         for key in msg.keys():
             if key not in fedmsg.schema.keys:
@@ -63,14 +60,14 @@ class FedMsgContext(object):
 
         self.publisher.send_multipart([topic, fedmsg.json.dumps(msg)])
 
-    def have_pulses(self, endpoints, timeout, **kw):
+    def have_pulses(self, endpoints, timeout):
         """
         Returns a dict of endpoint->bool mappings indicating which endpoints
         are emitting detectable heartbeats.
         """
 
         timeout = timeout / 1000.0
-        topic = TOPIC_PREFIX + 'heartbeat'
+        topic = self.c['topic_prefix'] + '.heartbeat'
         subscribers = {}
         for endpoint in endpoints:
             subscriber = self.context.socket(zmq.SUB)
@@ -78,7 +75,7 @@ class FedMsgContext(object):
             subscriber.connect(endpoint)
             subscribers[endpoint] = subscriber
 
-        results = dict(zip(endpoints, [False]*len(endpoints)))
+        results = dict(zip(endpoints, [False] * len(endpoints)))
         tic = time.time()
         while not all(results.values()) and (time.time() - tic) < timeout:
             for e in endpoints:

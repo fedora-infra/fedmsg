@@ -70,7 +70,7 @@ def send_message(topic, msg, **kw):
 
     """
 
-    return __context.send_message(topic, msg, **kw)
+    return __context.send_message(topic, msg)
 
 
 @API_function
@@ -83,7 +83,7 @@ def subscribe(topic, callback, **kw):
      - 'org.fedorahosted.' is prepended to the topic.
     """
 
-    return __context.subscribe(topic, callback, **kw)
+    return __context.subscribe(topic, callback)
 
 
 @API_function
@@ -93,4 +93,4 @@ def have_pulses(endpoints, timeout, **kw):
     are emitting detectable heartbeats.
     """
 
-    return __context.have_pulses(endpoints, timeout, **kw)
+    return __context.have_pulses(endpoints, timeout)

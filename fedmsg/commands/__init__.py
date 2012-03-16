@@ -1,3 +1,4 @@
+import fedmsg
 import fedmsg.config
 
 
@@ -13,11 +14,10 @@ class command(object):
     def __call__(self, func):
 
         def wrapper():
-            args = fedmsg.config.process_arguments(
+            config = fedmsg.config.load_config(
                 self.extra_args,
                 func.__doc__,
             )
-            kwargs = dict(args._get_kwargs())
-            return func(**kwargs)
+            return func(**config)
 
         return wrapper
