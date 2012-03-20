@@ -359,6 +359,19 @@ Examples of consuming events
 
 TODO
 
+Console Scripts
+---------------
+
+It makes sense for ``fedmsg`` to also provide a number of console scripts for
+use with random shell scripts or with nagios, for instance.
+
+Currently we have implemented:
+
+ - ``fedmsg-status`` - checks the status of all registered producers by
+   listening for a heartbeat.
+ - ``fedmsg-logger`` - sends messages over the ``org.fedoraproject.logger``
+   topic.
+
 Systems and Events
 ==================
 
