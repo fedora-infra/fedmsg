@@ -126,7 +126,7 @@ The following is recreated from J5's Publish/Subscribe Messaging Proposal
 as an example of how Fedora Infrastructure could be reorganized with AMQP
 and a set of federated AMQP brokers (qpid).
 
-.. image:: _static/reorganize-amqp-j5.png
+.. image:: https://github.com/ralphbean/fedmsg/raw/develop/doc/_static/reorganize-amqp-j5.png
 
 The gist is that each service in the Fedora Infrastructure would have the
 address of a central message broker on hand.  On startup, each service would
@@ -159,7 +159,7 @@ The following depicts an overview of a subset of Fedora Infrastructure
 organized with a decentralized 0mq bus parallel to the spirit of J5's
 recreated diagram in the AMQP section above.
 
-.. image:: _static/reorganize-0mq-overview.png
+.. image:: https://github.com/ralphbean/fedmsg/raw/develop/doc/_static/reorganize-0mq-overview.png
 
 No broker.  The gist is that each service will open a port and begin
 publishing messages ("bind to" in zmq-language).  Each other service will
@@ -358,6 +358,19 @@ Examples of consuming events
 ----------------------------
 
 TODO
+
+Console Scripts
+---------------
+
+It makes sense for ``fedmsg`` to also provide a number of console scripts for
+use with random shell scripts or with nagios, for instance.
+
+Currently we have implemented:
+
+ - ``fedmsg-status`` - checks the status of all registered producers by
+   listening for a heartbeat.
+ - ``fedmsg-logger`` - sends messages over the ``org.fedoraproject.logger``
+   topic.
 
 Systems and Events
 ==================
