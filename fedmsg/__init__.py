@@ -1,6 +1,7 @@
 """ Fedora Messaging Client API """
 
 import fedmsg.core
+import fedmsg.config
 
 __all__ = [
     'init',
@@ -17,18 +18,13 @@ def init(**kw):
     if __context:
         raise ValueError("fedmsg already initialized")
 
-    # TODO -- pull this from fedmsg.config
-    # Here's our list of default config values
-    defaults = {
-        'publish_endpoint': 'tcp://*:6543',
-        'active': False,
-        'config': None,  # dynamically lookup fedmsg.ini
-    }
+    # Read config from CLI args and a config file
+    config = fedmsg.config.load_config([], None)
 
     # Override the defaults with whatever the user explicitly passes in.
-    defaults.update(kw)
+    config.update(kw)
 
-    __context = fedmsg.core.FedMsgContext(**defaults)
+    __context = fedmsg.core.FedMsgContext(**config)
     return __context
 
 
@@ -46,7 +42,7 @@ def API_function(func):
 
 
 @API_function
-def send_message(topic, msg, **kw):
+def send_message(topic=None, msg=None, **kw):
     """ Send a message over the publishing zeromq socket.
 
     Well, really it's a little more complicated:
@@ -70,7 +66,7 @@ def send_message(topic, msg, **kw):
 
     """
 
-    return __context.send_message(topic, msg)
+    return __context.send_message(topic, msg, **kw)
 
 
 @API_function

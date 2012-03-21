@@ -44,12 +44,22 @@ class FedMsgContext(object):
     def subscribe(self, topic, callback):
         raise NotImplementedError
 
-    def send_message(self, topic, msg, guess_modname=True):
+    def send_message(self, topic=None, msg=None, modname=None):
 
-        if guess_modname:
+        if not topic:
+            warnings.warn("Attempted to send message with no topic.  Bailing.")
+            return
+
+        if not msg:
+            warnings.warn("Attempted to send message with no msg.  Bailing.")
+            return
+
+        if not modname:
+            # If no modname is supplied, then guess it from the call stack.
             frame = inspect.stack()[2][0]
             modname = frame.f_globals['__name__'].split('.')[0]
-            topic = modname + '.' + topic
+
+        topic = modname + '.' + topic
 
         if topic[:len(self.c['topic_prefix'])] != self.c['topic_prefix']:
             topic = self.c['topic_prefix'] + '.' + topic
@@ -58,6 +68,7 @@ class FedMsgContext(object):
             if key not in fedmsg.schema.keys:
                 warnings.warn("%r not one of %r" % (key, fedmsg.schema.keys))
 
+        msg = {'topic': topic, 'msg': msg}
         self.publisher.send_multipart([topic, fedmsg.json.dumps(msg)])
 
     def have_pulses(self, endpoints, timeout):
