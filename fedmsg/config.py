@@ -28,8 +28,10 @@ defaults = dict(
     post_init_sleep=0.5,
 )
 
+__cache = {}
 
-def load_config(extra_args, doc, filenames=None):
+
+def load_config(extra_args, doc, filenames=None, invalidate_cache=False):
     """ Setup a config file from the following sources ordered by importance:
 
       - defaults
@@ -37,6 +39,13 @@ def load_config(extra_args, doc, filenames=None):
       - command line arguments
 
     """
+    global __cache
+
+    if invalidate_cache:
+        __cache = {}
+
+    if __cache:
+        return __cache
 
     config = copy.deepcopy(defaults)
     config.update(_process_config_file(filenames=filenames))
@@ -64,6 +73,7 @@ def load_config(extra_args, doc, filenames=None):
         pprint.pprint(config)
         sys.exit(0)
 
+    __cache = config
     return config
 
 

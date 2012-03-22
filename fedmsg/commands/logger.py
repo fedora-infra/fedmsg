@@ -7,9 +7,9 @@ from fedmsg.commands import command
 
 def _log_message(kw, message):
     fedmsg.send_message(
-        topic='logger.%s' % kw['topic'],
+        topic=kw['topic'],
         msg={fedmsg.schema.LOG: message},
-        guess_modname=False,
+        modname='logger',
     )
 
 extra_args = [
