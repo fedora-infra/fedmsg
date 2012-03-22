@@ -68,7 +68,10 @@ class FedMsgContext(object):
             if key not in fedmsg.schema.keys:
                 warnings.warn("%r not one of %r" % (key, fedmsg.schema.keys))
 
+        # TODO -- remove this line.  It's unnecessary.
+        # Busmon (while in alpha) depended on it.
         msg = {'topic': topic, 'msg': msg}
+
         self.publisher.send_multipart([topic, fedmsg.json.dumps(msg)])
 
     def have_pulses(self, endpoints, timeout):
@@ -79,27 +82,39 @@ class FedMsgContext(object):
 
         timeout = timeout / 1000.0
         topic = self.c['topic_prefix'] + '.heartbeat'
-        subscribers = {}
+
+        results = dict(zip(endpoints, [False] * len(endpoints)))
+        tic = time.time()
+
+        for endpoint, topic, message in self._tail_messages(endpoints, topic):
+            results[endpoint] = True
+            if all(results.values()) or (time.time() - tic) < timeout:
+                break
+
+        return results
+
+    def _tail_messages(self, endpoints, topic="", **kw):
+        """
+        Generator that yields messages on the bus in the form of tuples::
+
+        >>> (endpoint, topic, message)
+        """
+
+        subs = {}
         for endpoint in endpoints:
             subscriber = self.context.socket(zmq.SUB)
             subscriber.setsockopt(zmq.SUBSCRIBE, topic)
             subscriber.connect(endpoint)
-            subscribers[endpoint] = subscriber
+            subs[endpoint] = subscriber
 
-        results = dict(zip(endpoints, [False] * len(endpoints)))
-        tic = time.time()
-        while not all(results.values()) and (time.time() - tic) < timeout:
-            for e in endpoints:
-                if results[e]:
-                    continue
-
-                try:
-                    subscribers[e].recv_multipart(zmq.NOBLOCK)
-                    results[e] = True
-                except zmq.ZMQError:
-                    pass
-
-        for endpoint in endpoints:
-            subscribers[endpoint].close()
-
-        return results
+        try:
+            while True:
+                for e in endpoints:
+                    try:
+                        _topic, message = subs[e].recv_multipart(zmq.NOBLOCK)
+                        yield e, _topic, fedmsg.json.loads(message)
+                    except zmq.ZMQError:
+                        pass
+        finally:
+            for endpoint in endpoints:
+                subs[endpoint].close()

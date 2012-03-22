@@ -40,6 +40,7 @@ setup(
         'console_scripts': [
             "fedmsg-logger=fedmsg.commands.logger:logger",
             "fedmsg-status=fedmsg.commands.status:status",
+            "fedmsg-tail=fedmsg.commands.tail:tail",
         ],
     }
 )
