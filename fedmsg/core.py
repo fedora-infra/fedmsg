@@ -74,13 +74,12 @@ class FedMsgContext(object):
 
         self.publisher.send_multipart([topic, fedmsg.json.dumps(msg)])
 
-    def have_pulses(self, endpoints, timeout):
+    def have_pulses(self, endpoints):
         """
         Returns a dict of endpoint->bool mappings indicating which endpoints
         are emitting detectable heartbeats.
         """
 
-        timeout = timeout / 1000.0
         topic = self.c['topic_prefix'] + '.heartbeat'
 
         results = dict(zip(endpoints, [False] * len(endpoints)))
@@ -88,7 +87,7 @@ class FedMsgContext(object):
 
         for endpoint, topic, message in self._tail_messages(endpoints, topic):
             results[endpoint] = True
-            if all(results.values()) or (time.time() - tic) < timeout:
+            if all(results.values()) or (time.time() - tic) < self.c['timeout']:
                 break
 
         return results
@@ -107,14 +106,18 @@ class FedMsgContext(object):
             subscriber.connect(endpoint)
             subs[endpoint] = subscriber
 
+        timeout = self.c['timeout']
+        tic = time.time()
         try:
             while True:
                 for e in endpoints:
                     try:
                         _topic, message = subs[e].recv_multipart(zmq.NOBLOCK)
+                        tic = time.time()
                         yield e, _topic, fedmsg.json.loads(message)
                     except zmq.ZMQError:
-                        pass
+                        if timeout and (time.time() - tic) > timeout:
+                            return
         finally:
             for endpoint in endpoints:
                 subs[endpoint].close()

@@ -19,12 +19,6 @@ extra_args = [
         'nargs': '*',
         'default': ["tcp://127.0.0.1:6543"],
     }),
-    (['--timeout'], {
-        'dest': 'timeout',
-        'help': 'Timeout to wait in milliseconds for heartbeat.',
-        'type': int,
-        'default': 2000,   # <-- TODO pull this from fedmsg.config
-    }),
 ]
 
 @command(extra_args=extra_args)

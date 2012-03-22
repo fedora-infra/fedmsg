@@ -26,6 +26,7 @@ defaults = dict(
     io_threads=1,
     topic_prefix="org.fedoraproject",
     post_init_sleep=0.5,
+    timeout=2,
 )
 
 __cache = {}
@@ -113,6 +114,13 @@ def _process_arguments(declared_args, doc, config):
         help='Simply print out the configuration and exit.  No action taken.',
         default=False,
         action='store_true',
+    )
+    parser.add_argument(
+        '--timeout',
+        dest='timeout',
+        help="Timeout in seconds for any blocking zmq operations.",
+        type=float,
+        default=config['timeout'],
     )
 
     for args, kwargs in declared_args:

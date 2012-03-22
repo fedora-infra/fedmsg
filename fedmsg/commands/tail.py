@@ -32,6 +32,8 @@ def tail(**kw):
 
     # Disable sending
     kw['publish_endpoint'] = None
+    # Disable timeouts.  We want to tail forever!
+    kw['timeout'] = 0
     fedmsg.init(**kw)
 
     # Build a message formatter

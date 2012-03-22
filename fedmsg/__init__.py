@@ -83,10 +83,10 @@ def subscribe(topic, callback, **kw):
 
 
 @API_function
-def have_pulses(endpoints, timeout, **kw):
+def have_pulses(endpoints, **kw):
     """
     Returns a dict of endpoint->bool mappings indicating which endpoints
     are emitting detectable heartbeats.
     """
 
-    return __context.have_pulses(endpoints, timeout)
+    return __context.have_pulses(endpoints)
