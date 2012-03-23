@@ -44,7 +44,7 @@ class FedMsgContext(object):
     def subscribe(self, topic, callback):
         raise NotImplementedError
 
-    def send_message(self, topic=None, msg=None, modname=None):
+    def send_message(self, topic=None, msg=None, modname=None, validate=True):
 
         if not topic:
             warnings.warn("Attempted to send message with no topic.  Bailing.")
@@ -64,8 +64,8 @@ class FedMsgContext(object):
         if topic[:len(self.c['topic_prefix'])] != self.c['topic_prefix']:
             topic = self.c['topic_prefix'] + '.' + topic
 
-        for key in msg.keys():
-            if key not in fedmsg.schema.keys:
+        if validate:
+            for key in (k for k in msg.keys() if k not in fedmsg.schema.keys):
                 warnings.warn("%r not one of %r" % (key, fedmsg.schema.keys))
 
         # TODO -- remove this line.  It's unnecessary.
