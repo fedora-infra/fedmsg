@@ -17,6 +17,7 @@ class command(object):
             config = fedmsg.config.load_config(
                 self.extra_args,
                 func.__doc__,
+                fedmsg_command=True,
             )
             return func(**config)
 

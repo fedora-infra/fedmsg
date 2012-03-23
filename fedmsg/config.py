@@ -27,12 +27,17 @@ defaults = dict(
     topic_prefix="org.fedoraproject",
     post_init_sleep=0.5,
     timeout=2,
+    print_config=False,
 )
 
 __cache = {}
 
 
-def load_config(extra_args, doc, filenames=None, invalidate_cache=False):
+def load_config(extra_args,
+                doc,
+                filenames=None,
+                invalidate_cache=False,
+                fedmsg_command=False):
     """ Setup a config file from the following sources ordered by importance:
 
       - defaults
@@ -50,7 +55,14 @@ def load_config(extra_args, doc, filenames=None, invalidate_cache=False):
 
     config = copy.deepcopy(defaults)
     config.update(_process_config_file(filenames=filenames))
-    config.update(_process_arguments(extra_args, doc, config))
+
+    # This is optional (and defaults to false) so that only 'fedmsg-*' commands
+    # are required to provide these arguments.
+    # For instance, the moksha-hub command takes a '-v' argument and internally
+    # makes calls to fedmsg.  We don't want to impose all of fedmsg's CLI option
+    # constraints on programs that use fedmsg, so we make it optional.
+    if fedmsg_command:
+        config.update(_process_arguments(extra_args, doc, config))
 
     # If the user specified a config file on the command line, then start over
     # but read in that file instead.
