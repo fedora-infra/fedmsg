@@ -44,6 +44,20 @@ class FedMsgContext(object):
     def subscribe(self, topic, callback):
         raise NotImplementedError
 
+    # TODO -- this should be in kitchen, not fedmsg
+    def guess_calling_module(self):
+        # Iterate up the call-stack and return the first new top-level module
+        for frame in (f[0] for f in inspect.stack()):
+            modname = frame.f_globals['__name__'].split('.')[0]
+            if modname != "fedmsg":
+                return modname
+
+        # Otherwise, give up and just return out own module name.
+        return "fedmsg"
+
+        frame = inspect.stack()[2][0]
+        modname = frame.f_globals['__name__'].split('.')[0]
+
     def send_message(self, topic=None, msg=None, modname=None, validate=True):
 
         if not topic:
@@ -54,10 +68,8 @@ class FedMsgContext(object):
             warnings.warn("Attempted to send message with no msg.  Bailing.")
             return
 
-        if not modname:
-            # If no modname is supplied, then guess it from the call stack.
-            frame = inspect.stack()[2][0]
-            modname = frame.f_globals['__name__'].split('.')[0]
+        # If no modname is supplied, then guess it from the call stack.
+        modname = modname or self.guess_calling_module()
 
         topic = modname + '.' + topic
 
