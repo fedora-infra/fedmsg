@@ -80,9 +80,7 @@ class FedMsgContext(object):
             for key in (k for k in msg.keys() if k not in fedmsg.schema.keys):
                 warnings.warn("%r not one of %r" % (key, fedmsg.schema.keys))
 
-        # TODO -- remove this line.  It's unnecessary.
-        # Busmon (while in alpha) depended on it.
-        msg = {'topic': topic, 'msg': msg}
+        msg = dict(topic=topic, msg=msg, timestamp=time.time())
 
         self.publisher.send_multipart([topic, fedmsg.json.dumps(msg)])
 
