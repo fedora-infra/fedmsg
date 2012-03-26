@@ -323,14 +323,16 @@ Here's a real dummy test::
 
     >>> import fedmsg
     >>> import fedmsg.schema
-    >>> fedmsg.send_message(topic='testing', guess_modname=False, msg={
+    >>> fedmsg.send_message(topic='testing', modname='test', msg={
     ...     fedmsg.schema.TEST: "Hello World",
     ... })
 
 The above snippet will send the message ``'{test: "Hello World"}'`` message
-over the ``org.fedoraproject.testing`` topic.  The ``guess_modname`` argument
-will be omitted in most use cases.  It argues that ``fedmsg`` not be
-`too smart` when enhancing your topic.
+over the ``org.fedoraproject.test.testing`` topic.
+The ``modname`` argument will be omitted in most use cases.  By default,
+``fedmsg`` will try to guess the name of the module that called it and use
+that to produce an intelligent topic.
+Specifying ``modname`` argues that ``fedmsg`` not be `too smart`.
 
 Here's an example from
 `fedora-tagger <http://github.com/ralphbean/fedora-tagger>`_ that sends the
