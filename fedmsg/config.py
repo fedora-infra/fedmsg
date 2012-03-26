@@ -28,6 +28,7 @@ defaults = dict(
     post_init_sleep=0.5,
     timeout=2,
     print_config=False,
+    high_water_mark=0,  # zero means no limit
 )
 
 __cache = {}
@@ -133,6 +134,13 @@ def _process_arguments(declared_args, doc, config):
         help="Timeout in seconds for any blocking zmq operations.",
         type=float,
         default=config['timeout'],
+    )
+    parser.add_argument(
+        '--high-water-mark',
+        dest='high_water_mark',
+        help="Limit on the number of messages in the queue before blocking.",
+        type=int,
+        default=config['high_water_mark'],
     )
 
     for args, kwargs in declared_args:

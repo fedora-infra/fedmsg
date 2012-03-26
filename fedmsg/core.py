@@ -19,6 +19,10 @@ class FedMsgContext(object):
         self.context = zmq.Context(config['io_threads'])
         if config.get("publish_endpoint", None):
             self.publisher = self.context.socket(zmq.PUB)
+
+            if config['high_water_mark']:
+                self.publisher.setsockopt(zmq.HWM, config['high_water_mark'])
+
             self.publisher.bind(config["publish_endpoint"])
         elif config.get("relay", None):
             self.publisher = self.context.socket(zmq.PUB)
