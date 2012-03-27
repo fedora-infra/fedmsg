@@ -106,18 +106,20 @@ class FedMsgContext(object):
 
         return results
 
-    def _tail_messages(self, endpoints, topic="", **kw):
+    def _tail_messages(self, endpoints, topic="", passive=False, **kw):
         """
         Generator that yields messages on the bus in the form of tuples::
 
         >>> (endpoint, topic, message)
         """
 
+        method = passive and 'bind' or 'connect'
+
         subs = {}
         for endpoint in endpoints:
             subscriber = self.context.socket(zmq.SUB)
             subscriber.setsockopt(zmq.SUBSCRIBE, topic)
-            subscriber.connect(endpoint)
+            getattr(subscriber, method)(endpoint)
             subs[endpoint] = subscriber
 
         timeout = self.c['timeout']

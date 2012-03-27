@@ -41,6 +41,7 @@ setup(
             "fedmsg-logger=fedmsg.commands.logger:logger",
             "fedmsg-status=fedmsg.commands.status:status",
             "fedmsg-tail=fedmsg.commands.tail:tail",
+            "fedmsg-relay=fedmsg.commands.relay:relay",
         ],
     }
 )
