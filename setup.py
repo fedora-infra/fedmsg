@@ -19,7 +19,7 @@ import logging
 
 setup(
     name='fedmsg',
-    version='0.0.1a4',
+    version='0.0.1',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -29,10 +29,19 @@ setup(
     install_requires=[
         'pyzmq',
         'simplejson',
+        'fabulous',
     ],
     tests_require=['nose'],
     test_suite='nose.collector',
     packages=['fedmsg'],
     include_package_data=True,
     zip_safe=False,
+    entry_points = {
+        'console_scripts': [
+            "fedmsg-logger=fedmsg.commands.logger:logger",
+            "fedmsg-status=fedmsg.commands.status:status",
+            "fedmsg-tail=fedmsg.commands.tail:tail",
+            "fedmsg-relay=fedmsg.commands.relay:relay",
+        ],
+    }
 )

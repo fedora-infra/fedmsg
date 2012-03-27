@@ -1,6 +1,7 @@
 """ Fedora Messaging Client API """
 
 import fedmsg.core
+import fedmsg.config
 
 __all__ = [
     'init',
@@ -12,15 +13,36 @@ __context = None
 
 
 def init(**kw):
+
     global __context
     if __context:
         raise ValueError("fedmsg already initialized")
 
-    __context = fedmsg.core.FedMsgContext(**kw)
+    # Read config from CLI args and a config file
+    config = fedmsg.config.load_config([], None)
+
+    # Override the defaults with whatever the user explicitly passes in.
+    config.update(kw)
+
+    __context = fedmsg.core.FedMsgContext(**config)
     return __context
 
 
-def send_message(topic, msg, **kw):
+def API_function(func):
+
+    def _wrapper(*args, **kw):
+
+        global __context
+        if not __context:
+            init(**kw)
+            assert(__context)
+
+        return func(*args, **kw)
+    return _wrapper
+
+
+@API_function
+def send_message(topic=None, msg=None, **kw):
     """ Send a message over the publishing zeromq socket.
 
     Well, really it's a little more complicated:
@@ -44,14 +66,10 @@ def send_message(topic, msg, **kw):
 
     """
 
-    global __context
-    if not __context:
-        init()
-        assert(__context)
-
     return __context.send_message(topic, msg, **kw)
 
 
+@API_function
 def subscribe(topic, callback, **kw):
     """ Subscribe a callback to a zeromq topic.
 
@@ -61,9 +79,14 @@ def subscribe(topic, callback, **kw):
      - 'org.fedorahosted.' is prepended to the topic.
     """
 
-    global __context
-    if not __context:
-        init()
-        assert(__context)
+    return __context.subscribe(topic, callback)
 
-    return __context.subscribe(topic, callback, **kw)
+
+@API_function
+def have_pulses(endpoints, **kw):
+    """
+    Returns a dict of endpoint->bool mappings indicating which endpoints
+    are emitting detectable heartbeats.
+    """
+
+    return __context.have_pulses(endpoints)

@@ -11,9 +11,14 @@ class FedMsgEncoder(simplejson.encoder.JSONEncoder):
 
 encoder = FedMsgEncoder()
 dumps = encoder.encode
+
+pretty_encoder = FedMsgEncoder(indent=2)
+pretty_dumps = pretty_encoder.encode
+
 loads = simplejson.loads
 
 __all__ = [
+    'pretty_dumps',
     'dumps',
     'loads',
 ]
