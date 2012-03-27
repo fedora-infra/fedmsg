@@ -75,7 +75,7 @@ class FedMsgContext(object):
         # If no modname is supplied, then guess it from the call stack.
         modname = modname or self.guess_calling_module()
 
-        topic = modname + '.' + topic
+        topic = '.'.join([self.c['environment'], modname, topic])
 
         if topic[:len(self.c['topic_prefix'])] != self.c['topic_prefix']:
             topic = self.c['topic_prefix'] + '.' + topic

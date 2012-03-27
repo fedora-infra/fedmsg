@@ -311,10 +311,11 @@ The scheme
 
 Event topics will follow the rule::
 
- org.fedoraproject.SERVICE.OBJECT[.SUBOBJECT].EVENT
+ org.fedoraproject.ENV.SERVICE.OBJECT[.SUBOBJECT].EVENT
 
 Where:
 
+ - ``ENV`` is one of `dev`, `stg`, or `production`.
  - ``SERVICE`` is something like `koji`, `bodhi`, or `fedoratagger`
  - ``OBJECT`` is something like `package`, `user`, or `tag`
  - ``SUBOBJECT`` is something like `owner` or `build` (in the case where
@@ -352,7 +353,7 @@ Here's a real dummy test::
     ... })
 
 The above snippet will send the message ``'{test: "Hello World"}'`` message
-over the ``org.fedoraproject.test.testing`` topic.
+over the ``org.fedoraproject.dev.test.testing`` topic.
 The ``modname`` argument will be omitted in most use cases.  By default,
 ``fedmsg`` will try to guess the name of the module that called it and use
 that to produce an intelligent topic.
@@ -360,8 +361,8 @@ Specifying ``modname`` argues that ``fedmsg`` not be `too smart`.
 
 Here's an example from
 `fedora-tagger <http://github.com/ralphbean/fedora-tagger>`_ that sends the
-information about a new tag over the
-``org.fedoraproject.fedoratagger.tag.update``::
+information about a new tag over
+``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``::
 
     >>> import fedmsg
     >>> import fedmsg.schema
@@ -378,7 +379,7 @@ uses to convert both objects to stringified JSON for you.
 inserted it into the topic for you.  The code from which we stole the above
 snippet lives in ``fedoratagger.controllers.root``.  ``fedmsg`` figured that
 out and stripped it down to just ``fedoratagger`` for the final topic of
-``org.fedoraproject.fedoratagger.tag.update``.
+``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``.
 
 Examples of consuming events
 ----------------------------
@@ -395,7 +396,7 @@ Currently we have implemented:
 
  - ``fedmsg-status`` - checks the status of all registered producers by
    listening for a heartbeat.
- - ``fedmsg-logger`` - sends messages over the ``org.fedoraproject.logger``
+ - ``fedmsg-logger`` - sends messages over the ``org.fedoraproject.dev.logger``
    topic.
 
 Systems and Events
@@ -413,78 +414,78 @@ event is followed by a list of services that will likely consume that event.
 
  - AutoQA
 
-   - ``org.fedoraproject.autoqa.package.tests.complete`` -> koji, bodhi, fcomm
+   - ``org.fedoraproject.{stg,prod}.autoqa.package.tests.complete`` -> koji, bodhi, fcomm
 
  - Bodhi
 
-   - ``org.fedoraproject.bodhi.update.request{.TYPE}`` -> fcomm, autoqa
-   - ``org.fedoraproject.bodhi.update.complete{.TYPE}`` -> fcomm, autoqa
-   - ``org.fedoraproject.bodhi.update.push`` -> fcomm
-   - ``org.fedoraproject.bodhi.update.remove`` -> fcomm
+   - ``org.fedoraproject.{stg,prod}.bodhi.update.request{.TYPE}`` -> fcomm, autoqa
+   - ``org.fedoraproject.{stg,prod}.bodhi.update.complete{.TYPE}`` -> fcomm, autoqa
+   - ``org.fedoraproject.{stg,prod}.bodhi.update.push`` -> fcomm
+   - ``org.fedoraproject.{stg,prod}.bodhi.update.remove`` -> fcomm
 
  - Bugzilla
 
-   - ``org.fedoraproject.bugzilla.bug.new`` -> fcomm
-   - ``org.fedoraproject.bugzilla.bug.update`` -> fcomm
+   - ``org.fedoraproject.{stg,prod}.bugzilla.bug.new`` -> fcomm
+   - ``org.fedoraproject.{stg,prod}.bugzilla.bug.update`` -> fcomm
 
  - Compose
 
-   - ``org.fedoraproject.compose.compose.complete`` -> mirrormanager, autoqa
+   - ``org.fedoraproject.{stg,prod}.compose.compose.complete`` -> mirrormanager, autoqa
 
  - Elections (TODO -- what is the app called?)
 
-   - ``org.fedoraproject.elections...``  <-- TODO.  Objects and events?
+   - ``org.fedoraproject.{stg,prod}.elections...``  <-- TODO.  Objects and events?
 
  - FAS
 
-   - ``org.fedoraproject.fas.user.update`` -> fcomm
-   - ``org.fedoraproject.fas.group.update`` -> fcomm
+   - ``org.fedoraproject.{stg,prod}.fas.user.update`` -> fcomm
+   - ``org.fedoraproject.{stg,prod}.fas.group.update`` -> fcomm
 
  - Koji -- FIXME, `tags` from ``koji`` conflict with `tags` from ``tagger``
 
-   - ``org.fedoraproject.koji.tag.build`` -> secondary arch koji
-   - ``org.fedoraproject.koji.tag.create`` -> secondary arch koji
-   - ``org.fedoraproject.koji.package.build.complete`` -> fcomm, secondary arch koji,
+   - ``org.fedoraproject.{stg,prod}.koji.tag.build`` -> secondary arch koji
+   - ``org.fedoraproject.{stg,prod}.koji.tag.create`` -> secondary arch koji
+   - ``org.fedoraproject.{stg,prod}.koji.package.build.complete`` -> fcomm, secondary arch koji,
      SCM, autoqa, sigul
-   - ``org.fedoraproject.koji.package.build.start`` -> fcomm
-   - ``org.fedoraproject.koji.package.build.fail`` -> fcomm
+   - ``org.fedoraproject.{stg,prod}.koji.package.build.start`` -> fcomm
+   - ``org.fedoraproject.{stg,prod}.koji.package.build.fail`` -> fcomm
 
  - MeetBot (supybot?)
 
-   - ``org.fedoraproject.irc.meeting.start``
-   - ``org.fedoraproject.irc.meeting.complete``
+   - ``org.fedoraproject.{stg,prod}.irc.meeting.start``
+   - ``org.fedoraproject.{stg,prod}.irc.meeting.complete``
 
  - NetApp -- FIXME, the topics from netapp should be reviewed.  They seem
    ambiguous.
 
-   - ``org.fedoraproject.netapp.sync.stop`` -> mirrormanager
-   - ``org.fedoraproject.netapp.sync.resume`` -> mirrormanager
+   - ``org.fedoraproject.{stg,prod}.netapp.sync.stop`` -> mirrormanager
+   - ``org.fedoraproject.{stg,prod}.netapp.sync.resume`` -> mirrormanager
 
  - PkgDB
 
-   - ``org.fedoraproject.pkgdb.package.new`` -> koji, secondary arch koji, bugzilla
-   - ``org.fedoraproject.pkgdb.package.remove`` -> koji, secondary arch koji,
-   - ``org.fedoraproject.pkgdb.package.rename`` -> bugzilla
-   - ``org.fedoraproject.pkgdb.package.retire`` -> SCM
-   - ``org.fedoraproject.pkgdb.package.owner.update`` -> koji, secondary arch koji, bugzilla
+   - ``org.fedoraproject.{stg,prod}.pkgdb.package.new`` -> koji, secondary arch koji, bugzilla
+   - ``org.fedoraproject.{stg,prod}.pkgdb.package.remove`` -> koji, secondary arch koji,
+   - ``org.fedoraproject.{stg,prod}.pkgdb.package.rename`` -> bugzilla
+   - ``org.fedoraproject.{stg,prod}.pkgdb.package.retire`` -> SCM
+   - ``org.fedoraproject.{stg,prod}.pkgdb.package.owner.update`` -> koji, secondary arch koji, bugzilla
    - TODO - lots of ``org.fp.user...`` events to detail here.
 
  - SCM
 
-   - ``org.fedoraproject.scm.repo.checkin`` -> fcomm, autoqa
+   - ``org.fedoraproject.{stg,prod}.scm.repo.checkin`` -> fcomm, autoqa
 
  - Tagger
 
-   - ``org.fedoraproject.fedoratagger.tag.new`` -> fcomm, pkgdb
-   - ``org.fedoraproject.fedoratagger.tag.remove`` -> fcomm, pkgdb
-   - ``org.fedoraproject.fedoratagger.tag.update`` -> fcomm, pkgdb
-   - ``org.fedoraproject.fedoratagger.user.rank.update`` -> fcomm, (pkgdb?)
-   - ``org.fedoraproject.fedoratagger.login`` -> ??
+   - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.new`` -> fcomm, pkgdb
+   - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.remove`` -> fcomm, pkgdb
+   - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.update`` -> fcomm, pkgdb
+   - ``org.fedoraproject.{stg,prod}.fedoratagger.user.rank.update`` -> fcomm, (pkgdb?)
+   - ``org.fedoraproject.{stg,prod}.fedoratagger.login`` -> ??
 
  - Wiki
 
-   - ``org.fedoraproject.wiki....``
+   - ``org.fedoraproject.{stg,prod}.wiki....``
 
  - Zabbix
 
-   - ``org.fedoraproject.zabbix.service.update`` -> fcomm
+   - ``org.fedoraproject.{stg,prod}.zabbix.service.update`` -> fcomm

@@ -23,13 +23,16 @@ import sys
 import ConfigParser
 
 defaults = dict(
-    io_threads=1,
     topic_prefix="org.fedoraproject",
+    environment="dev",
+    io_threads=1,
     post_init_sleep=0.5,
     timeout=2,
     print_config=False,
     high_water_mark=0,  # zero means no limit
 )
+
+VALID_ENVIRONMENTS = ['dev', 'stg', 'prod']
 
 __cache = {}
 
@@ -86,6 +89,10 @@ def load_config(extra_args,
     if config['print_config']:
         pprint.pprint(config)
         sys.exit(0)
+
+    if config['environment'] not in VALID_ENVIRONMENTS:
+        raise ValueError("%r not one of %r" % (
+            config['environment'], VALID_ENVIRONMENTS))
 
     __cache = config
     return config
