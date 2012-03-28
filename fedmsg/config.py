@@ -15,7 +15,6 @@ value is used.
 import argparse
 import collections
 import copy
-import inspect
 import os
 import pprint
 import sys
