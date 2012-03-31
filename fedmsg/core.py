@@ -59,9 +59,6 @@ class FedMsgContext(object):
         # Otherwise, give up and just return out own module name.
         return "fedmsg"
 
-        frame = inspect.stack()[2][0]
-        modname = frame.f_globals['__name__'].split('.')[0]
-
     def send_message(self, topic=None, msg=None, modname=None, validate=True):
 
         if not topic:
