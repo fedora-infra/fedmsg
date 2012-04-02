@@ -1,14 +1,13 @@
 import sys
 
 import fedmsg
-import fedmsg.schema
 from fedmsg.commands import command
 
 
 def _log_message(kw, message):
     fedmsg.send_message(
         topic=kw['topic'],
-        msg={fedmsg.schema.LOG: message},
+        msg={'log': message},
         modname='logger',
     )
 

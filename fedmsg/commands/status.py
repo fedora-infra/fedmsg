@@ -2,7 +2,6 @@ import sys
 from fabulous.color import red, green
 
 import fedmsg
-import fedmsg.schema
 from fedmsg.commands import command
 
 def _colorize(success):

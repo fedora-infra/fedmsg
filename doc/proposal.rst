@@ -347,9 +347,8 @@ Examples of emitting events
 Here's a real dummy test::
 
     >>> import fedmsg
-    >>> import fedmsg.schema
     >>> fedmsg.send_message(topic='testing', modname='test', msg={
-    ...     fedmsg.schema.TEST: "Hello World",
+    ...     'test': "Hello World",
     ... })
 
 The above snippet will send the message ``'{test: "Hello World"}'`` message
@@ -365,10 +364,9 @@ information about a new tag over
 ``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``::
 
     >>> import fedmsg
-    >>> import fedmsg.schema
     >>> fedmsg.send_message(topic='tag.update', msg={
-    ...     fedmsg.schema.USER: user,
-    ...     fedmsg.schema.TAG: tag,
+    ...     'user': user,
+    ...     'tag': tag,
     ... })
 
 Note that the `tag` and `user` objects are SQLAlchemy objects defined by

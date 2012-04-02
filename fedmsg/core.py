@@ -5,7 +5,6 @@ import time
 import warnings
 import zmq
 
-import fedmsg.schema
 import fedmsg.json
 
 
@@ -76,10 +75,6 @@ class FedMsgContext(object):
 
         if topic[:len(self.c['topic_prefix'])] != self.c['topic_prefix']:
             topic = self.c['topic_prefix'] + '.' + topic
-
-        if validate:
-            for key in (k for k in msg.keys() if k not in fedmsg.schema.keys):
-                warnings.warn("%r not one of %r" % (key, fedmsg.schema.keys))
 
         msg = dict(topic=topic, msg=msg, timestamp=time.time())
 
