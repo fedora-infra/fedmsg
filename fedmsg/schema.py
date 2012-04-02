@@ -4,6 +4,8 @@ FIELDS = 'fields'   # A list of fields that may be of interest.  For instance,
                     # a user.update event.
 
 USER = 'user'       # FAS
+GROUP = 'group'     # FAS
+
 TAG = 'tag'         # For fedora-tagger
 LOG = 'log'         # For fedmsg-logger
 UPDATE = 'update'   # For bodhi

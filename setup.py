@@ -19,7 +19,7 @@ import logging
 
 setup(
     name='fedmsg',
-    version='0.0.6',
+    version='0.0.7',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
