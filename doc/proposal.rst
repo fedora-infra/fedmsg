@@ -320,7 +320,7 @@ Where:
  - ``OBJECT`` is something like `package`, `user`, or `tag`
  - ``SUBOBJECT`` is something like `owner` or `build` (in the case where
    ``OBJECT`` is `package`, for instance)
- - ``EVENT`` is something like `update`, `new`, or `complete`
+ - ``EVENT`` is a verb like `update`, `create`, or `complete`.
 
 All 'fields' in a topic **must**:
 
@@ -425,7 +425,7 @@ event is followed by a list of services that will likely consume that event.
 
  - Bugzilla
 
-   - ``org.fedoraproject.{stg,prod}.bugzilla.bug.new`` -> fcomm
+   - ``org.fedoraproject.{stg,prod}.bugzilla.bug.create`` -> fcomm
    - ``org.fedoraproject.{stg,prod}.bugzilla.bug.update`` -> fcomm
 
  - Compose
@@ -463,7 +463,7 @@ event is followed by a list of services that will likely consume that event.
 
  - PkgDB
 
-   - ``org.fedoraproject.{stg,prod}.pkgdb.package.new`` -> koji, secondary arch koji, bugzilla
+   - ``org.fedoraproject.{stg,prod}.pkgdb.package.create`` -> koji, secondary arch koji, bugzilla
    - ``org.fedoraproject.{stg,prod}.pkgdb.package.remove`` -> koji, secondary arch koji,
    - ``org.fedoraproject.{stg,prod}.pkgdb.package.rename`` -> bugzilla
    - ``org.fedoraproject.{stg,prod}.pkgdb.package.retire`` -> SCM
@@ -476,7 +476,7 @@ event is followed by a list of services that will likely consume that event.
 
  - Tagger
 
-   - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.new`` -> fcomm, pkgdb
+   - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.create`` -> fcomm, pkgdb
    - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.remove`` -> fcomm, pkgdb
    - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.update`` -> fcomm, pkgdb
    - ``org.fedoraproject.{stg,prod}.fedoratagger.user.rank.update`` -> fcomm, (pkgdb?)
