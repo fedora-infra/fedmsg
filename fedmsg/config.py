@@ -83,6 +83,9 @@ def load_config(extra_args,
         raise ValueError("%r not one of %r" % (
             config['environment'], VALID_ENVIRONMENTS))
 
+    if 'endpoints' not in config:
+        raise ValueError("No config value 'endpoints' found.")
+
     __cache = config
     return config
 
