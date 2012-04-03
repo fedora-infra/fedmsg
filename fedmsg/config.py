@@ -62,8 +62,8 @@ def load_config(extra_args,
     # This is optional (and defaults to false) so that only 'fedmsg-*' commands
     # are required to provide these arguments.
     # For instance, the moksha-hub command takes a '-v' argument and internally
-    # makes calls to fedmsg.  We don't want to impose all of fedmsg's CLI option
-    # constraints on programs that use fedmsg, so we make it optional.
+    # makes calls to fedmsg.  We don't want to impose all of fedmsg's CLI
+    # option constraints on programs that use fedmsg, so we make it optional.
     if fedmsg_command:
         config.update(_process_arguments(extra_args, doc, config))
 
@@ -181,11 +181,13 @@ def _process_config_file(filenames=None):
             os.getcwd() + '/fedmsg.ini',
         ]
 
-    parser = ConfigParser.SafeConfigParser()
-    files = parser.read(filenames=filenames)
-
+    # Each .ini file should really be a python module that
+    # builds a config dict.
     config = {}
-    if parser.has_section('fedmsg'):
-        config = dict(parser.items('fedmsg'))
+    for fname in filenames:
+        if os.path.isfile(fname):
+            variables = {}
+            execfile(fname, variables)
+            config.update(variables['config'])
 
     return config
