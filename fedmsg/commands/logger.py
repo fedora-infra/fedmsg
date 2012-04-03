@@ -46,7 +46,19 @@ extra_args = [
 def logger(**kwargs):
     """ Emit log messages to the FI bus.
 
+    If the fedmsg-relay service is not running at the address specified in
+    fedmsg-config.py, then this command will *hang* until that service becomes
+    available.
+
     If --message is not specified, this command accepts messages from stdin.
+
+    Some examples::
+
+        $ echo '{"a": 1}' | fedmsg-logger --json-input
+        $ echo "Hai there." | fedmsg-logger --modname=git --topic=repo.update
+        $ fedmsg-logger --message="This is a message."
+        $ fedmsg-logger --message='{"a": 1}' --json-input
+
     """
 
     kwargs['active'] = True
