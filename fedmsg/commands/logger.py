@@ -8,23 +8,25 @@ def _log_message(kw, message):
     fedmsg.send_message(
         topic=kw['topic'],
         msg={'log': message},
-        modname='logger',
+        modname=kw['modname'],
     )
 
 extra_args = [
-    (['--relay'], {
-        'dest': 'relay',
-        'help': "Endpoint of the log relay fedmsg-hub to connect to",
-        'default': "tcp://127.0.0.1:3002",
-    }),
     (['--message'], {
         'dest': 'message',
         'help': "The message to send.",
     }),
-    ([], {
+    (['--topic'], {
         'dest': 'topic',
         'metavar': "TOPIC",
+        'default': "log",
         'help': "Think org.fedoraproject.logger.TOPIC",
+    }),
+    (['--modname'], {
+        'dest': 'modname',
+        'metavar': "MODNAME",
+        'default': "logger",
+        'help': "More control over the topic.  Think org.fp.MODNAME.TOPIC.",
     }),
 ]
 
