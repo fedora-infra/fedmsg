@@ -1,5 +1,10 @@
+import time
+import datetime
+
 import simplejson
 import simplejson.encoder
+
+
 
 class FedMsgEncoder(simplejson.encoder.JSONEncoder):
     """ Encoder with support for __json__ methods. """
@@ -7,6 +12,8 @@ class FedMsgEncoder(simplejson.encoder.JSONEncoder):
     def default(self, obj):
         if hasattr(obj, '__json__'):
             return obj.__json__()
+        if isinstance(obj, datetime.datetime):
+            return time.mktime(obj.timetuple())
         return super(FedMsgEncoder, self).default(obj)
 
 encoder = FedMsgEncoder()

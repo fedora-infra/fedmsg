@@ -19,7 +19,7 @@ import logging
 
 setup(
     name='fedmsg',
-    version='0.0.1',
+    version='0.0.9',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -33,7 +33,10 @@ setup(
     ],
     tests_require=['nose'],
     test_suite='nose.collector',
-    packages=['fedmsg'],
+    packages=[
+        'fedmsg',
+        'fedmsg.commands',
+    ],
     include_package_data=True,
     zip_safe=False,
     entry_points = {

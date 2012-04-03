@@ -62,7 +62,7 @@ def send_message(topic=None, msg=None, **kw):
     stays here in the controller (explicit == good).  This should be
     disablable, i.e. defer=False.
 
-    >>> fedmsg.send_message(topic='tag.new', tag.__json__())
+    >>> fedmsg.send_message(topic='tag.create', tag.__json__())
 
     """
 

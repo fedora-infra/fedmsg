@@ -1,14 +1,13 @@
 import sys
 
 import fedmsg
-import fedmsg.schema
 from fedmsg.commands import command
 
 
 def _log_message(kw, message):
     fedmsg.send_message(
         topic=kw['topic'],
-        msg={fedmsg.schema.LOG: message},
+        msg={'log': message},
         modname='logger',
     )
 
@@ -37,9 +36,9 @@ def logger(**kwargs):
     If --message is not specified, this command accepts messages from stdin.
     """
 
-    # Override default publishing behavior
-    kwargs['publish_endpoint'] = None
-    fedmsg.init(**kwargs)
+    kwargs['active'] = True
+    kwargs['endpoints']['relay_inbound'] = kwargs['relay_inbound']
+    fedmsg.init(name='relay_inbound', **kwargs)
 
     if kwargs.get('message', None):
         _log_message(kwargs, kwargs['message'])
