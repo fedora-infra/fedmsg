@@ -18,6 +18,7 @@ import copy
 import os
 import pprint
 import sys
+import textwrap
 
 import ConfigParser
 
@@ -91,7 +92,10 @@ def load_config(extra_args,
 
 
 def _process_arguments(declared_args, doc, config):
-    parser = argparse.ArgumentParser(description=doc)
+    parser = argparse.ArgumentParser(
+        description=textwrap.dedent(doc),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
 
     parser.add_argument(
         '--io-threads',
