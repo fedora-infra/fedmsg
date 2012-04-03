@@ -5,13 +5,6 @@ from fedmsg.commands import command
 
 
 extra_args = [
-    (['--producers'], {
-        'dest': 'endpoints',
-        'help': 'The list of producers to check',
-        'metavar': 'endpoint',
-        'nargs': '*',
-        'default': ["tcp://127.0.0.1:6543"],
-    }),
     (['--topic'], {
         'dest': 'topic',
         'help': 'The topic pattern to listen for.  Everything by default.',
@@ -46,6 +39,7 @@ def tail(**kw):
     # prints out each message it consumes.  That seems like overkill, so we're
     # just going to directly access the endpoints ourself.
 
-    # TODO - colors?
-    for endpoint, topic, message in fedmsg.__context._tail_messages(**kw):
-        print endpoint, topic, formatter(message)
+    # TODO -- colors?
+    # TODO -- tabular layout?
+    for name, ep, topic, message in fedmsg.__context._tail_messages(**kw):
+        print name, ep, topic, formatter(message)

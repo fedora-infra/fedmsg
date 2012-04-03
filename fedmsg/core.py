@@ -16,16 +16,26 @@ class FedMsgContext(object):
 
         # Prepare our context and publisher
         self.context = zmq.Context(config['io_threads'])
-        if config.get("publish_endpoint", None):
+        method = config.get('active', False) or 'bind' and 'connect'
+        method = ['bind', 'connect'][config['active']]
+
+        # If no name is provided, use the calling module's __name__ to decide
+        # which publishing endpoint to use.
+        if not config.get("name", None):
+            config["name"] = self.guess_calling_module()
+
+            if config["name"] in ['__main__', 'fedmsg']:
+                config["name"] = None
+
+        # Actually set up our publisher
+        if config.get("name", None) and config.get("endpoints", None):
             self.publisher = self.context.socket(zmq.PUB)
 
             if config['high_water_mark']:
                 self.publisher.setsockopt(zmq.HWM, config['high_water_mark'])
 
-            self.publisher.bind(config["publish_endpoint"])
-        elif config.get("relay", None):
-            self.publisher = self.context.socket(zmq.PUB)
-            self.publisher.connect(config["relay"])
+            # Call either bind or connect on the new publisher
+            getattr(self.publisher, method)(config["endpoints"][config["name"]])
         else:
             # fedmsg is not configured to send any messages
             #raise ValueError("FedMsgContext was misconfigured.")
@@ -88,11 +98,15 @@ class FedMsgContext(object):
 
         topic = self.c['topic_prefix'] + '.heartbeat'
 
-        results = dict(zip(endpoints, [False] * len(endpoints)))
+        # TODO - include endpoint name in the results dict
+        results = dict(zip(endpoints.values(), [False] * len(endpoints)))
         tic = time.time()
 
-        for endpoint, topic, message in self._tail_messages(endpoints, topic):
-            results[endpoint] = True
+        generator = self._tail_messages(
+            endpoints, topic, timeout=self.c['timeout'])
+
+        for name, ep, topic, msg in generator:
+            results[ep] = True
             if all(results.values()) or (time.time() - tic) < self.c['timeout']:
                 break
 
@@ -105,27 +119,29 @@ class FedMsgContext(object):
         >>> (endpoint, topic, message)
         """
 
+        # TODO -- the 'passive' here and the 'active' are ambiguous.  They don't
+        # actually mean the same thing.
         method = passive and 'bind' or 'connect'
 
         subs = {}
-        for endpoint in endpoints:
+        for _name, endpoint in endpoints.iteritems():
             subscriber = self.context.socket(zmq.SUB)
             subscriber.setsockopt(zmq.SUBSCRIBE, topic)
             getattr(subscriber, method)(endpoint)
             subs[endpoint] = subscriber
 
-        timeout = self.c['timeout']
+        timeout = kw['timeout']
         tic = time.time()
         try:
             while True:
-                for e in endpoints:
+                for _name, e in endpoints.iteritems():
                     try:
                         _topic, message = subs[e].recv_multipart(zmq.NOBLOCK)
                         tic = time.time()
-                        yield e, _topic, fedmsg.json.loads(message)
+                        yield _name, e, _topic, fedmsg.json.loads(message)
                     except zmq.ZMQError:
                         if timeout and (time.time() - tic) > timeout:
                             return
         finally:
-            for endpoint in endpoints:
+            for _name, endpoint in endpoints.iteritems():
                 subs[endpoint].close()
