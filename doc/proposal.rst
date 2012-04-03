@@ -433,8 +433,15 @@ Currently we have implemented:
 
  - ``fedmsg-status`` - checks the status of all registered producers by
    listening for a heartbeat.
+ - ``fedmsg-tail`` - watches all endpoints on the bus and prints each message to
+   stdout.
  - ``fedmsg-logger`` - sends messages over the ``org.fedoraproject.dev.logger``
-   topic.
+   topic.  This requires that an instance of ``fedmsg-relay`` be running
+   *somewhere* and that it's inbound address be listed in ``fedmsg-config.py``.
+ - ``fedmsg-relay`` - a service which binds to two ports, listens for messages
+   on one and emits them on the other.  ``fedmsg-logger`` requires that an
+   instance of ``fedmsg-relay`` be running *somewhere* and that it's inbound
+   address be listed in ``fedmsg-config.py``.
 
 Systems and Events
 ==================
