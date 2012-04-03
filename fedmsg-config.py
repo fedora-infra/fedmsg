@@ -1,6 +1,3 @@
-# This file's extension says .ini indicating it is a config file, but it's
-# really a python source file containing the configuration for fedmsg.
-
 config = dict(
     # This is a dict of possible addresses from which fedmsg can send
     # messages.  fedmsg.init(...) requires that a 'name' argument be passed

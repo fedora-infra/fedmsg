@@ -239,11 +239,42 @@ pushing a raw text file to every server involves much-the-same workflow:
 with the rest of Infrastructure work, it makes more sense to go with the third
 option.  Better not to touch DNS when we don't have to.
 
-TODO -- where exactly will that file live?
-TODO -- what is that file's format?
+That file is ``/etc/fedmsg-config.py``.  It should define a python dict called
+``config`` which may look something like the following in a development
+environment::
 
-sparse topics
--------------
+    config = dict(
+        # This is a dict of possible addresses from which fedmsg can send
+        # messages.  fedmsg.init(...) requires that a 'name' argument be passed
+        # to it which corresponds with one of the keys in this dict.
+        endpoints=dict(
+            # For other, more 'normal' services, fedmsg will try to guess the
+            # name of it's calling module to determine which endpoint definition
+            # to use.  This can be overridden by explicitly providing the name in
+            # the initial call to fedmsg.init(...).
+            bodhi="tcp://*:3001",
+            fas="tcp://*:3002",
+            fedoratagger="tcp://*:3003",
+
+            # This is the output side of the relay to which all other
+            # services can listen.
+            relay_outbound="tcp://*:4001",
+        ),
+
+        # This is the address of an active->passive relay.  It is used for the
+        # fedmsg-logger command which requires another service with a stable
+        # listening address for it to send messages to.
+        relay_inbound="tcp://127.0.0.1:2003",
+
+        # Set this to dev if you're hacking on fedmsg or an app.
+        # Set to stg or prod if running in the Fedora Infrastructure
+        environment="dev",
+
+        # Default is 0
+        high_water_mark=1,
+
+        io_threads=1,
+    )
 
 Different buses
 ---------------
