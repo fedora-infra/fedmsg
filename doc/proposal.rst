@@ -130,11 +130,11 @@ By adopting a messaging strategy for Fedora Infrastructure we could gain:
  - An irc channel, #fedora-firehose that echoes every message on the bus.
  - An identi.ca account, @fedora-firehose, that echoes every message on the bus.
 
-AMQP, QMF, and 0mq
-==================
+AMQP, and 0mq
+=============
 
-AMQP and QMF or "Broker?  Damn near killed 'er!"
-------------------------------------------------
+AMQP or "Broker?  Damn near killed 'er!"
+----------------------------------------
 
 When discussions on the `Fedora Messaging SIG
 <http://fedoraproject.org/wiki/Messaging_SIG>`_ began, AMQP was the choice by
@@ -165,8 +165,6 @@ broker and thus a single-point-of-failure.  In the author's work on `narcissus
 <http://narcissus.rc.rit.edu>`_ I found that for even the most simple of AMQP
 configurations, my qpid brokers' queues would bloat over time until \*pop\*,
 the broker would fall over.
-
-TODO -- write about QMF
 
 0mq or "Going for Broke(rless)"
 -------------------------------
