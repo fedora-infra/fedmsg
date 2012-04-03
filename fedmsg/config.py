@@ -29,6 +29,7 @@ defaults = dict(
     timeout=2,
     print_config=False,
     high_water_mark=0,  # zero means no limit
+    active=False,       # generally only true for fedmsg-logger
 )
 
 VALID_ENVIRONMENTS = ['dev', 'stg', 'prod']
@@ -72,17 +73,6 @@ def load_config(extra_args,
     if not filenames and config.get('config_filename', None):
         return load_config(extra_args, doc,
                            filenames=[config['config_filename']])
-
-    # Do some post-load type massaging
-    for args, kwargs in extra_args:
-        # For arguments that accept multiple items (like a list of endpoints,
-        # for instance), break those items down into lists from comma separated
-        # strings.  That is, do so unless they are already lists.
-        if kwargs.get('nargs', None) is '*' and \
-           type(config[kwargs['dest']]) != list:
-            config[kwargs['dest']] = [
-                item.strip() for item in config[kwargs['dest']].split(',')
-            ]
 
     # Just a little debug option.  :)
     if config['print_config']:

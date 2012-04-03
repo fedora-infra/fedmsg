@@ -36,9 +36,9 @@ def logger(**kwargs):
     If --message is not specified, this command accepts messages from stdin.
     """
 
-    # Override default publishing behavior
-    kwargs['publish_endpoint'] = None
-    fedmsg.init(**kwargs)
+    kwargs['active'] = True
+    kwargs['endpoints']['relay_inbound'] = kwargs['relay_inbound']
+    fedmsg.init(name='relay_inbound', **kwargs)
 
     if kwargs.get('message', None):
         _log_message(kwargs, kwargs['message'])

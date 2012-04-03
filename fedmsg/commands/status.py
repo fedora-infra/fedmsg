@@ -25,7 +25,6 @@ def status(**kwargs):
     """ Check the status of nodes on the bus. """
 
     # Disable sending
-    kwargs['publish_endpoint'] = None
     fedmsg.init(**kwargs)
 
     status = fedmsg.have_pulses(**kwargs)
