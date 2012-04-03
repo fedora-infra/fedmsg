@@ -458,78 +458,120 @@ event is followed by a list of services that will likely consume that event.
 
  - AutoQA
 
-   - ``org.fedoraproject.{stg,prod}.autoqa.package.tests.complete`` -> koji, bodhi, fcomm
+   - TODO - Add these hooks.  j_dulaney is working on this.
+
+     - ``org.fedoraproject.{stg,prod}.autoqa.package.tests.complete`` -> koji, bodhi, fcomm
 
  - Bodhi
 
-   - ``org.fedoraproject.{stg,prod}.bodhi.update.request{.TYPE}`` -> fcomm, autoqa
-   - ``org.fedoraproject.{stg,prod}.bodhi.update.complete{.TYPE}`` -> fcomm, autoqa
-   - ``org.fedoraproject.{stg,prod}.bodhi.update.push`` -> fcomm
-   - ``org.fedoraproject.{stg,prod}.bodhi.update.remove`` -> fcomm
+   - This is done in a branch in git.
+     https://fedorahosted.org/bodhi/browser/bodhi/model.py?rev=1712d35e79ea3c27b7134006f0afa62ffd7f1769#L446
+     TODO - merge and push to stg then prod
+
+     - ``org.fedoraproject.{stg,prod}.bodhi.update.request{.TYPE}`` -> fcomm, autoqa
+     - ``org.fedoraproject.{stg,prod}.bodhi.update.complete{.TYPE}`` -> fcomm, autoqa
+
+   - TODO - These hooks still need to be added.
+
+     - ``org.fedoraproject.{stg,prod}.bodhi.update.push`` -> fcomm
+     - ``org.fedoraproject.{stg,prod}.bodhi.update.remove`` -> fcomm
 
  - Bugzilla
 
-   - ``org.fedoraproject.{stg,prod}.bugzilla.bug.create`` -> fcomm
-   - ``org.fedoraproject.{stg,prod}.bugzilla.bug.update`` -> fcomm
+   - TODO - get AMQP messages from redhat.  Run a service to translate.
+
+     - ``org.fedoraproject.{stg,prod}.bugzilla.bug.create`` -> fcomm
+     - ``org.fedoraproject.{stg,prod}.bugzilla.bug.update`` -> fcomm
 
  - Compose
 
-   - ``org.fedoraproject.{stg,prod}.compose.compose.complete`` -> mirrormanager, autoqa
+   - TODO - Add the hooks
+
+     - ``org.fedoraproject.{stg,prod}.compose.compose.complete`` -> mirrormanager, autoqa
 
  - Elections (TODO -- what is the app called?)
 
-   - ``org.fedoraproject.{stg,prod}.elections...``  <-- TODO.  Objects and events?
+   - TODO - Add the hooks
+
+     - ``org.fedoraproject.{stg,prod}.elections...``  <-- TODO.  Objects and events?
+
 
  - FAS
 
-   - ``org.fedoraproject.{stg,prod}.fas.user.update`` -> fcomm
-   - ``org.fedoraproject.{stg,prod}.fas.group.update`` -> fcomm
+   - All of these hooks have been added.
+     TODO - merge and push to stg then prod.
 
- - Koji -- FIXME, `tags` from ``koji`` conflict with `tags` from ``tagger``
+     - ``org.fedoraproject.{stg,prod}.fas.user.create`` -> fcomm
+     - ``org.fedoraproject.{stg,prod}.fas.user.update`` -> fcomm
+     - ``org.fedoraproject.{stg,prod}.fas.group.update`` -> fcomm
+     - ``org.fedoraproject.{stg,prod}.fas.group.member.apply`` -> fcomm
+     - ``org.fedoraproject.{stg,prod}.fas.group.member.sponsor`` -> fcomm
+     - ``org.fedoraproject.{stg,prod}.fas.group.member.sponsor`` -> fcomm
+     - ``org.fedoraproject.{stg,prod}.fas.group.create`` -> fcomm
+     - ``org.fedoraproject.{stg,prod}.fas.group.update`` -> fcomm
+     - ``org.fedoraproject.{stg,prod}.fas.role.update`` -> fcomm
 
-   - ``org.fedoraproject.{stg,prod}.koji.tag.build`` -> secondary arch koji
-   - ``org.fedoraproject.{stg,prod}.koji.tag.create`` -> secondary arch koji
-   - ``org.fedoraproject.{stg,prod}.koji.package.build.complete`` -> fcomm, secondary arch koji,
-     SCM, autoqa, sigul
-   - ``org.fedoraproject.{stg,prod}.koji.package.build.start`` -> fcomm
-   - ``org.fedoraproject.{stg,prod}.koji.package.build.fail`` -> fcomm
+ - Koji
+
+   - TODO - Add the hooks
+
+     - ``org.fedoraproject.{stg,prod}.koji.tag.build`` -> secondary arch koji
+     - ``org.fedoraproject.{stg,prod}.koji.tag.create`` -> secondary arch koji
+     - ``org.fedoraproject.{stg,prod}.koji.package.build.complete`` -> fcomm,
+       secondary arch koji, SCM, autoqa, sigul
+     - ``org.fedoraproject.{stg,prod}.koji.package.build.start`` -> fcomm
+     - ``org.fedoraproject.{stg,prod}.koji.package.build.fail`` -> fcomm
 
  - MeetBot (supybot?)
 
-   - ``org.fedoraproject.{stg,prod}.irc.meeting.start``
-   - ``org.fedoraproject.{stg,prod}.irc.meeting.complete``
+   - TODO - Add the hooks
+
+     - ``org.fedoraproject.{stg,prod}.irc.meeting.start``
+     - ``org.fedoraproject.{stg,prod}.irc.meeting.complete``
 
  - NetApp -- FIXME, the topics from netapp should be reviewed.  They seem
    ambiguous.
 
-   - ``org.fedoraproject.{stg,prod}.netapp.sync.stop`` -> mirrormanager
-   - ``org.fedoraproject.{stg,prod}.netapp.sync.resume`` -> mirrormanager
+   - TODO - Add the hooks
+
+     - ``org.fedoraproject.{stg,prod}.netapp.sync.stop`` -> mirrormanager
+     - ``org.fedoraproject.{stg,prod}.netapp.sync.resume`` -> mirrormanager
 
  - PkgDB
 
-   - ``org.fedoraproject.{stg,prod}.pkgdb.package.create`` -> koji, secondary arch koji, bugzilla
-   - ``org.fedoraproject.{stg,prod}.pkgdb.package.remove`` -> koji, secondary arch koji,
-   - ``org.fedoraproject.{stg,prod}.pkgdb.package.rename`` -> bugzilla
-   - ``org.fedoraproject.{stg,prod}.pkgdb.package.retire`` -> SCM
-   - ``org.fedoraproject.{stg,prod}.pkgdb.package.owner.update`` -> koji, secondary arch koji, bugzilla
-   - TODO - lots of ``org.fp.user...`` events to detail here.
+   - TODO - Add the hooks
+
+     - ``org.fedoraproject.{stg,prod}.pkgdb.package.create`` -> koji, secondary arch koji, bugzilla
+     - ``org.fedoraproject.{stg,prod}.pkgdb.package.remove`` -> koji, secondary arch koji,
+     - ``org.fedoraproject.{stg,prod}.pkgdb.package.rename`` -> bugzilla
+     - ``org.fedoraproject.{stg,prod}.pkgdb.package.retire`` -> SCM
+     - ``org.fedoraproject.{stg,prod}.pkgdb.package.owner.update`` -> koji, secondary arch koji, bugzilla
+     - TODO - lots of ``org.fp.user...`` events to detail here.
 
  - SCM
 
-   - ``org.fedoraproject.{stg,prod}.scm.repo.checkin`` -> fcomm, autoqa
+   - TODO - Add the hooks
+
+     - ``org.fedoraproject.{stg,prod}.scm.repo.checkin`` -> fcomm, autoqa
 
  - Tagger
 
-   - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.create`` -> fcomm, pkgdb
-   - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.remove`` -> fcomm, pkgdb
-   - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.update`` -> fcomm, pkgdb
-   - ``org.fedoraproject.{stg,prod}.fedoratagger.user.rank.update`` -> fcomm, (pkgdb?)
-   - ``org.fedoraproject.{stg,prod}.fedoratagger.login`` -> ??
+   - These hooks have been added.  Need to push to stg then prod.
+
+     - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.create`` -> fcomm, pkgdb
+     - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.remove`` -> fcomm, pkgdb
+     - ``org.fedoraproject.{stg,prod}.fedoratagger.tag.update`` -> fcomm, pkgdb
+     - ``org.fedoraproject.{stg,prod}.fedoratagger.user.rank.update`` -> fcomm, (pkgdb?)
+     - ``org.fedoraproject.{stg,prod}.fedoratagger.login`` -> ??
 
  - Wiki
 
-   - ``org.fedoraproject.{stg,prod}.wiki....``
+   - TODO - Add the hooks
+
+     - ``org.fedoraproject.{stg,prod}.wiki....``
 
  - Zabbix
 
-   - ``org.fedoraproject.{stg,prod}.zabbix.service.update`` -> fcomm
+   - TODO - Add the hooks
+
+     - ``org.fedoraproject.{stg,prod}.zabbix.service.update`` -> fcomm
