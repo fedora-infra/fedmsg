@@ -19,6 +19,15 @@ class FedMsgContext(object):
         method = config.get('active', False) or 'bind' and 'connect'
         method = ['bind', 'connect'][config['active']]
 
+        # If no name is provided, use the calling module's __name__ to decide
+        # which publishing endpoint to use.
+        if not config.get("name", None):
+            config["name"] = self.guess_calling_module()
+
+            if config["name"] in ['__main__', 'fedmsg']:
+                config["name"] = None
+
+        # Actually set up our publisher
         if config.get("name", None) and config.get("endpoints", None):
             self.publisher = self.context.socket(zmq.PUB)
 
