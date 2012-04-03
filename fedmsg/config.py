@@ -3,7 +3,7 @@
 Configuration values are determined by checking in the following order
 
     - Built-in defaults
-    - Config file (/etc/fedmsg.ini)
+    - Config file (/etc/fedmsg-config.py)
     - Command line arguments
 
 For example, if a config value does not appear in either the config file or on
@@ -166,9 +166,9 @@ def _process_config_file(filenames=None):
     # If nothing specified, look in the default locations
     if not filenames:
         filenames = [
-            '/etc/fedmsg.ini',
-            os.path.expanduser('~/.fedmsg.ini'),
-            os.getcwd() + '/fedmsg.ini',
+            '/etc/fedmsg-config.py',
+            os.path.expanduser('~/.fedmsg-config.py'),
+            os.getcwd() + '/fedmsg-config.py',
         ]
 
     # Each .ini file should really be a python module that
