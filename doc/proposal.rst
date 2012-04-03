@@ -284,29 +284,34 @@ file (``$HOME``).
 Different buses
 ---------------
 
-- critical and statistical buses (critical is subset of statistical).
+TODO -
+
+ - critical and statistical buses (critical is subset of statistical).
 
 Authn, authz
 ------------
 
-(func has certs laying around already).
+TODO -
+
+ - (func has certs laying around already).
 
 network load
 ------------
 
-- calculate network load -
+TODO -
+
+ - calculate network load -
 http://lists.zeromq.org/pipermail/zeromq-dev/2010-August/005254.html
 
 fringe services
 ---------------
 
-- example of building a relay that condenses messages from `n`
-  proxies and re-emits them.
-- example of bridging amqp and 0mq
-- bugzilla-push - https://github.com/LegNeato/bugzilla-push
+TODO -
 
-
-
+ - example of building a relay that condenses messages from `n`
+   proxies and re-emits them.
+ - example of bridging amqp and 0mq
+ - bugzilla-push - https://github.com/LegNeato/bugzilla-push
 
 Namespace considerations
 ------------------------
