@@ -276,6 +276,11 @@ environment::
         io_threads=1,
     )
 
+``fedmsg`` will look for a config file in ``/etc/``, ``$HOME``, and ``.`` (the
+current working directory).  If it finds multiple files, it will read all of
+them but overwrite values from the system (``/etc/``) file with the more local
+file (``$HOME``).
+
 Different buses
 ---------------
 
