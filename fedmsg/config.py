@@ -3,7 +3,7 @@
 Configuration values are determined by checking in the following order
 
     - Built-in defaults
-    - Config file (/etc/fedmsg.ini)
+    - Config file (/etc/fedmsg-config.py)
     - Command line arguments
 
 For example, if a config value does not appear in either the config file or on
@@ -15,21 +15,25 @@ value is used.
 import argparse
 import collections
 import copy
-import inspect
 import os
 import pprint
 import sys
+import textwrap
 
 import ConfigParser
 
 defaults = dict(
-    io_threads=1,
     topic_prefix="org.fedoraproject",
+    environment="dev",
+    io_threads=1,
     post_init_sleep=0.5,
     timeout=2,
     print_config=False,
     high_water_mark=0,  # zero means no limit
+    active=False,       # generally only true for fedmsg-logger
 )
+
+VALID_ENVIRONMENTS = ['dev', 'stg', 'prod']
 
 __cache = {}
 
@@ -60,8 +64,8 @@ def load_config(extra_args,
     # This is optional (and defaults to false) so that only 'fedmsg-*' commands
     # are required to provide these arguments.
     # For instance, the moksha-hub command takes a '-v' argument and internally
-    # makes calls to fedmsg.  We don't want to impose all of fedmsg's CLI option
-    # constraints on programs that use fedmsg, so we make it optional.
+    # makes calls to fedmsg.  We don't want to impose all of fedmsg's CLI
+    # option constraints on programs that use fedmsg, so we make it optional.
     if fedmsg_command:
         config.update(_process_arguments(extra_args, doc, config))
 
@@ -71,28 +75,27 @@ def load_config(extra_args,
         return load_config(extra_args, doc,
                            filenames=[config['config_filename']])
 
-    # Do some post-load type massaging
-    for args, kwargs in extra_args:
-        # For arguments that accept multiple items (like a list of endpoints,
-        # for instance), break those items down into lists from comma separated
-        # strings.  That is, do so unless they are already lists.
-        if kwargs.get('nargs', None) is '*' and \
-           type(config[kwargs['dest']]) != list:
-            config[kwargs['dest']] = [
-                item.strip() for item in config[kwargs['dest']].split(',')
-            ]
-
     # Just a little debug option.  :)
     if config['print_config']:
         pprint.pprint(config)
         sys.exit(0)
+
+    if config['environment'] not in VALID_ENVIRONMENTS:
+        raise ValueError("%r not one of %r" % (
+            config['environment'], VALID_ENVIRONMENTS))
+
+    if 'endpoints' not in config:
+        raise ValueError("No config value 'endpoints' found.")
 
     __cache = config
     return config
 
 
 def _process_arguments(declared_args, doc, config):
-    parser = argparse.ArgumentParser(description=doc)
+    parser = argparse.ArgumentParser(
+        description=textwrap.dedent(doc),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
 
     parser.add_argument(
         '--io-threads',
@@ -170,16 +173,18 @@ def _process_config_file(filenames=None):
     # If nothing specified, look in the default locations
     if not filenames:
         filenames = [
-            '/etc/fedmsg.ini',
-            os.path.expanduser('~/.fedmsg.ini'),
-            os.getcwd() + '/fedmsg.ini',
+            '/etc/fedmsg-config.py',
+            os.path.expanduser('~/.fedmsg-config.py'),
+            os.getcwd() + '/fedmsg-config.py',
         ]
 
-    parser = ConfigParser.SafeConfigParser()
-    files = parser.read(filenames=filenames)
-
+    # Each .ini file should really be a python module that
+    # builds a config dict.
     config = {}
-    if parser.has_section('fedmsg'):
-        config = dict(parser.items('fedmsg'))
+    for fname in filenames:
+        if os.path.isfile(fname):
+            variables = {}
+            execfile(fname, variables)
+            config.update(variables['config'])
 
     return config
