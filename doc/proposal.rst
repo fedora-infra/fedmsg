@@ -550,7 +550,10 @@ event is followed by a list of services that will likely consume that event.
 
  - SCM
 
-   - TODO - Add the hooks
+   - TODO - Add the hooks.  This is blocking on getting an instance of
+     fedmsg-relay stood up in production.  That, on the other hand, is blocking
+     on getting the fedmsg wrapper around moksha done so that the relay doesn't
+     eat up 100% CPU.
 
      - ``org.fedoraproject.{stg,prod}.scm.repo.checkin`` -> fcomm, autoqa
 
