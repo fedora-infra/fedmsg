@@ -96,7 +96,7 @@ class FedMsgContext(object):
         are emitting detectable heartbeats.
         """
 
-        topic = self.c['topic_prefix'] + '.heartbeat'
+        topic = self.c['topic_prefix'] + '._heartbeat'
 
         # TODO - include endpoint name in the results dict
         results = dict(zip(endpoints.values(), [False] * len(endpoints)))
