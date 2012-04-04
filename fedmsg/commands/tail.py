@@ -42,4 +42,6 @@ def tail(**kw):
     # TODO -- colors?
     # TODO -- tabular layout?
     for name, ep, topic, message in fedmsg.__context._tail_messages(**kw):
+        if '_heartbeat' in topic:
+            continue
         print name, ep, topic, formatter(message)
