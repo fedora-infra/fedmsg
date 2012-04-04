@@ -1,4 +1,10 @@
-""" A SUB.bind()->PUB.bind() relay. """
+""" A SUB.bind()->PUB.bind() relay.
+
+This works by flipping a special boolean in the config that enables
+fedmsg.consumers.relay:RelayConsumer to run before starting up an
+instance of the fedmsg-hub.
+
+"""
 
 import fedmsg
 from fedmsg.commands import command
@@ -6,20 +12,25 @@ from fedmsg.commands import command
 extra_args = []
 
 
-# FIXME, @command needs a 'minus_args' argument to disable topic-prefix here.
 @command(extra_args=extra_args)
 def relay(**kw):
     """ Relay connections from active loggers to the bus. """
 
-    # Configure ourselves to send message out our outbound endpoint
-    fedmsg.init(name='relay_outbound', **kw)
+    # Configure fedmsg to send message to the outbound relay endpoint
+    fedmsg.init(name="relay_outbound", **kw)
 
-    # Tail messages from our passive listening endpoint
-    kw['endpoints'] = dict(relay_inbound=kw['relay_inbound'])
-    kw['passive'] = True
-    kw['timeout'] = 0
+    # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
+    # with moksha's expected configuration.
+    moksha_options = dict(
+        zmq_enabled=True,
+        zmq_subscribe_endpoints=kw['relay_inbound'],
+        zmq_subscribe_method="bind",
+        zmq_strict=False,
+    )
+    kw.update(moksha_options)
 
-    # n, e, t, m -> name, endpoint, topic, message
-    for n, e, t, m in fedmsg.__context._tail_messages(**kw):
-        #print "Forwarding %r from %r." % (t, e)
-        fedmsg.__context.publisher.send_multipart([t, fedmsg.json.dumps(m)])
+    # Flip the special bit that allows the RelayConsumer to run
+    kw['fedmsg.consumers.relay.enabled'] = True
+
+    from moksha.hub import main
+    main(options=kw)
