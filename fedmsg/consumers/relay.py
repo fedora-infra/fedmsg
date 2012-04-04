@@ -21,7 +21,17 @@ class RelayConsumer(Consumer):
         return super(RelayConsumer, self).__init__(hub)
 
     def consume(self, msg):
-        # FIXME - for some reason twisted is screwing up fedmsg.
-        fedmsg.__context.publisher.send_multipart(
-            [msg['topic'], fedmsg.json.dumps(msg['body'])]
-        )
+        ## FIXME - for some reason twisted is screwing up fedmsg.
+        #fedmsg.__context.publisher.send_multipart(
+        #    [msg['topic'], fedmsg.json.dumps(msg['body'])]
+        #)
+        #
+        # We have to do this instead.  This works for the fedmsg-relay service
+        # since it doesn't need to do any formatting of the message.  It just
+        # forwards raw messages.
+        #
+        # This isn't scalable though.  It needs to be solved for future
+        # consumers to use the nice fedmsg.send_message interface we use
+        # everywhere else.
+
+        self.hub.send_message(topic=msg['topic'], message=msg['body'])
