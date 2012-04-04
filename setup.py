@@ -30,12 +30,15 @@ setup(
         'pyzmq',
         'simplejson',
         'fabulous',
+        'moksha>=0.7.1',
     ],
     tests_require=['nose'],
     test_suite='nose.collector',
     packages=[
         'fedmsg',
         'fedmsg.commands',
+        'fedmsg.consumers',
+        'fedmsg.producers',
     ],
     include_package_data=True,
     zip_safe=False,
@@ -49,6 +52,9 @@ setup(
         ],
         'moksha.consumer': [
             "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer",
+        ],
+        'moksha.producer': [
+            "heartbeat=fedmsg.producers.heartbeat:HeartbeatProducer",
         ],
     }
 )
