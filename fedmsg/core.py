@@ -68,7 +68,7 @@ class FedMsgContext(object):
         # Otherwise, give up and just return out own module name.
         return "fedmsg"
 
-    def send_message(self, topic=None, msg=None, modname=None, validate=True):
+    def send_message(self, topic=None, msg=None, modname=None):
 
         if not topic:
             warnings.warn("Attempted to send message with no topic.  Bailing.")
