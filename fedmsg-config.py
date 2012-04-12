@@ -32,7 +32,7 @@ config = dict(
     environment="dev",
 
     # Default is 0
-    high_water_mark=1,
+    high_water_mark=0,
 
     io_threads=1,
 )
