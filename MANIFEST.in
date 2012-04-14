@@ -1,1 +1,4 @@
 include README.rst
+include fedmsg-config.py
+recursive-include git-hooks *
+recursive-include doc *

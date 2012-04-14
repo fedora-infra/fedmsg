@@ -14,12 +14,15 @@ f.close()
 
 # Ridiculous as it may seem, we need to import multiprocessing and
 # logging here in order to get tests to pass smoothly on python 2.7.
-import multiprocessing
-import logging
+try:
+    import multiprocessing
+    import logging
+except Exception:
+    pass
 
 setup(
     name='fedmsg',
-    version='0.0.9',
+    version='0.1.0',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
