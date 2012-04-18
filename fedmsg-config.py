@@ -19,12 +19,14 @@ config = dict(
         bodhi="tcp://*:3001",
         fas="tcp://*:3002",
         fedoratagger="tcp://*:3003",
-        mediawiki="tcp://*:3004",
     ),
 
     # This is the address of an active->passive relay.  It is used for the
     # fedmsg-logger command which requires another service with a stable
     # listening address for it to send messages to.
+    # It is also used by the git-hook, for the same reason.
+    # It is also used by the mediawiki php plugin which, due to the oddities of
+    # php, can't maintain a single passive-bind endpoint of it's own.
     relay_inbound="tcp://127.0.0.1:2003",
 
 
