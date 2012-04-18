@@ -3,7 +3,7 @@
  * fedmsg-mediawiki-emit.php
  * -------------------------
  *
- * A MediaWiki plugin that emits messages to the Fedora Infrastructure Message 
+ * A MediaWiki plugin that emits messages to the Fedora Infrastructure Message
  * Bus.
  *
  * Installation Instructions
@@ -22,6 +22,14 @@
  *
  *    require_once("$IP/fedmsg-mediawiki-emit.php");
  *
+ * This corner of the fedmsg topology requires that an instance of fedmsg-relay
+ * be running somewhere.  The reason being that multiple php processes get run
+ * by apache at the same time which would necessitate `n` different bind
+ * addresses for each process.  Here, as opposed to 'normal' fedmsg
+ * configurations in our python webapps, each php process actively connects to
+ * the relay and emits messages.  Our 'normal' python webapps establish a
+ * passive endpoint on which they broadcast messages.
+ *
  * Miscellaneous
  * -------------
  *
@@ -29,7 +37,7 @@
  * License:   LGPLv2+
  * Author:    Ralph Bean
  * Source:    http://github.com/ralphbean/fedmsg
- */ 
+ */
 
 if (!defined('MEDIAWIKI')) {echo("Cannot be run outside MediaWiki"); die(1);}
 
@@ -61,10 +69,24 @@ function initialize() {
 
 initialize();
 
-function emit_message($topic, $message) {
+function emit_message($subtopic, $message) {
   global $queue;
+
+  # Re-implement some of the logc from fedmsg/core.py
+  # We'll have to be careful to keep this up to date.
+  #
+  # TODO -- pull the 'dev' string out of a mediawiki config variable
+  $prefix = "org.fedoraproject.dev.wiki.";
+  $topic = $prefix . $subtopic;
+
+  $envelope = json_encode(array(
+    topic => $topic,
+    msg => $message,
+    timestamp => time(),
+  ));
+
   $queue->send($topic, ZMQ::MODE_SNDMORE);
-  $queue->send(json_encode($message));
+  $queue->send($envelope);
 }
 
 function article_save(
@@ -76,12 +98,12 @@ function article_save(
   $watchthis,
   $sectionanchor,
   &$flags,
-  $revision, 
+  $revision,
   &$status,
   $baseRevId,
   &$redirect
 ) {
-  $topic = "org.fedoraproject.dev.wiki.article.edit";
+  $topic = "article.edit";
   $msg = array(
     "user" => $user->getName(),
     "title" => $article->getTitle()->getText(),
