@@ -16,11 +16,12 @@ import argparse
 import collections
 import copy
 import os
-import pprint
 import sys
 import textwrap
 
 import ConfigParser
+
+from fedmsg.json import pretty_dumps
 
 defaults = dict(
     topic_prefix="org.fedoraproject",
@@ -77,7 +78,7 @@ def load_config(extra_args,
 
     # Just a little debug option.  :)
     if config['print_config']:
-        pprint.pprint(config)
+        print pretty_dumps(config)
         sys.exit(0)
 
     if config['environment'] not in VALID_ENVIRONMENTS:
