@@ -78,9 +78,9 @@ function emit_message($subtopic, $message) {
   $topic = $prefix . $subtopic;
 
   $envelope = json_encode(array(
-    topic => $topic,
-    msg => $message,
-    timestamp => time(),
+    "topic" => $topic,
+    "msg" => $message,
+    "timestamp" => time(),
   ));
 
   $queue->send($topic, ZMQ::MODE_SNDMORE);
@@ -98,14 +98,33 @@ function article_save(
   &$flags,
   $revision,
   &$status,
-  $baseRevId,
-  &$redirect
+  $baseRevId
 ) {
+
   $topic = "article.edit";
+  $title = $article->getTitle();
+  if ( $title->getNsText() ) {
+    $titletext = $title->getNsText() . ":" . $title->getText();
+  } else {
+    $titletext = $title->getText();
+  }
+
+  # Just send on all the information we can...  change the attr names to be
+  # more pythonic in style, though.
   $msg = array(
+    "title" => $titletext,
     "user" => $user->getName(),
-    "title" => $article->getTitle()->getText(),
+    "text" => $text,
+    "summary" => $summary,
+    "minor_edit" => $minoredit,
+    "watch_this" => $watchthis,
+    "section_anchor" => $sectionanchor,
+    "revision" => $revision,
+    "base_rev_id" => $baseRevId,
+    # TODO - flags?
+    # TODO - status?
   );
+
   emit_message($topic, $msg);
   return true;
 }
