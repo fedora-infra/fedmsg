@@ -70,13 +70,11 @@ function initialize() {
 initialize();
 
 function emit_message($subtopic, $message) {
-  global $queue;
+  global $config, $queue;
 
   # Re-implement some of the logc from fedmsg/core.py
   # We'll have to be careful to keep this up to date.
-  #
-  # TODO -- pull the 'dev' string out of a mediawiki config variable
-  $prefix = "org.fedoraproject.dev.wiki.";
+  $prefix = "org.fedoraproject." . $config['environment'] . ".wiki.";
   $topic = $prefix . $subtopic;
 
   $envelope = json_encode(array(
