@@ -52,6 +52,7 @@ setup(
             "fedmsg-tail=fedmsg.commands.tail:tail",
             "fedmsg-hub=fedmsg.commands.hub:hub",
             "fedmsg-relay=fedmsg.commands.relay:relay",
+            "fedmsg-config=fedmsg.commands.config:config",
         ],
         'moksha.consumer': [
             "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer",
