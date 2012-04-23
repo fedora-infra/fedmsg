@@ -42,6 +42,7 @@
 if (!defined('MEDIAWIKI')) {echo("Cannot be run outside MediaWiki"); die(1);}
 
 $wgHooks['ArticleSaveComplete'][] = 'article_save';
+$wgHooks['UploadComplete'][] = 'upload_complete';
 
 // globals
 $config = 0;
@@ -123,6 +124,26 @@ function article_save(
     "base_rev_id" => $baseRevId,
     # TODO - flags?
     # TODO - status?
+  );
+
+  emit_message($topic, $msg);
+  return true;
+}
+
+function upload_complete(&$image) {
+  $topic = "upload.complete";
+  $msg = array(
+    "file_exists" => $image->getLocalFile()->fileExists,  // 1 or 0
+    "media_type" => $image->getLocalFile()->media_type,   // examples: "AUDIO", "VIDEO", ...
+    "mime" => $image->getLocalFile()->mime,               // example: audio/mp3
+    "major_mime" => $image->getLocalFile()->major_mime,   // e.g. audio
+    "minor_mime" => $image->getLocalFile()->minor_mime,   // e.g. mp3
+    "size" => $image->getLocalFile()->size,               //in bytes, e.g. 2412586
+    "user_id" => $image->getLocalFile()->user,            // int userId
+    "user_text" => $image->getLocalFile()->user_text,     // the username
+    "description" => $image->getLocalFile()->description,
+    "url" => $image->getLocalFile()->url,                 // gives the relavive url for direct access of the uploaded media
+    "title" => $image->getLocalFile()->getTitle(),        // gives a title object for the current media
   );
 
   emit_message($topic, $msg);
