@@ -567,11 +567,11 @@ event is followed by a list of services that will likely consume that event.
      - ``org.fedoraproject.{stg,prod}.fedoratagger.user.rank.update`` -> fcomm, (pkgdb?)
      - ``org.fedoraproject.{stg,prod}.fedoratagger.login`` -> ??
 
- - Wiki
+ - Wiki.  This is implemented as a mediawiki plugin in
+   ``extras/mediawiki/fedmsg-mediawiki-emit.php``.
 
-   - TODO - Add the hooks
-
-     - ``org.fedoraproject.{stg,prod}.wiki....``
+     - ``org.fedoraproject.{stg,prod}.wiki.article.edit``
+     - ``org.fedoraproject.{stg,prod}.wiki.upload.complete``
 
  - Zabbix
 
