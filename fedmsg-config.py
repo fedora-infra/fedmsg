@@ -19,6 +19,8 @@ config = dict(
         bodhi="tcp://*:3001",
         fas="tcp://*:3002",
         fedoratagger="tcp://*:3003",
+        mediawiki="tcp://*:3004",
+        pkgdb="tcp://*:3005",
     ),
 
     # This is the address of an active->passive relay.  It is used for the
