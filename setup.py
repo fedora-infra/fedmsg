@@ -14,12 +14,15 @@ f.close()
 
 # Ridiculous as it may seem, we need to import multiprocessing and
 # logging here in order to get tests to pass smoothly on python 2.7.
-import multiprocessing
-import logging
+try:
+    import multiprocessing
+    import logging
+except Exception:
+    pass
 
 setup(
     name='fedmsg',
-    version='0.0.9',
+    version='0.1.1',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -30,12 +33,15 @@ setup(
         'pyzmq',
         'simplejson',
         'fabulous',
+        'moksha>=0.7.1',
     ],
     tests_require=['nose'],
     test_suite='nose.collector',
     packages=[
         'fedmsg',
         'fedmsg.commands',
+        'fedmsg.consumers',
+        'fedmsg.producers',
     ],
     include_package_data=True,
     zip_safe=False,
@@ -44,7 +50,15 @@ setup(
             "fedmsg-logger=fedmsg.commands.logger:logger",
             "fedmsg-status=fedmsg.commands.status:status",
             "fedmsg-tail=fedmsg.commands.tail:tail",
+            "fedmsg-hub=fedmsg.commands.hub:hub",
             "fedmsg-relay=fedmsg.commands.relay:relay",
+            "fedmsg-config=fedmsg.commands.config:config",
+        ],
+        'moksha.consumer': [
+            "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer",
+        ],
+        'moksha.producer': [
+            "heartbeat=fedmsg.producers.heartbeat:HeartbeatProducer",
         ],
     }
 )

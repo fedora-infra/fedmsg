@@ -1,6 +1,3 @@
-# This file's extension says .ini indicating it is a config file, but it's
-# really a python source file containing the configuration for fedmsg.
-
 config = dict(
     # This is a dict of possible addresses from which fedmsg can send
     # messages.  fedmsg.init(...) requires that a 'name' argument be passed
@@ -22,11 +19,18 @@ config = dict(
         bodhi="tcp://*:3001",
         fas="tcp://*:3002",
         fedoratagger="tcp://*:3003",
+        mediawiki="tcp://*:3004",
+        pkgdb="tcp://*:3005",
+
+        busmon="tcp://*:3006",
     ),
 
     # This is the address of an active->passive relay.  It is used for the
     # fedmsg-logger command which requires another service with a stable
     # listening address for it to send messages to.
+    # It is also used by the git-hook, for the same reason.
+    # It is also used by the mediawiki php plugin which, due to the oddities of
+    # php, can't maintain a single passive-bind endpoint of it's own.
     relay_inbound="tcp://127.0.0.1:2003",
 
 
@@ -35,7 +39,19 @@ config = dict(
     environment="dev",
 
     # Default is 0
-    high_water_mark=1,
+    high_water_mark=0,
 
     io_threads=1,
+
+
+    ## For the fedmsg-hub and fedmsg-relay. ##
+
+    # We almost always want the fedmsg-hub to be sending messages with zmq as
+    # opposed to amqp or stomp.
+    zmq_enabled=True,
+
+    # When subscribing to messages, we want to allow splats ('*') so we tell the
+    # hub to not be strict when comparing messages topics to subscription
+    # topics.
+    zmq_strict=False,
 )
