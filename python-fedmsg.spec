@@ -4,7 +4,7 @@
 %global modname fedmsg
 
 Name:           python-fedmsg
-Version:        0.1.0
+Version:        0.1.1
 Release:        1%{?dist}
 Summary:        Tools for Fedora Infrastructure real-time messaging
 Group:          Applications/Internet
@@ -64,5 +64,7 @@ zeromq.  Includes:
 %config(noreplace) %{_sysconfdir}/fedmsg-config.py*
 
 %changelog
+* Thu Apr 26 2012 Ralph Bean <rbean@redhat.com> - 0.1.1-1
+- Support for busmon websocket options.
 * Sat Apr 14 2012 Ralph Bean <rbean@redhat.com> - 0.1.0-1
 - Initial packaging.
