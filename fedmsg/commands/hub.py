@@ -1,12 +1,23 @@
 import fedmsg
 from fedmsg.commands import command
 
-extra_args = []
+extra_args = [
+    (['--websocket-server-port'], {
+        'dest': 'moksha.livesocket.websocket.port',
+        'type': int,
+        'help': 'Port on which to host the websocket server.',
+        'default': None,
+    }),
+]
 
 
 @command(extra_args=extra_args)
 def hub(**kw):
     """ Run the fedmsg hub. """
+
+    # Check if the user wants the websocket server to run
+    if 'moksha.livesocket.websocket.port' in kw:
+        kw['moksha.livesocket.backend'] = 'websocket'
 
     # Rephrase the fedmsg-config.py config as moksha *.ini format.
     # Note that the hub we kick off here cannot send any message.  You should
