@@ -5,14 +5,13 @@
 
 Name:           python-fedmsg
 Version:        0.1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Tools for Fedora Infrastructure real-time messaging
 Group:          Applications/Internet
 License:        LGPLv2+
 URL:            http://github.com/ralphbean/fedmsg
 Source0:        http://pypi.python.org/packages/source/m/%{modname}/%{modname}-%{version}.tar.gz
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
 BuildRequires:  python-devel
@@ -35,24 +34,17 @@ zeromq.  Includes:
 %prep
 %setup -q -n %{modname}-%{version}
 
-
 %build
 %{__python} setup.py build
 
 %install
-%{__rm} -rf %{buildroot}
-
 %{__python} setup.py install -O1 --skip-build \
     --install-data=%{_datadir} --root %{buildroot}
 
 %{__mkdir_p} %{buildroot}%{_sysconfdir}
 %{__cp} fedmsg-config.py %{buildroot}%{_sysconfdir}/fedmsg-config.py
 
-%clean
-%{__rm} -rf %{buildroot}
-
 %files 
-%defattr(-,root,root,-)
 %doc doc/ README.rst LICENSE
 %{_bindir}/fedmsg-logger
 %{_bindir}/fedmsg-status
@@ -64,7 +56,13 @@ zeromq.  Includes:
 %config(noreplace) %{_sysconfdir}/fedmsg-config.py*
 
 %changelog
+* Wed May 02 2012 Ralph Bean <rbean@redhat.com> - 0.1.1-2
+- Removed clean section
+- Removed defattr in files section
+- Removed unnecessary references to buildroot
+
 * Thu Apr 26 2012 Ralph Bean <rbean@redhat.com> - 0.1.1-1
 - Support for busmon websocket options.
+
 * Sat Apr 14 2012 Ralph Bean <rbean@redhat.com> - 0.1.0-1
 - Initial packaging.
