@@ -1,4 +1,5 @@
 import pprint
+import time
 
 import fedmsg
 from fedmsg.commands import command
@@ -30,9 +31,11 @@ def tail(**kw):
     fedmsg.init(**kw)
 
     # Build a message formatter
-    formatter = lambda s: s
+    formatter = lambda d: d
     if kw['pretty_print']:
-        formatter = lambda s: "\n" + pprint.pformat(s)
+        def formatter(d):
+            d['timestamp'] = time.ctime(d['timestamp'])
+            return "\n" + pprint.pformat(d)
 
     # The "proper" fedmsg way to do this would be to spin up or connect to an
     # existing Moksha Hub and register a consumer on the "*" topic that simply
