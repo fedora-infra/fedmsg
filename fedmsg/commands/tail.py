@@ -1,7 +1,12 @@
 import pprint
 import time
 
+import pygments
+import pygments.lexers
+import pygments.formatters
+
 import fedmsg
+import fedmsg.json
 from fedmsg.commands import command
 
 
@@ -12,8 +17,14 @@ extra_args = [
         'default': '',
     }),
     (['--pretty'], {
-        'dest': 'pretty_print',
+        'dest': 'pretty',
         'help': 'Pretty print the JSON messages.',
+        'default': False,
+        'action': 'store_true',
+    }),
+    (['--really-pretty'], {
+        'dest': 'really_pretty',
+        'help': 'Extra-pretty print the JSON messages.',
         'default': False,
         'action': 'store_true',
     }),
@@ -32,10 +43,19 @@ def tail(**kw):
 
     # Build a message formatter
     formatter = lambda d: d
-    if kw['pretty_print']:
+    if kw['pretty']:
         def formatter(d):
             d['timestamp'] = time.ctime(d['timestamp'])
             return "\n" + pprint.pformat(d)
+
+    if kw['really_pretty']:
+        def formatter(d):
+            fancy = pygments.highlight(
+                fedmsg.json.pretty_dumps(d),
+                pygments.lexers.JavascriptLexer(),
+                pygments.formatters.TerminalFormatter()
+            ).strip()
+            return "\n" + fancy
 
     # The "proper" fedmsg way to do this would be to spin up or connect to an
     # existing Moksha Hub and register a consumer on the "*" topic that simply
