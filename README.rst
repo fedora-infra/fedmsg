@@ -13,7 +13,7 @@ Install the dependencies.  (This list is a work in progress.
 The ``python-*`` packages from http://pypi.python.org/ are not listed
 for now, since they are ever-evolving.)::
 
- $ sudo yum install python-virtualenv openssl-devel
+ $ sudo yum install python-virtualenv openssl-devel zeromq-devel gcc
 
 Get the source::
 
