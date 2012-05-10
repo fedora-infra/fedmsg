@@ -46,6 +46,10 @@ config = dict(
     irc=dict(
         channel='test-fedmsg',
         port=6667,
+        filters=dict(
+            topic=[],
+            body=['lub-dub'],
+            )
     ),
 
 

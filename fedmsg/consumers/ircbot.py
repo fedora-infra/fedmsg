@@ -6,6 +6,8 @@
 import fedmsg
 import fedmsg.json
 
+import re
+
 from paste.deploy.converters import asbool
 from moksha.api.hub.consumer import Consumer
 
@@ -29,6 +31,7 @@ class FedMsngr(irc.IRCClient):
     def joined(self, channel):
         log.info("Joined %s." % (channel,))
         self.factory.parent_consumer.add_irc_client(self)
+
 
 class FedMsngrFactory(protocol.ClientFactory):
     protocol = FedMsngr
@@ -62,12 +65,18 @@ class IRCBotConsumer(Consumer):
             log.info('fedmsg.consumers.ircbot:IRCBotConsumer disabled.')
             return
 
-        network = hub.config.get(PREFIX + 'network', 'irc.freenode.net')
-        port = hub.config.get(PREFIX + 'port', 6667)
+        irc_settings = hub.config.get('irc')
+        network = irc_settings.get('network', 'irc.freenode.net')
+        port = irc_settings.get('port', 6667)
+        channel = irc_settings.get('channel', None)
+        if not channel:
+            print "No channel specified"
+            exit(1)
+        channel = "#" + channel
         # TODO -- better default or no default at all
-        channel = hub.config.get(PREFIX + 'channel', "#fedmsg")
-        # TODO -- better default or no default at all
-        nickname = hub.config.get(PREFIX + 'nickname', "threebot")
+        nickname = irc_settings.get('nickname', "FedMsngr")
+
+        self.filters = self.compile_filters(irc_settings.get('filters', None))
 
         factory = FedMsngrFactory(channel, nickname, self)
         reactor.connectTCP(network, port, factory)
@@ -80,7 +89,40 @@ class IRCBotConsumer(Consumer):
     def del_irc_client(self, client):
         self.irc_clients.remove(client)
 
+    def compile_filters(self, filters):
+        compiled_filters = dict(
+                topic=[],
+                body=[]
+                )
+
+        for tag, flist in filters.items():
+            for f in flist:
+                compiled_filters[tag].append(re.compile(f))
+
+        return compiled_filters
+
+    def apply_filters(self, filters, topic, msg):
+        for f in filters.get('topic', []):
+            if f and re.search(f, topic):
+                return False
+        for f in filters.get('body', []):
+            type(msg)
+            if f and re.search(f, str(msg)):
+                return False
+        return True
+
     def consume(self, msg):
         """ Forward on messages from the bus to all IRC connections. """
         for client in self.irc_clients:
-            client.msg(client.factory.channel, fedmsg.json.dumps(msg))
+            if client.factory.parent_consumer.filters:
+                if self.apply_filters(client.factory.parent_consumer.filters, msg.get('topic'), msg.get('body')):
+                    # apply all our message filters
+                    if msg.get('body').get('topic'):
+                        del(msg['body']['topic'])
+                    client.msg(client.factory.channel, "Topic: %s\tMsg: %s" %
+                                    (msg.pop('topic'),
+                                        fedmsg.json.dumps(msg.get('body'))
+                                    )
+                                )
+            else:
+                client.msg(client.factory.channel, fedmsg.json.dumps(msg))
