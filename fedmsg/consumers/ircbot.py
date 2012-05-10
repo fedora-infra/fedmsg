@@ -60,6 +60,8 @@ class FedMsngr(irc.IRCClient):
         return d
 
     def irc_RPL_CHANNELMODEIS(self, prefix, params):
+        """ Handy reference for IRC mnemonics
+        www.irchelp.org/irchelp/rfc/chapter4.html#c4_2_3 """
         channel = params[1].lower()
         modes = params[2]
         if channel not in self._modecallback:
