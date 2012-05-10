@@ -7,6 +7,7 @@ import fedmsg
 import fedmsg.json
 
 import re
+import pygments
 
 from paste.deploy.converters import asbool
 from moksha.api.hub.consumer import Consumer
@@ -111,6 +112,13 @@ class IRCBotConsumer(Consumer):
                 return False
         return True
 
+    def prettify(self, msg):
+        fancy = pygments.highlight(
+                msg, pygments.lexers.JavascriptLexer(),
+                pygments.formatters.TerminalFormatter()
+                ).strip().encode('UTF-8')
+        return fancy
+
     def consume(self, msg):
         """ Forward on messages from the bus to all IRC connections. """
         for client in self.irc_clients:
@@ -121,7 +129,7 @@ class IRCBotConsumer(Consumer):
                         del(msg['body']['topic'])
                     client.msg(client.factory.channel, "Topic: %s\tMsg: %s" %
                                     (msg.pop('topic'),
-                                        fedmsg.json.dumps(msg.get('body'))
+                                        self.prettify(fedmsg.json.dumps(msg.get('body')))
                                     )
                                 )
             else:
