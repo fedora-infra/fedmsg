@@ -43,6 +43,16 @@ config = dict(
 
     io_threads=1,
 
+    irc=dict(
+        channel='test-fedmsg',
+        port=6667,
+        make_pretty=True,
+        filters=dict(
+            topic=[],
+            body=['lub-dub'],
+            )
+    ),
+
 
     ## For the fedmsg-hub and fedmsg-relay. ##
 

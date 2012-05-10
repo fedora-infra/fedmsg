@@ -12,3 +12,4 @@ Archives
  - http://meetbot.fedoraproject.org/fedora-meeting/2012-04-10/fedora-meeting.2012-04-10-16.09.html
  - http://meetbot.fedoraproject.org/fedora-meeting/2012-04-17/fedora-meeting.2012-04-17-16.09.html
  - http://meetbot.fedoraproject.org/fedora-meeting/2012-04-24/fedora-meeting.2012-04-24-16.07.html
+ - http://meetbot.fedoraproject.org/fedora-meeting/2012-05-08/fedora-meeting.2012-05-08-16.06.html
