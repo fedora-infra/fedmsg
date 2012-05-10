@@ -23,6 +23,9 @@ log = logging.getLogger("moksha.hub")
 
 
 class FedMsngr(irc.IRCClient):
+    lineRate = None
+    sourceURL = "http://github.com/ralphbean/fedmsg"
+
     def _get_nickname(self):
         return self.factory.nickname
     nickname = property(_get_nickname)
@@ -63,7 +66,8 @@ class IRCBotConsumer(Consumer):
         self.DBSession = None
         self.irc_clients = []
 
-        if not asbool(hub.config.get('fedmsg.consumers.ircbot.enabled', False)):
+        ENABLED = 'fedmsg.consumers.ircbot.enabled'
+        if not asbool(hub.config.get(ENABLED, False)):
             log.info('fedmsg.consumers.ircbot:IRCBotConsumer disabled.')
             return
 
@@ -125,17 +129,20 @@ class IRCBotConsumer(Consumer):
 
     def consume(self, msg):
         """ Forward on messages from the bus to all IRC connections. """
+        topic, body = msg.get('topic'), msg.get('body')
         for client in self.irc_clients:
             if client.factory.filters:
-                if self.apply_filters(client.factory.filters, msg.get('topic'), msg.get('body')):
-                    # apply all our message filters
-                    if msg.get('body').get('topic'):
-                        del(msg['body']['topic'])
-                    body = self.prettify(
-                        fedmsg.json.dumps(msg.get('body')),
+                if self.apply_filters(client.factory.filters, topic, body):
+                    _body = self.prettify(
+                        fedmsg.json.dumps(body),
                         pretty=client.factory.pretty
                     )
-                    client.msg(client.factory.channel, "Topic: %s\tMsg: %s" %
-                                    (msg.get('topic'), body))
+                    client.msg(
+                        client.factory.channel,
+                        "{0:<30} {1}".format(topic, _body),
+                    )
             else:
-                client.msg(client.factory.channel, fedmsg.json.dumps(msg))
+                client.msg(
+                    client.factory.channel,
+                    fedmsg.json.dumps(msg),
+                )
