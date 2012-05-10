@@ -120,6 +120,8 @@ class IRCBotConsumer(Consumer):
         return True
 
     def prettify(self, msg, pretty=False):
+        if msg.get('topic', None):
+            msg.pop('topic')
         if msg.get('timestamp', None):
             msg['timestamp'] = time.ctime(msg['timestamp'])
         if pretty:
