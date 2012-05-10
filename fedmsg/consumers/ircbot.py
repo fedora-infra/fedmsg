@@ -113,11 +113,13 @@ class IRCBotConsumer(Consumer):
         return True
 
     def prettify(self, msg):
-        fancy = pygments.highlight(
-                msg, pygments.lexers.JavascriptLexer(),
-                pygments.formatters.TerminalFormatter()
-                ).strip().encode('UTF-8')
-        return fancy
+        if self.hub.config.get('irc').get('make_pretty', True):
+            fancy = pygments.highlight(
+                    msg, pygments.lexers.JavascriptLexer(),
+                    pygments.formatters.TerminalFormatter()
+                    ).strip().encode('UTF-8')
+            return fancy
+        return msg
 
     def consume(self, msg):
         """ Forward on messages from the bus to all IRC connections. """
