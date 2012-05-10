@@ -43,6 +43,11 @@ config = dict(
 
     io_threads=1,
 
+    irc=dict(
+        channel='test-fedmsg',
+        port=6667,
+    ),
+
 
     ## For the fedmsg-hub and fedmsg-relay. ##
 
