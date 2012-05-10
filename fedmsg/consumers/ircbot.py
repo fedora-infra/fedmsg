@@ -39,9 +39,11 @@ class FedMsngr(irc.IRCClient):
 class FedMsngrFactory(protocol.ClientFactory):
     protocol = FedMsngr
 
-    def __init__(self, channel, nickname, parent_consumer):
+    def __init__(self, channel, nickname, filters, pretty, parent_consumer):
         self.channel = channel
         self.nickname = nickname
+        self.filters = filters
+        self.pretty = pretty
         self.parent_consumer = parent_consumer
 
     def clientConnectionLost(self, connector, reason):
@@ -61,28 +63,26 @@ class IRCBotConsumer(Consumer):
         self.DBSession = None
         self.irc_clients = []
 
-        # Just for extracting config values.
-        PREFIX = 'fedmsg.consumers.ircbot.'
-
-        if not asbool(hub.config.get(PREFIX + 'enabled', False)):
+        if not asbool(hub.config.get('fedmsg.consumers.ircbot.enabled', False)):
             log.info('fedmsg.consumers.ircbot:IRCBotConsumer disabled.')
             return
 
         irc_settings = hub.config.get('irc')
-        network = irc_settings.get('network', 'irc.freenode.net')
-        port = irc_settings.get('port', 6667)
-        channel = irc_settings.get('channel', None)
-        if not channel:
-            log.error("No channel specified")
-            exit(1)
-        channel = "#" + channel
-        # TODO -- better default or no default at all
-        nickname = irc_settings.get('nickname', "FedMsngr")
+        for settings in irc_settings:
+            network = settings.get('network', 'irc.freenode.net')
+            port = settings.get('port', 6667)
+            channel = settings.get('channel', None)
+            if not channel:
+                log.error("No channel specified")
+                exit(1)
+            channel = "#" + channel
+            nickname = settings.get('nickname', "fedmsg-bot")
+            pretty = settings.get('make_pretty', False)
 
-        self.filters = self.compile_filters(irc_settings.get('filters', None))
+            filters = self.compile_filters(settings.get('filters', None))
 
-        factory = FedMsngrFactory(channel, nickname, self)
-        reactor.connectTCP(network, port, factory)
+            factory = FedMsngrFactory(channel, nickname, filters, pretty, self)
+            reactor.connectTCP(network, port, factory)
 
         return super(IRCBotConsumer, self).__init__(hub)
 
@@ -114,8 +114,8 @@ class IRCBotConsumer(Consumer):
                 return False
         return True
 
-    def prettify(self, msg):
-        if self.hub.config.get('irc').get('make_pretty', True):
+    def prettify(self, msg, pretty=False):
+        if pretty:
             fancy = pygments.highlight(
                     msg, pygments.lexers.JavascriptLexer(),
                     pygments.formatters.TerminalFormatter()
@@ -126,15 +126,16 @@ class IRCBotConsumer(Consumer):
     def consume(self, msg):
         """ Forward on messages from the bus to all IRC connections. """
         for client in self.irc_clients:
-            if client.factory.parent_consumer.filters:
-                if self.apply_filters(client.factory.parent_consumer.filters, msg.get('topic'), msg.get('body')):
+            if client.factory.filters:
+                if self.apply_filters(client.factory.filters, msg.get('topic'), msg.get('body')):
                     # apply all our message filters
                     if msg.get('body').get('topic'):
                         del(msg['body']['topic'])
+                    body = self.prettify(
+                        fedmsg.json.dumps(msg.get('body')),
+                        pretty=client.factory.pretty
+                    )
                     client.msg(client.factory.channel, "Topic: %s\tMsg: %s" %
-                                    (msg.pop('topic'),
-                                        self.prettify(fedmsg.json.dumps(msg.get('body')))
-                                    )
-                                )
+                                    (msg.get('topic'), body))
             else:
                 client.msg(client.factory.channel, fedmsg.json.dumps(msg))
