@@ -43,6 +43,7 @@ config = dict(
 
     io_threads=1,
 
+    # Options for the fedmsg-irc service.
     irc=dict(
         channel='test-fedmsg',
         port=6667,

@@ -8,6 +8,8 @@ import fedmsg.json
 
 import re
 import pygments
+import pygments.lexers
+import pygments.formatters
 
 from paste.deploy.converters import asbool
 from moksha.api.hub.consumer import Consumer
@@ -43,12 +45,12 @@ class FedMsngrFactory(protocol.ClientFactory):
         self.parent_consumer = parent_consumer
 
     def clientConnectionLost(self, connector, reason):
-        print "Lost connection (%s), reconnecting." % (reason,)
+        log.warning("Lost connection (%s), reconnecting." % (reason,))
         self.parent_consumer.del_irc_client(connector)
         connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
-        print "Could not connect: %s" % (reason,)
+        log.error("Could not connect: %s" % (reason,))
 
 
 class IRCBotConsumer(Consumer):
@@ -71,7 +73,7 @@ class IRCBotConsumer(Consumer):
         port = irc_settings.get('port', 6667)
         channel = irc_settings.get('channel', None)
         if not channel:
-            print "No channel specified"
+            log.error("No channel specified")
             exit(1)
         channel = "#" + channel
         # TODO -- better default or no default at all
