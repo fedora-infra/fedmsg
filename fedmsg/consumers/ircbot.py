@@ -7,6 +7,7 @@ import fedmsg
 import fedmsg.json
 
 import re
+import time
 import pygments
 import pygments.lexers
 import pygments.formatters
@@ -119,9 +120,13 @@ class IRCBotConsumer(Consumer):
         return True
 
     def prettify(self, msg, pretty=False):
+        if msg.get('topic', None):
+            msg.pop('topic')
+        if msg.get('timestamp', None):
+            msg['timestamp'] = time.ctime(msg['timestamp'])
         if pretty:
             fancy = pygments.highlight(
-                    msg, pygments.lexers.JavascriptLexer(),
+                    fedmsg.json.dumps(msg), pygments.lexers.JavascriptLexer(),
                     pygments.formatters.TerminalFormatter()
                     ).strip().encode('UTF-8')
             return fancy
@@ -133,10 +138,7 @@ class IRCBotConsumer(Consumer):
         for client in self.irc_clients:
             if client.factory.filters:
                 if self.apply_filters(client.factory.filters, topic, body):
-                    _body = self.prettify(
-                        fedmsg.json.dumps(body),
-                        pretty=client.factory.pretty
-                    )
+                    _body = self.prettify(body, pretty=client.factory.pretty)
                     client.msg(
                         client.factory.channel,
                         "{0:<30} {1}".format(topic, _body),
