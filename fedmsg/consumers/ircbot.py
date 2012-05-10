@@ -18,6 +18,7 @@ from moksha.api.hub.consumer import Consumer
 from twisted.words.protocols import irc
 from twisted.internet import protocol
 from twisted.internet import reactor
+from twisted.internet import defer
 
 import logging
 log = logging.getLogger("moksha.hub")
@@ -31,6 +32,9 @@ class FedMsngr(irc.IRCClient):
         return self.factory.nickname
     nickname = property(_get_nickname)
 
+    def __init__(self, *args, **kwargs):
+        self._modecallback = {}
+
     def signedOn(self):
         self.join(self.factory.channel)
         log.info("Signed on as %s." % (self.nickname,))
@@ -38,6 +42,35 @@ class FedMsngr(irc.IRCClient):
     def joined(self, channel):
         log.info("Joined %s." % (channel,))
         self.factory.parent_consumer.add_irc_client(self)
+
+        def got_modes(modelist):
+            modes = ''.join(modelist)
+            if 'c' in modes:
+                log.info("%s has +c is on. No prettiness" % channel)
+                self.factory.pretty = False
+        self.modes(channel).addCallback(got_modes)
+
+    def modes(self, channel):
+        channel = channel.lower()
+        d = defer.Deferred()
+        if channel not in self._modecallback:
+            self._modecallback[channel] = ([], [])
+        self._modecallback[channel][0].append(d)
+        self.sendLine("MODE %s" % channel)
+        return d
+
+    def irc_RPL_CHANNELMODEIS(self, prefix, params):
+        channel = params[1].lower()
+        modes = params[2]
+        if channel not in self._modecallback:
+            return
+        n = self._modecallback[channel][1]
+        n.append(modes)
+        callbacks, modelist = self._modecallback[channel]
+
+        for cb in callbacks:
+            cb.callback(modelist)
+        del self._modecallback[channel]
 
 
 class FedMsngrFactory(protocol.ClientFactory):
