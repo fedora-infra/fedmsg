@@ -2,15 +2,10 @@
 # -*- coding; utf-8 -*-
 # Author: Ryan Brown
 # Description: A bot that takes a config and puts messages matching given
-# regexes in specified IRC channels
+# regexes in specified IRC channels.  See fedmsg-config.py for options.
 from fedmsg.commands import command
 
-extra_args = [
-    (['--channel'], {
-        'dest': 'channel',
-        'help': "The channel to join",
-    }),
-]
+extra_args = []
 
 
 @command(extra_args=extra_args)
