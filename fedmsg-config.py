@@ -43,6 +43,32 @@ config = dict(
 
     io_threads=1,
 
+    # Options for the fedmsg-irc service.
+    irc=[
+        dict(
+            network='irc.freenode.net',
+            port=6667,
+            nickname='fedmsg-bot',
+            channel='test-fedmsg',
+            make_pretty=True,
+            filters=dict(
+                topic=[],
+                body=['lub-dub'],
+            )
+        ),
+        dict(
+            network='irc.freenode.net',
+            port=6667,
+            nickname='fedmsg-bot',
+            channel='test-fedmsg2',
+            make_pretty=True,
+            filters=dict(
+                topic=[],
+                body=['lub-dub'],
+            ),
+        ),
+    ],
+
 
     ## For the fedmsg-hub and fedmsg-relay. ##
 

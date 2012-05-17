@@ -22,7 +22,7 @@ except Exception:
 
 setup(
     name='fedmsg',
-    version='0.1.1',
+    version='0.1.2',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -53,9 +53,11 @@ setup(
             "fedmsg-hub=fedmsg.commands.hub:hub",
             "fedmsg-relay=fedmsg.commands.relay:relay",
             "fedmsg-config=fedmsg.commands.config:config",
+            "fedmsg-irc=fedmsg.commands.ircbot:ircbot",
         ],
         'moksha.consumer': [
             "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer",
+            "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer",
         ],
         'moksha.producer': [
             "heartbeat=fedmsg.producers.heartbeat:HeartbeatProducer",
