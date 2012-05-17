@@ -22,7 +22,7 @@ except Exception:
 
 setup(
     name='fedmsg',
-    version='0.1.1',
+    version='0.1.2',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
