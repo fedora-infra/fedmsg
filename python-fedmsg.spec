@@ -51,6 +51,8 @@ zeromq.  Includes:
 %{_bindir}/fedmsg-tail
 %{_bindir}/fedmsg-hub
 %{_bindir}/fedmsg-relay
+%{_bindir}/fedmsg-config
+
 %{python_sitelib}/%{modname}/
 %{python_sitelib}/%{modname}-%{version}-py%{pyver}.egg-info/
 %config(noreplace) %{_sysconfdir}/fedmsg-config.py*
