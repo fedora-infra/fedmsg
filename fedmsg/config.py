@@ -19,8 +19,6 @@ import os
 import sys
 import textwrap
 
-import ConfigParser
-
 from fedmsg.json import pretty_dumps
 
 defaults = dict(
