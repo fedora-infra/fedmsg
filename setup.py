@@ -33,7 +33,7 @@ setup(
         'pyzmq',
         'simplejson',
         'fabulous',
-        'moksha>=0.7.1',
+        'moksha>=0.8.0',
     ],
     tests_require=['nose'],
     test_suite='nose.collector',

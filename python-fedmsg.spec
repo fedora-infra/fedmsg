@@ -4,8 +4,8 @@
 %global modname fedmsg
 
 Name:           python-fedmsg
-Version:        0.1.1
-Release:        2%{?dist}
+Version:        0.1.2
+Release:        1%{?dist}
 Summary:        Tools for Fedora Infrastructure real-time messaging
 Group:          Applications/Internet
 License:        LGPLv2+
@@ -16,9 +16,9 @@ BuildArch:      noarch
 
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools-devel
-BuildRequires:  moksha >= 0.7.1
+BuildRequires:  moksha >= 0.8.0
 
-Requires:       moksha >= 0.7.1
+Requires:       moksha >= 0.8.0
 Requires:       python-fabulous
 Requires:       python-simplejson
 Requires:       python-zmq 
@@ -52,12 +52,16 @@ zeromq.  Includes:
 %{_bindir}/fedmsg-hub
 %{_bindir}/fedmsg-relay
 %{_bindir}/fedmsg-config
+%{_bindir}/fedmsg-irc
 
 %{python_sitelib}/%{modname}/
 %{python_sitelib}/%{modname}-%{version}-py%{pyver}.egg-info/
 %config(noreplace) %{_sysconfdir}/fedmsg-config.py*
 
 %changelog
+* Fri May 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.2-1
+-Version bump
+
 * Wed May 02 2012 Ralph Bean <rbean@redhat.com> - 0.1.1-2
 - Removed clean section
 - Removed defattr in files section
