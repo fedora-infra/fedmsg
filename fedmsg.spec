@@ -1,11 +1,11 @@
-%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%{!?pyver: %define pyver %(%{__python} -c "import sys ; print sys.version[:3]")}
+%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%{!?pyver: %global pyver %(%{__python} -c "import sys ; print sys.version[:3]")}
 
 %global modname fedmsg
 
 Name:           fedmsg
-Version:        0.1.3
-Release:        2%{?dist}
+Version:        0.1.4
+Release:        1%{?dist}
 Summary:        Tools for Fedora Infrastructure real-time messaging
 Group:          Applications/Internet
 License:        LGPLv2+
@@ -59,6 +59,11 @@ zeromq.  Includes:
 %config(noreplace) %{_sysconfdir}/fedmsg-config.py*
 
 %changelog
+* Fri May 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.4-1
+- Fresh version with removed shebang for packaging.
+- %%define -> %%global
+- Fixed end-of-line encodings in doc/conf.py
+
 * Fri May 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.3-2
 - Renamed to just 'fedmsg' from python-fedmsg.
 
