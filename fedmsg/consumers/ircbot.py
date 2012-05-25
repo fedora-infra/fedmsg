@@ -6,6 +6,7 @@
 import fedmsg
 import fedmsg.json
 
+import copy
 import re
 import time
 import pygments
@@ -155,6 +156,7 @@ class IRCBotConsumer(Consumer):
         return True
 
     def prettify(self, msg, pretty=False):
+        msg = copy.deepcopy(msg)
         if msg.get('topic', None):
             msg.pop('topic')
         if msg.get('timestamp', None):
