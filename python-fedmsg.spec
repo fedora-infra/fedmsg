@@ -4,13 +4,13 @@
 %global modname fedmsg
 
 Name:           python-fedmsg
-Version:        0.1.2
+Version:        0.1.3
 Release:        1%{?dist}
 Summary:        Tools for Fedora Infrastructure real-time messaging
 Group:          Applications/Internet
 License:        LGPLv2+
 URL:            http://github.com/ralphbean/fedmsg
-Source0:        http://pypi.python.org/packages/source/m/%{modname}/%{modname}-%{version}.tar.gz
+Source0:        http://pypi.python.org/packages/source/f/%{modname}/%{modname}-%{version}.tar.gz
 
 BuildArch:      noarch
 
@@ -59,8 +59,12 @@ zeromq.  Includes:
 %config(noreplace) %{_sysconfdir}/fedmsg-config.py*
 
 %changelog
+* Fri May 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.3-1
+- Integrating various pieces.  IRC bot fixes.
+- Fixed a few specfile typos.
+
 * Fri May 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.2-1
--Version bump
+- Version bump.
 
 * Wed May 02 2012 Ralph Bean <rbean@redhat.com> - 0.1.1-2
 - Removed clean section
