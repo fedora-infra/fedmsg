@@ -4,21 +4,21 @@
 %global modname fedmsg
 
 Name:           python-fedmsg
-Version:        0.1.1
-Release:        2%{?dist}
+Version:        0.1.3
+Release:        1%{?dist}
 Summary:        Tools for Fedora Infrastructure real-time messaging
 Group:          Applications/Internet
 License:        LGPLv2+
 URL:            http://github.com/ralphbean/fedmsg
-Source0:        http://pypi.python.org/packages/source/m/%{modname}/%{modname}-%{version}.tar.gz
+Source0:        http://pypi.python.org/packages/source/f/%{modname}/%{modname}-%{version}.tar.gz
 
 BuildArch:      noarch
 
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools-devel
-BuildRequires:  moksha >= 0.7.1
+BuildRequires:  moksha >= 0.8.0
 
-Requires:       moksha >= 0.7.1
+Requires:       moksha >= 0.8.0
 Requires:       python-fabulous
 Requires:       python-simplejson
 Requires:       python-zmq 
@@ -52,12 +52,20 @@ zeromq.  Includes:
 %{_bindir}/fedmsg-hub
 %{_bindir}/fedmsg-relay
 %{_bindir}/fedmsg-config
+%{_bindir}/fedmsg-irc
 
 %{python_sitelib}/%{modname}/
 %{python_sitelib}/%{modname}-%{version}-py%{pyver}.egg-info/
 %config(noreplace) %{_sysconfdir}/fedmsg-config.py*
 
 %changelog
+* Fri May 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.3-1
+- Integrating various pieces.  IRC bot fixes.
+- Fixed a few specfile typos.
+
+* Fri May 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.2-1
+- Version bump.
+
 * Wed May 02 2012 Ralph Bean <rbean@redhat.com> - 0.1.1-2
 - Removed clean section
 - Removed defattr in files section

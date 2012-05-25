@@ -22,7 +22,7 @@ except Exception:
 
 setup(
     name='fedmsg',
-    version='0.1.2',
+    version='0.1.3',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -33,7 +33,7 @@ setup(
         'pyzmq',
         'simplejson',
         'fabulous',
-        'moksha>=0.7.1',
+        'moksha>=0.8.0',
     ],
     tests_require=['nose'],
     test_suite='nose.collector',
