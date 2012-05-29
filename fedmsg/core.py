@@ -1,6 +1,7 @@
 import atexit
 import inspect
 import simplejson
+import socket
 import time
 import warnings
 import zmq
@@ -22,9 +23,10 @@ class FedMsgContext(object):
         # If no name is provided, use the calling module's __name__ to decide
         # which publishing endpoint to use.
         if not config.get("name", None):
-            config["name"] = self.guess_calling_module()
+            hostname = socket.gethostname().split('.', 1)[0]
+            config["name"] = self.guess_calling_module() + '.' + hostname
 
-            if config["name"] in ['__main__', 'fedmsg']:
+            if any(map(config["name"].startswith, ['__main__', 'fedmsg'])):
                 config["name"] = None
 
         # Actually set up our publisher
@@ -65,7 +67,7 @@ class FedMsgContext(object):
             if modname != "fedmsg":
                 return modname
 
-        # Otherwise, give up and just return out own module name.
+        # Otherwise, give up and just return our own module name.
         return "fedmsg"
 
     def send_message(self, topic=None, msg=None, modname=None):
