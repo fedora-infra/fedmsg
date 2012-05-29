@@ -5,7 +5,6 @@ import simplejson
 import simplejson.encoder
 
 
-
 class FedMsgEncoder(simplejson.encoder.JSONEncoder):
     """ Encoder with support for __json__ methods. """
 

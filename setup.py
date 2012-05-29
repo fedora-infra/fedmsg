@@ -22,7 +22,7 @@ except Exception:
 
 setup(
     name='fedmsg',
-    version='0.1.3',
+    version='0.1.5',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -45,7 +45,7 @@ setup(
     ],
     include_package_data=True,
     zip_safe=False,
-    entry_points = {
+    entry_points={
         'console_scripts': [
             "fedmsg-logger=fedmsg.commands.logger:logger",
             "fedmsg-status=fedmsg.commands.status:status",

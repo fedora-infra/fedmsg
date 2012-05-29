@@ -1,6 +1,7 @@
 import atexit
 import inspect
 import simplejson
+import socket
 import time
 import warnings
 import zmq
@@ -22,9 +23,10 @@ class FedMsgContext(object):
         # If no name is provided, use the calling module's __name__ to decide
         # which publishing endpoint to use.
         if not config.get("name", None):
-            config["name"] = self.guess_calling_module()
+            hostname = socket.gethostname().split('.', 1)[0]
+            config["name"] = self.guess_calling_module() + '.' + hostname
 
-            if config["name"] in ['__main__', 'fedmsg']:
+            if any(map(config["name"].startswith, ['__main__', 'fedmsg'])):
                 config["name"] = None
 
         # Actually set up our publisher
@@ -35,7 +37,9 @@ class FedMsgContext(object):
                 self.publisher.setsockopt(zmq.HWM, config['high_water_mark'])
 
             # Call either bind or connect on the new publisher
-            getattr(self.publisher, method)(config["endpoints"][config["name"]])
+            getattr(self.publisher, method)(
+                config["endpoints"][config["name"]]
+            )
         else:
             # fedmsg is not configured to send any messages
             #raise ValueError("FedMsgContext was misconfigured.")
@@ -65,7 +69,7 @@ class FedMsgContext(object):
             if modname != "fedmsg":
                 return modname
 
-        # Otherwise, give up and just return out own module name.
+        # Otherwise, give up and just return our own module name.
         return "fedmsg"
 
     def send_message(self, topic=None, msg=None, modname=None):
@@ -107,7 +111,8 @@ class FedMsgContext(object):
 
         for name, ep, topic, msg in generator:
             results[ep] = True
-            if all(results.values()) or (time.time() - tic) < self.c['timeout']:
+            if all(results.values()) or \
+               (time.time() - tic) < self.c['timeout']:
                 break
 
         return results
@@ -119,8 +124,8 @@ class FedMsgContext(object):
         >>> (endpoint, topic, message)
         """
 
-        # TODO -- the 'passive' here and the 'active' are ambiguous.  They don't
-        # actually mean the same thing.
+        # TODO -- the 'passive' here and the 'active' are ambiguous.  They
+        # don't actually mean the same thing.  This should be resolved.
         method = passive and 'bind' or 'connect'
 
         subs = {}

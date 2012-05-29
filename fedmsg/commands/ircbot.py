@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding; utf-8 -*-
 # Author: Ryan Brown
 # Description: A bot that takes a config and puts messages matching given
