@@ -37,7 +37,9 @@ class FedMsgContext(object):
                 self.publisher.setsockopt(zmq.HWM, config['high_water_mark'])
 
             # Call either bind or connect on the new publisher
-            getattr(self.publisher, method)(config["endpoints"][config["name"]])
+            getattr(self.publisher, method)(
+                config["endpoints"][config["name"]]
+            )
         else:
             # fedmsg is not configured to send any messages
             #raise ValueError("FedMsgContext was misconfigured.")
@@ -109,7 +111,8 @@ class FedMsgContext(object):
 
         for name, ep, topic, msg in generator:
             results[ep] = True
-            if all(results.values()) or (time.time() - tic) < self.c['timeout']:
+            if all(results.values()) or \
+               (time.time() - tic) < self.c['timeout']:
                 break
 
         return results
@@ -121,8 +124,8 @@ class FedMsgContext(object):
         >>> (endpoint, topic, message)
         """
 
-        # TODO -- the 'passive' here and the 'active' are ambiguous.  They don't
-        # actually mean the same thing.
+        # TODO -- the 'passive' here and the 'active' are ambiguous.  They
+        # don't actually mean the same thing.  This should be resolved.
         method = passive and 'bind' or 'connect'
 
         subs = {}
