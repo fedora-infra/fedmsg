@@ -243,6 +243,7 @@ That file is ``/etc/fedmsg-config.py``.  It should define a python dict called
 ``config`` which may look something like the following in a development
 environment::
 
+    # TODO -- update this.  It is out of date.
     config = dict(
         # This is a dict of possible addresses from which fedmsg can send
         # messages.  fedmsg.init(...) requires that a 'name' argument be passed
