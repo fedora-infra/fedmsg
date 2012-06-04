@@ -648,3 +648,10 @@ event is followed by a list of services that will likely consume that event.
    - TODO - Add the hooks
 
      - ``org.fedoraproject.{stg,prod}.zabbix.service.update`` -> fcomm
+
+Other Ideas
+-----------
+
+ - Error messages from cron jobs
+ - The Nag-once script could be enhanced to send output to the bus
+ - Nagios alerts
