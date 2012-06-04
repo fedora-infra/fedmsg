@@ -16,7 +16,7 @@ def hub(**kw):
     """ Run the fedmsg hub. """
 
     # Check if the user wants the websocket server to run
-    if 'moksha.livesocket.websocket.port' in kw:
+    if kw['moksha.livesocket.websocket.port']:
         kw['moksha.livesocket.backend'] = 'websocket'
 
     # Rephrase the fedmsg-config.py config as moksha *.ini format.
