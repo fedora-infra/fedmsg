@@ -19,7 +19,7 @@ def relay(**kw):
     # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
     # with moksha's expected configuration.
     moksha_options = dict(
-        zmq_publish_endpoints=kw['endpoints']["relay_outbound"],
+        zmq_publish_endpoints=",".join(kw['endpoints']["relay_outbound"]),
         zmq_subscribe_endpoints=kw['relay_inbound'],
         zmq_subscribe_method="bind",
     )

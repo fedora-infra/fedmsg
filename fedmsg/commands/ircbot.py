@@ -14,7 +14,9 @@ def ircbot(**kw):
     # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
     # with moksha's expected configuration.
     moksha_options = dict(
-        zmq_subscribe_endpoints=','.join(kw['endpoints'].values()),
+        zmq_subscribe_endpoints=','.join(
+            ','.join(bunch) for bunch in kw['endpoints'].values()
+        ),
     )
     kw.update(moksha_options)
 

@@ -9,6 +9,13 @@ import zmq
 import fedmsg.json
 
 
+def _listify(obj):
+    if not isinstance(obj, list):
+        obj = [obj]
+
+    return obj
+
+
 class FedMsgContext(object):
     def __init__(self, **config):
         super(FedMsgContext, self).__init__()
@@ -36,10 +43,37 @@ class FedMsgContext(object):
             if config['high_water_mark']:
                 self.publisher.setsockopt(zmq.HWM, config['high_water_mark'])
 
-            # Call either bind or connect on the new publisher
-            getattr(self.publisher, method)(
-                config["endpoints"][config["name"]]
-            )
+            config['endpoints'][config['name']] = _listify(
+                config['endpoints'][config['name']])
+
+            _established = False
+            for endpoint in config['endpoints'][config['name']]:
+
+                if method == 'bind':
+                    endpoint = "tcp://*:{port}".format(
+                        port=endpoint.rsplit(':')[-1]
+                    )
+
+                try:
+                    # Call either bind or connect on the new publisher.
+                    # This will raise an exception if there's another process
+                    # already using the endpoint.
+                    getattr(self.publisher, method)(endpoint)
+                    # If we can do this successfully, then stop trying.
+                    _established = True
+                    break
+                except zmq.ZMQError:
+                    # If we fail to bind or connect, there's probably another
+                    # process already using that endpoint port.  Try the next
+                    # one.
+                    pass
+
+            # If we make it through the loop without establishing our
+            # connection, then there are not enough endpoints listed in the
+            # config for the number of processes attempting to use fedmsg.
+            if not _established:
+                raise IOError("Couldn't find an available endpoint.")
+
         else:
             # fedmsg is not configured to send any messages
             #raise ValueError("FedMsgContext was misconfigured.")
@@ -103,7 +137,10 @@ class FedMsgContext(object):
         topic = self.c['topic_prefix'] + '._heartbeat'
 
         # TODO - include endpoint name in the results dict
-        results = dict(zip(endpoints.values(), [False] * len(endpoints)))
+        results = dict(zip(
+            sum(endpoints.values(), []),
+            [False] * len(endpoints),
+        ))
         tic = time.time()
 
         generator = self._tail_messages(
@@ -129,24 +166,27 @@ class FedMsgContext(object):
         method = passive and 'bind' or 'connect'
 
         subs = {}
-        for _name, endpoint in endpoints.iteritems():
-            subscriber = self.context.socket(zmq.SUB)
-            subscriber.setsockopt(zmq.SUBSCRIBE, topic)
-            getattr(subscriber, method)(endpoint)
-            subs[endpoint] = subscriber
+        for _name, endpoint_list in endpoints.iteritems():
+            for endpoint in endpoint_list:
+                subscriber = self.context.socket(zmq.SUB)
+                subscriber.setsockopt(zmq.SUBSCRIBE, topic)
+                getattr(subscriber, method)(endpoint)
+                subs[endpoint] = subscriber
 
         timeout = kw['timeout']
         tic = time.time()
         try:
             while True:
-                for _name, e in endpoints.iteritems():
-                    try:
-                        _topic, message = subs[e].recv_multipart(zmq.NOBLOCK)
-                        tic = time.time()
-                        yield _name, e, _topic, fedmsg.json.loads(message)
-                    except zmq.ZMQError:
-                        if timeout and (time.time() - tic) > timeout:
-                            return
+                for _name, endpoint_list in endpoints.iteritems():
+                    for e in endpoint_list:
+                        try:
+                            _topic, message = \
+                                    subs[e].recv_multipart(zmq.NOBLOCK)
+                            tic = time.time()
+                            yield _name, e, _topic, fedmsg.json.loads(message)
+                        except zmq.ZMQError:
+                            if timeout and (time.time() - tic) > timeout:
+                                return
         finally:
             for _name, endpoint in endpoints.iteritems():
                 subs[endpoint].close()
