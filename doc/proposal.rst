@@ -11,6 +11,9 @@ architecture-level description of a solution using 0mq.
 
 ----
 
+For discussion, check
+https://admin.fedoraproject.org/mailman/listinfo/messaging-sig
+
 Get (or modify) the source for this document:
 http://github.com/ralphbean/fedmsg
 
