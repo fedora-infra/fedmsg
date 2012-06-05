@@ -79,18 +79,21 @@ class FedMsgContext(object):
             #raise ValueError("FedMsgContext was misconfigured.")
             pass
 
-        # Define and register a 'destructor'.
-        def destructor():
-            if hasattr(self, 'publisher'):
-                self.publisher.close()
-
-            self.context.term()
-
-        atexit.register(destructor)
+        atexit.register(self.destroy)
 
         # Sleep just to make sure that the socket gets set up before anyone
         # tries anything.  This is a documented zmq 'feature'.
         time.sleep(config['post_init_sleep'])
+
+    def destroy(self):
+        """ Destructor """
+        if getattr(self, 'publisher', None):
+            self.publisher.close()
+            self.publisher = None
+
+        if getattr(self, 'context', None):
+            self.context.term()
+            self.context = None
 
     def subscribe(self, topic, callback):
         raise NotImplementedError
