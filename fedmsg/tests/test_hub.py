@@ -23,7 +23,7 @@ from uuid import uuid4
 
 from unittest import TestCase
 
-from moksha.hub.reactor import reactor as _reactor
+from moksha.tests.test_hub import simulate_reactor
 from moksha.hub.hub import MokshaHub
 from nose.tools import eq_, assert_true, assert_false
 
@@ -34,14 +34,6 @@ import fedmsg.config
 sleep_duration = 0.25
 secret = "secret_message"
 
-
-def simulate_reactor(duration=sleep_duration):
-    """ Simulate running the reactor for `duration` milliseconds """
-    global _reactor
-    start = time()
-    while time() - start < duration:
-        _reactor.doPoll(0.0001)
-        _reactor.runUntilCurrent()
 
 
 class TestHub(TestCase):
