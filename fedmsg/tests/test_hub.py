@@ -1,4 +1,4 @@
-# This file is part of Moksha.
+# This file *was* a part of Moksha.
 # Copyright (C) 2008-2010  Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""Test Moksha's Hub """
 
 import moksha
 import unittest
