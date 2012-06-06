@@ -79,18 +79,21 @@ class FedMsgContext(object):
             #raise ValueError("FedMsgContext was misconfigured.")
             pass
 
-        # Define and register a 'destructor'.
-        def destructor():
-            if hasattr(self, 'publisher'):
-                self.publisher.close()
-
-            self.context.term()
-
-        atexit.register(destructor)
+        atexit.register(self.destroy)
 
         # Sleep just to make sure that the socket gets set up before anyone
         # tries anything.  This is a documented zmq 'feature'.
         time.sleep(config['post_init_sleep'])
+
+    def destroy(self):
+        """ Destructor """
+        if getattr(self, 'publisher', None):
+            self.publisher.close()
+            self.publisher = None
+
+        if getattr(self, 'context', None):
+            self.context.term()
+            self.context = None
 
     def subscribe(self, topic, callback):
         raise NotImplementedError
@@ -118,11 +121,14 @@ class FedMsgContext(object):
 
         # If no modname is supplied, then guess it from the call stack.
         modname = modname or self.guess_calling_module()
-
-        topic = '.'.join([self.c['environment'], modname, topic])
+        topic = '.'.join([modname, topic])
 
         if topic[:len(self.c['topic_prefix'])] != self.c['topic_prefix']:
-            topic = self.c['topic_prefix'] + '.' + topic
+            topic = '.'.join([
+                self.c['topic_prefix'],
+                self.c['environment'],
+                topic,
+            ])
 
         msg = dict(topic=topic, msg=msg, timestamp=time.time())
 

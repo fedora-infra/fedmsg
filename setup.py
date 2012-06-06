@@ -35,13 +35,16 @@ setup(
         'fabulous',
         'moksha>=0.8.0',
     ],
-    tests_require=['nose'],
+    tests_require=[
+        'nose',
+    ],
     test_suite='nose.collector',
     packages=[
         'fedmsg',
         'fedmsg.commands',
         'fedmsg.consumers',
         'fedmsg.producers',
+        'fedmsg.tests',
     ],
     include_package_data=True,
     zip_safe=False,

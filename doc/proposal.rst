@@ -298,6 +298,8 @@ Authn, authz
 TODO -
 
  - (func has certs laying around already).
+ - Read http://www.zeromq.org/topics:pubsub-security.  ``comphappy`` reports
+   that it has some interesting points.
 
 network load
 ------------
