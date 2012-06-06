@@ -25,47 +25,108 @@ from unittest import TestCase
 
 from moksha.tests.test_hub import simulate_reactor
 from moksha.hub.hub import MokshaHub
-from nose.tools import eq_, assert_true, assert_false
+from moksha.hub import CentralMokshaHub
+from fedmsg.core import FedMsgContext
+
+from nose.tools import eq_, assert_true, assert_false, raises
 
 import fedmsg.config
+import fedmsg.json
+from fedmsg.producers.heartbeat import HeartbeatProducer
 
 
 # Some constants used throughout the hub tests
 sleep_duration = 0.25
 secret = "secret_message"
 
+def load_config(name='fedmsg-test-config.py'):
+    here = os.path.sep.join(__file__.split(os.path.sep)[:-1])
+    test_config = os.path.sep.join([here, name])
+
+    config = fedmsg.config.load_config(
+        [],
+        "awesome",
+        filenames=[
+            test_config,
+        ],
+    )
+
+    # TODO -- this appears everywhere and should be encapsulated in a func
+    # Massage the fedmsg config into the moksha config.
+    config['zmq_subscribe_endpoints'] = ','.join(
+        ','.join(bunch) for bunch in config['endpoints'].values()
+    )
+    config['zmq_publish_endpoints'] = ','.join(
+        config['endpoints'].values()[1]
+    )
+    return config
+
+
+@raises(KeyError)
+def test_init_missing_endpoint():
+    """ Try to initialize the context with a nonexistant service name. """
+    config = load_config()
+    config['name'] = "failboat"
+    context = FedMsgContext(**config)
 
 
 class TestHub(TestCase):
 
     def setUp(self):
-        here = os.path.sep.join(__file__.split(os.path.sep)[:-1])
-        test_config = os.path.sep.join([here, 'fedmsg-test-config.py'])
+        config = load_config()
+        self.hub = CentralMokshaHub(config=config)
+        self.context = FedMsgContext(**config)
 
-        config = fedmsg.config.load_config(
-            [],
-            "awesome",
-            filenames=[
-                test_config,
-            ],
-        )
-
-        # TODO -- this appears everywhere and should be encapsulated in a func
-        # Massage the fedmsg config into the moksha config.
-        config['zmq_subscribe_endpoints'] = ','.join(
-            ','.join(bunch) for bunch in config['endpoints'].values()
-        )
-
-        self.hub = MokshaHub(config=config)
+        # fully qualified
+        self.fq_topic = "org.fedoraproject.dev.unittest.foo"
+        # short version
+        self.topic = "foo"
 
     def tearDown(self):
+        self.context.destroy()
         self.hub.close()
 
     def test_run_hub_get_heartbeat(self):
         """ Start the heartbeat producer and ensure it emits a message. """
-        self.skipTest("Not implemented.")
+        messages_received = []
+
+        def callback(json):
+            messages_received.append(fedmsg.json.loads(json.body))
+
+        self.hub.subscribe(
+            topic=HeartbeatProducer.topic,
+            callback=callback,
+        )
+
+        simulate_reactor(HeartbeatProducer.frequency.seconds*1.1)
+        sleep(HeartbeatProducer.frequency.seconds*1.1)
+
+        eq_(len(messages_received), 1)
 
     def test_send_recv(self):
-        """ Send a message and receive it. """
-        self.skipTest("Not implemented.")
+        """ Send a message and receive it.
 
+        Admittedly, this is not a unit test, but an integration test.
+
+        It tests:
+
+            - Sending a message.
+            - Receiving a message.
+            - Encoding *and* decoding.
+
+        """
+        messages_received = []
+
+        def callback(json):
+            messages_received.append(fedmsg.json.loads(json.body))
+
+        self.hub.subscribe(topic=self.fq_topic, callback=callback)
+        sleep(sleep_duration)
+
+        self.context.send_message(topic=self.topic, msg=secret)
+
+        simulate_reactor(sleep_duration)
+        sleep(sleep_duration)
+
+        eq_(len(messages_received), 1)
+        eq_(messages_received[0]['msg'], secret)

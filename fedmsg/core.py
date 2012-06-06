@@ -121,11 +121,14 @@ class FedMsgContext(object):
 
         # If no modname is supplied, then guess it from the call stack.
         modname = modname or self.guess_calling_module()
-
-        topic = '.'.join([self.c['environment'], modname, topic])
+        topic = '.'.join([modname, topic])
 
         if topic[:len(self.c['topic_prefix'])] != self.c['topic_prefix']:
-            topic = self.c['topic_prefix'] + '.' + topic
+            topic = '.'.join([
+                self.c['topic_prefix'],
+                self.c['environment'],
+                topic,
+            ])
 
         msg = dict(topic=topic, msg=msg, timestamp=time.time())
 
