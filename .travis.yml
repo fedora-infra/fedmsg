@@ -1,0 +1,14 @@
+language: python
+python:
+ - "2.6"
+ - "2.7"
+# Someday, soon.
+# - "3.2"
+install: python setup.py install
+script: python setup.py test
+notifications:
+    email: false
+    irc:
+        - "irc.freenode.net#fedora-apps"
+    on_success: change
+    on_failure: always
