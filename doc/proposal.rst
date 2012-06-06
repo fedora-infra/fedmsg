@@ -11,6 +11,9 @@ architecture-level description of a solution using 0mq.
 
 ----
 
+For discussion, check
+https://admin.fedoraproject.org/mailman/listinfo/messaging-sig
+
 Get (or modify) the source for this document:
 http://github.com/ralphbean/fedmsg
 
@@ -295,6 +298,8 @@ Authn, authz
 TODO -
 
  - (func has certs laying around already).
+ - Read http://www.zeromq.org/topics:pubsub-security.  ``comphappy`` reports
+   that it has some interesting points.
 
 network load
 ------------
@@ -648,3 +653,10 @@ event is followed by a list of services that will likely consume that event.
    - TODO - Add the hooks
 
      - ``org.fedoraproject.{stg,prod}.zabbix.service.update`` -> fcomm
+
+Other Ideas
+-----------
+
+ - Error messages from cron jobs
+ - The Nag-once script could be enhanced to send output to the bus
+ - Nagios alerts
