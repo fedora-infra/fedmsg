@@ -6,6 +6,8 @@ import time
 import warnings
 import zmq
 
+from kitchen.text.converters import to_utf8
+
 import fedmsg.json
 
 
@@ -129,6 +131,9 @@ class FedMsgContext(object):
                 self.c['environment'],
                 topic,
             ])
+
+        if type(topic) == unicode:
+            topic = to_utf8(topic)
 
         msg = dict(topic=topic, msg=msg, timestamp=time.time())
 
