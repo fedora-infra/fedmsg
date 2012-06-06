@@ -130,3 +130,76 @@ class TestHub(TestCase):
 
         eq_(len(messages_received), 1)
         eq_(messages_received[0]['msg'], secret)
+
+    def fake_register_consumer(self, cons):
+        """ Fake register a consumer, not by entry-point like usual.
+
+        Normally, consumers are identified by the hub by way of entry-points
+        Ideally, this test would register the TestConsumer on the
+        moksha.consumers entry point, and the hub would pick it up.
+        I'm not sure how to do that, so we're going to fake it and manually
+        add this consumer to the list of consumers of which the Hub is aware.
+        """
+        self.hub.topics[cons.topic] = self.hub.topics.get(cons.topic, [])
+        self.hub.topics[cons.topic].append(cons(self.hub).consume)
+        sleep(sleep_duration)
+
+    def test_consumer(self):
+        """ Check that a consumer can get messages. """
+        obj = {'secret': secret}
+        messages_received = []
+
+        class TestConsumer(moksha.api.hub.consumer.Consumer):
+            topic = self.fq_topic
+
+            def consume(self, message):
+                messages_received.append(
+                    message['body']['msg']
+                )
+
+        self.fake_register_consumer(TestConsumer)
+
+        # Now, send a generic message to that topic, and see if the consumer
+        # processed it.
+        fedmsg.send_message(topic=self.topic, msg=obj)
+
+        simulate_reactor(sleep_duration)
+        sleep(sleep_duration)
+
+        eq_(len(messages_received), 1)
+        eq_(messages_received[0], obj)
+
+    def test_double_consumers(self):
+        """ Check that two consumers can get messages. """
+        obj = {'secret': secret}
+        messages_received = []
+
+        class TestConsumer1(moksha.api.hub.consumer.Consumer):
+            topic = self.fq_topic
+
+            def consume(self, message):
+                messages_received.append(
+                    message['body']['msg']
+                )
+
+        class TestConsumer2(moksha.api.hub.consumer.Consumer):
+            topic = self.fq_topic
+
+            def consume(self, message):
+                messages_received.append(
+                    message['body']['msg']
+                )
+
+        self.fake_register_consumer(TestConsumer1)
+        self.fake_register_consumer(TestConsumer2)
+
+        # Now, send a generic message to that topic, and see if the consumer
+        # processed it.
+        fedmsg.send_message(topic=self.topic, msg=obj)
+
+        simulate_reactor(sleep_duration)
+        sleep(sleep_duration)
+
+        eq_(len(messages_received), 2)
+        eq_(messages_received[0], obj)
+        eq_(messages_received[1], obj)

@@ -9,8 +9,13 @@ port = random.randint(4000, 20000)
 
 config = dict(
     endpoints={
-        "unittest.%s" % hostname: ["tcp://*:%i" % (port + 1)],
-        "twisted.%s" % hostname: ["tcp://*:%i" % (port + 2)],
+        "unittest.%s" % hostname: [
+            "tcp://*:%i" % (port + 1),
+            "tcp://*:%i" % (port + 2),
+        ],
+        "twisted.%s" % hostname: [
+            "tcp://*:%i" % (port + 3),
+        ],
     },
     relay_inbound="tcp://127.0.0.1:%i" % (port - 1),
     environment="dev",
