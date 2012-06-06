@@ -69,6 +69,7 @@ setup(
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot",
         ],
         'moksha.consumer': [
+            "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",
             "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer",
             "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer",
         ],
