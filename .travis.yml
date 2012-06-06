@@ -10,5 +10,5 @@ notifications:
     email: false
     irc:
         - "irc.freenode.net#fedora-apps"
-    on_success: change
-    on_failure: always
+    on_success: never
+    on_failure: never
