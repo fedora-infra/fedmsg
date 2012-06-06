@@ -199,5 +199,6 @@ class FedMsgContext(object):
                             if timeout and (time.time() - tic) > timeout:
                                 return
         finally:
-            for _name, endpoint in endpoints.iteritems():
-                subs[endpoint].close()
+            for _name, endpoint_list in endpoints.iteritems():
+                for endpoint in endpoint_list:
+                    subs[endpoint].close()
