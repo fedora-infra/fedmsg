@@ -160,6 +160,13 @@ def _process_arguments(declared_args, doc, config):
     return dict(args._get_kwargs())
 
 
+def _gather_configs_in(directory):
+    try:
+        return [directory + fname for fname in os.listdir(directory)]
+    except OSError:
+        return []
+
+
 def _process_config_file(filenames=None):
 
     filenames = filenames or []
@@ -176,6 +183,11 @@ def _process_config_file(filenames=None):
             os.path.expanduser('~/.fedmsg-config.py'),
             os.getcwd() + '/fedmsg-config.py',
         ]
+        filenames = sum(map(_gather_configs_in, [
+            "/etc/fedmsg.d/",
+            os.path.expanduser('~/.fedmsg.d/'),
+            os.getcwd() + '/fedmsg.d/',
+        ]), []) + filenames
 
     # Each .ini file should really be a python module that
     # builds a config dict.
