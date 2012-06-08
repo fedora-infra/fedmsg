@@ -77,9 +77,7 @@ class FedMsgContext(object):
                 raise IOError("Couldn't find an available endpoint.")
 
         else:
-            # fedmsg is not configured to send any messages
-            #raise ValueError("FedMsgContext was misconfigured.")
-            pass
+            warnings.warn("fedmsg is not configured to send any messages")
 
         atexit.register(self.destroy)
 
