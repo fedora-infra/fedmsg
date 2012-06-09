@@ -3,3 +3,4 @@ include README.rst
 recursive-include extras *
 recursive-include doc *
 recursive-include fedmsg.d *
+recursive-include init.d *

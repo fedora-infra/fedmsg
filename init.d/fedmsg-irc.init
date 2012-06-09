@@ -1,0 +1,87 @@
+#!/bin/bash
+# fedmsg-irc - This init script runs the FedMsg IRC bot
+#
+# chkconfig: - 25 85
+# description:  Enabled the fedmsg irc daemon
+# processname:  fedmsg-irc
+# config: /etc/fedmsg.d/*
+# pidfile: /var/run/fedmsg/fedmsg-irc.pid
+
+### BEGIN INIT INFO
+# Provides: fedmsg-irc
+# Required-Start: $local_fs $network
+# Required-Stop: $local_fs $network
+# Default-Start:
+# Default-Stop: 0 1 6
+# Short-Description: start or stop the fedmsg-irc
+# Description: Starts a fedmsg-hub with the ircbot enabled.
+### END INIT INFO
+
+# Source function library.
+. /etc/init.d/functions
+
+PROG=fedmsg-irc
+USER=fedmsg
+PIDFILE=/var/run/fedmsg/$PROG.pid
+OPTIONS=--daemon
+SUBSYS=/var/lock/subsys/$PROG
+
+start() {
+    echo -n "Starting FedMsg IRC bot: "
+    if [ -f $PIDFILE.lock ]; then
+        echo FedMsg IRC bot already running
+        exit 2;
+    fi
+
+    if [ ! -d /var/run/fedmsg ]; then
+        mkdir /var/run/fedmsg
+        chown $USER:$USER /var/run/fedmsg
+    fi
+
+    daemon --user $USER $PROG $OPTIONS
+    RETVAL=$?
+    echo
+
+    if [ $RETVAL -eq 0 ]; then
+        success
+        touch $SUBSYS
+    else
+        failure
+    fi
+}
+
+stop() {
+        echo -n $"Stopping FedMsg IRC bot: "
+        killproc -p ${PIDFILE} $PROG
+        echo
+        rm -f ${SUBSYS}
+        RETVAL=$?
+        echo
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        if [ -f $PIDFILE ]; then
+            echo $"FedMsg IRC bot is running."
+            RETVAL=0
+        else
+            echo $"FedMsg IRC bot is not running."
+            RETVAL=3
+        fi
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage:  {start|stop|status|reload|restart}"
+        exit 1
+        ;;
+esac
+exit $?
