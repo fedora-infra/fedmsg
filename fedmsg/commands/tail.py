@@ -31,7 +31,7 @@ extra_args = [
 ]
 
 
-@command(extra_args=extra_args)
+@command(name="fedmsg-tail", extra_args=extra_args)
 def tail(**kw):
     """ Watch the bus. """
 

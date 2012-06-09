@@ -14,7 +14,7 @@ def _colorize(success):
 extra_args = []
 
 
-@command(extra_args=extra_args)
+@command(name="fedmsg-status", extra_args=extra_args)
 def status(**kwargs):
     """ Check the status of fedmsg-hub instances.
 

@@ -12,7 +12,7 @@ from fedmsg.commands import command
 extra_args = []
 
 
-@command(extra_args=extra_args)
+@command(name="fedmsg-relay", extra_args=extra_args, daemonizable=True)
 def relay(**kw):
     """ Relay connections from active loggers to the bus. """
 

@@ -11,7 +11,7 @@ extra_args = [
 ]
 
 
-@command(extra_args=extra_args)
+@command(name="fedmsg-hub", extra_args=extra_args, daemonizable=True)
 def hub(**kw):
     """ Run the fedmsg hub. """
 

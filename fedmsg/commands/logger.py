@@ -42,7 +42,7 @@ extra_args = [
 ]
 
 
-@command(extra_args=extra_args)
+@command(name="fedmsg-logger", extra_args=extra_args)
 def logger(**kwargs):
     """
     Emit log messages to the FI bus.
