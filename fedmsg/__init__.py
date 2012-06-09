@@ -6,6 +6,7 @@ import fedmsg.config
 __all__ = [
     'init',
     'send_message',
+    'publish',
     'subscribe',
 ]
 
@@ -42,7 +43,7 @@ def API_function(func):
 
 
 @API_function
-def send_message(topic=None, msg=None, **kw):
+def publish(topic=None, msg=None, **kw):
     """ Send a message over the publishing zeromq socket.
 
     Well, really it's a little more complicated:
@@ -62,12 +63,14 @@ def send_message(topic=None, msg=None, **kw):
     stays here in the controller (explicit == good).  This should be
     disablable, i.e. defer=False.
 
-    >>> fedmsg.send_message(topic='tag.create', tag.__json__())
+    >>> fedmsg.publish(topic='tag.create', tag.__json__())
 
     """
 
-    return __context.send_message(topic, msg, **kw)
+    return __context.publish(topic, msg, **kw)
 
+# This is old-school, and deprecated.
+send_message = publish
 
 @API_function
 def subscribe(topic, callback, **kw):

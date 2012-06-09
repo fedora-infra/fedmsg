@@ -10,7 +10,7 @@ def _log_message(kw, message):
     if kw['json_input']:
         msg = fedmsg.json.loads(message)
 
-    fedmsg.send_message(
+    fedmsg.publish(
         topic=kw['topic'],
         msg=msg,
         modname=kw['modname'],

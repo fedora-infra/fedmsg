@@ -110,6 +110,12 @@ class FedMsgContext(object):
         return "fedmsg"
 
     def send_message(self, topic=None, msg=None, modname=None):
+        warnings.warn(".send_message is deprecated.",
+                      warnings.DeprecationWarning)
+
+        return self.publish(topic, msg, modname)
+
+    def publish(self, topic=None, msg=None, modname=None):
 
         if not topic:
             warnings.warn("Attempted to send message with no topic.  Bailing.")

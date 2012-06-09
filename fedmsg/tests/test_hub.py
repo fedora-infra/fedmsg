@@ -123,7 +123,7 @@ class TestHub(TestCase):
         self.hub.subscribe(topic=self.fq_topic, callback=callback)
         sleep(sleep_duration)
 
-        self.context.send_message(topic=self.topic, msg=secret)
+        self.context.publish(topic=self.topic, msg=secret)
 
         simulate_reactor(sleep_duration)
         sleep(sleep_duration)
@@ -161,7 +161,7 @@ class TestHub(TestCase):
 
         # Now, send a generic message to that topic, and see if the consumer
         # processed it.
-        fedmsg.send_message(topic=self.topic, msg=obj)
+        fedmsg.publish(topic=self.topic, msg=obj)
 
         simulate_reactor(sleep_duration)
         sleep(sleep_duration)
@@ -195,7 +195,7 @@ class TestHub(TestCase):
 
         # Now, send a generic message to that topic, and see if the consumer
         # processed it.
-        fedmsg.send_message(topic=self.topic, msg=obj)
+        fedmsg.publish(topic=self.topic, msg=obj)
 
         simulate_reactor(sleep_duration)
         sleep(sleep_duration)

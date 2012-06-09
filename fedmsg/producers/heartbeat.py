@@ -14,7 +14,7 @@ class HeartbeatProducer(PollingProducer):
     frequency = timedelta(seconds=2)
 
     def poll(self):
-        # FIXME -- this should use fedmsg.send_message
+        # FIXME -- this should use fedmsg.publish
         try:
             self.hub.send_message(
                 topic=self.topic,
