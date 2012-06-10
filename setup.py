@@ -29,7 +29,7 @@ install_requires = [
     'fabulous',
     'kitchen',
     'moksha>=0.8.0',
-    'daemon',
+    #'daemon',
 ]
 
 if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
