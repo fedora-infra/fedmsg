@@ -27,9 +27,9 @@ OPTIONS=--daemon
 SUBSYS=/var/lock/subsys/$PROG
 
 start() {
-    echo -n "Starting The FedMsg Relay: "
+    echo -n "Starting FedMsg Relay: "
     if [ -f $PIDFILE.lock ]; then
-        echo The FedMsg Relay already running
+        echo FedMsg Relay already running
         exit 2;
     fi
 
@@ -51,7 +51,7 @@ start() {
 }
 
 stop() {
-        echo -n $"Stopping The FedMsg Relay: "
+        echo -n $"Stopping FedMsg Relay: "
         killproc -p ${PIDFILE} $PROG
         echo
         rm -f ${SUBSYS}
@@ -68,10 +68,10 @@ case "$1" in
         ;;
     status)
         if [ -f $PIDFILE ]; then
-            echo $"The FedMsg Relay is running."
+            echo $"FedMsg Relay is running."
             RETVAL=0
         else
-            echo $"The FedMsg Relay is not running."
+            echo $"FedMsg Relay is not running."
             RETVAL=3
         fi
         ;;
