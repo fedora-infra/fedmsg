@@ -14,14 +14,26 @@ def _colorize(success):
 extra_args = []
 
 
-@command(extra_args=extra_args)
+@command(name="fedmsg-status", extra_args=extra_args)
 def status(**kwargs):
-    """ Check the status of nodes on the bus. """
+    """ Check the status of fedmsg-hub instances.
+
+    This command is a work in progress.  For the moment, it returns results for
+    every endpoint listed in `fedmsg-config`, but not every endpoint is
+    associated with a hub.  Many are associated with WSGI processes which have
+    no fedmsg heartbeat.  Lots of false alarms will be reported until this is
+    resolved.
+    """
 
     # Disable sending
     fedmsg.init(**kwargs)
 
     status = fedmsg.have_pulses(**kwargs)
 
-    for endpoint, success in status.iteritems():
-        print "[%s]  %s" % (_colorize(success), endpoint)
+    padding = max(map(len, kwargs['endpoints']))
+    for name, endpoint, success in fedmsg.have_pulses(**kwargs):
+        print "[%s]  %s %s" % (
+            _colorize(success),
+            name.rjust(padding),
+            endpoint,
+        )

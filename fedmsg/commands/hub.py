@@ -11,7 +11,7 @@ extra_args = [
 ]
 
 
-@command(extra_args=extra_args)
+@command(name="fedmsg-hub", extra_args=extra_args, daemonizable=True)
 def hub(**kw):
     """ Run the fedmsg hub. """
 
@@ -21,7 +21,7 @@ def hub(**kw):
 
     # Rephrase the fedmsg-config.py config as moksha *.ini format.
     # Note that the hub we kick off here cannot send any message.  You should
-    # use fedmsg.send_message(...) still for that.
+    # use fedmsg.publish(...) still for that.
     moksha_options = dict(
         zmq_subscribe_endpoints=','.join(
             ','.join(bunch) for bunch in kw['endpoints'].values()

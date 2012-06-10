@@ -77,9 +77,7 @@ class FedMsgContext(object):
                 raise IOError("Couldn't find an available endpoint.")
 
         else:
-            # fedmsg is not configured to send any messages
-            #raise ValueError("FedMsgContext was misconfigured.")
-            pass
+            warnings.warn("fedmsg is not configured to send any messages")
 
         atexit.register(self.destroy)
 
@@ -112,6 +110,12 @@ class FedMsgContext(object):
         return "fedmsg"
 
     def send_message(self, topic=None, msg=None, modname=None):
+        warnings.warn(".send_message is deprecated.",
+                      warnings.DeprecationWarning)
+
+        return self.publish(topic, msg, modname)
+
+    def publish(self, topic=None, msg=None, modname=None):
 
         if not topic:
             warnings.warn("Attempted to send message with no topic.  Bailing.")
@@ -141,29 +145,36 @@ class FedMsgContext(object):
 
     def have_pulses(self, endpoints):
         """
-        Returns a dict of endpoint->bool mappings indicating which endpoints
-        are emitting detectable heartbeats.
+        Generates a list of 3-tuples of the form (name, endpoint, bool) indicating
+        which endpoints have detectable heartbeats.
+
         """
 
         topic = self.c['topic_prefix'] + '._heartbeat'
 
-        # TODO - include endpoint name in the results dict
-        results = dict(zip(
-            sum(endpoints.values(), []),
-            [False] * len(endpoints),
-        ))
+        # Initialize a nested dict of all False results.
+        results = {}
+        for name, ep_list in endpoints.items():
+            results[name] = dict(zip(ep_list, [False] * len(ep_list)))
+
         tic = time.time()
 
         generator = self._tail_messages(
             endpoints, topic, timeout=self.c['timeout'])
 
         for name, ep, topic, msg in generator:
-            results[ep] = True
+            if not results[name][ep]:
+                yield name, ep, True
+
+            results[name][ep] = True
+
             if all(results.values()) or \
                (time.time() - tic) < self.c['timeout']:
                 break
 
-        return results
+        for name in results:
+            for ep in results[name]:
+                yield name, ep, False
 
     def _tail_messages(self, endpoints, topic="", passive=False, **kw):
         """

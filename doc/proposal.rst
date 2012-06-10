@@ -392,7 +392,7 @@ Examples of emitting events
 Here's a real dummy test::
 
     >>> import fedmsg
-    >>> fedmsg.send_message(topic='testing', modname='test', msg={
+    >>> fedmsg.publish(topic='testing', modname='test', msg={
     ...     'test': "Hello World",
     ... })
 
@@ -409,13 +409,13 @@ information about a new tag over
 ``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``::
 
     >>> import fedmsg
-    >>> fedmsg.send_message(topic='tag.update', msg={
+    >>> fedmsg.publish(topic='tag.update', msg={
     ...     'user': user,
     ...     'tag': tag,
     ... })
 
 Note that the `tag` and `user` objects are SQLAlchemy objects defined by
-tagger.  They both have ``.__json__()`` methods which ``.send_message``
+tagger.  They both have ``.__json__()`` methods which ``.publish``
 uses to convert both objects to stringified JSON for you.
 
 ``fedmsg`` has also guessed the module name (``modname``) of it's caller and
@@ -471,7 +471,7 @@ re-sends them out on a new topic::
             ).strip()
 
             # Ship it!
-            fedmsg.send_message(
+            fedmsg.publish(
                 topic=self.destination_topic,
                 msg=code,
             )
