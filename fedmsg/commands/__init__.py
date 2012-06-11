@@ -62,11 +62,12 @@ class command(object):
                 fedmsg_command=True,
             )
 
-            _func = lambda: func(**config)
-
             if self.daemonizable and config['daemon'] is True:
                 return self._daemonize(func, config)
             else:
-                return func(**config)
+                try:
+                    return func(**config)
+                except KeyboardInterrupt:
+                    print
 
         return wrapper

@@ -4,6 +4,9 @@
 # regexes in specified IRC channels.  See fedmsg-config.py for options.
 from fedmsg.commands import command
 
+from fedmsg.consumers.ircbot import IRCBotConsumer
+from fedmsg.producers.heartbeat import HeartbeatProducer
+
 extra_args = []
 
 
@@ -23,4 +26,4 @@ def ircbot(**kw):
     kw['fedmsg.consumers.ircbot.enabled'] = True
 
     from moksha.hub import main
-    main(options=kw)
+    main(options=kw, consumers=[IRCBotConsumer], producers=[HeartbeatProducer])
