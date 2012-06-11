@@ -28,7 +28,7 @@ install_requires = [
     'simplejson',
     'fabulous',
     'kitchen',
-    'moksha>=0.8.0',
+    'moksha>=0.8.3',
     #'daemon',
 ]
 
