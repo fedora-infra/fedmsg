@@ -26,7 +26,9 @@ log = logging.getLogger("moksha.hub")
 
 
 class FedMsngr(irc.IRCClient):
-    lineRate = None
+    # The 0.6 seconds here is empircally guessed so we don't get dropped by
+    # freenode.  FIXME - this should be pulled from the config.
+    lineRate = 0.6
     sourceURL = "http://github.com/ralphbean/fedmsg"
 
     def _get_nickname(self):
@@ -163,7 +165,8 @@ class IRCBotConsumer(Consumer):
             msg['timestamp'] = time.ctime(msg['timestamp'])
         if pretty:
             fancy = pygments.highlight(
-                    fedmsg.json.dumps(msg), pygments.lexers.JavascriptLexer(),
+                    fedmsg.json.pretty_dumps(msg),
+                    pygments.lexers.JavascriptLexer(),
                     pygments.formatters.TerminalFormatter()
                     ).strip().encode('UTF-8')
             return fancy
@@ -179,12 +182,14 @@ class IRCBotConsumer(Consumer):
                         msg=body,
                         pretty=client.factory.pretty
                     )
+                    raw_msg = "{0:<30} {1}".format(topic, _body)
                     client.msg(
                         client.factory.channel,
-                        "{0:<30} {1}".format(topic, _body),
+                        raw_msg,
                     )
             else:
+                raw_msg = fedmsg.json.pretty_dumps(msg)
                 client.msg(
                     client.factory.channel,
-                    fedmsg.json.dumps(msg),
+                    raw_msg,
                 )
