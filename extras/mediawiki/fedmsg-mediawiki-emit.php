@@ -53,8 +53,7 @@ function initialize() {
   /* Load the config.  Create a publishing socket. */
 
   // Danger! Danger!
-  // TODO - change this to just shell_exec("fedmsg-config")
-  $json = shell_exec("fedmsg-logger --print-config");
+  $json = shell_exec("fedmsg-config");
   $config = json_decode($json, true);
 
   /* Just make sure everything is sane with the fedmsg config */
