@@ -10,9 +10,9 @@ import fedmsg.config
 # Read in all the rev information git-receive-pack hands us.
 lines = [line.split() for line in sys.stdin.readlines()]
 
-# Guess the repository name from the location of this file.
-path_tokens = os.path.abspath(__file__).split(os.path.sep)
-abspath, repo_name = os.path.sep.join(path_tokens[:-2]), path_tokens[-3]
+# Use $GIT_DIR to determine where this repo is.
+abspath = os.path.abspath(os.environ['GIT_DIR'])
+repo_name = abspath.split(os.path.sep)[-1]
 
 print "Extract commit information."
 repo = git.repo.Repo(abspath)
