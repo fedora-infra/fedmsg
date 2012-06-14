@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import git
 import os
 import sys
 
@@ -10,11 +11,29 @@ import fedmsg.config
 lines = [line.split() for line in sys.stdin.readlines()]
 
 # Guess the repository name from the location of this file.
-# Alternatively, we might use os.getcwd() to get the pwd.
-repo_name = os.path.abspath(__file__).split(os.path.sep)[-3]
+path_tokens = os.path.abspath(__file__).split(os.path.sep)
+abspath, repo_name = os.path.sep.join(path_tokens[:-2]), path_tokens[-3]
+
+print "Extract commit information."
+repo = git.repo.Repo(abspath)
+def _build_commit(rev):
+    rev = rev[1:-1][0]
+    commit = repo.rev_parse(rev=rev)
+    return dict(
+        name=commit.author.name,
+        email=commit.author.email,
+        summary=commit.summary,
+        message=commit.message,
+        stats=dict(
+            files=commit.stats.files,
+            total=commit.stats.total,
+        ),
+        rev=rev,
+    )
+
+commits = map(_build_commit, lines)
 
 print "Emitting a message to the fedmsg bus."
-
 config = fedmsg.config.load_config([], None)
 config['active'] = True
 config['endpoints']['relay_inbound'] = config['relay_inbound']
@@ -22,6 +41,6 @@ fedmsg.init(name='relay_inbound', **config)
 
 fedmsg.publish(
     topic="%s.receive" % repo_name,
-    msg=dict(revs=lines),
+    msg=dict(commits=commits),
     modname="git",
 )
