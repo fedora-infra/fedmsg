@@ -51,8 +51,8 @@ def sign(message, ssldir, fqdn, **config):
     """
 
     certificate = M2Crypto.X509.load_cert(
-        "%s/certs/%s.pem" % (ssldir, fqdn)).as_text()
-    # FIXME ? -- Opening this file requires elevated privileges.
+        "%s/certs/%s.pem" % (ssldir, fqdn)).as_pem()
+    # FIXME ? -- Opening this file requires elevated privileges in stg/prod.
     rsa_private = M2Crypto.RSA.load_key(
         "%s/private_keys/%s.pem" % (ssldir, fqdn))
 
