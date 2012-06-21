@@ -20,8 +20,7 @@ class RelayConsumer(FedmsgConsumer):
 
         super(RelayConsumer, self).__init__(hub)
 
-        # TODO -- turn off message validation for the relay
-        # self.validate_messages = False
+        self.validate_messages = False
 
 
     def consume(self, msg):
