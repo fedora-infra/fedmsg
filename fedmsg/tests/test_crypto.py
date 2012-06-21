@@ -29,6 +29,7 @@ class TestCrypto(unittest.TestCase):
     def test_failed_validation(self):
         message = dict(msg='awesome')
         signed = fedmsg.crypto.sign(message, **self.config)
+        # space aliens read data off the wire and inject incorrect data
         signed['msg'] = "eve wuz here"
         assert not fedmsg.crypto.validate(signed, **self.config)
 
