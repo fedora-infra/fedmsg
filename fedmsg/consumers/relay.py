@@ -1,13 +1,13 @@
 import fedmsg
 
 from paste.deploy.converters import asbool
-from moksha.api.hub.consumer import Consumer
+from fedmsg.consumers import FedmsgConsumer
 
 import logging
 log = logging.getLogger("moksha.hub")
 
 
-class RelayConsumer(Consumer):
+class RelayConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
 
     def __init__(self, hub):
@@ -18,7 +18,11 @@ class RelayConsumer(Consumer):
             log.info('fedmsg.consumers.relay:RelayConsumer disabled.')
             return
 
-        return super(RelayConsumer, self).__init__(hub)
+        super(RelayConsumer, self).__init__(hub)
+
+        # TODO -- turn off message validation for the relay
+        # self.validate_messages = False
+
 
     def consume(self, msg):
         ## FIXME - for some reason twisted is screwing up fedmsg.

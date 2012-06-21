@@ -14,7 +14,7 @@ class TestCrypto(unittest.TestCase):
             # Normally this is /var/lib/puppet/ssl
             'ssldir': SEP.join((here, 'test_certs')),
             # Normally this is 'app01.stg.phx2.fedoraproject.org'
-            'fqdn': 'test_cert',
+            'certname': 'test_cert',
         }
 
     def tearDown(self):

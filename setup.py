@@ -28,7 +28,7 @@ install_requires = [
     'simplejson',
     'fabulous',
     'kitchen',
-    'moksha>=0.8.3',
+    'moksha>=0.8.6',
     #'daemon',
     'M2Crypto',
     'm2ext',

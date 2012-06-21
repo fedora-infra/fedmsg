@@ -14,7 +14,7 @@ import pygments.lexers
 import pygments.formatters
 
 from paste.deploy.converters import asbool
-from moksha.api.hub.consumer import Consumer
+from fedmsg.consumers import FedmsgConsumer
 
 from twisted.words.protocols import irc
 from twisted.internet import protocol
@@ -97,7 +97,7 @@ class FedMsngrFactory(protocol.ClientFactory):
         log.error("Could not connect: %s" % (reason,))
 
 
-class IRCBotConsumer(Consumer):
+class IRCBotConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
 
     def __init__(self, hub):

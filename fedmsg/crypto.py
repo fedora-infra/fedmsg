@@ -43,7 +43,7 @@ import logging
 log = logging.getLogger('fedmsg')
 
 
-def sign(message, ssldir, fqdn, **config):
+def sign(message, ssldir, certname, **config):
     """ Insert two new fields into the message dict and return it.
 
         'signature' - the computed RSA message digest of the JSON repr.
@@ -51,18 +51,18 @@ def sign(message, ssldir, fqdn, **config):
     """
 
     certificate = M2Crypto.X509.load_cert(
-        "%s/certs/%s.pem" % (ssldir, fqdn)).as_pem()
+        "%s/certs/%s.pem" % (ssldir, certname)).as_pem()
     # FIXME ? -- Opening this file requires elevated privileges in stg/prod.
     rsa_private = M2Crypto.RSA.load_key(
-        "%s/private_keys/%s.pem" % (ssldir, fqdn))
+        "%s/private_keys/%s.pem" % (ssldir, certname))
 
     signature = rsa_private.sign_rsassa_pss(fedmsg.json.dumps(message))
 
     # Return a new dict containing the pairs in the original message as well
     # as the new authn fields.
     return dict(message.items() + [
-        ('signature', signature),
-        ('certificate', certificate),
+        ('signature', signature.encode('base64')),
+        ('certificate', certificate.encode('base64')),
     ])
 
 
@@ -93,7 +93,9 @@ def validate(message, ssldir, **config):
             return fail("No %r field found." % field)
 
     # Peal off the auth datums
-    signature, certificate = message['signature'], message['certificate']
+    decode = lambda obj: obj.decode('base64')
+    signature, certificate = map(decode, (
+        message['signature'], message['certificate']))
     message = strip_credentials(message)
 
     # Build an X509 object

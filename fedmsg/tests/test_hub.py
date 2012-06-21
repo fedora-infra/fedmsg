@@ -31,6 +31,7 @@ from fedmsg.core import FedMsgContext
 from nose.tools import eq_, assert_true, assert_false, raises
 
 import fedmsg.config
+import fedmsg.consumers
 import fedmsg.json
 from fedmsg.producers.heartbeat import HeartbeatProducer
 
@@ -149,7 +150,7 @@ class TestHub(TestCase):
         obj = {'secret': secret}
         messages_received = []
 
-        class TestConsumer(moksha.api.hub.consumer.Consumer):
+        class TestConsumer(fedmsg.consumers.FedmsgConsumer):
             topic = self.fq_topic
 
             def consume(self, message):
@@ -174,7 +175,7 @@ class TestHub(TestCase):
         obj = {'secret': secret}
         messages_received = []
 
-        class TestConsumer1(moksha.api.hub.consumer.Consumer):
+        class TestConsumer1(fedmsg.consumers.FedmsgConsumer):
             topic = self.fq_topic
 
             def consume(self, message):
@@ -182,7 +183,7 @@ class TestHub(TestCase):
                     message['body']['msg']
                 )
 
-        class TestConsumer2(moksha.api.hub.consumer.Consumer):
+        class TestConsumer2(fedmsg.consumers.FedmsgConsumer):
             topic = self.fq_topic
 
             def consume(self, message):
