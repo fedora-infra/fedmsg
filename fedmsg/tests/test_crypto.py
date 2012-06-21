@@ -26,6 +26,12 @@ class TestCrypto(unittest.TestCase):
         signed = fedmsg.crypto.sign(message, **self.config)
         assert fedmsg.crypto.validate(signed, **self.config)
 
+    def test_failed_validation(self):
+        message = dict(msg='awesome')
+        signed = fedmsg.crypto.sign(message, **self.config)
+        signed['msg'] = "eve wuz here"
+        assert not fedmsg.crypto.validate(signed, **self.config)
+
 
 if __name__ == '__main__':
     unittest.main()

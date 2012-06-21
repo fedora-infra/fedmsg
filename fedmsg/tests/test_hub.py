@@ -205,3 +205,27 @@ class TestHub(TestCase):
         eq_(len(messages_received), 2)
         eq_(messages_received[0], obj)
         eq_(messages_received[1], obj)
+
+    def test_consumer_failed_validation(self):
+        """ Check that a consumer won't consume invalid message. """
+        obj = {'secret': secret}
+        messages_received = []
+
+        class TestConsumer(fedmsg.consumers.FedmsgConsumer):
+            topic = self.fq_topic
+
+            def consume(self, message):
+                messages_received.append(
+                    message['body']['msg']
+                )
+
+            def validate(self, message):
+                raise RuntimeWarning("Marking message as invalid.")
+
+        self.fake_register_consumer(TestConsumer)
+        fedmsg.publish(topic=self.topic, msg=obj)
+        simulate_reactor(sleep_duration)
+        sleep(sleep_duration)
+
+        # Verify that we received no message.
+        eq_(len(messages_received), 0)
