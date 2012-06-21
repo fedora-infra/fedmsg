@@ -40,6 +40,7 @@ from fedmsg.producers.heartbeat import HeartbeatProducer
 sleep_duration = 0.25
 secret = "secret_message"
 
+
 def load_config(name='fedmsg-test-config.py'):
     here = os.path.sep.join(__file__.split(os.path.sep)[:-1])
     test_config = os.path.sep.join([here, name])
@@ -99,8 +100,8 @@ class TestHub(TestCase):
             callback=callback,
         )
 
-        simulate_reactor(HeartbeatProducer.frequency.seconds*1.1)
-        sleep(HeartbeatProducer.frequency.seconds*1.1)
+        simulate_reactor(HeartbeatProducer.frequency.seconds * 1.1)
+        sleep(HeartbeatProducer.frequency.seconds * 1.1)
 
         eq_(len(messages_received), 1)
 
