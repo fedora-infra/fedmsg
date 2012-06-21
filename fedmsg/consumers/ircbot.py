@@ -175,6 +175,10 @@ class IRCBotConsumer(FedmsgConsumer):
     def consume(self, msg):
         """ Forward on messages from the bus to all IRC connections. """
         topic, body = msg.get('topic'), msg.get('body')
+
+        # We don't want to spam IRC with enormous base64 creds.
+        body = fedmsg.crypto.strip_credentials(body)
+
         for client in self.irc_clients:
             if client.factory.filters:
                 if self.apply_filters(client.factory.filters, topic, body):
