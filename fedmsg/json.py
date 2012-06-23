@@ -1,6 +1,13 @@
 import time
 import datetime
 
+try:
+    # py2.7
+    from collections import OrderedDict
+except ImportError:
+    # py2.4, 2.5, 2.6
+    from orderedoict import OrderedDict
+
 import simplejson
 import simplejson.encoder
 
@@ -16,7 +23,15 @@ class FedMsgEncoder(simplejson.encoder.JSONEncoder):
         return super(FedMsgEncoder, self).default(obj)
 
 encoder = FedMsgEncoder()
-dumps = encoder.encode
+
+
+def dumps(d):
+    """ Encode a dict as JSON.
+
+    Ensure that the keys are ordered so that messages can be signed
+    consistently.  See https://github.com/ralphbean/fedmsg/issues/42
+    """
+    return encoder.encode(OrderedDict(sorted(d.items())))
 
 pretty_encoder = FedMsgEncoder(indent=2)
 pretty_dumps = pretty_encoder.encode
