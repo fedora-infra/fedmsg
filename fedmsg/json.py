@@ -6,7 +6,7 @@ try:
     from collections import OrderedDict
 except ImportError:
     # py2.4, 2.5, 2.6
-    from orderedoict import OrderedDict
+    from orderedict import OrderedDict
 
 import simplejson
 import simplejson.encoder
