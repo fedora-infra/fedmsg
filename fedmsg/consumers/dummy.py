@@ -1,13 +1,13 @@
 import fedmsg
 
 from paste.deploy.converters import asbool
-from moksha.api.hub.consumer import Consumer
+from fedmsg.consumers import FedmsgConsumer
 
 import logging
 log = logging.getLogger("moksha.hub")
 
 
-class DummyConsumer(Consumer):
+class DummyConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
 
     def __init__(self, hub):
