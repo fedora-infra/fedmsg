@@ -31,6 +31,7 @@ from fedmsg.core import FedMsgContext
 from nose.tools import eq_, assert_true, assert_false, raises
 
 import fedmsg.config
+import fedmsg.consumers
 import fedmsg.json
 from fedmsg.producers.heartbeat import HeartbeatProducer
 
@@ -38,6 +39,7 @@ from fedmsg.producers.heartbeat import HeartbeatProducer
 # Some constants used throughout the hub tests
 sleep_duration = 0.25
 secret = "secret_message"
+
 
 def load_config(name='fedmsg-test-config.py'):
     here = os.path.sep.join(__file__.split(os.path.sep)[:-1])
@@ -98,8 +100,8 @@ class TestHub(TestCase):
             callback=callback,
         )
 
-        simulate_reactor(HeartbeatProducer.frequency.seconds*1.1)
-        sleep(HeartbeatProducer.frequency.seconds*1.1)
+        simulate_reactor(HeartbeatProducer.frequency.seconds * 1.1)
+        sleep(HeartbeatProducer.frequency.seconds * 1.1)
 
         eq_(len(messages_received), 1)
 
@@ -149,7 +151,7 @@ class TestHub(TestCase):
         obj = {'secret': secret}
         messages_received = []
 
-        class TestConsumer(moksha.api.hub.consumer.Consumer):
+        class TestConsumer(fedmsg.consumers.FedmsgConsumer):
             topic = self.fq_topic
 
             def consume(self, message):
@@ -174,7 +176,7 @@ class TestHub(TestCase):
         obj = {'secret': secret}
         messages_received = []
 
-        class TestConsumer1(moksha.api.hub.consumer.Consumer):
+        class TestConsumer1(fedmsg.consumers.FedmsgConsumer):
             topic = self.fq_topic
 
             def consume(self, message):
@@ -182,7 +184,7 @@ class TestHub(TestCase):
                     message['body']['msg']
                 )
 
-        class TestConsumer2(moksha.api.hub.consumer.Consumer):
+        class TestConsumer2(fedmsg.consumers.FedmsgConsumer):
             topic = self.fq_topic
 
             def consume(self, message):
@@ -203,3 +205,27 @@ class TestHub(TestCase):
         eq_(len(messages_received), 2)
         eq_(messages_received[0], obj)
         eq_(messages_received[1], obj)
+
+    def test_consumer_failed_validation(self):
+        """ Check that a consumer won't consume invalid message. """
+        obj = {'secret': secret}
+        messages_received = []
+
+        class TestConsumer(fedmsg.consumers.FedmsgConsumer):
+            topic = self.fq_topic
+
+            def consume(self, message):
+                messages_received.append(
+                    message['body']['msg']
+                )
+
+            def validate(self, message):
+                raise RuntimeWarning("Marking message as invalid.")
+
+        self.fake_register_consumer(TestConsumer)
+        fedmsg.publish(topic=self.topic, msg=obj)
+        simulate_reactor(sleep_duration)
+        sleep(sleep_duration)
+
+        # Verify that we received no message.
+        eq_(len(messages_received), 0)

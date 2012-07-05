@@ -46,10 +46,12 @@ def tail(**kw):
     if kw['pretty']:
         def formatter(d):
             d['timestamp'] = time.ctime(d['timestamp'])
+            d = fedmsg.crypto.strip_credentials(d)
             return "\n" + pprint.pformat(d)
 
     if kw['really_pretty']:
         def formatter(d):
+            d = fedmsg.crypto.strip_credentials(d)
             fancy = pygments.highlight(
                 fedmsg.json.pretty_dumps(d),
                 pygments.lexers.JavascriptLexer(),

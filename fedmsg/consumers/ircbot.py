@@ -14,7 +14,7 @@ import pygments.lexers
 import pygments.formatters
 
 from paste.deploy.converters import asbool
-from moksha.api.hub.consumer import Consumer
+from fedmsg.consumers import FedmsgConsumer
 
 from twisted.words.protocols import irc
 from twisted.internet import protocol
@@ -97,7 +97,7 @@ class FedMsngrFactory(protocol.ClientFactory):
         log.error("Could not connect: %s" % (reason,))
 
 
-class IRCBotConsumer(Consumer):
+class IRCBotConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
 
     def __init__(self, hub):
@@ -175,6 +175,10 @@ class IRCBotConsumer(Consumer):
     def consume(self, msg):
         """ Forward on messages from the bus to all IRC connections. """
         topic, body = msg.get('topic'), msg.get('body')
+
+        # We don't want to spam IRC with enormous base64 creds.
+        body = fedmsg.crypto.strip_credentials(body)
+
         for client in self.irc_clients:
             if client.factory.filters:
                 if self.apply_filters(client.factory.filters, topic, body):
