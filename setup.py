@@ -28,17 +28,20 @@ install_requires = [
     'simplejson',
     'fabulous',
     'kitchen',
-    'moksha>=0.8.3',
+    'moksha>=0.8.6',
     #'daemon',
+    'M2Crypto',
+    'm2ext',
 ]
 
 if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
     install_requires.append('argparse')
+    install_requires.append('ordereddict')
 
 
 setup(
     name='fedmsg',
-    version='0.2.1',
+    version='0.2.2',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',

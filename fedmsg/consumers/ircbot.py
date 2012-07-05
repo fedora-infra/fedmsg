@@ -14,7 +14,7 @@ import pygments.lexers
 import pygments.formatters
 
 from paste.deploy.converters import asbool
-from moksha.api.hub.consumer import Consumer
+from fedmsg.consumers import FedmsgConsumer
 
 from twisted.words.protocols import irc
 from twisted.internet import protocol
@@ -26,7 +26,9 @@ log = logging.getLogger("moksha.hub")
 
 
 class FedMsngr(irc.IRCClient):
-    lineRate = None
+    # The 0.6 seconds here is empircally guessed so we don't get dropped by
+    # freenode.  FIXME - this should be pulled from the config.
+    lineRate = 0.6
     sourceURL = "http://github.com/ralphbean/fedmsg"
 
     def _get_nickname(self):
@@ -95,7 +97,7 @@ class FedMsngrFactory(protocol.ClientFactory):
         log.error("Could not connect: %s" % (reason,))
 
 
-class IRCBotConsumer(Consumer):
+class IRCBotConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
 
     def __init__(self, hub):
@@ -163,7 +165,8 @@ class IRCBotConsumer(Consumer):
             msg['timestamp'] = time.ctime(msg['timestamp'])
         if pretty:
             fancy = pygments.highlight(
-                    fedmsg.json.dumps(msg), pygments.lexers.JavascriptLexer(),
+                    fedmsg.json.pretty_dumps(msg),
+                    pygments.lexers.JavascriptLexer(),
                     pygments.formatters.TerminalFormatter()
                     ).strip().encode('UTF-8')
             return fancy
@@ -172,6 +175,10 @@ class IRCBotConsumer(Consumer):
     def consume(self, msg):
         """ Forward on messages from the bus to all IRC connections. """
         topic, body = msg.get('topic'), msg.get('body')
+
+        # We don't want to spam IRC with enormous base64 creds.
+        body = fedmsg.crypto.strip_credentials(body)
+
         for client in self.irc_clients:
             if client.factory.filters:
                 if self.apply_filters(client.factory.filters, topic, body):
@@ -179,12 +186,14 @@ class IRCBotConsumer(Consumer):
                         msg=body,
                         pretty=client.factory.pretty
                     )
+                    raw_msg = "{0:<30} {1}".format(topic, _body)
                     client.msg(
                         client.factory.channel,
-                        "{0:<30} {1}".format(topic, _body),
+                        raw_msg,
                     )
             else:
+                raw_msg = fedmsg.json.pretty_dumps(msg)
                 client.msg(
                     client.factory.channel,
-                    fedmsg.json.dumps(msg),
+                    raw_msg,
                 )

@@ -1,24 +1,46 @@
 #!/usr/bin/env python
 
-import fedmsg
+import git
 import os
 import sys
+
+import fedmsg
+import fedmsg.config
 
 # Read in all the rev information git-receive-pack hands us.
 lines = [line.split() for line in sys.stdin.readlines()]
 
-# Guess the repository name from the location of this file.
-# Alternatively, we might use os.getcwd() to get the pwd.
-#repo_name = os.path.abspath(__file__).split(os.path.sep)[-3]
+# Use $GIT_DIR to determine where this repo is.
+abspath = os.path.abspath(os.environ['GIT_DIR'])
+repo_name = abspath.split(os.path.sep)[-1]
 
-# For now, we raise the following exception until the above line is either
-# commented out or re-written to make sense for deployment.
-raise NotImplementedError
+print "Extract commit information."
+repo = git.repo.Repo(abspath)
+def _build_commit(rev):
+    rev = rev[1:-1][0]
+    commit = repo.rev_parse(rev=rev)
+    return dict(
+        name=commit.author.name,
+        email=commit.author.email,
+        summary=commit.summary,
+        message=commit.message,
+        stats=dict(
+            files=commit.stats.files,
+            total=commit.stats.total,
+        ),
+        rev=rev,
+    )
 
+commits = map(_build_commit, lines)
 
 print "Emitting a message to the fedmsg bus."
-fedmsg.send_message(
+config = fedmsg.config.load_config([], None)
+config['active'] = True
+config['endpoints']['relay_inbound'] = config['relay_inbound']
+fedmsg.init(name='relay_inbound', **config)
+
+fedmsg.publish(
     topic="%s.receive" % repo_name,
+    msg=dict(commits=commits),
     modname="git",
-    msg=dict(revs=lines),
 )

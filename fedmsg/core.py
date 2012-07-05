@@ -9,6 +9,7 @@ import zmq
 from kitchen.text.converters import to_utf8
 
 import fedmsg.json
+import fedmsg.crypto
 
 
 def _listify(obj):
@@ -19,10 +20,17 @@ def _listify(obj):
 
 
 class FedMsgContext(object):
+    # A counter for messages sent.
+    _i = 0
+
     def __init__(self, **config):
         super(FedMsgContext, self).__init__()
 
         self.c = config
+        self.hostname = socket.gethostname().split('.', 1)[0]
+        if self.c.get('sign_messages', False):
+            self.c['certname'] = self.c['certnames'][self.hostname]
+
 
         # Prepare our context and publisher
         self.context = zmq.Context(config['io_threads'])
@@ -32,8 +40,7 @@ class FedMsgContext(object):
         # If no name is provided, use the calling module's __name__ to decide
         # which publishing endpoint to use.
         if not config.get("name", None):
-            hostname = socket.gethostname().split('.', 1)[0]
-            config["name"] = self.guess_calling_module() + '.' + hostname
+            config["name"] = self.guess_calling_module() + '.' + self.hostname
 
             if any(map(config["name"].startswith, ['__main__', 'fedmsg'])):
                 config["name"] = None
@@ -139,7 +146,11 @@ class FedMsgContext(object):
         if type(topic) == unicode:
             topic = to_utf8(topic)
 
-        msg = dict(topic=topic, msg=msg, timestamp=time.time())
+        self._i += 1
+        msg = dict(topic=topic, msg=msg, timestamp=time.time(), i=self._i)
+
+        if self.c.get('sign_messages', False):
+            msg = fedmsg.crypto.sign(msg, **self.c)
 
         self.publisher.send_multipart([topic, fedmsg.json.dumps(msg)])
 

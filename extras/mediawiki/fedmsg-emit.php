@@ -1,6 +1,6 @@
 <?php
 /*
- * fedmsg-mediawiki-emit.php
+ * fedmsg-emit.php
  * -------------------------
  *
  * A MediaWiki plugin that emits messages to the Fedora Infrastructure Message
@@ -15,12 +15,12 @@
  *
  * To install the plugin for mediawiki, you need to copy this file to:
  *
- *    /usr/share/mediawiki/fedmsg-mediawiki-emit.php
+ *    /usr/share/mediawiki/fedmsg-emit.php
  *
  * And you also need to enable it by adding the following to the bottom of
  * /var/www/html/wiki/LocalSettings.php
  *
- *    require_once("$IP/fedmsg-mediawiki-emit.php");
+ *    require_once("$IP/fedmsg-emit.php");
  *
  * This corner of the fedmsg topology requires that an instance of fedmsg-relay
  * be running somewhere.  The reason being that multiple php processes get run
@@ -53,8 +53,7 @@ function initialize() {
   /* Load the config.  Create a publishing socket. */
 
   // Danger! Danger!
-  // TODO - change this to just shell_exec("fedmsg-config")
-  $json = shell_exec("fedmsg-logger --print-config");
+  $json = shell_exec("fedmsg-config");
   $config = json_decode($json, true);
 
   /* Just make sure everything is sane with the fedmsg config */

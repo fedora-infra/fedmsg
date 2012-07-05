@@ -1,0 +1,7 @@
+Test X509 certs used for testing fedmsg.crypto.
+
+To regenerate these, you'll need to install openssl-perl and use
+  /etc/pki/tls/misc/CA.pl
+
+Use this document:
+  http://svn.osafoundation.org/m2crypto/trunk/doc/howto.ca.html

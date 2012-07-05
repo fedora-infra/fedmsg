@@ -525,6 +525,8 @@ List of systems, their events, and associated fields
 Each item here is a service followed by the list of events that it emits.  Each
 event is followed by a list of services that will likely consume that event.
 
+See also :doc:`status`.
+
 ----
 
  - AskBot
