@@ -16,6 +16,11 @@ class TestCrypto(unittest.TestCase):
             # Normally this is 'app01.stg.phx2.fedoraproject.org'
             'certname': 'test_cert',
         }
+        try:
+            import M2Crypto
+            import m2ext
+        except ImportError, e:
+            self.skipTest(str(e))
 
     def tearDown(self):
         self.config = None
