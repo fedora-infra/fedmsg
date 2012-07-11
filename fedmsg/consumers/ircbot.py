@@ -177,7 +177,11 @@ class IRCBotConsumer(FedmsgConsumer):
         topic, body = msg.get('topic'), msg.get('body')
 
         # We don't want to spam IRC with enormous base64 creds.
-        body = fedmsg.crypto.strip_credentials(body)
+        try:
+            body = fedmsg.crypto.strip_credentials(body)
+        except Exception, e:
+            log.warn("Failed to strip credentials from %r, %r" % (
+                type(body), body))
 
         for client in self.irc_clients:
             if client.factory.filters:
