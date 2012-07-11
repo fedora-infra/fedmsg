@@ -9,7 +9,7 @@ There is no information here about *receiving* messages, only sending.
 +===============+===========+===========+===========+
 | fedmsg-relay  | DONE      |  DONE     |           |
 +---------------+-----------+-----------+-----------+
-| fedmsg-irc    | DONE      |  DONE     |           |
+| fedmsg-irc    | DONE      |  BLOCKED* |           |
 +---------------+-----------+-----------+-----------+
 | askbot        |           |           |           |
 +---------------+-----------+-----------+-----------+
@@ -41,3 +41,6 @@ There is no information here about *receiving* messages, only sending.
 +---------------+-----------+-----------+-----------+
 | zabbix        |           |           |           |
 +---------------+-----------+-----------+-----------+
+
+ - fedmsg-irc is blocked by python-twisted -
+   https://github.com/ralphbean/fedmsg/issues/43
