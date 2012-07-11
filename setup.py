@@ -30,18 +30,22 @@ install_requires = [
     'kitchen',
     'moksha>=0.8.6',
     #'daemon',
-    'M2Crypto',
-    'm2ext',
+
+    # These are "optional" for now to make installation from pypi easier.
+    #'M2Crypto',
+    #'m2ext',
 ]
 
 if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
-    install_requires.append('argparse')
-    install_requires.append('ordereddict')
+    install_requires.extend([
+        'argparse',
+        'ordereddict',
+    ])
 
 
 setup(
     name='fedmsg',
-    version='0.2.2',
+    version='0.2.3',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',

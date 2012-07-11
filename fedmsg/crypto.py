@@ -30,17 +30,21 @@ To accomplish this, we'll use puppet's already in place PKI involving X509
 certificates and RSA signatures.
 """
 
-import copy
-import M2Crypto
 
-# FIXME - m2ext will be unnecessary once the following bug is closed.
-# https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
-import m2ext
+import copy
 
 import fedmsg.json
 
 import logging
 log = logging.getLogger('fedmsg')
+
+try:
+    import M2Crypto
+    # FIXME - m2ext will be unnecessary once the following bug is closed.
+    # https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
+    import m2ext
+except ImportError, e:
+    log.warn("Crypto disabled %r" % e)
 
 
 def sign(message, ssldir, certname, **config):

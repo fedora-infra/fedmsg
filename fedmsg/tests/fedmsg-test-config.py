@@ -7,6 +7,13 @@ SEP = os.path.sep
 here = os.getcwd()
 hostname = socket.gethostname()
 
+ssl_enabled_for_tests = True
+try:
+    import M2Crypto
+    import m2ext
+except ImportError:
+    ssl_enabled_for_tests = False
+
 # Pick random ports for the tests so travis-ci doesn't flip out.
 port = random.randint(4000, 20000)
 
@@ -29,8 +36,8 @@ config = dict(
     zmq_strict=False,
 
     # SSL stuff.
-    sign_messages=True,
-    validate_signatures=True,
+    sign_messages=ssl_enabled_for_tests,
+    validate_signatures=ssl_enabled_for_tests,
     ssldir=SEP.join([here, 'dev_certs']),
 
     certnames={
