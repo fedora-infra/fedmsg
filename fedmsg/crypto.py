@@ -127,5 +127,6 @@ def strip_credentials(message):
     """ Strip credentials from a message dict. """
     message = copy.deepcopy(message)
     for field in ['signature', 'certificate']:
-        del message[field]
+        if field in message:
+            del message[field]
     return message

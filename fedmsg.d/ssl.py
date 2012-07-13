@@ -6,8 +6,8 @@ here = os.getcwd()
 hostname = socket.gethostname()
 
 config = dict(
-    sign_messages=True,
-    validate_signatures=True,
+    sign_messages=False,
+    validate_signatures=False,
     ssldir=SEP.join([here, 'dev_certs']),
 
     certnames={
