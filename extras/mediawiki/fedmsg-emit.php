@@ -95,7 +95,9 @@ function sign_message($message_obj) {
   $message = json_encode($message_obj);
 
   # Step 0) - Find our cert.
-  $hostname = explode('.', gethostname())[0];
+  $fqdn = gethostname();
+  $tokens = explode('.', $fqdn);
+  $hostname = $tokens[0];
   $ssldir = $config['ssldir'];
   $certname = $config['certnames']['mediawiki.'.$hostname];
 
