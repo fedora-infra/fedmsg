@@ -28,9 +28,6 @@ class FedMsgContext(object):
 
         self.c = config
         self.hostname = socket.gethostname().split('.', 1)[0]
-        if self.c.get('sign_messages', False):
-            self.c['certname'] = self.c['certnames'][self.hostname]
-
 
         # Prepare our context and publisher
         self.context = zmq.Context(config['io_threads'])
@@ -44,6 +41,9 @@ class FedMsgContext(object):
 
             if any(map(config["name"].startswith, ['__main__', 'fedmsg'])):
                 config["name"] = None
+
+        if self.c.get('sign_messages', False):
+            self.c['certname'] = self.c['certnames'][self.name]
 
         # Actually set up our publisher
         if config.get("name", None) and config.get("endpoints", None):
