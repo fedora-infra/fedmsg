@@ -60,7 +60,10 @@ def sign(message, ssldir, certname, **config):
     rsa_private = M2Crypto.RSA.load_key(
         "%s/private_keys/%s.pem" % (ssldir, certname))
 
-    signature = rsa_private.sign_rsassa_pss(fedmsg.json.dumps(message))
+    digest = M2Crypto.EVP.MessageDigest('sha1')
+    digest.update(fedmsg.json.dumps(message))
+
+    signature = rsa_private.sign(digest.digest())
 
     # Return a new dict containing the pairs in the original message as well
     # as the new authn fields.
@@ -117,8 +120,13 @@ def validate(message, ssldir, **config):
     # If the cert is good, then test to see if the signature in the messages
     # matches up with the provided cert.
     rsa_public = cert.get_pubkey().get_rsa()
-    if not rsa_public.verify_rsassa_pss(fedmsg.json.dumps(message), signature):
-        return fail("RSA signature failed to validate.")
+    digest = M2Crypto.EVP.MessageDigest('sha1')
+    digest.update(fedmsg.json.dumps(message))
+    try:
+        if not rsa_public.verify(digest.digest(), signature):
+            raise M2Crypto.RSA.RSAError("RSA signature failed to validate.")
+    except M2Crypto.RSA.RSAError as e:
+        return fail(str(e))
 
     return True
 
