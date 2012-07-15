@@ -12,9 +12,9 @@ class TestCrypto(unittest.TestCase):
     def setUp(self):
         self.config = {
             # Normally this is /var/lib/puppet/ssl
-            'ssldir': SEP.join((here, 'test_certs')),
+            'ssldir': SEP.join((here, 'test_certs/keys')),
             # Normally this is 'app01.stg.phx2.fedoraproject.org'
-            'certname': 'test_cert',
+            'certname': 'shell-app01.phx2.fedoraproject.org',
         }
         try:
             import M2Crypto

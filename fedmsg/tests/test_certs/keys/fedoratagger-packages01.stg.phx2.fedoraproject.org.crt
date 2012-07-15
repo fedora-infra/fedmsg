@@ -1,0 +1,75 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 43 (0x2b)
+        Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=US, ST=NC, L=Raleigh, O=Fedora Project, OU=fedmsg, CN=fedmsg/name=fedmsg/emailAddress=admin@fedoraproject.org
+        Validity
+            Not Before: Jul 15 21:18:54 2012 GMT
+            Not After : Jul 13 21:18:54 2022 GMT
+        Subject: C=US, ST=NC, L=Raleigh, O=Fedora Project, OU=fedmsg, CN=fedoratagger-packages01.stg.phx2.fedoraproject.org/name=fedoratagger-packages01.stg.phx2.fedoraproject.org/emailAddress=admin@fedoraproject.org
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (1024 bit)
+                Modulus:
+                    00:d3:d0:82:a2:4c:c1:4a:3f:e3:45:a4:08:f0:b6:
+                    46:f8:14:4d:d1:3f:da:8d:71:7a:b8:17:17:3b:5c:
+                    cf:4a:39:21:fa:5c:95:23:c1:8b:4c:80:1e:72:37:
+                    84:92:56:47:50:34:57:fd:bb:79:4b:8b:39:af:1a:
+                    6f:3d:af:0f:f2:34:c9:e8:9c:4b:09:c5:6a:05:42:
+                    71:9a:90:2f:96:49:96:a5:0f:7f:d9:68:49:5f:ef:
+                    87:90:a3:05:25:e6:44:50:41:25:25:11:7f:9f:96:
+                    03:9d:02:f5:74:4e:3e:c2:3d:84:6f:5a:6c:3c:3e:
+                    b4:c5:cf:95:fc:87:0e:63:e7
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                EE:A0:70:85:34:D5:AA:7F:CE:70:7E:5E:1B:BA:2A:D2:D6:76:B4:5F
+            X509v3 Authority Key Identifier: 
+                keyid:00:98:A5:D5:E7:C4:55:0E:84:A3:67:FE:66:4A:16:E0:04:15:DD:21
+                DirName:/C=US/ST=NC/L=Raleigh/O=Fedora Project/OU=fedmsg/CN=fedmsg/name=fedmsg/emailAddress=admin@fedoraproject.org
+                serial:8E:EB:28:D8:A9:13:9D:7C
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha1WithRSAEncryption
+        39:00:c8:9c:47:15:1a:f3:f3:14:8e:d3:6f:62:b1:70:e6:0d:
+        c6:c5:b4:a4:43:b0:23:31:95:9f:14:01:db:12:b0:7e:26:12:
+        d1:7f:59:7f:6a:76:60:39:4f:90:bd:92:a8:ab:8c:1d:33:84:
+        9e:1b:52:23:be:cc:41:68:89:1c:20:84:c7:60:48:af:40:c3:
+        aa:07:5f:fa:a4:33:d4:d8:ec:a5:01:59:a5:86:c2:17:85:2c:
+        bb:52:8c:4e:55:79:5b:7b:54:51:5a:04:a5:37:bd:c5:b6:78:
+        cf:9d:47:19:43:63:6c:ce:42:ed:f8:33:ab:a0:e8:31:28:54:
+        05:3e
+-----BEGIN CERTIFICATE-----
+MIIEaTCCA9KgAwIBAgIBKzANBgkqhkiG9w0BAQUFADCBoDELMAkGA1UEBhMCVVMx
+CzAJBgNVBAgTAk5DMRAwDgYDVQQHEwdSYWxlaWdoMRcwFQYDVQQKEw5GZWRvcmEg
+UHJvamVjdDEPMA0GA1UECxMGZmVkbXNnMQ8wDQYDVQQDEwZmZWRtc2cxDzANBgNV
+BCkTBmZlZG1zZzEmMCQGCSqGSIb3DQEJARYXYWRtaW5AZmVkb3JhcHJvamVjdC5v
+cmcwHhcNMTIwNzE1MjExODU0WhcNMjIwNzEzMjExODU0WjCB+DELMAkGA1UEBhMC
+VVMxCzAJBgNVBAgTAk5DMRAwDgYDVQQHEwdSYWxlaWdoMRcwFQYDVQQKEw5GZWRv
+cmEgUHJvamVjdDEPMA0GA1UECxMGZmVkbXNnMTswOQYDVQQDEzJmZWRvcmF0YWdn
+ZXItcGFja2FnZXMwMS5zdGcucGh4Mi5mZWRvcmFwcm9qZWN0Lm9yZzE7MDkGA1UE
+KRMyZmVkb3JhdGFnZ2VyLXBhY2thZ2VzMDEuc3RnLnBoeDIuZmVkb3JhcHJvamVj
+dC5vcmcxJjAkBgkqhkiG9w0BCQEWF2FkbWluQGZlZG9yYXByb2plY3Qub3JnMIGf
+MA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDT0IKiTMFKP+NFpAjwtkb4FE3RP9qN
+cXq4Fxc7XM9KOSH6XJUjwYtMgB5yN4SSVkdQNFf9u3lLizmvGm89rw/yNMnonEsJ
+xWoFQnGakC+WSZalD3/ZaElf74eQowUl5kRQQSUlEX+flgOdAvV0Tj7CPYRvWmw8
+PrTFz5X8hw5j5wIDAQABo4IBVzCCAVMwCQYDVR0TBAIwADAtBglghkgBhvhCAQ0E
+IBYeRWFzeS1SU0EgR2VuZXJhdGVkIENlcnRpZmljYXRlMB0GA1UdDgQWBBTuoHCF
+NNWqf85wfl4buirS1na0XzCB1QYDVR0jBIHNMIHKgBQAmKXV58RVDoSjZ/5mShbg
+BBXdIaGBpqSBozCBoDELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAk5DMRAwDgYDVQQH
+EwdSYWxlaWdoMRcwFQYDVQQKEw5GZWRvcmEgUHJvamVjdDEPMA0GA1UECxMGZmVk
+bXNnMQ8wDQYDVQQDEwZmZWRtc2cxDzANBgNVBCkTBmZlZG1zZzEmMCQGCSqGSIb3
+DQEJARYXYWRtaW5AZmVkb3JhcHJvamVjdC5vcmeCCQCO6yjYqROdfDATBgNVHSUE
+DDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJKoZIhvcNAQEFBQADgYEAOQDI
+nEcVGvPzFI7Tb2KxcOYNxsW0pEOwIzGVnxQB2xKwfiYS0X9Zf2p2YDlPkL2SqKuM
+HTOEnhtSI77MQWiJHCCEx2BIr0DDqgdf+qQz1NjspQFZpYbCF4Usu1KMTlV5W3tU
+UVoEpTe9xbZ4z51HGUNjbM5C7fgzq6DoMShUBT4=
+-----END CERTIFICATE-----

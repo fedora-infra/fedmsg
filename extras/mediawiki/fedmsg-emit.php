@@ -48,6 +48,23 @@ $wgHooks['UploadComplete'][] = 'upload_complete';
 $config = 0;
 $queue = 0;
 
+// A utility function, taken from the comments at
+// http://php.net/manual/en/language.types.boolean.php
+function to_bool ($_val) {
+  $_trueValues = array('yes', 'y', 'true');
+  $_forceLowercase = true;
+
+  if (is_string($_val)) {
+    return (in_array(
+      ($_forceLowercase?strtolower($_val):$_val),
+      $_trueValues
+    ));
+  } else {
+    return (boolean) $_val;
+  }
+}
+
+
 function initialize() {
   global $config, $queue;
   /* Load the config.  Create a publishing socket. */
@@ -69,6 +86,45 @@ function initialize() {
 
 initialize();
 
+
+# This is a reimplementation of the python code in fedmsg/crypto.py
+# That file is authoritative.  Changes there should be reflected here.
+function sign_message($message_obj) {
+  global $config;
+
+  $message = json_encode($message_obj);
+
+  # Step 0) - Find our cert.
+  $fqdn = gethostname();
+  $tokens = explode('.', $fqdn);
+  $hostname = $tokens[0];
+  $ssldir = $config['ssldir'];
+  $certname = $config['certnames']['mediawiki.'.$hostname];
+
+  # Step 1) - Load and encode the X509 cert
+  $cert_obj = openssl_x509_read(file_get_contents(
+    $ssldir.'/certs/'.$certname.".pem"
+  ));
+  $cert = "";
+  openssl_x509_export($cert_obj, $cert);
+  $cert = base64_encode($cert);
+
+  # Step 2) - Load and sign the jsonified message with the RSA private key
+  $rsa_private = openssl_get_privatekey(file_get_contents(
+    $ssldir.'/private_keys/'.$certname.".pem"
+  ));
+  $signature = "";
+  openssl_sign($message, $signature, $rsa_private);
+  $signature = base64_encode($signature);
+
+  # Step 3) - Stuff it back in the message and return
+  $message_obj['signature'] = $signature;
+  $message_obj['certificate'] = $cert;
+
+  return $message_obj;
+}
+
+
 function emit_message($subtopic, $message) {
   global $config, $queue;
 
@@ -77,12 +133,16 @@ function emit_message($subtopic, $message) {
   $prefix = "org.fedoraproject." . $config['environment'] . ".wiki.";
   $topic = $prefix . $subtopic;
 
-  $envelope = json_encode(array(
+  $message_obj = array(
     "topic" => $topic,
     "msg" => $message,
     "timestamp" => time(),
-  ));
+  );
+  if (array_key_exists('sign_messages', $config) and to_bool($config['sign_messages'])) {
+    $message_obj = sign_message($message_obj);
+  }
 
+  $envelope = json_encode($message_obj);
   $queue->send($topic, ZMQ::MODE_SNDMORE);
   $queue->send($envelope);
 }

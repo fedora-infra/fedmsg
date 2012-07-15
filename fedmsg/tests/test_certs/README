@@ -1,7 +1,16 @@
-Test X509 certs used for testing fedmsg.crypto.
+To generate new certs, simply run "./rebuild-all-fedmsg-certs"
 
-To regenerate these, you'll need to install openssl-perl and use
-  /etc/pki/tls/misc/CA.pl
+----
 
-Use this document:
-  http://svn.osafoundation.org/m2crypto/trunk/doc/howto.ca.html
+The scripts in this folder are a modification of  EASY-RSA Version 2.0-rc1
+
+This is a small RSA key management package, based on the openssl
+command line tool, that can be found in the easy-rsa subdirectory
+of the OpenVPN distribution.  While this tool is primary concerned
+with key management for the SSL VPN application space, it can also
+be used for building web certificates.
+
+These are reference notes.  For step-by-step instructions, see the
+HOWTO:
+
+http://openvpn.net/howto.html

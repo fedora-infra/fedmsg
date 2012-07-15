@@ -20,7 +20,7 @@ class RelayConsumer(FedmsgConsumer):
 
         super(RelayConsumer, self).__init__(hub)
 
-        self.validate_messages = False
+        self.validate_signatures = False
 
 
     def consume(self, msg):

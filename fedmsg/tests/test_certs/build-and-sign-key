@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Make a certificate/private key pair using a locally generated
+# root certificate.
+
+KEY_CN=$*
+KEY_NAME=$*
+export EASY_RSA="${EASY_RSA:-.}"
+"$EASY_RSA/pkitool" --csr $*
+"$EASY_RSA/pkitool" --sign $*

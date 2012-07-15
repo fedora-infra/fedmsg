@@ -11,6 +11,9 @@ from kitchen.text.converters import to_utf8
 import fedmsg.json
 import fedmsg.crypto
 
+import logging
+log = logging.getLogger("fedmsg")
+
 
 def _listify(obj):
     if not isinstance(obj, list):
@@ -28,9 +31,6 @@ class FedMsgContext(object):
 
         self.c = config
         self.hostname = socket.gethostname().split('.', 1)[0]
-        if self.c.get('sign_messages', False):
-            self.c['certname'] = self.c['certnames'][self.hostname]
-
 
         # Prepare our context and publisher
         self.context = zmq.Context(config['io_threads'])
@@ -44,6 +44,13 @@ class FedMsgContext(object):
 
             if any(map(config["name"].startswith, ['__main__', 'fedmsg'])):
                 config["name"] = None
+
+        # Find my message-signing cert if I need one.
+        if self.c.get('sign_messages', False) and config.get("name"):
+            cert_index = config['name']
+            if cert_index == 'relay_inbound':
+                cert_index = "shell.%s" % self.hostname
+            self.c['certname'] = self.c['certnames'][cert_index]
 
         # Actually set up our publisher
         if config.get("name", None) and config.get("endpoints", None):
@@ -156,9 +163,8 @@ class FedMsgContext(object):
 
     def have_pulses(self, endpoints):
         """
-        Generates a list of 3-tuples of the form (name, endpoint, bool) indicating
-        which endpoints have detectable heartbeats.
-
+        Generates a list of 3-tuples of the form (name, endpoint, bool)
+        indicating which endpoints have detectable heartbeats.
         """
 
         topic = self.c['topic_prefix'] + '._heartbeat'
@@ -198,9 +204,25 @@ class FedMsgContext(object):
         # don't actually mean the same thing.  This should be resolved.
         method = passive and 'bind' or 'connect'
 
+        failed_hostnames = []
         subs = {}
         for _name, endpoint_list in endpoints.iteritems():
             for endpoint in endpoint_list:
+                # First, some sanity checking.  zeromq will potentially
+                # segfault if we don't do this check.
+                hostname = endpoint.split(':')[1][2:]
+                if hostname in failed_hostnames:
+                    continue
+
+                if hostname != '*':
+                    try:
+                        socket.gethostbyname_ex(hostname)
+                    except:
+                        failed_hostnames.append(hostname)
+                        log.warn("Couldn't resolve %r" % hostname)
+                        continue
+
+                # OK, sanity checks pass.  Create the subscriber and connect.
                 subscriber = self.context.socket(zmq.SUB)
                 subscriber.setsockopt(zmq.SUBSCRIBE, topic)
                 getattr(subscriber, method)(endpoint)
@@ -212,6 +234,8 @@ class FedMsgContext(object):
             while True:
                 for _name, endpoint_list in endpoints.iteritems():
                     for e in endpoint_list:
+                        if e not in subs:
+                            continue
                         try:
                             _topic, message = \
                                     subs[e].recv_multipart(zmq.NOBLOCK)
@@ -221,6 +245,5 @@ class FedMsgContext(object):
                             if timeout and (time.time() - tic) > timeout:
                                 return
         finally:
-            for _name, endpoint_list in endpoints.iteritems():
-                for endpoint in endpoint_list:
-                    subs[endpoint].close()
+            for endpoint, subscriber in subs.items():
+                subscriber.close()

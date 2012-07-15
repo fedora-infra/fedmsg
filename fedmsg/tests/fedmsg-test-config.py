@@ -26,6 +26,10 @@ config = dict(
         "twisted.%s" % hostname: [
             "tcp://*:%i" % (port + 3),
         ],
+        "blah.%s": [
+            # Guarantee that we don't fall over with a bogus endpoint.
+            "tcp://www.flugle.horn:88",
+        ]
     },
     relay_inbound="tcp://127.0.0.1:%i" % (port - 1),
     environment="dev",
@@ -38,10 +42,10 @@ config = dict(
     # SSL stuff.
     sign_messages=ssl_enabled_for_tests,
     validate_signatures=ssl_enabled_for_tests,
-    ssldir=SEP.join([here, 'dev_certs']),
+    ssldir=SEP.join([here, 'dev_certs/keys']),
 
     certnames={
-        hostname: "test_cert",
+        "unittest.%s" % hostname: "shell-app01.phx2.fedoraproject.org",
         # In prod/stg, map hostname to the name of the cert in ssldir.
         # Unfortunately, we can't use socket.getfqdn()
         #"app01.stg": "app01.stg.phx2.fedoraproject.org",
