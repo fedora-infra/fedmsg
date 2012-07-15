@@ -11,6 +11,9 @@ from kitchen.text.converters import to_utf8
 import fedmsg.json
 import fedmsg.crypto
 
+import logging
+log = logging.getLogger("fedmsg")
+
 
 def _listify(obj):
     if not isinstance(obj, list):
@@ -42,8 +45,12 @@ class FedMsgContext(object):
             if any(map(config["name"].startswith, ['__main__', 'fedmsg'])):
                 config["name"] = None
 
-        if self.c.get('sign_messages', False) and "name" in config:
-            self.c['certname'] = self.c['certnames'][config["name"]]
+        # Find my message-signing cert if I need one.
+        if self.c.get('sign_messages', False) and config.get("name"):
+            cert_index = config['name']
+            if cert_index == 'relay_inbound':
+                cert_index = "shell.%s" % self.hostname
+            self.c['certname'] = self.c['certnames'][cert_index]
 
         # Actually set up our publisher
         if config.get("name", None) and config.get("endpoints", None):
@@ -207,12 +214,13 @@ class FedMsgContext(object):
                 if hostname in failed_hostnames:
                     continue
 
-                try:
-                    socket.gethostbyname_ex(hostname)
-                except:
-                    failed_hostnames.append(hostname)
-                    log.warn("Couldn't resolve %r" % hostname)
-                    continue
+                if hostname != '*':
+                    try:
+                        socket.gethostbyname_ex(hostname)
+                    except:
+                        failed_hostnames.append(hostname)
+                        log.warn("Couldn't resolve %r" % hostname)
+                        continue
 
                 # OK, sanity checks pass.  Create the subscriber and connect.
                 subscriber = self.context.socket(zmq.SUB)
@@ -226,6 +234,8 @@ class FedMsgContext(object):
             while True:
                 for _name, endpoint_list in endpoints.iteritems():
                     for e in endpoint_list:
+                        if e not in subs:
+                            continue
                         try:
                             _topic, message = \
                                     subs[e].recv_multipart(zmq.NOBLOCK)
@@ -235,6 +245,5 @@ class FedMsgContext(object):
                             if timeout and (time.time() - tic) > timeout:
                                 return
         finally:
-            for _name, endpoint_list in endpoints.iteritems():
-                for endpoint in endpoint_list:
-                    subs[endpoint].close()
+            for endpoint, subscriber in subs.items():
+                subscriber.close()
