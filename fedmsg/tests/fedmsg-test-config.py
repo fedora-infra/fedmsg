@@ -41,7 +41,7 @@ config = dict(
     ssldir=SEP.join([here, 'dev_certs']),
 
     certnames={
-        hostname: "test_cert",
+        "unittest.%s" % hostname: "test_cert",
         # In prod/stg, map hostname to the name of the cert in ssldir.
         # Unfortunately, we can't use socket.getfqdn()
         #"app01.stg": "app01.stg.phx2.fedoraproject.org",
