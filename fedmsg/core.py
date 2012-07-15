@@ -43,7 +43,7 @@ class FedMsgContext(object):
                 config["name"] = None
 
         if self.c.get('sign_messages', False):
-            self.c['certname'] = self.c['certnames'][self.name]
+            self.c['certname'] = self.c['certnames'][config["name"]]
 
         # Actually set up our publisher
         if config.get("name", None) and config.get("endpoints", None):
