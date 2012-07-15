@@ -1,6 +1,7 @@
 import fedmsg.crypto
 import moksha.api.hub.consumer
 
+
 class FedmsgConsumer(moksha.api.hub.consumer.Consumer):
     validate_signatures = False
 
