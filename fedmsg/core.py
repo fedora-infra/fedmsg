@@ -42,7 +42,7 @@ class FedMsgContext(object):
             if any(map(config["name"].startswith, ['__main__', 'fedmsg'])):
                 config["name"] = None
 
-        if self.c.get('sign_messages', False):
+        if self.c.get('sign_messages', False) and "name" in config:
             self.c['certname'] = self.c['certnames'][config["name"]]
 
         # Actually set up our publisher
@@ -156,9 +156,8 @@ class FedMsgContext(object):
 
     def have_pulses(self, endpoints):
         """
-        Generates a list of 3-tuples of the form (name, endpoint, bool) indicating
-        which endpoints have detectable heartbeats.
-
+        Generates a list of 3-tuples of the form (name, endpoint, bool)
+        indicating which endpoints have detectable heartbeats.
         """
 
         topic = self.c['topic_prefix'] + '._heartbeat'
@@ -198,9 +197,24 @@ class FedMsgContext(object):
         # don't actually mean the same thing.  This should be resolved.
         method = passive and 'bind' or 'connect'
 
+        failed_hostnames = []
         subs = {}
         for _name, endpoint_list in endpoints.iteritems():
             for endpoint in endpoint_list:
+                # First, some sanity checking.  zeromq will potentially
+                # segfault if we don't do this check.
+                hostname = endpoint.split(':')[1][2:]
+                if hostname in failed_hostnames:
+                    continue
+
+                try:
+                    socket.gethostbyname_ex(hostname)
+                except:
+                    failed_hostnames.append(hostname)
+                    log.warn("Couldn't resolve %r" % hostname)
+                    continue
+
+                # OK, sanity checks pass.  Create the subscriber and connect.
                 subscriber = self.context.socket(zmq.SUB)
                 subscriber.setsockopt(zmq.SUBSCRIBE, topic)
                 getattr(subscriber, method)(endpoint)
