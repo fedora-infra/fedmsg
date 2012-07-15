@@ -55,10 +55,10 @@ def sign(message, ssldir, certname, **config):
     """
 
     certificate = M2Crypto.X509.load_cert(
-        "%s/certs/%s.pem" % (ssldir, certname)).as_pem()
+        "%s/%s.crt" % (ssldir, certname)).as_pem()
     # FIXME ? -- Opening this file requires elevated privileges in stg/prod.
     rsa_private = M2Crypto.RSA.load_key(
-        "%s/private_keys/%s.pem" % (ssldir, certname))
+        "%s/%s.key" % (ssldir, certname))
 
     digest = M2Crypto.EVP.MessageDigest('sha1')
     digest.update(fedmsg.json.dumps(message))
@@ -113,7 +113,7 @@ def validate(message, ssldir, **config):
     #   https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
     # FIXME -- the CRL is not actually checked here.
     ctx = m2ext.SSL.Context()
-    ctx.load_verify_locations(cafile="%s/certs/ca.pem" % ssldir)
+    ctx.load_verify_locations(cafile="%s/ca.crt" % ssldir)
     if not ctx.validate_certificate(cert):
         return fail("X509 certificate is not valid.")
 

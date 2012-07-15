@@ -1,0 +1,54 @@
+#!/bin/bash -e
+
+source ./vars
+./clean-all
+./build-ca
+./build-key-server server
+
+# Have one dummy cert created and then revoked so we have a CRL to serve up.
+./build-and-sign-key dummy-revoked
+./revoke-full dummy-revoked
+
+./build-and-sign-key shell-app01.phx2.fedoraproject.org
+./build-and-sign-key shell-app02.phx2.fedoraproject.org
+./build-and-sign-key shell-app03.phx2.fedoraproject.org
+./build-and-sign-key shell-app04.phx2.fedoraproject.org
+./build-and-sign-key shell-app05.phx2.fedoraproject.org
+./build-and-sign-key shell-app06.phx2.fedoraproject.org
+./build-and-sign-key shell-app07.phx2.fedoraproject.org
+./build-and-sign-key shell-app01.stg.phx2.fedoraproject.org
+./build-and-sign-key shell-app02.stg.phx2.fedoraproject.org
+./build-and-sign-key shell-fas01.phx2.fedoraproject.org
+./build-and-sign-key shell-fas01.stg.phx2.fedoraproject.org
+./build-and-sign-key shell-fas01.dev.phx2.fedoraproject.org
+./build-and-sign-key shell-packages01.phx2.fedoraproject.org
+./build-and-sign-key shell-packages02.phx2.fedoraproject.org
+./build-and-sign-key shell-packages01.stg.phx2.fedoraproject.org
+./build-and-sign-key shell-pkgs01.phx2.fedoraproject.org
+./build-and-sign-key shell-pkgs01.stg.phx2.fedoraproject.org
+./build-and-sign-key bodhi-app01.phx2.fedoraproject.org
+./build-and-sign-key bodhi-app02.phx2.fedoraproject.org
+./build-and-sign-key bodhi-app03.phx2.fedoraproject.org
+./build-and-sign-key bodhi-app04.phx2.fedoraproject.org
+./build-and-sign-key bodhi-app05.phx2.fedoraproject.org
+./build-and-sign-key bodhi-app06.phx2.fedoraproject.org
+./build-and-sign-key bodhi-app07.phx2.fedoraproject.org
+./build-and-sign-key bodhi-app01.stg.phx2.fedoraproject.org
+./build-and-sign-key bodhi-app02.stg.phx2.fedoraproject.org
+./build-and-sign-key mediawiki-app01.phx2.fedoraproject.org
+./build-and-sign-key mediawiki-app02.phx2.fedoraproject.org
+./build-and-sign-key mediawiki-app03.phx2.fedoraproject.org
+./build-and-sign-key mediawiki-app04.phx2.fedoraproject.org
+./build-and-sign-key mediawiki-app05.phx2.fedoraproject.org
+./build-and-sign-key mediawiki-app06.phx2.fedoraproject.org
+./build-and-sign-key mediawiki-app07.phx2.fedoraproject.org
+./build-and-sign-key mediawiki-app01.stg.phx2.fedoraproject.org
+./build-and-sign-key mediawiki-app02.stg.phx2.fedoraproject.org
+./build-and-sign-key fas-fas01.phx2.fedoraproject.org
+./build-and-sign-key fas-fas01.stg.phx2.fedoraproject.org
+./build-and-sign-key fas-fas01.dev.phx2.fedoraproject.org
+./build-and-sign-key fedoratagger-packages01.phx2.fedoraproject.org
+./build-and-sign-key fedoratagger-packages02.phx2.fedoraproject.org
+./build-and-sign-key fedoratagger-packages01.stg.phx2.fedoraproject.org
+./build-and-sign-key scm-pkgs01.phx2.fedoraproject.org
+./build-and-sign-key scm-pkgs01.stg.phx2.fedoraproject.org
