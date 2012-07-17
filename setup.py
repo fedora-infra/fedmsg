@@ -27,7 +27,7 @@ install_requires = [
     'pyzmq',
     'fabulous',
     'kitchen',
-    'moksha>=0.8.6',
+    'moksha>=0.8.8',
     #'daemon',
 
     # These are "optional" for now to make installation from pypi easier.
