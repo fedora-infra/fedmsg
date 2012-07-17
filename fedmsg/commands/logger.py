@@ -1,14 +1,14 @@
 import sys
 
 import fedmsg
-import fedmsg.json
+import fedmsg.encoding
 from fedmsg.commands import command
 
 
 def _log_message(kw, message):
     msg = {'log': message}
     if kw['json_input']:
-        msg = fedmsg.json.loads(message)
+        msg = fedmsg.encoding.loads(message)
 
     fedmsg.publish(
         topic=kw['topic'],

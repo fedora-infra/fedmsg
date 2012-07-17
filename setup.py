@@ -25,7 +25,6 @@ except Exception:
 
 install_requires = [
     'pyzmq',
-    'simplejson',
     'fabulous',
     'kitchen',
     'moksha>=0.8.6',

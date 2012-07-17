@@ -1,6 +1,5 @@
 import atexit
 import inspect
-import simplejson
 import socket
 import time
 import warnings
@@ -8,7 +7,7 @@ import zmq
 
 from kitchen.text.converters import to_utf8
 
-import fedmsg.json
+import fedmsg.encoding
 import fedmsg.crypto
 
 import logging
@@ -159,7 +158,7 @@ class FedMsgContext(object):
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)
 
-        self.publisher.send_multipart([topic, fedmsg.json.dumps(msg)])
+        self.publisher.send_multipart([topic, fedmsg.encoding.dumps(msg)])
 
     def have_pulses(self, endpoints):
         """
@@ -240,7 +239,7 @@ class FedMsgContext(object):
                             _topic, message = \
                                     subs[e].recv_multipart(zmq.NOBLOCK)
                             tic = time.time()
-                            yield _name, e, _topic, fedmsg.json.loads(message)
+                            yield _name, e, _topic, fedmsg.encoding.loads(message)
                         except zmq.ZMQError:
                             if timeout and (time.time() - tic) > timeout:
                                 return

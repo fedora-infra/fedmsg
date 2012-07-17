@@ -4,7 +4,7 @@
 # Description: A bot that takes a config and puts messages matching given
 # regexes in specified IRC channels
 import fedmsg
-import fedmsg.json
+import fedmsg.encoding
 
 import copy
 import re
@@ -165,7 +165,7 @@ class IRCBotConsumer(FedmsgConsumer):
             msg['timestamp'] = time.ctime(msg['timestamp'])
         if pretty:
             fancy = pygments.highlight(
-                    fedmsg.json.pretty_dumps(msg),
+                    fedmsg.encoding.pretty_dumps(msg),
                     pygments.lexers.JavascriptLexer(),
                     pygments.formatters.TerminalFormatter()
                     ).strip().encode('UTF-8')
@@ -196,7 +196,7 @@ class IRCBotConsumer(FedmsgConsumer):
                         raw_msg,
                     )
             else:
-                raw_msg = fedmsg.json.pretty_dumps(msg)
+                raw_msg = fedmsg.encoding.pretty_dumps(msg)
                 client.msg(
                     client.factory.channel,
                     raw_msg,

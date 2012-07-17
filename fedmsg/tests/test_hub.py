@@ -32,7 +32,7 @@ from nose.tools import eq_, assert_true, assert_false, raises
 
 import fedmsg.config
 import fedmsg.consumers
-import fedmsg.json
+import fedmsg.encoding
 from fedmsg.producers.heartbeat import HeartbeatProducer
 
 
@@ -93,7 +93,7 @@ class TestHub(TestCase):
         messages_received = []
 
         def callback(json):
-            messages_received.append(fedmsg.json.loads(json.body))
+            messages_received.append(fedmsg.encoding.loads(json.body))
 
         self.hub.subscribe(
             topic=HeartbeatProducer.topic,
@@ -120,7 +120,7 @@ class TestHub(TestCase):
         messages_received = []
 
         def callback(json):
-            messages_received.append(fedmsg.json.loads(json.body))
+            messages_received.append(fedmsg.encoding.loads(json.body))
 
         self.hub.subscribe(topic=self.fq_topic, callback=callback)
         sleep(sleep_duration)
