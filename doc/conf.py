@@ -16,9 +16,6 @@
 
 import sys, os
 
-# TODO -- would be awesome to have a fedora sphinx theme
-import cloud_sptheme
-
 # If your extensions are in another directory, add it here. If the directory
 # is relative to the documentation root, use os.path.abspath to make it
 # absolute, like shown here.
@@ -98,10 +95,6 @@ pygments_style = 'sphinx'
 # must exist either in Sphinx' static/ path, or in one of the custom paths
 # given in html_static_path.
 #html_style = 'default.css'
-
-html_theme = "cloud"
-html_theme_path = [cloud_sptheme.get_theme_dir()]
-html_theme_options = {"roottarget": "index"}
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
