@@ -450,7 +450,7 @@ re-sends them out on a new topic::
     from moksha.api.hub import Consumer
 
     import fedmsg
-    import fedmsg.json
+    import fedmsg.encoding
 
     class MessageColorizer(Consumer):
         topic = "*"
@@ -465,7 +465,7 @@ re-sends them out on a new topic::
 
             # Format the incoming message
             code = pygments.highlight(
-                fedmsg.json.pretty_dumps(fedmsg.json.loads(message.body)),
+                fedmsg.encoding.pretty_dumps(fedmsg.encoding.loads(message.body)),
                 pygments.lexers.JavascriptLexer(),
                 pygments.formatters.HtmlFormatter(full=False)
             ).strip()

@@ -8,11 +8,11 @@ except ImportError:
     # py2.4, 2.5, 2.6
     from ordereddict import OrderedDict
 
-import simplejson
-import simplejson.encoder
+import json
+import json.encoder
 
 
-class FedMsgEncoder(simplejson.encoder.JSONEncoder):
+class FedMsgEncoder(json.encoder.JSONEncoder):
     """ Encoder with support for __json__ methods. """
 
     def default(self, obj):
@@ -30,7 +30,7 @@ dumps = encoder.encode
 pretty_encoder = FedMsgEncoder(indent=2)
 pretty_dumps = pretty_encoder.encode
 
-loads = simplejson.loads
+loads = json.loads
 
 __all__ = [
     'pretty_dumps',

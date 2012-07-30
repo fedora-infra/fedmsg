@@ -33,7 +33,7 @@ certificates and RSA signatures.
 
 import copy
 
-import fedmsg.json
+import fedmsg.encoding
 
 import logging
 log = logging.getLogger('fedmsg')
@@ -61,7 +61,7 @@ def sign(message, ssldir, certname, **config):
         "%s/%s.key" % (ssldir, certname))
 
     digest = M2Crypto.EVP.MessageDigest('sha1')
-    digest.update(fedmsg.json.dumps(message))
+    digest.update(fedmsg.encoding.dumps(message))
 
     signature = rsa_private.sign(digest.digest())
 
@@ -121,7 +121,7 @@ def validate(message, ssldir, **config):
     # matches up with the provided cert.
     rsa_public = cert.get_pubkey().get_rsa()
     digest = M2Crypto.EVP.MessageDigest('sha1')
-    digest.update(fedmsg.json.dumps(message))
+    digest.update(fedmsg.encoding.dumps(message))
     try:
         if not rsa_public.verify(digest.digest(), signature):
             raise M2Crypto.RSA.RSAError("RSA signature failed to validate.")

@@ -19,7 +19,7 @@ import os
 import sys
 import textwrap
 
-from fedmsg.json import pretty_dumps
+from fedmsg.encoding import pretty_dumps
 
 defaults = dict(
     topic_prefix="org.fedoraproject",

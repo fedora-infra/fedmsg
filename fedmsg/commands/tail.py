@@ -6,7 +6,7 @@ import pygments.lexers
 import pygments.formatters
 
 import fedmsg
-import fedmsg.json
+import fedmsg.encoding
 from fedmsg.commands import command
 
 
@@ -53,7 +53,7 @@ def tail(**kw):
         def formatter(d):
             d = fedmsg.crypto.strip_credentials(d)
             fancy = pygments.highlight(
-                fedmsg.json.pretty_dumps(d),
+                fedmsg.encoding.pretty_dumps(d),
                 pygments.lexers.JavascriptLexer(),
                 pygments.formatters.TerminalFormatter()
             ).strip()
