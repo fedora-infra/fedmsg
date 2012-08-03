@@ -6,6 +6,7 @@ config = dict(
             nickname='fedmsg-dev',
             channel='fedora-fedmsg',
             make_pretty=True,
+            make_terse=True,
             # Don't show the heartbeat... gross.
             filters=dict(
                 topic=[],
