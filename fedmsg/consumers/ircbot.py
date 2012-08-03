@@ -184,19 +184,15 @@ class IRCBotConsumer(FedmsgConsumer):
                 type(body), body))
 
         for client in self.irc_clients:
-            if client.factory.filters:
-                if self.apply_filters(client.factory.filters, topic, body):
-                    _body = self.prettify(
-                        msg=body,
-                        pretty=client.factory.pretty
-                    )
-                    raw_msg = "{0:<30} {1}".format(topic, _body)
-                    client.msg(
-                        client.factory.channel,
-                        raw_msg,
-                    )
-            else:
-                raw_msg = fedmsg.encoding.pretty_dumps(msg)
+            if not client.factory.filters or (
+                client.factory.filters and
+                self.apply_filters(client.factory.filters, topic, body)
+            ):
+                _body = self.prettify(
+                    msg=body,
+                    pretty=client.factory.pretty,
+                )
+                raw_msg = "{0:<30} {1}".format(topic, _body)
                 client.msg(
                     client.factory.channel,
                     raw_msg,
