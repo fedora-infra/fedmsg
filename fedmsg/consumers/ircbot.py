@@ -81,11 +81,12 @@ class FedMsngr(irc.IRCClient):
 class FedMsngrFactory(protocol.ClientFactory):
     protocol = FedMsngr
 
-    def __init__(self, channel, nickname, filters, pretty, parent_consumer):
+    def __init__(self, channel, nickname, filters, pretty, terse, parent_consumer):
         self.channel = channel
         self.nickname = nickname
         self.filters = filters
         self.pretty = pretty
+        self.terse = terse
         self.parent_consumer = parent_consumer
 
     def clientConnectionLost(self, connector, reason):
@@ -121,10 +122,11 @@ class IRCBotConsumer(FedmsgConsumer):
             channel = "#" + channel
             nickname = settings.get('nickname', "fedmsg-bot")
             pretty = settings.get('make_pretty', False)
+            terse = settings.get('make_terse', False)
 
             filters = self.compile_filters(settings.get('filters', None))
 
-            factory = FedMsngrFactory(channel, nickname, filters, pretty, self)
+            factory = FedMsngrFactory(channel, nickname, filters, pretty, terse, self)
             reactor.connectTCP(network, port, factory)
 
         return super(IRCBotConsumer, self).__init__(hub)
@@ -157,20 +159,26 @@ class IRCBotConsumer(FedmsgConsumer):
                 return False
         return True
 
-    def prettify(self, msg, pretty=False):
+    def prettify(self, topic, msg, pretty=False, terse=False):
+        if terse:
+            return topic
+
         msg = copy.deepcopy(msg)
+
         if msg.get('topic', None):
             msg.pop('topic')
+
         if msg.get('timestamp', None):
             msg['timestamp'] = time.ctime(msg['timestamp'])
+
         if pretty:
-            fancy = pygments.highlight(
+            msg = pygments.highlight(
                     fedmsg.encoding.pretty_dumps(msg),
                     pygments.lexers.JavascriptLexer(),
                     pygments.formatters.TerminalFormatter()
                     ).strip().encode('UTF-8')
-            return fancy
-        return msg
+
+        return "{0:<30} {1}".format(topic, msg)
 
     def consume(self, msg):
         """ Forward on messages from the bus to all IRC connections. """
@@ -188,11 +196,12 @@ class IRCBotConsumer(FedmsgConsumer):
                 client.factory.filters and
                 self.apply_filters(client.factory.filters, topic, body)
             ):
-                _body = self.prettify(
+                raw_msg = self.prettify(
+                    topic=topic,
                     msg=body,
                     pretty=client.factory.pretty,
+                    terse=client.factory.terse,
                 )
-                raw_msg = "{0:<30} {1}".format(topic, _body)
                 client.msg(
                     client.factory.channel,
                     raw_msg,
