@@ -6,9 +6,10 @@ from fedmsg.commands import command
 
 
 def _log_message(kw, message):
-    msg = {'log': message}
     if kw['json_input']:
         msg = fedmsg.encoding.loads(message)
+    else:
+        msg = {'log': message}
 
     fedmsg.publish(
         topic=kw['topic'],
@@ -38,6 +39,12 @@ extra_args = [
         'metavar': "MODNAME",
         'default': "logger",
         'help': "More control over the topic.  Think org.fp.MODNAME.TOPIC.",
+    }),
+    (['--cert-prefix'], {
+        'dest': 'cert_prefix',
+        'metavar': "CERT_PREFIX",
+        'default': "shell",
+        'help': "Specify a different cert from /etc/pki/fedmsg",
     }),
 ]
 
