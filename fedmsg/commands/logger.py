@@ -40,6 +40,12 @@ extra_args = [
         'default': "logger",
         'help': "More control over the topic.  Think org.fp.MODNAME.TOPIC.",
     }),
+    (['--cert-prefix'], {
+        'dest': 'cert_prefix',
+        'metavar': "CERT_PREFIX",
+        'default': "shell",
+        'help': "Specify a different cert from /etc/pki/fedmsg",
+    }),
 ]
 
 
