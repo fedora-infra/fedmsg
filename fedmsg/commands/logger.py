@@ -6,9 +6,10 @@ from fedmsg.commands import command
 
 
 def _log_message(kw, message):
-    msg = {'log': message}
     if kw['json_input']:
         msg = fedmsg.encoding.loads(message)
+    else:
+        msg = {'log': message}
 
     fedmsg.publish(
         topic=kw['topic'],
