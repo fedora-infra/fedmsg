@@ -424,6 +424,13 @@ snippet lives in ``fedoratagger.controllers.root``.  ``fedmsg`` figured that
 out and stripped it down to just ``fedoratagger`` for the final topic of
 ``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``.
 
+----
+
+You could also use the ``fedmsg-logger`` from a shell script like so::
+
+    $ echo "Hello, world." | fedmsg-logger --topic testing
+    $ echo '{"foo": "bar"}' | fedmsg-logger --json-input
+
 Examples of consuming events
 ----------------------------
 
