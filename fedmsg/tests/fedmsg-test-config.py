@@ -44,6 +44,10 @@ config = dict(
     validate_signatures=ssl_enabled_for_tests,
     ssldir=SEP.join([here, 'dev_certs/keys']),
 
+    crl_location="http://threebean.org/fedmsg-tests/crl.pem",
+    crl_cache="/tmp/crl.pem",
+    crl_cache_expiry=10,
+
     certnames={
         "unittest.%s" % hostname: "shell-app01.phx2.fedoraproject.org",
         # In prod/stg, map hostname to the name of the cert in ssldir.

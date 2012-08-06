@@ -28,6 +28,7 @@ install_requires = [
     'fabulous',
     'kitchen',
     'moksha>=0.8.8',
+    'requests',
     #'daemon',
 
     # These are "optional" for now to make installation from pypi easier.

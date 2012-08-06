@@ -6,9 +6,13 @@ here = os.getcwd()
 hostname = socket.gethostname()
 
 config = dict(
-    sign_messages=False,
+    sign_messages=True,
     validate_signatures=False,
     ssldir=SEP.join([here, 'dev_certs/keys']),
+
+    crl_location="https://fedoraproject.org/fedmsg/crl.pem",
+    crl_cache="/tmp/crl.pem",
+    crl_cache_expiry=10,
 
     certnames={
         # In prod/stg, map hostname to the name of the cert in ssldir.
