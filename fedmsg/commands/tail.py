@@ -1,4 +1,5 @@
 import pprint
+import re
 import time
 
 import pygments
@@ -27,6 +28,18 @@ extra_args = [
         'help': 'Extra-pretty print the JSON messages.',
         'default': False,
         'action': 'store_true',
+    }),
+    (['--filter'], {
+        'dest': 'exclusive_regexp',
+        'metavar': 'REGEXP',
+        'help': 'Only show topics that do not match the supplied regexp.',
+        'default': '_heartbeat',
+    }),
+    (['--regexp'], {
+        'dest': 'inclusive_regexp',
+        'metavar': 'REGEXP',
+        'help': 'Only show topics that match the supplied regexp.',
+        'default': '^((?!_heartbeat).)*$',
     }),
 ]
 
@@ -59,6 +72,9 @@ def tail(**kw):
             ).strip()
             return "\n" + fancy
 
+    exclusive_regexp = re.compile(kw['exclusive_regexp'])
+    inclusive_regexp = re.compile(kw['inclusive_regexp'])
+
     # The "proper" fedmsg way to do this would be to spin up or connect to an
     # existing Moksha Hub and register a consumer on the "*" topic that simply
     # prints out each message it consumes.  That seems like overkill, so we're
@@ -67,6 +83,10 @@ def tail(**kw):
     # TODO -- colors?
     # TODO -- tabular layout?
     for name, ep, topic, message in fedmsg.__context._tail_messages(**kw):
-        if '_heartbeat' in topic:
+        if exclusive_regexp.search(topic):
             continue
+
+        if not inclusive_regexp.search(topic):
+            continue
+
         print name, ep, topic, formatter(message)
