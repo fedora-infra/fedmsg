@@ -100,5 +100,42 @@ class TestMediaWikiEdit(Base):
     }
 
 
+class TestSCM(Base):
+    expected_title = "git.valgrind.git.receive (unsigned)"
+    expected_subti = 'Mark Wielaard pushed to valgrind.git.  ' + \
+            '"Clear CFLAGS CXXFLAGS LDFLAGS."'
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.valgrind.git.receive",
+        "msg": {
+            "commits": [
+                {
+                    "stats": {
+                        "files": {
+                            "valgrind.spec": {
+                                "deletions": 2,
+                                "lines": 3,
+                                "insertions": 1
+                            }
+                        },
+                        "total": {
+                            "deletions": 2,
+                            "files": 1,
+                            "insertions": 1,
+                            "lines": 3
+                        }
+                    },
+                    "name": "Mark Wielaard",
+                    "rev": "7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1",
+                    "summary": "Clear CFLAGS CXXFLAGS LDFLAGS.",
+                    "message": "Clear CFLAGS CXXFLAGS LDFLAGS.\n\nThis is a bit of a hammer, but without this the regtests results are just\nhorrible with hundreds of failures. Even with this there are 29 failures.\nOnce we fix those and have a clean testsuite we should reinstate the\nFLAGS and figure out exactly which ones cause the massive fails.\n",
+                    "email": "mjw@redhat.com"
+                }
+            ]
+        }
+    }
+
+
 if __name__ == '__main__':
     unittest.main()

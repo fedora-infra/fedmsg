@@ -14,12 +14,14 @@ handled gracefully.
 _ = lambda s: s
 
 from fedmsg.text.bodhi import BodhiProcessor
+from fedmsg.text.scm import SCMProcessor
 from fedmsg.text.tagger import TaggerProcessor
 from fedmsg.text.mediawiki import WikiProcessor
 from fedmsg.text.default import DefaultProcessor
 
 processors = [
     BodhiProcessor(_),
+    SCMProcessor(_),
     TaggerProcessor(_),
     WikiProcessor(_),
     DefaultProcessor(_),
