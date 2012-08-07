@@ -39,7 +39,7 @@ class TestUnhandled(Base):
 
 class TestBodhiComment(Base):
     expected_title = "bodhi.update.comment (unsigned)"
-    expected_subti = "ralph commented on bodhi update (karma: -1)"
+    expected_subti = "ralph commented on a bodhi update (karma: -1)"
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -59,7 +59,7 @@ class TestBodhiComment(Base):
 
 class TestTaggerVoteAnonymous(Base):
     expected_title = "fedoratagger.tag.update (unsigned)"
-    expected_subti = "anonymous voted on a package tag"
+    expected_subti = "anonymous voted on the package tag 'foo'"
     msg = {
       "i": 1,
       "timestamp": 1344344522.1364241,
@@ -68,7 +68,7 @@ class TestTaggerVoteAnonymous(Base):
         "tag": {
           "dislike": 1,
           "total": 3,
-          "tag": "jklasdfjklasdfjklasdfjkl",
+          "tag": "foo",
           "votes": 5,
           "like": 4
         },
