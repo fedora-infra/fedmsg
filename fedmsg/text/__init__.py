@@ -19,6 +19,7 @@ from fedmsg.text.bodhi import BodhiProcessor
 from fedmsg.text.scm import SCMProcessor
 from fedmsg.text.tagger import TaggerProcessor
 from fedmsg.text.mediawiki import WikiProcessor
+from fedmsg.text.logger import LoggerProcessor
 from fedmsg.text.default import DefaultProcessor
 
 processors = [
@@ -26,6 +27,7 @@ processors = [
     SCMProcessor(_),
     TaggerProcessor(_),
     WikiProcessor(_),
+    LoggerProcessor(_),
     DefaultProcessor(_),
 ]
 

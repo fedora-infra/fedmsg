@@ -100,6 +100,32 @@ class TestMediaWikiEdit(Base):
     }
 
 
+class TestLoggerNormal(Base):
+    expected_title = "logger.log (unsigned)"
+    expected_subti = 'hello, world.'
+    msg = {
+        "i": 1,
+        "timestamp": 1344352873.714926,
+        "topic": "org.fedoraproject.dev.logger.log",
+        "msg": {
+            "log": "hello, world."
+        }
+    }
+
+class TestLoggerJSON(Base):
+    expected_title = "logger.log (unsigned)"
+    expected_subti = '<custom JSON message>'
+    msg = {
+        "i": 1,
+        "timestamp": 1344352929.415939,
+        "topic": "org.fedoraproject.dev.logger.log",
+        "msg": {
+            "foo": "bar"
+        }
+    }
+
+
+
 class TestSCM(Base):
     expected_title = "git.valgrind.git.receive (unsigned)"
     expected_subti = 'Mark Wielaard pushed to valgrind.git.  ' + \
