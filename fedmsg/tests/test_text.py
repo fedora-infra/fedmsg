@@ -20,7 +20,6 @@ class Base(unittest.TestCase):
         actual_title = fedmsg.text._msg2title(self.msg, **self.config)
         eq_(actual_title, self.expected_title)
 
-
     def test_subtitle(self):
         """ Does fedmsg.text produce the expected subtitle? """
         if None in (self.msg, self.expected_title, self.expected_subti):
@@ -33,7 +32,7 @@ class TestUnhandled(Base):
     expected_title = "unhandled_service.some_event (unsigned)"
     expected_subti = ""
     msg = {
-      "topic": "org.fedoraproject.stg.unhandled_service.some_event"
+        "topic": "org.fedoraproject.stg.unhandled_service.some_event"
     }
 
 
@@ -61,21 +60,22 @@ class TestTaggerVoteAnonymous(Base):
     expected_title = "fedoratagger.tag.update (unsigned)"
     expected_subti = "anonymous voted on the package tag 'foo'"
     msg = {
-      "i": 1,
-      "timestamp": 1344344522.1364241,
-      "topic": "org.fedoraproject.stg.fedoratagger.tag.update",
-      "msg": {
-        "tag": {
-          "dislike": 1,
-          "total": 3,
-          "tag": "foo",
-          "votes": 5,
-          "like": 4
-        },
-        "user": {
-          "username": "anonymous",
-          "votes": 0,
-          "rank": -1
+        "i": 1,
+        "timestamp": 1344344522.1364241,
+        "topic": "org.fedoraproject.stg.fedoratagger.tag.update",
+        "msg": {
+            "tag": {
+                "dislike": 1,
+                "total": 3,
+                "tag": "foo",
+                "votes": 5,
+                "like": 4
+            },
+            "user": {
+                "username": "anonymous",
+                "votes": 0,
+                "rank": -1
+            }
         }
       }
     }
