@@ -12,3 +12,6 @@ class BaseProcessor(object):
 
     def handle_subtitle(self, msg, **config):
         return False
+
+    def handle_link(self, msg, **config):
+        return False

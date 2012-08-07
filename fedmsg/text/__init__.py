@@ -33,9 +33,10 @@ processors = [
 
 
 def msg2repr(msg, **config):
-    fmt = "{title} -- {subtitle}"
+    fmt = "{title} -- {subtitle} {link}"
     title = _msg2title(msg, **config)
     subtitle = _msg2subtitle(msg, **config)
+    link = _msg2link(msg, **config)
     return fmt.format(**locals())
 
 
@@ -58,6 +59,16 @@ def _msg2subtitle(msg, **config):
         if not p.handle_subtitle(msg, **config):
             continue
         return p.subtitle(msg, **config)
+
+    # This should never happen.
+    # DefaultProcessor should always catch messages.
+    raise RuntimeError("No text processor caught the message.")
+
+def _msg2link(msg, **config):
+    for p in processors:
+        if not p.handle_link(msg, **config):
+            continue
+        return p.link(msg, **config)
 
     # This should never happen.
     # DefaultProcessor should always catch messages.
