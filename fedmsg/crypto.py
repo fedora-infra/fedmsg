@@ -32,6 +32,9 @@ certificates and RSA signatures.
 
 
 import copy
+import os
+import requests
+import time
 
 import fedmsg.encoding
 
@@ -111,11 +114,29 @@ def validate(message, ssldir, **config):
     # Validate the cert.  Make sure it is signed by our CA.
     #   validate_certificate will one day be a part of M2Crypto.SSL.Context
     #   https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
-    # FIXME -- the CRL is not actually checked here.
     ctx = m2ext.SSL.Context()
     ctx.load_verify_locations(cafile="%s/ca.crt" % ssldir)
     if not ctx.validate_certificate(cert):
         return fail("X509 certificate is not valid.")
+
+    # Load and check against the CRL
+    crl = _load_crl(**config)
+
+    # FIXME -- We need to check that the CRL is signed by our own CA.
+    # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
+    #if not ctx.validate_certificate(crl):
+    #    return fail("X509 CRL is not valid.")
+
+    # FIXME -- we check the CRL, but by doing string comparison ourselves.
+    # This is not what we want to be doing.
+    # There is a patch into M2Crypto to handle this for us.  We should use it
+    # once its integrated upstream.
+    # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
+    revoked_serials = [long(line.split(': ')[1].strip())
+                       for line in crl.as_text().split('\n')
+                       if 'Serial Number:' in line]
+    if cert.get_serial_number() in revoked_serials:
+        return fail("X509 certificate is in the Revocation List (CRL)")
 
     # If the cert is good, then test to see if the signature in the messages
     # matches up with the provided cert.
@@ -138,3 +159,26 @@ def strip_credentials(message):
         if field in message:
             del message[field]
     return message
+
+
+def _load_crl(crl_location="https://fedoraproject.org/fedmsg/crl.pem",
+              crl_cache="/var/cache/fedmsg/crl.pem",
+              crl_cache_expiry=1800,
+              **config):
+    """ Load the CRL from disk.
+
+    Get a fresh copy from fp.o/fedmsg/crl.pem if ours is getting stale.
+    """
+
+    try:
+        modtime = os.stat(crl_cache).st_mtime
+    except OSError:
+        # File does not exist yet.
+        modtime = 0
+
+    if time.time() - modtime > crl_cache_expiry:
+        response = requests.get(crl_location)
+        with open(crl_cache, 'w') as f:
+            f.write(response.content)
+
+    return M2Crypto.X509.load_crl(crl_cache)

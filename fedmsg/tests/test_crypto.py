@@ -15,6 +15,10 @@ class TestCrypto(unittest.TestCase):
             'ssldir': SEP.join((here, 'test_certs/keys')),
             # Normally this is 'app01.stg.phx2.fedoraproject.org'
             'certname': 'shell-app01.phx2.fedoraproject.org',
+            'crl_location': "http://threebean.org/fedmsg-tests/crl.pem",
+            'crl_cache': "/tmp/crl.pem",
+            'crl_cache_expiry': 10,
+
         }
         try:
             import M2Crypto
