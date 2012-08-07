@@ -80,6 +80,42 @@ class TestTaggerVoteAnonymous(Base):
     }
 
 
+class TestTaggerCreate(Base):
+    expected_title = "fedoratagger.tag.create (unsigned)"
+    expected_subti = 'Added new tag "awesome"'
+    msg = {
+        "i": 2,
+        "timestamp": 1344360737.9752989,
+        "topic": "org.fedoraproject.stg.fedoratagger.tag.create",
+        "msg": {
+            "tag": {
+                "dislike": 0,
+                "total": 1,
+                "tag": "awesome",
+                "votes": 1,
+                "like": 1
+            }
+        }
+    }
+
+
+class TestTaggerLogin(Base):
+    expected_title = "fedoratagger.login.tagger (unsigned)"
+    expected_subti = "ralph logged in to fedoratagger"
+    msg = {
+        "i": 2,
+        "timestamp": 1344360950.296824,
+        "topic": "org.fedoraproject.stg.fedoratagger.login.tagger",
+        "msg": {
+            "user": {
+                "username": "ralph",
+                "votes": 26,
+                "rank": 1
+            }
+        }
+    }
+
+
 class TestMediaWikiEdit(Base):
     expected_title = "wiki.article.edit (unsigned)"
     expected_subti = 'Ralph made a wiki edit to "Messaging SIG"'
@@ -112,6 +148,7 @@ class TestLoggerNormal(Base):
         }
     }
 
+
 class TestLoggerJSON(Base):
     expected_title = "logger.log (unsigned)"
     expected_subti = '<custom JSON message>'
@@ -123,7 +160,6 @@ class TestLoggerJSON(Base):
             "foo": "bar"
         }
     }
-
 
 
 class TestSCM(Base):
