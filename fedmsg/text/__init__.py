@@ -13,6 +13,8 @@ handled gracefully.
 # TODO - internationalization
 _ = lambda s: s
 
+import fedmsg.crypto
+
 from fedmsg.text.bodhi import BodhiProcessor
 from fedmsg.text.scm import SCMProcessor
 from fedmsg.text.tagger import TaggerProcessor
@@ -63,7 +65,7 @@ def _msg2subtitle(msg, **config):
 def _msg2suffix(msg, **config):
     if 'signature' not in msg:
         return _("(unsigned)")
-    else:
+    elif config.get('validate_signatures'):
         if not fedmsg.crypto.validate(msg, **config):
             return _("(invalid signature!)")
 
