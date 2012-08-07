@@ -136,6 +136,57 @@ class TestMediaWikiEdit(Base):
     }
 
 
+class TestMediaWikiUpload(Base):
+    expected_title = "wiki.upload.complete (unsigned)"
+    expected_subti = 'Ralph uploaded File:Cat.jpg to the wiki: ' + \
+            '"This is a beautiful cat..."'
+    msg = {
+        "topic": "org.fedoraproject.stg.wiki.upload.complete",
+        "msg": {
+            "user_id": 8306,
+            "description": "This is a beautiful cat",
+            "title": {
+                "mCascadeSources": [],
+                "mLength": -1,
+                "mInterwiki": "",
+                "mNotificationTimestamp": [],
+                "mCascadeRestriction": None,
+                "mRedirect": None,
+                "mArticleID": 46586,
+                "mTextform": "Cat.jpg",
+                "mWatched": None,
+                "mDbkeyform": "Cat.jpg",
+                "mCascadingRestrictions": [],
+                "mDefaultNamespace": 0,
+                "mRestrictions": [],
+                "mUrlform": "Cat.jpg",
+                "mLatestID": False,
+                "mBacklinkCache": {},
+                "mNamespace": 6,
+                "mUserCaseDBKey": "Cat.jpg",
+                "mTitleProtection": False,
+                "mOldRestrictions": False,
+                "mFragment": "",
+                "mHasCascadingRestrictions": None,
+                "mPrefixedText": "File:Cat.jpg",
+                "mRestrictionsExpiry": {
+                    "create": "infinity"
+                },
+                "mRestrictionsLoaded": False
+            },
+            "user_text": "Ralph",
+            "minor_mime": "jpeg",
+            "url": "/w/uploads/d/d1/Cat.jpg",
+            "file_exists": True,
+            "mime": "image/jpeg",
+            "major_mime": "image",
+            "media_type": "BITMAP",
+            "size": 295667
+        },
+        "timestamp": 1344361406
+    }
+
+
 class TestLoggerNormal(Base):
     expected_title = "logger.log (unsigned)"
     expected_subti = 'hello, world.'
