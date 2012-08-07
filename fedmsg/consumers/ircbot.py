@@ -5,6 +5,7 @@
 # regexes in specified IRC channels
 import fedmsg
 import fedmsg.encoding
+import fedmsg.text
 
 import copy
 import re
@@ -161,7 +162,7 @@ class IRCBotConsumer(FedmsgConsumer):
 
     def prettify(self, topic, msg, pretty=False, terse=False):
         if terse:
-            return topic
+            return fedmsg.text.msg2repr(msg, **self.hub.config)
 
         msg = copy.deepcopy(msg)
 
@@ -183,13 +184,6 @@ class IRCBotConsumer(FedmsgConsumer):
     def consume(self, msg):
         """ Forward on messages from the bus to all IRC connections. """
         topic, body = msg.get('topic'), msg.get('body')
-
-        # We don't want to spam IRC with enormous base64 creds.
-        try:
-            body = fedmsg.crypto.strip_credentials(body)
-        except Exception, e:
-            log.warn("Failed to strip credentials from %r, %r" % (
-                type(body), body))
 
         for client in self.irc_clients:
             if not client.factory.filters or (
