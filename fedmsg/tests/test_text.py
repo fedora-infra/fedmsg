@@ -77,7 +77,26 @@ class TestTaggerVoteAnonymous(Base):
                 "rank": -1
             }
         }
-      }
+    }
+
+
+class TestMediaWikiEdit(Base):
+    expected_title = "wiki.article.edit (unsigned)"
+    expected_subti = 'Ralph made a wiki edit to "Messaging SIG"'
+    msg = {
+        "topic": "org.fedoraproject.stg.wiki.article.edit",
+        "msg": {
+            "watch_this": None,
+            "base_rev_id": False,
+            "title": "Messaging SIG",
+            "minor_edit": 0,
+            "text": "The diff goes here...",
+            "section_anchor": None,
+            "summary": "/* Mission */ ",
+            "user": "Ralph",
+            "revision": None
+        },
+        "timestamp": 1344350200
     }
 
 
