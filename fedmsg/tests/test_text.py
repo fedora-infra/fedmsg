@@ -36,6 +36,71 @@ class TestUnhandled(Base):
     }
 
 
+class TestBodhiRequestUnpush(Base):
+    expected_title = "bodhi.update.request.unpush (unsigned)"
+    expected_subti = "foo requested unpush"
+    msg = {
+        'topic': "org.fedoraproject.dev.bodhi.update.request.unpush",
+        'msg': {
+            'update': {
+                'title': 'foo',
+            },
+        },
+    }
+
+
+class TestBodhiRequestObsolete(Base):
+    expected_title = "bodhi.update.request.obsolete (unsigned)"
+    expected_subti = "foo requested obsolete"
+    msg = {
+        'topic': "org.fedoraproject.dev.bodhi.update.request.obsolete",
+        'msg': {
+            'update': {
+                'title': 'foo',
+            },
+        },
+    }
+
+
+class TestBodhiRequestStable(Base):
+    expected_title = "bodhi.update.request.stable (unsigned)"
+    expected_subti = "foo requested stable"
+    msg = {
+        'topic': "org.fedoraproject.dev.bodhi.update.request.stable",
+        'msg': {
+            'update': {
+                'title': 'foo',
+            },
+        },
+    }
+
+
+class TestBodhiRequestRevoke(Base):
+    expected_title = "bodhi.update.request.revoke (unsigned)"
+    expected_subti = "foo requested revoke"
+    msg = {
+        'topic': "org.fedoraproject.dev.bodhi.update.request.revoke",
+        'msg': {
+            'update': {
+                'title': 'foo',
+            },
+        },
+    }
+
+
+class TestBodhiRequestTesting(Base):
+    expected_title = "bodhi.update.request.testing (unsigned)"
+    expected_subti = "foo requested testing"
+    msg = {
+        'topic': "org.fedoraproject.dev.bodhi.update.request.testing",
+        'msg': {
+            'update': {
+                'title': 'foo',
+            },
+        },
+    }
+
+
 class TestBodhiComment(Base):
     expected_title = "bodhi.update.comment (unsigned)"
     expected_subti = "ralph commented on a bodhi update (karma: -1)"
