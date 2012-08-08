@@ -36,6 +36,26 @@ class TestUnhandled(Base):
     }
 
 
+class TestFASEditProfile(Base):
+    expected_title = "fas.user.update (unsigned)"
+    expected_subti = "ralph edited the following fields of ralph's " + \
+            "FAS profile:  comments"
+    msg = {
+        u'i': 1,
+        u'timestamp': 1344432054.8098609,
+        u'topic': u'org.fedoraproject.stg.fas.user.update',
+        u'msg': {
+            u'fields': [u'comments'],
+            u'user': {
+                u'username': u'ralph'
+            },
+            u'agent': {
+                u'username': u'ralph'
+            }
+        }
+    }
+
+
 class TestBodhiRequestUnpush(Base):
     expected_title = "bodhi.update.request.unpush (unsigned)"
     expected_subti = "foo requested unpush"
