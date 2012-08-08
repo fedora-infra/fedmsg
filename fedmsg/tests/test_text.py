@@ -514,39 +514,38 @@ class TestLoggerJSON(Base):
 
 
 class TestSCM(Base):
-    expected_title = "git.valgrind.git.receive (unsigned)"
-    expected_subti = 'Mark Wielaard pushed to valgrind.git.  ' + \
+    expected_title = "git.receive.valgrind.master (unsigned)"
+    expected_subti = 'Mark Wielaard pushed to valgrind (master).  ' + \
             '"Clear CFLAGS CXXFLAGS LDFLAGS."'
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
-        "topic": "org.fedoraproject.prod.git.valgrind.git.receive",
+        "topic": "org.fedoraproject.prod.git.receive.valgrind.master",
         "msg": {
-            "commits": [
-                {
-                    "stats": {
-                        "files": {
-                            "valgrind.spec": {
-                                "deletions": 2,
-                                "lines": 3,
-                                "insertions": 1
-                            }
-                        },
-                        "total": {
+            "commit": {
+                "stats": {
+                    "files": {
+                        "valgrind.spec": {
                             "deletions": 2,
-                            "files": 1,
-                            "insertions": 1,
-                            "lines": 3
+                            "lines": 3,
+                            "insertions": 1
                         }
                     },
-                    "name": "Mark Wielaard",
-                    "rev": "7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1",
-                    "summary": "Clear CFLAGS CXXFLAGS LDFLAGS.",
-                    "message": """Clear CFLAGS CXXFLAGS LDFLAGS.
-                    This is a bit of a hammer.""",
-                    "email": "mjw@redhat.com"
-                }
-            ]
+                    "total": {
+                        "deletions": 2,
+                        "files": 1,
+                        "insertions": 1,
+                        "lines": 3
+                    }
+                },
+                "name": "Mark Wielaard",
+                "rev": "7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1",
+                "summary": "Clear CFLAGS CXXFLAGS LDFLAGS.",
+                "message": """Clear CFLAGS CXXFLAGS LDFLAGS.
+                This is a bit of a hammer.""",
+                "email": "mjw@redhat.com",
+                "branch": "master",
+            }
         }
     }
 
