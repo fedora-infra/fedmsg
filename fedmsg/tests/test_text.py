@@ -36,6 +36,306 @@ class TestUnhandled(Base):
     }
 
 
+class TestFASUserCreate(Base):
+    expected_title = "fas.user.create (unsigned)"
+    expected_subti = "New FAS account:  'ralph'  (created by 'ralph')"
+    msg = {
+        u'i': 1,
+        u'timestamp': 1344432054.8098609,
+        u'topic': u'org.fedoraproject.stg.fas.user.create',
+        u'msg': {
+            u'user': {
+                u'username': u'ralph'
+            },
+            u'agent': {
+                u'username': u'ralph'
+            }
+        }
+    }
+
+
+class TestFASEditProfile(Base):
+    expected_title = "fas.user.update (unsigned)"
+    expected_subti = "ralph edited the following fields of ralph's " + \
+            "FAS profile:  comments"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.user.update',
+        u'msg': {
+            u'fields': [u'comments'],
+            u'user': {u'username': u'ralph'},
+            u'agent': {u'username': u'ralph'},
+        }
+    }
+
+
+class TestFASEditGroup(Base):
+    expected_title = "fas.group.update (unsigned)"
+    expected_subti = "ralph edited the following fields of the " + \
+            "ambassadors FAS group:  display_name"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.group.update',
+        u'msg': {
+            u'fields': [u'display_name'],
+            u'group': {u'name': u'ambassadors'},
+            u'agent': {u'username': u'ralph'},
+        }
+    }
+
+
+class TestFASGroupCreate(Base):
+    expected_title = "fas.group.create (unsigned)"
+    expected_subti = "ralph created new FAS group ambassadors"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.group.create',
+        u'msg': {
+            u'group': {u'name': u'ambassadors'},
+            u'agent': {u'username': u'ralph'},
+        }
+    }
+
+
+class TestFASRoleUpdate(Base):
+    expected_title = "fas.role.update (unsigned)"
+    expected_subti = "toshio changed ralph's role in the ambassadors group"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.role.update',
+        u'msg': {
+            u'group': {u'name': u'ambassadors'},
+            u'user': {u'username': u'ralph'},
+            u'agent': {u'username': u'toshio'},
+        }
+    }
+
+
+class TestFASGroupRemove(Base):
+    expected_title = "fas.group.member.remove (unsigned)"
+    expected_subti = "toshio removed ralph from " + \
+            "the ambassadors group"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.group.member.remove',
+        u'msg': {
+            u'group': {u'name': u'ambassadors'},
+            u'user': {u'username': u'ralph'},
+            u'agent': {u'username': u'toshio'},
+        }
+    }
+
+
+class TestFASGroupSponsor(Base):
+    expected_title = "fas.group.member.sponsor (unsigned)"
+    expected_subti = "toshio sponsored ralph's membership " + \
+            "in the ambassadors group"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.group.member.sponsor',
+        u'msg': {
+            u'group': {u'name': u'ambassadors'},
+            u'user': {u'username': u'ralph'},
+            u'agent': {u'username': u'toshio'},
+        }
+    }
+
+
+class TestFASGroupApply(Base):
+    expected_title = "fas.group.member.apply (unsigned)"
+    expected_subti = "ralph applied for ralph's membership " + \
+            "in the ambassadors group"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.group.member.apply',
+        u'msg': {
+            u'group': {u'name': u'ambassadors'},
+            u'user': {u'username': u'ralph'},
+            u'agent': {u'username': u'ralph'},
+        }
+    }
+
+
+class TestBodhiUpdateComplete(Base):
+    expected_title = "bodhi.update.complete.testing (unsigned)"
+    expected_subti = "ralph's fedmsg-0.2.7-2.el6 bodhi update " + \
+            "completed push to testing"
+    msg = {
+        "i": 88,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.bodhi.update.complete.testing",
+        "msg": {
+            "update": {
+                "close_bugs": True,
+                "critpath": False,
+                "stable_karma": 3,
+                "date_pushed": 1344447839.0,
+                "title": "fedmsg-0.2.7-2.el6",
+                "nagged": None,
+                "comments": [
+                    {
+                        "group": None,
+                        "author": "bodhi",
+                        "text": "This update has been submitted for " + \
+                                "testing by ralph. ",
+                        "karma": 0,
+                        "anonymous": False,
+                        "timestamp": 1344266157.0
+                    },
+                    {
+                        "group": None,
+                        "author": "bodhi",
+                        "text": "This update is currently being pushed " + \
+                                "to the Fedora EPEL 6 testing updates " + \
+                                "repository.",
+                        "karma": 0,
+                        "anonymous": False,
+                        "timestamp": 1344443927.0
+                    }
+                ],
+                "updateid": "FEDORA-EPEL-2012-6650",
+                "type": "bugfix",
+                "status": "testing",
+                "date_submitted": 1344266152.0,
+                "unstable_karma": -3,
+                "release": {
+                    "dist_tag": "dist-6E-epel",
+                    "id_prefix": "FEDORA-EPEL",
+                    "locked": False,
+                    "name": "EL-6",
+                    "long_name": "Fedora EPEL 6"
+                },
+                "approved": None,
+                "builds": [
+                    {
+                        "nvr": "fedmsg-0.2.7-2.el6",
+                        "package": {
+                            "suggest_reboot": False,
+                            "committers": [
+                                "ralph"
+                            ],
+                            "name": "fedmsg"
+                        }
+                    }
+                ],
+                "date_modified": None,
+                "notes": "Bugfix - Added a forgotten new " + \
+                        "requirement on python-requests.",
+                "request": None,
+                "bugs": [],
+                "critpath_approved": False,
+                "karma": 0,
+                "submitter": "ralph",
+            }
+        }
+    }
+
+
+class TestBodhiMashTaskMashing(Base):
+    expected_title = "bodhi.mashtask.mashing (unsigned)"
+    expected_subti = "bodhi masher is mashing test_repo"
+    msg = {
+        'topic': "org.fedoraproject.prod.bodhi.mashtask.mashing",
+        'msg': {
+            'repo': 'test_repo',
+        },
+    }
+
+
+class TestBodhiMashTaskStart(Base):
+    expected_title = "bodhi.mashtask.start (unsigned)"
+    expected_subti = "bodhi masher started its mashtask"
+    msg = {
+        'topic': "org.fedoraproject.prod.bodhi.mashtask.start",
+        'msg': {}
+    }
+
+
+class TestBodhiMashTaskComplete(Base):
+    expected_title = "bodhi.mashtask.complete (unsigned)"
+    expected_subti = "bodhi masher failed to complete its mashtask!"
+    msg = {
+        'topic': "org.fedoraproject.prod.bodhi.mashtask.complete",
+        'msg': {'success': False}
+    }
+
+
+class TestBodhiMashTaskSyncWait(Base):
+    expected_title = "bodhi.mashtask.sync.wait (unsigned)"
+    expected_subti = "bodhi masher is waiting on mirror repos to sync"
+    msg = {
+        'topic': "org.fedoraproject.prod.bodhi.mashtask.sync.wait",
+        'msg': {}
+    }
+
+
+class TestBodhiMashTaskSyncWait(Base):
+    expected_title = "bodhi.mashtask.sync.done (unsigned)"
+    expected_subti = "bodhi masher finished waiting on mirror repos to sync"
+    msg = {
+        'topic': "org.fedoraproject.prod.bodhi.mashtask.sync.done",
+        'msg': {}
+    }
+
+
+class TestBodhiRequestUnpush(Base):
+    expected_title = "bodhi.update.request.unpush (unsigned)"
+    expected_subti = "foo requested unpush"
+    msg = {
+        'topic': "org.fedoraproject.dev.bodhi.update.request.unpush",
+        'msg': {
+            'update': {
+                'title': 'foo',
+            },
+        },
+    }
+
+
+class TestBodhiRequestObsolete(Base):
+    expected_title = "bodhi.update.request.obsolete (unsigned)"
+    expected_subti = "foo requested obsolete"
+    msg = {
+        'topic': "org.fedoraproject.dev.bodhi.update.request.obsolete",
+        'msg': {
+            'update': {
+                'title': 'foo',
+            },
+        },
+    }
+
+
+class TestBodhiRequestStable(Base):
+    expected_title = "bodhi.update.request.stable (unsigned)"
+    expected_subti = "foo requested stable"
+    msg = {
+        'topic': "org.fedoraproject.dev.bodhi.update.request.stable",
+        'msg': {
+            'update': {
+                'title': 'foo',
+            },
+        },
+    }
+
+
+class TestBodhiRequestRevoke(Base):
+    expected_title = "bodhi.update.request.revoke (unsigned)"
+    expected_subti = "foo requested revoke"
+    msg = {
+        'topic': "org.fedoraproject.dev.bodhi.update.request.revoke",
+        'msg': {
+            'update': {
+                'title': 'foo',
+            },
+        },
+    }
+
+
+class TestBodhiRequestTesting(Base):
+    expected_title = "bodhi.update.request.testing (unsigned)"
+    expected_subti = "foo requested testing"
+    msg = {
+        'topic': "org.fedoraproject.dev.bodhi.update.request.testing",
+        'msg': {
+            'update': {
+                'title': 'foo',
+            },
+        },
+    }
+
+
 class TestBodhiComment(Base):
     expected_title = "bodhi.update.comment (unsigned)"
     expected_subti = "ralph commented on a bodhi update (karma: -1)"
@@ -80,6 +380,42 @@ class TestTaggerVoteAnonymous(Base):
     }
 
 
+class TestTaggerCreate(Base):
+    expected_title = "fedoratagger.tag.create (unsigned)"
+    expected_subti = 'Added new tag "awesome"'
+    msg = {
+        "i": 2,
+        "timestamp": 1344360737.9752989,
+        "topic": "org.fedoraproject.stg.fedoratagger.tag.create",
+        "msg": {
+            "tag": {
+                "dislike": 0,
+                "total": 1,
+                "tag": "awesome",
+                "votes": 1,
+                "like": 1
+            }
+        }
+    }
+
+
+class TestTaggerLogin(Base):
+    expected_title = "fedoratagger.login.tagger (unsigned)"
+    expected_subti = "ralph logged in to fedoratagger"
+    msg = {
+        "i": 2,
+        "timestamp": 1344360950.296824,
+        "topic": "org.fedoraproject.stg.fedoratagger.login.tagger",
+        "msg": {
+            "user": {
+                "username": "ralph",
+                "votes": 26,
+                "rank": 1
+            }
+        }
+    }
+
+
 class TestMediaWikiEdit(Base):
     expected_title = "wiki.article.edit (unsigned)"
     expected_subti = 'Ralph made a wiki edit to "Messaging SIG"'
@@ -100,6 +436,57 @@ class TestMediaWikiEdit(Base):
     }
 
 
+class TestMediaWikiUpload(Base):
+    expected_title = "wiki.upload.complete (unsigned)"
+    expected_subti = 'Ralph uploaded File:Cat.jpg to the wiki: ' + \
+            '"This is a beautiful cat..."'
+    msg = {
+        "topic": "org.fedoraproject.stg.wiki.upload.complete",
+        "msg": {
+            "user_id": 8306,
+            "description": "This is a beautiful cat",
+            "title": {
+                "mCascadeSources": [],
+                "mLength": -1,
+                "mInterwiki": "",
+                "mNotificationTimestamp": [],
+                "mCascadeRestriction": None,
+                "mRedirect": None,
+                "mArticleID": 46586,
+                "mTextform": "Cat.jpg",
+                "mWatched": None,
+                "mDbkeyform": "Cat.jpg",
+                "mCascadingRestrictions": [],
+                "mDefaultNamespace": 0,
+                "mRestrictions": [],
+                "mUrlform": "Cat.jpg",
+                "mLatestID": False,
+                "mBacklinkCache": {},
+                "mNamespace": 6,
+                "mUserCaseDBKey": "Cat.jpg",
+                "mTitleProtection": False,
+                "mOldRestrictions": False,
+                "mFragment": "",
+                "mHasCascadingRestrictions": None,
+                "mPrefixedText": "File:Cat.jpg",
+                "mRestrictionsExpiry": {
+                    "create": "infinity"
+                },
+                "mRestrictionsLoaded": False
+            },
+            "user_text": "Ralph",
+            "minor_mime": "jpeg",
+            "url": "/w/uploads/d/d1/Cat.jpg",
+            "file_exists": True,
+            "mime": "image/jpeg",
+            "major_mime": "image",
+            "media_type": "BITMAP",
+            "size": 295667
+        },
+        "timestamp": 1344361406
+    }
+
+
 class TestLoggerNormal(Base):
     expected_title = "logger.log (unsigned)"
     expected_subti = 'hello, world.'
@@ -112,6 +499,7 @@ class TestLoggerNormal(Base):
         }
     }
 
+
 class TestLoggerJSON(Base):
     expected_title = "logger.log (unsigned)"
     expected_subti = '<custom JSON message>'
@@ -123,7 +511,6 @@ class TestLoggerJSON(Base):
             "foo": "bar"
         }
     }
-
 
 
 class TestSCM(Base):
@@ -155,7 +542,8 @@ class TestSCM(Base):
                     "name": "Mark Wielaard",
                     "rev": "7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1",
                     "summary": "Clear CFLAGS CXXFLAGS LDFLAGS.",
-                    "message": "Clear CFLAGS CXXFLAGS LDFLAGS.\n\nThis is a bit of a hammer, but without this the regtests results are just\nhorrible with hundreds of failures. Even with this there are 29 failures.\nOnce we fix those and have a clean testsuite we should reinstate the\nFLAGS and figure out exactly which ones cause the massive fails.\n",
+                    "message": """Clear CFLAGS CXXFLAGS LDFLAGS.
+                    This is a bit of a hammer.""",
                     "email": "mjw@redhat.com"
                 }
             ]

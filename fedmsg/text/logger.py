@@ -9,6 +9,6 @@ class LoggerProcessor(BaseProcessor):
             if 'log' in msg['msg']:
                 return msg['msg']['log']
             else:
-                return "<custom JSON message>"
+                return self._("<custom JSON message>")
         else:
             raise NotImplementedError

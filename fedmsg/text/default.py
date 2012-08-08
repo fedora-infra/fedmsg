@@ -7,8 +7,14 @@ class DefaultProcessor(BaseProcessor):
     def handle_subtitle(self, msg, **config):
         return True
 
+    def handle_link(self, msg, **config):
+        return True
+
     def title(self, msg, **config):
         return '.'.join(msg['topic'].split('.')[3:])
 
     def subtitle(self, msg, **config):
+        return ""
+
+    def link(self, msg, **config):
         return ""

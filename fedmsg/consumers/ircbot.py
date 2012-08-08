@@ -101,6 +101,7 @@ class FedMsngrFactory(protocol.ClientFactory):
 
 class IRCBotConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
+    validate_signatures = False
 
     def __init__(self, hub):
         self.hub = hub
