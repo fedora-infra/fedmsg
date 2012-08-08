@@ -11,7 +11,9 @@ handled gracefully.
 """
 
 # TODO - internationalization
-_ = lambda s: s
+import gettext
+t = gettext.translation('fedmsg', 'locale', fallback=True)
+_ = t.ugettext
 
 import fedmsg.crypto
 

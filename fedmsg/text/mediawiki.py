@@ -13,13 +13,15 @@ class WikiProcessor(BaseProcessor):
         if 'wiki.article.edit' in msg['topic']:
             user = msg['msg']['user']
             title = msg['msg']['title']
-            tmpl = '{user} made a wiki edit to "{title}"'
+            tmpl = self._('{user} made a wiki edit to "{title}"')
             return tmpl.format(user=user, title=title)
         elif 'wiki.upload.complete' in msg['topic']:
             user = msg['msg']['user_text']
             filename = msg['msg']['title']['mPrefixedText']
             description = msg['msg']['description'][:35]
-            tmpl = '{user} uploaded {filename} to the wiki: "{description}..."'
+            tmpl = self._(
+                '{user} uploaded {filename} to the wiki: "{description}..."'
+            )
             return tmpl.format(user=user, filename=filename,
                                description=description)
         else:

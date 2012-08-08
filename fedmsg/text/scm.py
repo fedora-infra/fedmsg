@@ -9,7 +9,7 @@ class SCMProcessor(BaseProcessor):
             repo = '.'.join(msg['topic'].split('.')[4:-1])
             user = msg['msg']['commits'][-1]['name']
             summ = msg['msg']['commits'][-1]['summary']
-            tmpl = '{user} pushed to {repo}.  "{summary}"'
+            tmpl = self._('{user} pushed to {repo}.  "{summary}"')
             return tmpl.format(user=user, repo=repo, summary=summ)
         else:
             raise NotImplementedError
