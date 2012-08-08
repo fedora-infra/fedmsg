@@ -420,7 +420,8 @@ class TestSCM(Base):
                     "name": "Mark Wielaard",
                     "rev": "7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1",
                     "summary": "Clear CFLAGS CXXFLAGS LDFLAGS.",
-                    "message": "Clear CFLAGS CXXFLAGS LDFLAGS.\n\nThis is a bit of a hammer, but without this the regtests results are just\nhorrible with hundreds of failures. Even with this there are 29 failures.\nOnce we fix those and have a clean testsuite we should reinstate the\nFLAGS and figure out exactly which ones cause the massive fails.\n",
+                    "message": """Clear CFLAGS CXXFLAGS LDFLAGS.
+                    This is a bit of a hammer.""",
                     "email": "mjw@redhat.com"
                 }
             ]
