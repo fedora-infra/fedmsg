@@ -56,6 +56,28 @@ class TestFASEditProfile(Base):
     }
 
 
+class TestFASGroupApply(Base):
+    expected_title = "fas.group.member.apply (unsigned)"
+    expected_subti = "ralph applied for ralph's membership " + \
+            "in the ambassadors group"
+    msg = {
+        u'i': 1,
+        u'timestamp': 1344432769.852571,
+        u'topic': u'org.fedoraproject.stg.fas.group.member.apply',
+        u'msg': {
+            u'group': {
+                u'name': u'ambassadors'
+            },
+            u'user': {
+                u'username': u'ralph'
+            },
+            u'agent': {
+                u'username': u'ralph'
+            }
+        }
+    }
+
+
 class TestBodhiRequestUnpush(Base):
     expected_title = "bodhi.update.request.unpush (unsigned)"
     expected_subti = "foo requested unpush"
