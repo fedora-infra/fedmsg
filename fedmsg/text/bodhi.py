@@ -6,6 +6,11 @@ class BodhiProcessor(BaseProcessor):
             'bodhi.update.comment',
             'bodhi.update.request',
             'bodhi.update.complete.',
+            'bodhi.mashtask.mashing',
+            'bodhi.mashtask.start',
+            'bodhi.mashtask.complete',
+            'bodhi.mashtask.sync.wait',
+            'bodhi.mashtask.sync.done',
         ]])
 
     def subtitle(self, msg, **config):
@@ -29,5 +34,22 @@ class BodhiProcessor(BaseProcessor):
             title = msg['msg']['update']['title']
             tmpl = self._("{title} requested {action}")
             return tmpl.format(action=action, title=title)
+        elif 'bodhi.mashtask.mashing' in msg['topic']:
+            repo = msg['msg']['repo']
+            tmpl = self._("bodhi masher is mashing {repo}")
+            return tmpl.format(repo=repo)
+        elif 'bodhi.mashtask.start' in msg['topic']:
+            return self._("bodhi masher started its mashtask")
+        elif 'bodhi.mashtask.complete' in msg['topic']:
+            success = msg['msg']['success']
+            if success:
+                return self._("bodhi masher successfully completed mashing")
+            else:
+                return self._("bodhi masher failed to complete its mashtask!")
+        elif 'bodhi.mashtask.sync.wait' in msg['topic']:
+            return self._("bodhi masher is waiting on mirror repos to sync")
+        elif 'bodhi.mashtask.sync.done' in msg['topic']:
+            return self._("bodhi masher finished waiting on mirror repos " + \
+                          "to sync")
         else:
             raise NotImplementedError

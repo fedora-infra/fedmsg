@@ -224,6 +224,53 @@ class TestBodhiUpdateComplete(Base):
     }
 
 
+class TestBodhiMashTaskMashing(Base):
+    expected_title = "bodhi.mashtask.mashing (unsigned)"
+    expected_subti = "bodhi masher is mashing test_repo"
+    msg = {
+        'topic': "org.fedoraproject.prod.bodhi.mashtask.mashing",
+        'msg': {
+            'repo': 'test_repo',
+        },
+    }
+
+
+class TestBodhiMashTaskStart(Base):
+    expected_title = "bodhi.mashtask.start (unsigned)"
+    expected_subti = "bodhi masher started its mashtask"
+    msg = {
+        'topic': "org.fedoraproject.prod.bodhi.mashtask.start",
+        'msg': {}
+    }
+
+
+class TestBodhiMashTaskComplete(Base):
+    expected_title = "bodhi.mashtask.complete (unsigned)"
+    expected_subti = "bodhi masher failed to complete its mashtask!"
+    msg = {
+        'topic': "org.fedoraproject.prod.bodhi.mashtask.complete",
+        'msg': {'success': False}
+    }
+
+
+class TestBodhiMashTaskSyncWait(Base):
+    expected_title = "bodhi.mashtask.sync.wait (unsigned)"
+    expected_subti = "bodhi masher is waiting on mirror repos to sync"
+    msg = {
+        'topic': "org.fedoraproject.prod.bodhi.mashtask.sync.wait",
+        'msg': {}
+    }
+
+
+class TestBodhiMashTaskSyncWait(Base):
+    expected_title = "bodhi.mashtask.sync.done (unsigned)"
+    expected_subti = "bodhi masher finished waiting on mirror repos to sync"
+    msg = {
+        'topic': "org.fedoraproject.prod.bodhi.mashtask.sync.done",
+        'msg': {}
+    }
+
+
 class TestBodhiRequestUnpush(Base):
     expected_title = "bodhi.update.request.unpush (unsigned)"
     expected_subti = "foo requested unpush"
