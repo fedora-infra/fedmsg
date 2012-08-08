@@ -36,16 +36,14 @@ class TestUnhandled(Base):
     }
 
 
-class TestFASEditProfile(Base):
-    expected_title = "fas.user.update (unsigned)"
-    expected_subti = "ralph edited the following fields of ralph's " + \
-            "FAS profile:  comments"
+class TestFASUserCreate(Base):
+    expected_title = "fas.user.create (unsigned)"
+    expected_subti = "New FAS account:  'ralph'  (created by 'ralph')"
     msg = {
         u'i': 1,
         u'timestamp': 1344432054.8098609,
-        u'topic': u'org.fedoraproject.stg.fas.user.update',
+        u'topic': u'org.fedoraproject.stg.fas.user.create',
         u'msg': {
-            u'fields': [u'comments'],
             u'user': {
                 u'username': u'ralph'
             },
@@ -56,24 +54,97 @@ class TestFASEditProfile(Base):
     }
 
 
+class TestFASEditProfile(Base):
+    expected_title = "fas.user.update (unsigned)"
+    expected_subti = "ralph edited the following fields of ralph's " + \
+            "FAS profile:  comments"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.user.update',
+        u'msg': {
+            u'fields': [u'comments'],
+            u'user': {u'username': u'ralph'},
+            u'agent': {u'username': u'ralph'},
+        }
+    }
+
+
+class TestFASEditGroup(Base):
+    expected_title = "fas.group.update (unsigned)"
+    expected_subti = "ralph edited the following fields of the " + \
+            "ambassadors FAS group:  display_name"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.group.update',
+        u'msg': {
+            u'fields': [u'display_name'],
+            u'group': {u'name': u'ambassadors'},
+            u'agent': {u'username': u'ralph'},
+        }
+    }
+
+
+class TestFASGroupCreate(Base):
+    expected_title = "fas.group.create (unsigned)"
+    expected_subti = "ralph created new FAS group ambassadors"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.group.create',
+        u'msg': {
+            u'group': {u'name': u'ambassadors'},
+            u'agent': {u'username': u'ralph'},
+        }
+    }
+
+
+class TestFASRoleUpdate(Base):
+    expected_title = "fas.role.update (unsigned)"
+    expected_subti = "toshio changed ralph's role in the ambassadors group"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.role.update',
+        u'msg': {
+            u'group': {u'name': u'ambassadors'},
+            u'user': {u'username': u'ralph'},
+            u'agent': {u'username': u'toshio'},
+        }
+    }
+
+
+class TestFASGroupRemove(Base):
+    expected_title = "fas.group.member.remove (unsigned)"
+    expected_subti = "toshio removed ralph from " + \
+            "the ambassadors group"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.group.member.remove',
+        u'msg': {
+            u'group': {u'name': u'ambassadors'},
+            u'user': {u'username': u'ralph'},
+            u'agent': {u'username': u'toshio'},
+        }
+    }
+
+
+class TestFASGroupSponsor(Base):
+    expected_title = "fas.group.member.sponsor (unsigned)"
+    expected_subti = "toshio sponsored ralph's membership " + \
+            "in the ambassadors group"
+    msg = {
+        u'topic': u'org.fedoraproject.stg.fas.group.member.sponsor',
+        u'msg': {
+            u'group': {u'name': u'ambassadors'},
+            u'user': {u'username': u'ralph'},
+            u'agent': {u'username': u'toshio'},
+        }
+    }
+
+
 class TestFASGroupApply(Base):
     expected_title = "fas.group.member.apply (unsigned)"
     expected_subti = "ralph applied for ralph's membership " + \
             "in the ambassadors group"
     msg = {
-        u'i': 1,
-        u'timestamp': 1344432769.852571,
         u'topic': u'org.fedoraproject.stg.fas.group.member.apply',
         u'msg': {
-            u'group': {
-                u'name': u'ambassadors'
-            },
-            u'user': {
-                u'username': u'ralph'
-            },
-            u'agent': {
-                u'username': u'ralph'
-            }
+            u'group': {u'name': u'ambassadors'},
+            u'user': {u'username': u'ralph'},
+            u'agent': {u'username': u'ralph'},
         }
     }
 
