@@ -5,6 +5,7 @@ class BodhiProcessor(BaseProcessor):
         return any([target in msg['topic'] for target in [
             'bodhi.update.comment',
             'bodhi.update.request',
+            'bodhi.update.complete.',
         ]])
 
     def subtitle(self, msg, **config):
@@ -15,6 +16,14 @@ class BodhiProcessor(BaseProcessor):
                 "{author} commented on a bodhi update (karma: {karma})"
             )
             return tmpl.format(author=author, karma=karma)
+        elif 'bodhi.update.complete.' in msg['topic']:
+            author = msg['msg']['update']['submitter']
+            package = msg['msg']['update']['title']
+            status = msg['msg']['update']['status']
+            tmpl = self._(
+                "{author}'s {package} bodhi update completed push to {status}"
+            )
+            return tmpl.format(author=author, package=package, status=status)
         elif 'bodhi.update.request' in msg['topic']:
             action = msg['topic'].split('.')[-1]
             title = msg['msg']['update']['title']

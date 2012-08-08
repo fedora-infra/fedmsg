@@ -149,6 +149,81 @@ class TestFASGroupApply(Base):
     }
 
 
+class TestBodhiUpdateComplete(Base):
+    expected_title = "bodhi.update.complete.testing (unsigned)"
+    expected_subti = "ralph's fedmsg-0.2.7-2.el6 bodhi update " + \
+            "completed push to testing"
+    msg = {
+        "i": 88,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.bodhi.update.complete.testing",
+        "msg": {
+            "update": {
+                "close_bugs": True,
+                "critpath": False,
+                "stable_karma": 3,
+                "date_pushed": 1344447839.0,
+                "title": "fedmsg-0.2.7-2.el6",
+                "nagged": None,
+                "comments": [
+                    {
+                        "group": None,
+                        "author": "bodhi",
+                        "text": "This update has been submitted for " + \
+                                "testing by ralph. ",
+                        "karma": 0,
+                        "anonymous": False,
+                        "timestamp": 1344266157.0
+                    },
+                    {
+                        "group": None,
+                        "author": "bodhi",
+                        "text": "This update is currently being pushed " + \
+                                "to the Fedora EPEL 6 testing updates " + \
+                                "repository.",
+                        "karma": 0,
+                        "anonymous": False,
+                        "timestamp": 1344443927.0
+                    }
+                ],
+                "updateid": "FEDORA-EPEL-2012-6650",
+                "type": "bugfix",
+                "status": "testing",
+                "date_submitted": 1344266152.0,
+                "unstable_karma": -3,
+                "release": {
+                    "dist_tag": "dist-6E-epel",
+                    "id_prefix": "FEDORA-EPEL",
+                    "locked": False,
+                    "name": "EL-6",
+                    "long_name": "Fedora EPEL 6"
+                },
+                "approved": None,
+                "builds": [
+                    {
+                        "nvr": "fedmsg-0.2.7-2.el6",
+                        "package": {
+                            "suggest_reboot": False,
+                            "committers": [
+                                "ralph"
+                            ],
+                            "name": "fedmsg"
+                        }
+                    }
+                ],
+                "date_modified": None,
+                "notes": "Bugfix - Added a forgotten new " + \
+                        "requirement on python-requests.",
+                "request": None,
+                "bugs": [],
+                "critpath_approved": False,
+                "karma": 0,
+                "submitter": "ralph",
+            }
+        }
+    }
+
+
 class TestBodhiRequestUnpush(Base):
     expected_title = "bodhi.update.request.unpush (unsigned)"
     expected_subti = "foo requested unpush"
