@@ -42,7 +42,7 @@ fedmsg.init(name='relay_inbound', cert_prefix='scm', **config)
 
 for commit in commits:
     fedmsg.publish(
-        topic="%s.receive.%s" % (repo_name, commit['branch']),
+        topic="receive.%s.%s" % (repo_name, commit['branch']),
         msg=dict(commit=commit),
         modname="git",
     )
