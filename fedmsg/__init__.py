@@ -95,6 +95,7 @@ def publish(topic=None, msg=None, **kw):
 # This is old-school, and deprecated.
 send_message = publish
 
+
 @API_function
 def subscribe(topic, callback, **kw):
     """ Subscribe a callback to a zeromq topic.
