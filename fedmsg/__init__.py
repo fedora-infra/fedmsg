@@ -33,13 +33,10 @@ __all__ = [
 
 
 __local = threading.local()
-__local.__context = None
 
 
 def init(**kw):
-
-    global __local
-    if __local.__context:
+    if hasattr(__local, '__context'):
         raise ValueError("fedmsg already initialized")
 
     # Read config from CLI args and a config file
@@ -55,8 +52,6 @@ def init(**kw):
 def API_function(func):
 
     def _wrapper(*args, **kw):
-
-        global __local
         if not __local.__context:
             init(**kw)
             assert(__local.__context)

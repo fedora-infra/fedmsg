@@ -60,7 +60,7 @@ class FedMsgContext(object):
         if not config.get("name", None):
             config["name"] = self.guess_calling_module() + '.' + self.hostname
 
-            if any(map(config["name"].startswith, ['__main__', 'fedmsg'])):
+            if any(map(config["name"].startswith, ['fedmsg'])):
                 config["name"] = None
 
         # Find my message-signing cert if I need one.
@@ -75,7 +75,11 @@ class FedMsgContext(object):
             self.c['certname'] = self.c['certnames'][cert_index]
 
         # Actually set up our publisher
-        if config.get("name", None) and config.get("endpoints", None):
+        if (
+            config.get("name", None) and
+            config.get("endpoints", None) and
+            config['endpoints'].get(config['name'])
+        ):
             self.publisher = self.context.socket(zmq.PUB)
 
             if config['high_water_mark']:

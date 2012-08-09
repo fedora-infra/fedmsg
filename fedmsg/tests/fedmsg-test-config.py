@@ -45,10 +45,18 @@ config = dict(
         "twisted.%s" % hostname: [
             "tcp://*:%i" % (port + 3),
         ],
+        "__main__.%s" % hostname: [
+            "tcp://*:%i" % (port + 4),
+            "tcp://*:%i" % (port + 5),
+            "tcp://*:%i" % (port + 6),
+            "tcp://*:%i" % (port + 7),
+            "tcp://*:%i" % (port + 8),
+            "tcp://*:%i" % (port + 9),
+        ],
         "blah.%s": [
             # Guarantee that we don't fall over with a bogus endpoint.
             "tcp://www.flugle.horn:88",
-        ]
+        ],
     },
     relay_inbound="tcp://127.0.0.1:%i" % (port - 1),
     environment="dev",
