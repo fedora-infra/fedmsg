@@ -168,7 +168,7 @@ function article_save(
   } else {
     $titletext = $title->getText();
   }
-  $url = $title->$article->getFullURL('diff=');
+  $url = $title->getFullURL('diff=');
 
   # Just send on all the information we can...  change the attr names to be
   # more pythonic in style, though.
