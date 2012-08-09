@@ -168,6 +168,7 @@ function article_save(
   } else {
     $titletext = $title->getText();
   }
+  $url = $title->$article->getFullURL('diff=');
 
   # Just send on all the information we can...  change the attr names to be
   # more pythonic in style, though.
@@ -181,6 +182,7 @@ function article_save(
     "section_anchor" => $sectionanchor,
     "revision" => $revision,
     "base_rev_id" => $baseRevId,
+    "url" => $url,
     # TODO - flags?
     # TODO - status?
   );
