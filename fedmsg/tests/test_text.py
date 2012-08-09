@@ -418,7 +418,8 @@ class TestTaggerLogin(Base):
 
 class TestMediaWikiEdit(Base):
     expected_title = "wiki.article.edit (unsigned)"
-    expected_subti = 'Ralph made a wiki edit to "Messaging SIG"'
+    expected_subti = 'Ralph made a wiki edit to "Messaging SIG".  ' + \
+            'http://this-is-a-link.org'
     msg = {
         "topic": "org.fedoraproject.stg.wiki.article.edit",
         "msg": {
@@ -430,7 +431,8 @@ class TestMediaWikiEdit(Base):
             "section_anchor": None,
             "summary": "/* Mission */ ",
             "user": "Ralph",
-            "revision": None
+            "revision": None,
+            "url": "http://this-is-a-link.org"
         },
         "timestamp": 1344350200
     }
