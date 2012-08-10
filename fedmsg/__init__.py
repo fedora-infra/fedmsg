@@ -52,7 +52,7 @@ def init(**kw):
 def API_function(func):
 
     def _wrapper(*args, **kw):
-        if not __local.__context:
+        if not hasattr(__local, '__context'):
             init(**kw)
             assert(__local.__context)
 
