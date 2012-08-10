@@ -18,6 +18,7 @@ import unittest
 import threading
 
 import os
+import socket
 
 from time import sleep, time
 from uuid import uuid4
@@ -57,8 +58,9 @@ def load_config(name='fedmsg-test-config.py'):
     config['zmq_subscribe_endpoints'] = ','.join(
         ','.join(bunch) for bunch in config['endpoints'].values()
     )
+    hub_name = "twisted.%s" % socket.gethostname()
     config['zmq_publish_endpoints'] = ','.join(
-        config['endpoints'].values()[1]
+        config['endpoints'][hub_name]
     )
     config['sign_messages'] = False
     return config
