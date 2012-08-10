@@ -77,6 +77,7 @@ config = dict(
 
     certnames={
         "unittest.%s" % hostname: "shell-app01.phx2.fedoraproject.org",
+        "__main__.%s" % hostname: "shell-app01.phx2.fedoraproject.org",
         # In prod/stg, map hostname to the name of the cert in ssldir.
         # Unfortunately, we can't use socket.getfqdn()
         #"app01.stg": "app01.stg.phx2.fedoraproject.org",
