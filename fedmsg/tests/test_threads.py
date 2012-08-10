@@ -16,7 +16,7 @@
 import moksha
 import unittest
 import threading
-
+import copy
 import os
 import socket
 
@@ -72,7 +72,6 @@ class TestHub(unittest.TestCase):
         config = load_config()
         self.config = config
         self.hub = CentralMokshaHub(config=config)
-        self.context = FedMsgContext(**config)
 
         # fully qualified
         self.fq_topic = "org.fedoraproject.dev.unittest.foo"
@@ -80,7 +79,6 @@ class TestHub(unittest.TestCase):
         self.topic = "foo"
 
     def tearDown(self):
-        self.context.destroy()
         self.hub.close()
 
     def test_send_recv(self):
@@ -103,11 +101,21 @@ class TestHub(unittest.TestCase):
         self.hub.subscribe(topic=self.fq_topic, callback=callback)
         sleep(sleep_duration)
 
+        test_name = "__main__.%s" % socket.gethostname()
+        self.config['name'] = test_name
         class Publisher(threading.Thread):
             def run(shmelf):
+                config = copy.deepcopy(self.config)
                 import fedmsg
-                fedmsg.init(**self.config)
-                self.context.publish(topic=self.topic, msg=secret)
+                fedmsg.init(**config)
+                try:
+                    fedmsg.publish(topic=self.topic, msg=secret,
+                                   modname="unittest")
+                except Exception as e:
+                    if hasattr(fedmsg.__local, '__context'):
+                        fedmsg.__local.__context.destroy()
+
+                    raise e
 
         threads = [Publisher() for i in range(5)]
         for thread in threads:
