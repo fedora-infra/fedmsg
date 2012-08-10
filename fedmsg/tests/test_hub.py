@@ -21,8 +21,6 @@ import os
 from time import sleep, time
 from uuid import uuid4
 
-from unittest import TestCase
-
 from moksha.tests.test_hub import simulate_reactor
 from moksha.hub.hub import MokshaHub
 from moksha.hub import CentralMokshaHub
@@ -72,7 +70,7 @@ def test_init_missing_endpoint():
     context = FedMsgContext(**config)
 
 
-class TestHub(TestCase):
+class TestHub(unittest.TestCase):
 
     def setUp(self):
         config = load_config()
@@ -229,3 +227,7 @@ class TestHub(TestCase):
 
         # Verify that we received no message.
         eq_(len(messages_received), 0)
+
+
+if __name__ == '__main__':
+    unittest.main()
