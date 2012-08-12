@@ -24,15 +24,16 @@ import threading
 import fedmsg.core
 import fedmsg.config
 
+__local = threading.local()
+
 __all__ = [
     'init',
     'send_message',
     'publish',
     'subscribe',
+    'destroy',
+    '__local',
 ]
-
-
-__local = threading.local()
 
 
 def init(**kw):
@@ -102,6 +103,17 @@ def subscribe(topic, callback, **kw):
     """
 
     return __local.__context.subscribe(topic, callback)
+
+
+@API_function
+def destroy(**kw):
+    """ Destroy a fedmsg context.
+
+    You only need to call this if using fedmsg in a
+    multi-threaded environment.
+    """
+
+    return __local.__context.destroy()
 
 
 @API_function

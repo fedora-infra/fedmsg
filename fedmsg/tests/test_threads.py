@@ -81,18 +81,8 @@ class TestHub(unittest.TestCase):
     def tearDown(self):
         self.hub.close()
 
-    def test_send_recv(self):
-        """ Send a message and receive it.
-
-        Admittedly, this is not a unit test, but an integration test.
-
-        It tests:
-
-            - Sending a message.
-            - Receiving a message.
-            - Encoding *and* decoding.
-
-        """
+    def test_multi_threaded(self):
+        """ Send messages from 5 concurrent threads. """
         messages_received = []
 
         def callback(json):
@@ -108,14 +98,12 @@ class TestHub(unittest.TestCase):
                 config = copy.deepcopy(self.config)
                 import fedmsg
                 fedmsg.init(**config)
-                try:
-                    fedmsg.publish(topic=self.topic, msg=secret,
-                                   modname="unittest")
-                except Exception as e:
-                    if hasattr(fedmsg.__local, '__context'):
-                        fedmsg.__local.__context.destroy()
-
-                    raise e
+                fedmsg.publish(topic=self.topic, msg=secret,
+                               modname="unittest")
+                # XXX - Calling .destroy() is required in a multithreaded
+                # environment until an atexit replacement for threads can be
+                # found.
+                fedmsg.destroy()
 
         threads = [Publisher() for i in range(5)]
         for thread in threads:
@@ -129,6 +117,10 @@ class TestHub(unittest.TestCase):
 
         eq_(len(messages_received), 5)
         eq_(messages_received[0]['msg'], secret)
+
+    # Do it again just for good measure
+    test_multi_threaded_again = test_multi_threaded
+    test_multi_threaded_again_and_again = test_multi_threaded
 
 
 if __name__ == '__main__':
