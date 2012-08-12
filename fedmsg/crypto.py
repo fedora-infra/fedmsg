@@ -196,8 +196,11 @@ def _load_crl(crl_location="https://fedoraproject.org/fedmsg/crl.pem",
         modtime = 0
 
     if time.time() - modtime > crl_cache_expiry:
-        response = requests.get(crl_location)
-        with open(crl_cache, 'w') as f:
-            f.write(response.content)
+        try:
+            response = requests.get(crl_location)
+            with open(crl_cache, 'w') as f:
+                f.write(response.content)
+        except requests.exceptions.ConnectionError:
+            log.warn("Could not access %r" % crl_location)
 
     return M2Crypto.X509.load_crl(crl_cache)
