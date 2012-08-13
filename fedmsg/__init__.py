@@ -1,22 +1,43 @@
+# This file is part of fedmsg.
+# Copyright (C) 2012 Red Hat, Inc.
+#
+# fedmsg is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# fedmsg is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with fedmsg; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+#
+# Authors:  Ralph Bean <rbean@redhat.com>
+#
 """ Fedora Messaging Client API """
+
+import threading
 
 import fedmsg.core
 import fedmsg.config
+
+__local = threading.local()
 
 __all__ = [
     'init',
     'send_message',
     'publish',
     'subscribe',
+    'destroy',
+    '__local',
 ]
-
-__context = None
 
 
 def init(**kw):
-
-    global __context
-    if __context:
+    if hasattr(__local, '__context'):
         raise ValueError("fedmsg already initialized")
 
     # Read config from CLI args and a config file
@@ -25,18 +46,16 @@ def init(**kw):
     # Override the defaults with whatever the user explicitly passes in.
     config.update(kw)
 
-    __context = fedmsg.core.FedMsgContext(**config)
-    return __context
+    __local.__context = fedmsg.core.FedMsgContext(**config)
+    return __local.__context
 
 
 def API_function(func):
 
     def _wrapper(*args, **kw):
-
-        global __context
-        if not __context:
+        if not hasattr(__local, '__context'):
             init(**kw)
-            assert(__context)
+            assert(__local.__context)
 
         return func(*args, **kw)
     return _wrapper
@@ -67,10 +86,11 @@ def publish(topic=None, msg=None, **kw):
 
     """
 
-    return __context.publish(topic, msg, **kw)
+    return __local.__context.publish(topic, msg, **kw)
 
 # This is old-school, and deprecated.
 send_message = publish
+
 
 @API_function
 def subscribe(topic, callback, **kw):
@@ -82,7 +102,18 @@ def subscribe(topic, callback, **kw):
      - 'org.fedorahosted.' is prepended to the topic.
     """
 
-    return __context.subscribe(topic, callback)
+    return __local.__context.subscribe(topic, callback)
+
+
+@API_function
+def destroy(**kw):
+    """ Destroy a fedmsg context.
+
+    You only need to call this if using fedmsg in a
+    multi-threaded environment.
+    """
+
+    return __local.__context.destroy()
 
 
 @API_function
@@ -92,4 +123,4 @@ def have_pulses(endpoints, **kw):
     are emitting detectable heartbeats.
     """
 
-    return __context.have_pulses(endpoints)
+    return __local.__context.have_pulses(endpoints)

@@ -1,3 +1,22 @@
+# This file is part of fedmsg.
+# Copyright (C) 2012 Red Hat, Inc.
+#
+# fedmsg is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# fedmsg is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with fedmsg; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+#
+# Authors:  Ralph Bean <rbean@redhat.com>
+#
 """ Cryptographic component of fedmsg.
 
 In general, we assume that 'everything on the bus is public'.  Even though all
@@ -177,8 +196,11 @@ def _load_crl(crl_location="https://fedoraproject.org/fedmsg/crl.pem",
         modtime = 0
 
     if time.time() - modtime > crl_cache_expiry:
-        response = requests.get(crl_location)
-        with open(crl_cache, 'w') as f:
-            f.write(response.content)
+        try:
+            response = requests.get(crl_location)
+            with open(crl_cache, 'w') as f:
+                f.write(response.content)
+        except requests.exceptions.ConnectionError:
+            log.warn("Could not access %r" % crl_location)
 
     return M2Crypto.X509.load_crl(crl_cache)

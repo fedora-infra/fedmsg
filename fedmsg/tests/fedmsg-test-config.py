@@ -1,3 +1,22 @@
+# This file is part of fedmsg.
+# Copyright (C) 2012 Red Hat, Inc.
+#
+# fedmsg is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# fedmsg is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with fedmsg; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+#
+# Authors:  Ralph Bean <rbean@redhat.com>
+#
 """ Test config. """
 import os
 import socket
@@ -26,10 +45,18 @@ config = dict(
         "twisted.%s" % hostname: [
             "tcp://*:%i" % (port + 3),
         ],
+        "__main__.%s" % hostname: [
+            "tcp://*:%i" % (port + 4),
+            "tcp://*:%i" % (port + 5),
+            "tcp://*:%i" % (port + 6),
+            "tcp://*:%i" % (port + 7),
+            "tcp://*:%i" % (port + 8),
+            "tcp://*:%i" % (port + 9),
+        ],
         "blah.%s": [
             # Guarantee that we don't fall over with a bogus endpoint.
             "tcp://www.flugle.horn:88",
-        ]
+        ],
     },
     relay_inbound="tcp://127.0.0.1:%i" % (port - 1),
     environment="dev",
@@ -50,6 +77,7 @@ config = dict(
 
     certnames={
         "unittest.%s" % hostname: "shell-app01.phx2.fedoraproject.org",
+        "__main__.%s" % hostname: "shell-app01.phx2.fedoraproject.org",
         # In prod/stg, map hostname to the name of the cert in ssldir.
         # Unfortunately, we can't use socket.getfqdn()
         #"app01.stg": "app01.stg.phx2.fedoraproject.org",

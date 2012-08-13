@@ -1,3 +1,22 @@
+# This file is part of fedmsg.
+# Copyright (C) 2012 Red Hat, Inc.
+#
+# fedmsg is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# fedmsg is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with fedmsg; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+#
+# Authors:  Ralph Bean <rbean@redhat.com>
+#
 from fedmsg.text.base import BaseProcessor
 
 class BodhiProcessor(BaseProcessor):
@@ -17,10 +36,12 @@ class BodhiProcessor(BaseProcessor):
         if 'bodhi.update.comment' in msg['topic']:
             author = msg['msg']['comment']['author']
             karma = msg['msg']['comment']['karma']
+            title = msg['msg']['comment']['update']['title']
+            if len(title) >= 35: title = title[:35] + '...'
             tmpl = self._(
-                "{author} commented on a bodhi update (karma: {karma})"
+                "{author} commented on a bodhi update {title} (karma: {karma})"
             )
-            return tmpl.format(author=author, karma=karma)
+            return tmpl.format(author=author, karma=karma, title=title)
         elif 'bodhi.update.complete.' in msg['topic']:
             author = msg['msg']['update']['submitter']
             package = msg['msg']['update']['title']

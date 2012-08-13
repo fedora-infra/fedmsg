@@ -1,3 +1,22 @@
+# This file is part of fedmsg.
+# Copyright (C) 2012 Red Hat, Inc.
+#
+# fedmsg is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# fedmsg is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with fedmsg; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+#
+# Authors:  Ralph Bean <rbean@redhat.com>
+#
 """ Tests for fedmsg.text """
 
 import unittest
@@ -338,13 +357,18 @@ class TestBodhiRequestTesting(Base):
 
 class TestBodhiComment(Base):
     expected_title = "bodhi.update.comment (unsigned)"
-    expected_subti = "ralph commented on a bodhi update (karma: -1)"
+    expected_subti = "ralph commented on a bodhi update " + \
+            "fedmsg-1.0-1 (karma: -1)"
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
         "topic": "org.fedoraproject.stg.bodhi.update.comment",
         "msg": {
             "comment": {
+                "update": {
+                    "title": "fedmsg-1.0-1",
+                    # removed the rest of the update's data
+                },
                 "group": None,
                 "author": "ralph",
                 "text": "Can you believe how much testing we're doing?",
@@ -418,7 +442,8 @@ class TestTaggerLogin(Base):
 
 class TestMediaWikiEdit(Base):
     expected_title = "wiki.article.edit (unsigned)"
-    expected_subti = 'Ralph made a wiki edit to "Messaging SIG"'
+    expected_subti = 'Ralph made a wiki edit to "Messaging SIG".  ' + \
+            'http://this-is-a-link.org'
     msg = {
         "topic": "org.fedoraproject.stg.wiki.article.edit",
         "msg": {
@@ -430,7 +455,8 @@ class TestMediaWikiEdit(Base):
             "section_anchor": None,
             "summary": "/* Mission */ ",
             "user": "Ralph",
-            "revision": None
+            "revision": None,
+            "url": "http://this-is-a-link.org"
         },
         "timestamp": 1344350200
     }
@@ -514,39 +540,38 @@ class TestLoggerJSON(Base):
 
 
 class TestSCM(Base):
-    expected_title = "git.valgrind.git.receive (unsigned)"
-    expected_subti = 'Mark Wielaard pushed to valgrind.git.  ' + \
+    expected_title = "git.receive.valgrind.master (unsigned)"
+    expected_subti = 'Mark Wielaard pushed to valgrind (master).  ' + \
             '"Clear CFLAGS CXXFLAGS LDFLAGS."'
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
-        "topic": "org.fedoraproject.prod.git.valgrind.git.receive",
+        "topic": "org.fedoraproject.prod.git.receive.valgrind.master",
         "msg": {
-            "commits": [
-                {
-                    "stats": {
-                        "files": {
-                            "valgrind.spec": {
-                                "deletions": 2,
-                                "lines": 3,
-                                "insertions": 1
-                            }
-                        },
-                        "total": {
+            "commit": {
+                "stats": {
+                    "files": {
+                        "valgrind.spec": {
                             "deletions": 2,
-                            "files": 1,
-                            "insertions": 1,
-                            "lines": 3
+                            "lines": 3,
+                            "insertions": 1
                         }
                     },
-                    "name": "Mark Wielaard",
-                    "rev": "7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1",
-                    "summary": "Clear CFLAGS CXXFLAGS LDFLAGS.",
-                    "message": """Clear CFLAGS CXXFLAGS LDFLAGS.
-                    This is a bit of a hammer.""",
-                    "email": "mjw@redhat.com"
-                }
-            ]
+                    "total": {
+                        "deletions": 2,
+                        "files": 1,
+                        "insertions": 1,
+                        "lines": 3
+                    }
+                },
+                "name": "Mark Wielaard",
+                "rev": "7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1",
+                "summary": "Clear CFLAGS CXXFLAGS LDFLAGS.",
+                "message": """Clear CFLAGS CXXFLAGS LDFLAGS.
+                This is a bit of a hammer.""",
+                "email": "mjw@redhat.com",
+                "branch": "master",
+            }
         }
     }
 
