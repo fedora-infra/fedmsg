@@ -71,6 +71,9 @@ def tail(**kw):
     kw['publish_endpoint'] = None
     # Disable timeouts.  We want to tail forever!
     kw['timeout'] = 0
+    # Even though fedmsg-tail won't be sending any messages, give it a name to
+    # conform with the other commands.
+    kw['name'] = 'relay_inbound'
     fedmsg.init(**kw)
 
     # Build a message formatter
@@ -101,7 +104,8 @@ def tail(**kw):
 
     # TODO -- colors?
     # TODO -- tabular layout?
-    for name, ep, topic, message in fedmsg.__context._tail_messages(**kw):
+    for name, ep, topic, message \
+            in fedmsg.__local.__context._tail_messages(**kw):
         if exclusive_regexp.search(topic):
             continue
 
