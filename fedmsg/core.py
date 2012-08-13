@@ -17,7 +17,6 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import atexit
 import inspect
 import socket
 import time
@@ -60,7 +59,7 @@ class FedMsgContext(object):
         if not config.get("name", None):
             config["name"] = self.guess_calling_module() + '.' + self.hostname
 
-            if any(map(config["name"].startswith, ['__main__', 'fedmsg'])):
+            if any(map(config["name"].startswith, ['fedmsg'])):
                 config["name"] = None
 
         # Find my message-signing cert if I need one.
@@ -75,7 +74,11 @@ class FedMsgContext(object):
             self.c['certname'] = self.c['certnames'][cert_index]
 
         # Actually set up our publisher
-        if config.get("name", None) and config.get("endpoints", None):
+        if (
+            config.get("name", None) and
+            config.get("endpoints", None) and
+            config['endpoints'].get(config['name'])
+        ):
             self.publisher = self.context.socket(zmq.PUB)
 
             if config['high_water_mark']:
@@ -115,13 +118,14 @@ class FedMsgContext(object):
         else:
             warnings.warn("fedmsg is not configured to send any messages")
 
-        atexit.register(self.destroy)
-
         # Sleep just to make sure that the socket gets set up before anyone
         # tries anything.  This is a documented zmq 'feature'.
         time.sleep(config['post_init_sleep'])
 
     def destroy(self):
+        self.__del__()
+
+    def __del__(self):
         """ Destructor """
         if getattr(self, 'publisher', None):
             self.publisher.close()
