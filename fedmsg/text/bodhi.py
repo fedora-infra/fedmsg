@@ -40,7 +40,7 @@ class BodhiProcessor(BaseProcessor):
             title = msg['msg']['comment']['update_title']
             if len(title) >= 35: title = title[:35] + '...'
             tmpl = self._(
-                "{author} commented on a bodhi update {title} (karma: {karma})"
+                "{author} commented on bodhi update {title} (karma: {karma})"
             )
             return tmpl.format(author=author, karma=karma, title=title)
         elif 'bodhi.update.complete.' in msg['topic']:
