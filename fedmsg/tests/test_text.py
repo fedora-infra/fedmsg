@@ -362,8 +362,7 @@ class TestBodhiRequestTesting(Base):
 
 class TestBodhiComment(Base):
     expected_title = "bodhi.update.comment (unsigned)"
-    expected_subti = "ralph commented on a bodhi update " + \
-            "fedmsg-1.0-1 (karma: -1)"
+    expected_subti = "ralph commented on bodhi update fedmsg-1.0-1 (karma: -1)"
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
