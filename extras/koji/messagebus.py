@@ -83,6 +83,7 @@ def get_message_headers(msgtype, *args, **kws):
     return headers
 
 
+# This callback gets run for every koji event that starts with "post"
 @callback(*[c for c in callbacks.keys() if c.startswith('post')])
 @ignore_error
 def send_message(cbtype, *args, **kws):
