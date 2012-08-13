@@ -292,12 +292,13 @@ class TestBodhiMashTaskSyncWait(Base):
 
 class TestBodhiRequestUnpush(Base):
     expected_title = "bodhi.update.request.unpush (unsigned)"
-    expected_subti = "foo requested unpush"
+    expected_subti = "lmacken unpushed foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.unpush",
         'msg': {
             'update': {
                 'title': 'foo',
+                'submitter': 'lmacken',
             },
         },
     }
@@ -305,12 +306,13 @@ class TestBodhiRequestUnpush(Base):
 
 class TestBodhiRequestObsolete(Base):
     expected_title = "bodhi.update.request.obsolete (unsigned)"
-    expected_subti = "foo requested obsolete"
+    expected_subti = "lmacken obsoleted foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.obsolete",
         'msg': {
             'update': {
                 'title': 'foo',
+                'submitter': 'lmacken',
             },
         },
     }
@@ -318,12 +320,13 @@ class TestBodhiRequestObsolete(Base):
 
 class TestBodhiRequestStable(Base):
     expected_title = "bodhi.update.request.stable (unsigned)"
-    expected_subti = "foo requested stable"
+    expected_subti = "lmacken submitted foo to stable"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.stable",
         'msg': {
             'update': {
                 'title': 'foo',
+                'submitter': 'lmacken',
             },
         },
     }
@@ -331,12 +334,13 @@ class TestBodhiRequestStable(Base):
 
 class TestBodhiRequestRevoke(Base):
     expected_title = "bodhi.update.request.revoke (unsigned)"
-    expected_subti = "foo requested revoke"
+    expected_subti = "lmacken revoked foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.revoke",
         'msg': {
             'update': {
                 'title': 'foo',
+                'submitter': 'lmacken',
             },
         },
     }
@@ -344,12 +348,13 @@ class TestBodhiRequestRevoke(Base):
 
 class TestBodhiRequestTesting(Base):
     expected_title = "bodhi.update.request.testing (unsigned)"
-    expected_subti = "foo requested testing"
+    expected_subti = "lmacken submitted foo to testing"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.testing",
         'msg': {
             'update': {
                 'title': 'foo',
+                'submitter': 'lmacken',
             },
         },
     }

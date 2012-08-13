@@ -52,10 +52,18 @@ class BodhiProcessor(BaseProcessor):
             )
             return tmpl.format(author=author, package=package, status=status)
         elif 'bodhi.update.request' in msg['topic']:
-            action = msg['topic'].split('.')[-1]
+            status = msg['topic'].split('.')[-1]
+            author = msg['msg']['update']['submitter']
             title = msg['msg']['update']['title']
-            tmpl = self._("{title} requested {action}")
-            return tmpl.format(action=action, title=title)
+            if status in ('unpush', 'obsolete', 'revoke'):
+                # make our status past-tense
+                status = status + (status[-1] == 'e' and 'd' or 'ed')
+                tmpl = self._("{author} {status} {title}").format(
+                        author=author, status=status, title=title)
+            else:
+                tmpl = self._("{author} submitted {title} to {status}").format(
+                        author=author, status=status, title=title)
+            return tmpl
         elif 'bodhi.mashtask.mashing' in msg['topic']:
             repo = msg['msg']['repo']
             tmpl = self._("bodhi masher is mashing {repo}")
