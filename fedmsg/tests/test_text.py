@@ -365,16 +365,29 @@ class TestBodhiComment(Base):
         "topic": "org.fedoraproject.stg.bodhi.update.comment",
         "msg": {
             "comment": {
-                "update": {
-                    "title": "fedmsg-1.0-1",
-                    # removed the rest of the update's data
-                },
+                "update_title": "fedmsg-1.0-1",
                 "group": None,
                 "author": "ralph",
                 "text": "Can you believe how much testing we're doing?",
                 "karma": -1,
                 "anonymous": False,
                 "timestamp": 1344344050.0
+            }
+        }
+    }
+
+
+class TestBodhiOverrideTagged(Base):
+    expected_title = "bodhi.buildroot_override.tag (unsigned)"
+    expected_subti = "lmacken submitted a buildroot override for fedmsg-1.0-1"
+    msg = {
+        "i": 1,
+        "timestamp": 1344344053.2337201,
+        "topic": "org.fedoraproject.stg.bodhi.buildroot_override.tag",
+        "msg": {
+            "override": {
+                "build": "fedmsg-1.0-1",
+                "submitter": "lmacken",
             }
         }
     }

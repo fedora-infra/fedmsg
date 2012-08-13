@@ -30,13 +30,14 @@ class BodhiProcessor(BaseProcessor):
             'bodhi.mashtask.complete',
             'bodhi.mashtask.sync.wait',
             'bodhi.mashtask.sync.done',
+            'bodhi.buildroot_override.tag',
         ]])
 
     def subtitle(self, msg, **config):
         if 'bodhi.update.comment' in msg['topic']:
             author = msg['msg']['comment']['author']
             karma = msg['msg']['comment']['karma']
-            title = msg['msg']['comment']['update']['title']
+            title = msg['msg']['comment']['update_title']
             if len(title) >= 35: title = title[:35] + '...'
             tmpl = self._(
                 "{author} commented on a bodhi update {title} (karma: {karma})"
@@ -72,5 +73,8 @@ class BodhiProcessor(BaseProcessor):
         elif 'bodhi.mashtask.sync.done' in msg['topic']:
             return self._("bodhi masher finished waiting on mirror repos " + \
                           "to sync")
+        elif 'bodhi.buildroot_override.tag' in msg['topic']:
+            tmpl = self._("{submitter} submitted a buildroot override for {build}")
+            return tmpl.format(**msg['msg']['override'])
         else:
             raise NotImplementedError
