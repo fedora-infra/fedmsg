@@ -17,7 +17,6 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import atexit
 import inspect
 import socket
 import time
@@ -119,13 +118,14 @@ class FedMsgContext(object):
         else:
             warnings.warn("fedmsg is not configured to send any messages")
 
-        atexit.register(self.destroy)
-
         # Sleep just to make sure that the socket gets set up before anyone
         # tries anything.  This is a documented zmq 'feature'.
         time.sleep(config['post_init_sleep'])
 
     def destroy(self):
+        self.__del__()
+
+    def __del__(self):
         """ Destructor """
         if getattr(self, 'publisher', None):
             self.publisher.close()

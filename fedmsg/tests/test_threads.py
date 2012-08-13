@@ -100,10 +100,6 @@ class TestHub(unittest.TestCase):
                 fedmsg.init(**config)
                 fedmsg.publish(topic=self.topic, msg=secret,
                                modname="unittest")
-                # XXX - Calling .destroy() is required in a multithreaded
-                # environment until an atexit replacement for threads can be
-                # found.
-                fedmsg.destroy()
 
         threads = [Publisher() for i in range(5)]
         for thread in threads:
