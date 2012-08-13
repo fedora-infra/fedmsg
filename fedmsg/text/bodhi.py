@@ -30,6 +30,7 @@ class BodhiProcessor(BaseProcessor):
             'bodhi.mashtask.complete',
             'bodhi.mashtask.sync.wait',
             'bodhi.mashtask.sync.done',
+            'bodhi.buildroot_override.tag',
         ]])
 
     def subtitle(self, msg, **config):
@@ -72,5 +73,8 @@ class BodhiProcessor(BaseProcessor):
         elif 'bodhi.mashtask.sync.done' in msg['topic']:
             return self._("bodhi masher finished waiting on mirror repos " + \
                           "to sync")
+        elif 'bodhi.buildroot_override.tag' in msg['topic']:
+            tmpl = self._("{submitter} submitted a buildroot override for {build}")
+            return tmpl.format(**msg['msg']['override'])
         else:
             raise NotImplementedError
