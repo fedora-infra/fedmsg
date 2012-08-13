@@ -364,10 +364,7 @@ class TestBodhiComment(Base):
         "topic": "org.fedoraproject.stg.bodhi.update.comment",
         "msg": {
             "comment": {
-                "update": {
-                    "title": "fedmsg-1.0-1",
-                    # removed the rest of the update's data
-                },
+                "update_title": "fedmsg-1.0-1",
                 "group": None,
                 "author": "ralph",
                 "text": "Can you believe how much testing we're doing?",

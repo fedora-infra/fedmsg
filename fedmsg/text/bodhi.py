@@ -36,7 +36,7 @@ class BodhiProcessor(BaseProcessor):
         if 'bodhi.update.comment' in msg['topic']:
             author = msg['msg']['comment']['author']
             karma = msg['msg']['comment']['karma']
-            title = msg['msg']['comment']['update']['title']
+            title = msg['msg']['comment']['update_title']
             if len(title) >= 35: title = title[:35] + '...'
             tmpl = self._(
                 "{author} commented on a bodhi update {title} (karma: {karma})"
