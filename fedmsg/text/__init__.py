@@ -87,6 +87,7 @@ def _msg2subtitle(msg, **config):
     # DefaultProcessor should always catch messages.
     raise RuntimeError("No text processor caught the message.")
 
+
 def _msg2link(msg, **config):
     for p in processors:
         if not p.handle_link(msg, **config):

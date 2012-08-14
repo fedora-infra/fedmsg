@@ -17,6 +17,8 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
+
+
 class BaseProcessor(object):
     """ Base Processor... can't handle anything.
 

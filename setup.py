@@ -63,7 +63,7 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
 
 setup(
     name='fedmsg',
-    version='0.3.4',
+    version='0.3.5',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -79,7 +79,6 @@ setup(
         'fedmsg',
         'fedmsg.commands',
         'fedmsg.consumers',
-        'fedmsg.producers',
         'fedmsg.text',
         'fedmsg.tests',
     ],
@@ -88,7 +87,6 @@ setup(
     entry_points={
         'console_scripts': [
             "fedmsg-logger=fedmsg.commands.logger:logger",
-            "fedmsg-status=fedmsg.commands.status:status",
             "fedmsg-tail=fedmsg.commands.tail:tail",
             "fedmsg-hub=fedmsg.commands.hub:hub",
             "fedmsg-relay=fedmsg.commands.relay:relay",
@@ -101,7 +99,6 @@ setup(
             "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer",
         ],
         'moksha.producer': [
-            "heartbeat=fedmsg.producers.heartbeat:HeartbeatProducer",
         ],
     }
 )

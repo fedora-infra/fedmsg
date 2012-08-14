@@ -45,6 +45,48 @@ import logging
 log = logging.getLogger("moksha.hub")
 
 
+mirc_colors = {
+    "white": 0,
+    "black": 1,
+    "blue": 2,
+    "green": 3,
+    "red": 4,
+    "brown": 5,
+    "purple": 6,
+    "orange": 7,
+    "yellow": 8,
+    "light green": 9,
+    "teal": 10,
+    "light cyan": 11,
+    "light blue": 12,
+    "pink": 13,
+    "grey": 14,
+    "light grey": 15,
+}
+
+
+def ircprettify(title, subtitle, link=""):
+    def markup(s, color):
+        return "\x03%i%s\x03" % (mirc_colors[color], s)
+
+    if link:
+        link = markup(link, "grey")
+
+    color_lookup = {
+        "fas": "blue",
+        "bodhi": "green",
+        "scm": "red",
+        "tagger": "brown",
+        "wiki": "purple",
+        "logger": "orange",
+    }
+    title_color = color_lookup[title.split('.')[0]]
+    title = markup(title, title_color)
+
+    fmt = "{title} -- {subtitle} {link}"
+    return fmt.format(title=title, subtitle=subtitle, link=link)
+
+
 class FedMsngr(irc.IRCClient):
     # The 0.6 seconds here is empircally guessed so we don't get dropped by
     # freenode.  FIXME - this should be pulled from the config.
@@ -101,7 +143,8 @@ class FedMsngr(irc.IRCClient):
 class FedMsngrFactory(protocol.ClientFactory):
     protocol = FedMsngr
 
-    def __init__(self, channel, nickname, filters, pretty, terse, parent_consumer):
+    def __init__(self, channel, nickname, filters,
+                 pretty, terse, parent_consumer):
         self.channel = channel
         self.nickname = nickname
         self.filters = filters
@@ -147,7 +190,8 @@ class IRCBotConsumer(FedmsgConsumer):
 
             filters = self.compile_filters(settings.get('filters', None))
 
-            factory = FedMsngrFactory(channel, nickname, filters, pretty, terse, self)
+            factory = FedMsngrFactory(channel, nickname, filters,
+                                      pretty, terse, self)
             reactor.connectTCP(network, port, factory)
 
         return super(IRCBotConsumer, self).__init__(hub)
@@ -182,7 +226,14 @@ class IRCBotConsumer(FedmsgConsumer):
 
     def prettify(self, topic, msg, pretty=False, terse=False):
         if terse:
-            return fedmsg.text.msg2repr(msg, **self.hub.config)
+            if pretty:
+                return ircprettify(
+                    title=fedmsg.text._msg2title(msg, **self.hub.config),
+                    subtitle=fedmsg.text._msg2subtitle(msg, **self.hub.config),
+                    link=fedmsg.text._msg2link(msg, **self.hub.config),
+                )
+            else:
+                return fedmsg.text.msg2repr(msg, **self.hub.config)
 
         msg = copy.deepcopy(msg)
 

@@ -26,7 +26,7 @@ import fedmsg.text
 
 
 class Base(unittest.TestCase):
-    msg, expected_title, expected_subti = None, None, None
+    msg, expected_title, expected_subti, expected_link = None, None, None, None
 
     def setUp(self):
         self.config = {
@@ -34,17 +34,24 @@ class Base(unittest.TestCase):
 
     def test_title(self):
         """ Does fedmsg.text produce the expected title? """
-        if None in (self.msg, self.expected_title, self.expected_subti):
+        if None in (self.msg, self.expected_title):
             return
         actual_title = fedmsg.text._msg2title(self.msg, **self.config)
         eq_(actual_title, self.expected_title)
 
     def test_subtitle(self):
         """ Does fedmsg.text produce the expected subtitle? """
-        if None in (self.msg, self.expected_title, self.expected_subti):
+        if None in (self.msg, self.expected_subti):
             return
         actual_subti = fedmsg.text._msg2subtitle(self.msg, **self.config)
         eq_(actual_subti, self.expected_subti)
+
+    def test_link(self):
+        """ Does fedmsg.text produce the expected link? """
+        if None in (self.msg, self.expected_link):
+            return
+        actual_link = fedmsg.text._msg2link(self.msg, **self.config)
+        eq_(actual_link, self.expected_link)
 
 
 class TestUnhandled(Base):
@@ -362,8 +369,7 @@ class TestBodhiRequestTesting(Base):
 
 class TestBodhiComment(Base):
     expected_title = "bodhi.update.comment (unsigned)"
-    expected_subti = "ralph commented on a bodhi update " + \
-            "fedmsg-1.0-1 (karma: -1)"
+    expected_subti = "ralph commented on bodhi update fedmsg-1.0-1 (karma: -1)"
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -460,8 +466,9 @@ class TestTaggerLogin(Base):
 
 class TestMediaWikiEdit(Base):
     expected_title = "wiki.article.edit (unsigned)"
-    expected_subti = 'Ralph made a wiki edit to "Messaging SIG".  ' + \
-            'http://this-is-a-link.org'
+    expected_subti = 'Ralph made a wiki edit to "Messaging SIG".'
+    expected_link = "http://this-is-a-link.org"
+
     msg = {
         "topic": "org.fedoraproject.stg.wiki.article.edit",
         "msg": {
@@ -561,6 +568,9 @@ class TestSCM(Base):
     expected_title = "git.receive.valgrind.master (unsigned)"
     expected_subti = 'Mark Wielaard pushed to valgrind (master).  ' + \
             '"Clear CFLAGS CXXFLAGS LDFLAGS."'
+    expected_link = "http://pkgs.fedoraproject.org/cgit/" + \
+            "valgrind.git/commit/" + \
+            "?h=master&id=7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1"
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,

@@ -187,38 +187,6 @@ class FedMsgContext(object):
 
         self.publisher.send_multipart([topic, fedmsg.encoding.dumps(msg)])
 
-    def have_pulses(self, endpoints):
-        """
-        Generates a list of 3-tuples of the form (name, endpoint, bool)
-        indicating which endpoints have detectable heartbeats.
-        """
-
-        topic = self.c['topic_prefix'] + '._heartbeat'
-
-        # Initialize a nested dict of all False results.
-        results = {}
-        for name, ep_list in endpoints.items():
-            results[name] = dict(zip(ep_list, [False] * len(ep_list)))
-
-        tic = time.time()
-
-        generator = self._tail_messages(
-            endpoints, topic, timeout=self.c['timeout'])
-
-        for name, ep, topic, msg in generator:
-            if not results[name][ep]:
-                yield name, ep, True
-
-            results[name][ep] = True
-
-            if all(results.values()) or \
-               (time.time() - tic) < self.c['timeout']:
-                break
-
-        for name in results:
-            for ep in results[name]:
-                yield name, ep, False
-
     def _tail_messages(self, endpoints, topic="", passive=False, **kw):
         """
         Generator that yields messages on the bus in the form of tuples::
@@ -266,7 +234,8 @@ class FedMsgContext(object):
                             _topic, message = \
                                     subs[e].recv_multipart(zmq.NOBLOCK)
                             tic = time.time()
-                            yield _name, e, _topic, fedmsg.encoding.loads(message)
+                            encoded = fedmsg.encoding.loads(message)
+                            yield _name, e, _topic, encoded
                         except zmq.ZMQError:
                             if timeout and (time.time() - tic) > timeout:
                                 return

@@ -28,7 +28,6 @@ instance of the fedmsg-hub.
 import fedmsg
 from fedmsg.commands import command
 from fedmsg.consumers.relay import RelayConsumer
-from fedmsg.producers.heartbeat import HeartbeatProducer
 
 extra_args = []
 
@@ -50,4 +49,4 @@ def relay(**kw):
     kw['fedmsg.consumers.relay.enabled'] = True
 
     from moksha.hub import main
-    main(options=kw, consumers=[RelayConsumer], producers=[HeartbeatProducer])
+    main(options=kw, consumers=[RelayConsumer])

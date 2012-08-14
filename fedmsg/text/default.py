@@ -19,6 +19,7 @@
 #
 from fedmsg.text.base import BaseProcessor
 
+
 class DefaultProcessor(BaseProcessor):
     def handle_title(self, msg, **config):
         return True
