@@ -568,6 +568,9 @@ class TestSCM(Base):
     expected_title = "git.receive.valgrind.master (unsigned)"
     expected_subti = 'Mark Wielaard pushed to valgrind (master).  ' + \
             '"Clear CFLAGS CXXFLAGS LDFLAGS."'
+    expected_link = "http://pkgs.fedoraproject.org/cgit/" + \
+            "valgrind.git/commit/" + \
+            "?h=master&id=7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1"
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
