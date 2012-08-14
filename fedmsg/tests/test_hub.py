@@ -32,7 +32,6 @@ from nose.tools import eq_, assert_true, assert_false, raises
 import fedmsg.config
 import fedmsg.consumers
 import fedmsg.encoding
-from fedmsg.producers.heartbeat import HeartbeatProducer
 
 
 # Some constants used throughout the hub tests
@@ -87,23 +86,6 @@ class TestHub(unittest.TestCase):
     def tearDown(self):
         self.context.destroy()
         self.hub.close()
-
-    def test_run_hub_get_heartbeat(self):
-        """ Start the heartbeat producer and ensure it emits a message. """
-        messages_received = []
-
-        def callback(json):
-            messages_received.append(fedmsg.encoding.loads(json.body))
-
-        self.hub.subscribe(
-            topic=HeartbeatProducer.topic,
-            callback=callback,
-        )
-
-        simulate_reactor(HeartbeatProducer.frequency.seconds * 1.1)
-        sleep(HeartbeatProducer.frequency.seconds * 1.1)
-
-        eq_(len(messages_received), 1)
 
     def test_send_recv(self):
         """ Send a message and receive it.

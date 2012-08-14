@@ -33,7 +33,6 @@ from nose.tools import eq_, assert_true, assert_false, raises
 import fedmsg.config
 import fedmsg.consumers
 import fedmsg.encoding
-from fedmsg.producers.heartbeat import HeartbeatProducer
 
 
 # Some constants used throughout the hub tests

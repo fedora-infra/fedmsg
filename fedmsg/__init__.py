@@ -114,13 +114,3 @@ def destroy(**kw):
     """
 
     return __local.__context.destroy()
-
-
-@API_function
-def have_pulses(endpoints, **kw):
-    """
-    Returns a dict of endpoint->bool mappings indicating which endpoints
-    are emitting detectable heartbeats.
-    """
-
-    return __local.__context.have_pulses(endpoints)

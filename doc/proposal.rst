@@ -505,8 +505,6 @@ use with random shell scripts or with nagios, for instance.
 
 Currently we have implemented:
 
- - ``fedmsg-status`` - checks the status of all registered producers by
-   listening for a heartbeat.
  - ``fedmsg-tail`` - watches all endpoints on the bus and prints each message to
    stdout.
  - ``fedmsg-logger`` - sends messages over the ``org.fedoraproject.dev.logger``
