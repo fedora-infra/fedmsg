@@ -19,6 +19,7 @@
 #
 from fedmsg.text.base import BaseProcessor
 
+
 class FASProcessor(BaseProcessor):
     def handle_subtitle(self, msg, **config):
         return any([target in msg['topic'] for target in [

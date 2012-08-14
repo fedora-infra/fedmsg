@@ -41,7 +41,6 @@ class RelayConsumer(FedmsgConsumer):
 
         self.validate_signatures = False
 
-
     def consume(self, msg):
         ## FIXME - for some reason twisted is screwing up fedmsg.
         #fedmsg.__context.publisher.send_multipart(

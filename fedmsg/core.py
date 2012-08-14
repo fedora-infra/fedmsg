@@ -234,7 +234,8 @@ class FedMsgContext(object):
                             _topic, message = \
                                     subs[e].recv_multipart(zmq.NOBLOCK)
                             tic = time.time()
-                            yield _name, e, _topic, fedmsg.encoding.loads(message)
+                            encoded = fedmsg.encoding.loads(message)
+                            yield _name, e, _topic, encoded
                         except zmq.ZMQError:
                             if timeout and (time.time() - tic) > timeout:
                                 return
