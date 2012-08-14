@@ -75,12 +75,12 @@ def ircprettify(title, subtitle, link=""):
     color_lookup = {
         "fas": "blue",
         "bodhi": "green",
-        "scm": "red",
+        "git": "red",
         "tagger": "brown",
         "wiki": "purple",
         "logger": "orange",
     }
-    title_color = color_lookup[title.split('.')[0]]
+    title_color = color_lookup.get(title.split('.')[0], "light grey")
     title = markup(title, title_color)
 
     fmt = "{title} -- {subtitle} {link}"
