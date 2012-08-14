@@ -397,6 +397,21 @@ class TestBodhiOverrideTagged(Base):
     }
 
 
+class TestBodhiOverrideUntagged(Base):
+    expected_title = "bodhi.buildroot_override.untag (unsigned)"
+    expected_subti = "lmacken expired a buildroot override for fedmsg-1.0-1"
+    msg = {
+        "i": 1,
+        "timestamp": 1344964395.207541,
+        "topic": "org.fedoraproject.stg.bodhi.buildroot_override.untag",
+        "msg": {
+            "override": {
+                "build": "fedmsg-1.0-1",
+                "submitter": "lmacken",
+            }
+        }
+    }
+
 class TestTaggerVoteAnonymous(Base):
     expected_title = "fedoratagger.tag.update (unsigned)"
     expected_subti = "anonymous voted on the package tag 'foo'"
