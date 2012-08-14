@@ -56,6 +56,6 @@ class WikiProcessor(BaseProcessor):
 
     def link(self, msg, **config):
         if 'wiki.article.edit' in msg['topic']:
-            return msg['msg']['title']['url']
+            return msg['msg']['url']
         else:
             raise NotImplementedError
