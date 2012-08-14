@@ -101,7 +101,8 @@ class FedMsngr(irc.IRCClient):
 class FedMsngrFactory(protocol.ClientFactory):
     protocol = FedMsngr
 
-    def __init__(self, channel, nickname, filters, pretty, terse, parent_consumer):
+    def __init__(self, channel, nickname, filters,
+                 pretty, terse, parent_consumer):
         self.channel = channel
         self.nickname = nickname
         self.filters = filters
@@ -147,7 +148,8 @@ class IRCBotConsumer(FedmsgConsumer):
 
             filters = self.compile_filters(settings.get('filters', None))
 
-            factory = FedMsngrFactory(channel, nickname, filters, pretty, terse, self)
+            factory = FedMsngrFactory(channel, nickname, filters,
+                                      pretty, terse, self)
             reactor.connectTCP(network, port, factory)
 
         return super(IRCBotConsumer, self).__init__(hub)

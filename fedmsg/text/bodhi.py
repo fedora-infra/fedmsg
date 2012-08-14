@@ -19,6 +19,7 @@
 #
 from fedmsg.text.base import BaseProcessor
 
+
 class BodhiProcessor(BaseProcessor):
     def handle_subtitle(self, msg, **config):
         return any([target in msg['topic'] for target in [
@@ -38,7 +39,10 @@ class BodhiProcessor(BaseProcessor):
             author = msg['msg']['comment']['author']
             karma = msg['msg']['comment']['karma']
             title = msg['msg']['comment']['update_title']
-            if len(title) >= 35: title = title[:35] + '...'
+
+            if len(title) >= 35:
+                title = title[:35] + '...'
+
             tmpl = self._(
                 "{author} commented on bodhi update {title} (karma: {karma})"
             )
@@ -82,7 +86,9 @@ class BodhiProcessor(BaseProcessor):
             return self._("bodhi masher finished waiting on mirror repos " + \
                           "to sync")
         elif 'bodhi.buildroot_override.tag' in msg['topic']:
-            tmpl = self._("{submitter} submitted a buildroot override for {build}")
+            tmpl = self._(
+                "{submitter} submitted a buildroot override for {build}"
+            )
             return tmpl.format(**msg['msg']['override'])
         else:
             raise NotImplementedError

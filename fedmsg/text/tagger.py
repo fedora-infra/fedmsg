@@ -19,6 +19,7 @@
 #
 from fedmsg.text.base import BaseProcessor
 
+
 class TaggerProcessor(BaseProcessor):
     def handle_subtitle(self, msg, **config):
         return any([

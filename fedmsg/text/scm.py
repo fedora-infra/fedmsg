@@ -19,6 +19,7 @@
 #
 from fedmsg.text.base import BaseProcessor
 
+
 class SCMProcessor(BaseProcessor):
     def handle_subtitle(self, msg, **config):
         return '.git.receive.' in msg['topic']

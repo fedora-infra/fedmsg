@@ -92,6 +92,7 @@ class TestHub(unittest.TestCase):
 
         test_name = "__main__.%s" % socket.gethostname()
         self.config['name'] = test_name
+
         class Publisher(threading.Thread):
             def run(shmelf):
                 config = copy.deepcopy(self.config)

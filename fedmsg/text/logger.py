@@ -19,6 +19,7 @@
 #
 from fedmsg.text.base import BaseProcessor
 
+
 class LoggerProcessor(BaseProcessor):
     def handle_subtitle(self, msg, **config):
         return 'logger.log' in msg['topic']
