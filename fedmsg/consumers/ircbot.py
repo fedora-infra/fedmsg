@@ -70,10 +70,10 @@ def ircprettify(title, subtitle, link=""):
         return "\x03%i%s\x03" % (mirc_colors[color], s)
 
     if link:
-        link = markup(link, "grey")
+        link = markup(link, "teal")
 
     color_lookup = {
-        "fas": "blue",
+        "fas": "light blue",
         "bodhi": "green",
         "git": "red",
         "tagger": "brown",
