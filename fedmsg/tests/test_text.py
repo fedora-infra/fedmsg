@@ -179,7 +179,8 @@ class TestBodhiUpdateComplete(Base):
     expected_title = "bodhi.update.complete.testing (unsigned)"
     expected_subti = "ralph's fedmsg-0.2.7-2.el6 bodhi update " + \
             "completed push to testing"
-    expected_link = "https://admin.fedoraproject.org/updates/fedmsg-0.2.7-2.el6"
+    expected_link = \
+            "https://admin.fedoraproject.org/updates/fedmsg-0.2.7-2.el6"
     msg = {
         "i": 88,
         "timestamp": 1344447839.891876,
@@ -425,6 +426,7 @@ class TestBodhiOverrideUntagged(Base):
             }
         }
     }
+
 
 class TestTaggerVoteAnonymous(Base):
     expected_title = "fedoratagger.tag.update (unsigned)"
