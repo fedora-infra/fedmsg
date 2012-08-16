@@ -41,9 +41,6 @@
 
 if (!defined('MEDIAWIKI')) {echo("Cannot be run outside MediaWiki"); die(1);}
 
-$wgHooks['ArticleSaveComplete'][] = 'article_save';
-$wgHooks['UploadComplete'][] = 'upload_complete';
-
 // globals
 $config = 0;
 $queue = 0;
@@ -64,7 +61,6 @@ function to_bool ($_val) {
   }
 }
 
-
 function initialize() {
   global $config, $queue;
   /* Load the config.  Create a publishing socket. */
@@ -76,16 +72,22 @@ function initialize() {
   /* Just make sure everything is sane with the fedmsg config */
   if (!array_key_exists('relay_inbound', $config)) {
     echo("fedmsg-config has no 'relay_inbound'");
-    die(1);
+    return false;
   }
 
   $context = new ZMQContext(1, true);
   $queue = $context->getSocket(ZMQ::SOCKET_PUB, "pub-a-dub-dub");
   $queue->connect($config['relay_inbound']);
+  return true;
 }
 
-initialize();
-
+# If we can successfully initialize a zmq socket, then we'll go ahead and
+# register our hooks with mediawiki.  If we fail for some reason, we don't want
+# mediawiki calling us, so we'll fail quietly.
+if (initialize()) {
+  $wgHooks['ArticleSaveComplete'][] = 'article_save';
+  $wgHooks['UploadComplete'][] = 'upload_complete';
+}
 
 # This is a reimplementation of the python code in fedmsg/crypto.py
 # That file is authoritative.  Changes there should be reflected here.
