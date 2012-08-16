@@ -35,6 +35,13 @@ class BodhiProcessor(BaseProcessor):
             'bodhi.buildroot_override.untag',
         ]])
 
+    def handle_link(self, msg, **config):
+        return any([target in msg['topic'] for target in [
+            'bodhi.update.comment',
+            'bodhi.update.request',
+            'bodhi.update.complete',
+        ]])
+
     def subtitle(self, msg, **config):
         if 'bodhi.update.comment' in msg['topic']:
             author = msg['msg']['comment']['author']
@@ -92,5 +99,16 @@ class BodhiProcessor(BaseProcessor):
         elif 'bodhi.buildroot_override.untag' in msg['topic']:
             return self._("{submitter} expired a buildroot override " +
                           "for {build}").format(**msg['msg']['override'])
+        else:
+            raise NotImplementedError
+
+    def link(self, msg, **config):
+        tmpl = "https://admin.fedoraproject.org/updates/{title}"
+        if 'bodhi.update.comment' in msg['topic']:
+            return tmpl.format(title=msg['msg']['comment']['update_title'])
+        elif 'bodhi.update.complete' in msg['topic']:
+            return tmpl.format(title=msg['msg']['update']['title'])
+        elif 'bodhi.update.request' in msg['topic']:
+            return tmpl.format(title=msg['msg']['update']['title'])
         else:
             raise NotImplementedError

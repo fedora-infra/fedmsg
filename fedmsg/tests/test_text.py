@@ -179,6 +179,7 @@ class TestBodhiUpdateComplete(Base):
     expected_title = "bodhi.update.complete.testing (unsigned)"
     expected_subti = "ralph's fedmsg-0.2.7-2.el6 bodhi update " + \
             "completed push to testing"
+    expected_link = "https://admin.fedoraproject.org/updates/fedmsg-0.2.7-2.el6"
     msg = {
         "i": 88,
         "timestamp": 1344447839.891876,
@@ -300,6 +301,7 @@ class TestBodhiMashTaskSyncWait(Base):
 class TestBodhiRequestUnpush(Base):
     expected_title = "bodhi.update.request.unpush (unsigned)"
     expected_subti = "lmacken unpushed foo"
+    expected_link = "https://admin.fedoraproject.org/updates/foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.unpush",
         'msg': {
@@ -314,6 +316,7 @@ class TestBodhiRequestUnpush(Base):
 class TestBodhiRequestObsolete(Base):
     expected_title = "bodhi.update.request.obsolete (unsigned)"
     expected_subti = "lmacken obsoleted foo"
+    expected_link = "https://admin.fedoraproject.org/updates/foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.obsolete",
         'msg': {
@@ -328,6 +331,7 @@ class TestBodhiRequestObsolete(Base):
 class TestBodhiRequestStable(Base):
     expected_title = "bodhi.update.request.stable (unsigned)"
     expected_subti = "lmacken submitted foo to stable"
+    expected_link = "https://admin.fedoraproject.org/updates/foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.stable",
         'msg': {
@@ -342,6 +346,7 @@ class TestBodhiRequestStable(Base):
 class TestBodhiRequestRevoke(Base):
     expected_title = "bodhi.update.request.revoke (unsigned)"
     expected_subti = "lmacken revoked foo"
+    expected_link = "https://admin.fedoraproject.org/updates/foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.revoke",
         'msg': {
@@ -356,6 +361,7 @@ class TestBodhiRequestRevoke(Base):
 class TestBodhiRequestTesting(Base):
     expected_title = "bodhi.update.request.testing (unsigned)"
     expected_subti = "lmacken submitted foo to testing"
+    expected_link = "https://admin.fedoraproject.org/updates/foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.testing",
         'msg': {
@@ -370,6 +376,7 @@ class TestBodhiRequestTesting(Base):
 class TestBodhiComment(Base):
     expected_title = "bodhi.update.comment (unsigned)"
     expected_subti = "ralph commented on bodhi update fedmsg-1.0-1 (karma: -1)"
+    expected_link = "https://admin.fedoraproject.org/updates/fedmsg-1.0-1"
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
