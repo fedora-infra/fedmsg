@@ -26,7 +26,6 @@ class TaggerProcessor(BaseProcessor):
             target in msg['topic'] for target in [
                 'fedoratagger.tag.update',
                 'fedoratagger.tag.create',
-                'fedoratagger.login.tagger',
             ]
         ])
 
@@ -40,9 +39,5 @@ class TaggerProcessor(BaseProcessor):
             tag = msg['msg']['tag']['tag']
             tmpl = self._('Added new tag "{tag}"')
             return tmpl.format(tag=tag)
-        elif 'fedoratagger.login.tagger' in msg['topic']:
-            user = msg['msg']['user']['username']
-            tmpl = self._("{user} logged in to fedoratagger")
-            return tmpl.format(user=user)
         else:
             raise NotImplementedError
