@@ -70,20 +70,20 @@ def ircprettify(title, subtitle, link=""):
         return "\x03%i%s\x03" % (mirc_colors[color], s)
 
     if link:
-        link = markup(link, "grey")
+        link = markup(link, "teal")
 
     color_lookup = {
-        "fas": "blue",
+        "fas": "light blue",
         "bodhi": "green",
-        "scm": "red",
+        "git": "red",
         "tagger": "brown",
         "wiki": "purple",
         "logger": "orange",
     }
-    title_color = color_lookup[title.split('.')[0]]
+    title_color = color_lookup.get(title.split('.')[0], "light grey")
     title = markup(title, title_color)
 
-    fmt = "{title} -- {subtitle} {link}"
+    fmt = u"{title} -- {subtitle} {link}"
     return fmt.format(title=title, subtitle=subtitle, link=link)
 
 
@@ -267,6 +267,7 @@ class IRCBotConsumer(FedmsgConsumer):
                     pretty=client.factory.pretty,
                     terse=client.factory.terse,
                 )
+                raw_msg = raw_msg.encode('utf-8')
                 client.msg(
                     client.factory.channel,
                     raw_msg,

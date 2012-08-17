@@ -179,6 +179,8 @@ class TestBodhiUpdateComplete(Base):
     expected_title = "bodhi.update.complete.testing (unsigned)"
     expected_subti = "ralph's fedmsg-0.2.7-2.el6 bodhi update " + \
             "completed push to testing"
+    expected_link = \
+            "https://admin.fedoraproject.org/updates/fedmsg-0.2.7-2.el6"
     msg = {
         "i": 88,
         "timestamp": 1344447839.891876,
@@ -300,6 +302,7 @@ class TestBodhiMashTaskSyncWait(Base):
 class TestBodhiRequestUnpush(Base):
     expected_title = "bodhi.update.request.unpush (unsigned)"
     expected_subti = "lmacken unpushed foo"
+    expected_link = "https://admin.fedoraproject.org/updates/foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.unpush",
         'msg': {
@@ -314,6 +317,7 @@ class TestBodhiRequestUnpush(Base):
 class TestBodhiRequestObsolete(Base):
     expected_title = "bodhi.update.request.obsolete (unsigned)"
     expected_subti = "lmacken obsoleted foo"
+    expected_link = "https://admin.fedoraproject.org/updates/foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.obsolete",
         'msg': {
@@ -328,6 +332,7 @@ class TestBodhiRequestObsolete(Base):
 class TestBodhiRequestStable(Base):
     expected_title = "bodhi.update.request.stable (unsigned)"
     expected_subti = "lmacken submitted foo to stable"
+    expected_link = "https://admin.fedoraproject.org/updates/foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.stable",
         'msg': {
@@ -342,6 +347,7 @@ class TestBodhiRequestStable(Base):
 class TestBodhiRequestRevoke(Base):
     expected_title = "bodhi.update.request.revoke (unsigned)"
     expected_subti = "lmacken revoked foo"
+    expected_link = "https://admin.fedoraproject.org/updates/foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.revoke",
         'msg': {
@@ -356,6 +362,7 @@ class TestBodhiRequestRevoke(Base):
 class TestBodhiRequestTesting(Base):
     expected_title = "bodhi.update.request.testing (unsigned)"
     expected_subti = "lmacken submitted foo to testing"
+    expected_link = "https://admin.fedoraproject.org/updates/foo"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.testing",
         'msg': {
@@ -370,6 +377,7 @@ class TestBodhiRequestTesting(Base):
 class TestBodhiComment(Base):
     expected_title = "bodhi.update.comment (unsigned)"
     expected_subti = "ralph commented on bodhi update fedmsg-1.0-1 (karma: -1)"
+    expected_link = "https://admin.fedoraproject.org/updates/fedmsg-1.0-1"
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -404,63 +412,136 @@ class TestBodhiOverrideTagged(Base):
     }
 
 
-class TestTaggerVoteAnonymous(Base):
-    expected_title = "fedoratagger.tag.update (unsigned)"
-    expected_subti = "anonymous voted on the package tag 'foo'"
+class TestBodhiOverrideUntagged(Base):
+    expected_title = "bodhi.buildroot_override.untag (unsigned)"
+    expected_subti = "lmacken expired a buildroot override for fedmsg-1.0-1"
     msg = {
         "i": 1,
-        "timestamp": 1344344522.1364241,
-        "topic": "org.fedoraproject.stg.fedoratagger.tag.update",
+        "timestamp": 1344964395.207541,
+        "topic": "org.fedoraproject.stg.bodhi.buildroot_override.untag",
         "msg": {
-            "tag": {
-                "dislike": 1,
-                "total": 3,
-                "tag": "foo",
-                "votes": 5,
-                "like": 4
-            },
-            "user": {
-                "username": "anonymous",
-                "votes": 0,
-                "rank": -1
+            "override": {
+                "build": "fedmsg-1.0-1",
+                "submitter": "lmacken",
             }
         }
+    }
+
+
+class TestTaggerVoteAnonymous(Base):
+    expected_title = "fedoratagger.tag.update (unsigned)"
+    expected_subti = 'anonymous upvoted "unittest" on perl-Test-Fatal'
+    expected_link = 'https://apps.fedoraproject.org/tagger/perl-Test-Fatal'
+    msg = {
+      "i": 1,
+      "timestamp": 1345220838.2775879,
+      "topic": "org.fedoraproject.stg.fedoratagger.tag.update",
+      "msg": {
+        "vote": {
+          "tag": {
+            "votes": 2,
+            "like": 2,
+            "package": {
+              "perl-Test-Fatal": [
+                {
+                  "dislike": 0,
+                  "total": 1,
+                  "tag": "perl",
+                  "votes": 1,
+                  "like": 1
+                },
+                {
+                  "dislike": 0,
+                  "total": 2,
+                  "tag": "unittest",
+                  "votes": 2,
+                  "like": 2
+                }
+              ]
+            },
+            "label": {
+              "label": "unittest",
+              "tags": [
+                {
+                  "dislike": 0,
+                  "total": 2,
+                  "tag": "unittest",
+                  "votes": 2,
+                  "like": 2
+                }
+              ]
+            },
+            "tag": "unittest",
+            "dislike": 0,
+            "total": 2
+          },
+          "like": True,
+          "user": {
+            "username": "anonymous",
+            "all_votes": [],
+            "votes": 0,
+            "rank": -1
+          }
+        }
+      }
     }
 
 
 class TestTaggerCreate(Base):
     expected_title = "fedoratagger.tag.create (unsigned)"
-    expected_subti = 'Added new tag "awesome"'
+    expected_subti = 'ralph added tag "unittest" to perl-Test-Fatal'
+    expected_link = 'https://apps.fedoraproject.org/tagger/perl-Test-Fatal'
     msg = {
-        "i": 2,
-        "timestamp": 1344360737.9752989,
-        "topic": "org.fedoraproject.stg.fedoratagger.tag.create",
-        "msg": {
-            "tag": {
-                "dislike": 0,
-                "total": 1,
-                "tag": "awesome",
-                "votes": 1,
-                "like": 1
-            }
+      "i": 1,
+      "timestamp": 1345220073.4948981,
+      "topic": "org.fedoraproject.stg.fedoratagger.tag.create",
+      "msg": {
+        "vote": {
+          "tag": {
+            "votes": 1,
+            "like": 1,
+            "package": {
+              "perl-Test-Fatal": [
+                {
+                  "dislike": 0,
+                  "total": 1,
+                  "tag": "unittest",
+                  "votes": 1,
+                  "like": 1
+                },
+                {
+                  "dislike": 0,
+                  "total": 1,
+                  "tag": "perl",
+                  "votes": 1,
+                  "like": 1
+                }
+              ]
+            },
+            "label": {
+              "label": "unittest",
+              "tags": [
+                {
+                  "dislike": 0,
+                  "total": 1,
+                  "tag": "unittest",
+                  "votes": 1,
+                  "like": 1
+                }
+              ]
+            },
+            "tag": "unittest",
+            "dislike": 0,
+            "total": 1
+          },
+          "like": True,
+          "user": {
+            "username": "ralph",
+            "votes": 28,
+            "rank": 1
+          }
         }
-    }
-
-
-class TestTaggerLogin(Base):
-    expected_title = "fedoratagger.login.tagger (unsigned)"
-    expected_subti = "ralph logged in to fedoratagger"
-    msg = {
-        "i": 2,
-        "timestamp": 1344360950.296824,
-        "topic": "org.fedoraproject.stg.fedoratagger.login.tagger",
-        "msg": {
-            "user": {
-                "username": "ralph",
-                "votes": 26,
-                "rank": 1
-            }
-        }
+      }
     }
 
 
