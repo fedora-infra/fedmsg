@@ -430,61 +430,118 @@ class TestBodhiOverrideUntagged(Base):
 
 class TestTaggerVoteAnonymous(Base):
     expected_title = "fedoratagger.tag.update (unsigned)"
-    expected_subti = "anonymous voted on the package tag 'foo'"
+    expected_subti = 'anonymous upvoted "unittest" on perl-Test-Fatal'
+    expected_link = 'https://apps.fedoraproject.org/tagger/perl-Test-Fatal'
     msg = {
-        "i": 1,
-        "timestamp": 1344344522.1364241,
-        "topic": "org.fedoraproject.stg.fedoratagger.tag.update",
-        "msg": {
-            "tag": {
-                "dislike": 1,
-                "total": 3,
-                "tag": "foo",
-                "votes": 5,
-                "like": 4
+      "i": 1,
+      "timestamp": 1345220838.2775879,
+      "topic": "org.fedoraproject.stg.fedoratagger.tag.update",
+      "msg": {
+        "vote": {
+          "tag": {
+            "votes": 2,
+            "like": 2,
+            "package": {
+              "perl-Test-Fatal": [
+                {
+                  "dislike": 0,
+                  "total": 1,
+                  "tag": "perl",
+                  "votes": 1,
+                  "like": 1
+                },
+                {
+                  "dislike": 0,
+                  "total": 2,
+                  "tag": "unittest",
+                  "votes": 2,
+                  "like": 2
+                }
+              ]
             },
-            "user": {
-                "username": "anonymous",
-                "votes": 0,
-                "rank": -1
-            }
+            "label": {
+              "label": "unittest",
+              "tags": [
+                {
+                  "dislike": 0,
+                  "total": 2,
+                  "tag": "unittest",
+                  "votes": 2,
+                  "like": 2
+                }
+              ]
+            },
+            "tag": "unittest",
+            "dislike": 0,
+            "total": 2
+          },
+          "like": True,
+          "user": {
+            "username": "anonymous",
+            "all_votes": [],
+            "votes": 0,
+            "rank": -1
+          }
         }
+      }
     }
 
 
 class TestTaggerCreate(Base):
     expected_title = "fedoratagger.tag.create (unsigned)"
-    expected_subti = 'Added new tag "awesome"'
+    expected_subti = 'ralph added tag "unittest" to perl-Test-Fatal'
+    expected_link = 'https://apps.fedoraproject.org/tagger/perl-Test-Fatal'
     msg = {
-        "i": 2,
-        "timestamp": 1344360737.9752989,
-        "topic": "org.fedoraproject.stg.fedoratagger.tag.create",
-        "msg": {
-            "tag": {
-                "dislike": 0,
-                "total": 1,
-                "tag": "awesome",
-                "votes": 1,
-                "like": 1
-            }
+      "i": 1,
+      "timestamp": 1345220073.4948981,
+      "topic": "org.fedoraproject.stg.fedoratagger.tag.create",
+      "msg": {
+        "vote": {
+          "tag": {
+            "votes": 1,
+            "like": 1,
+            "package": {
+              "perl-Test-Fatal": [
+                {
+                  "dislike": 0,
+                  "total": 1,
+                  "tag": "unittest",
+                  "votes": 1,
+                  "like": 1
+                },
+                {
+                  "dislike": 0,
+                  "total": 1,
+                  "tag": "perl",
+                  "votes": 1,
+                  "like": 1
+                }
+              ]
+            },
+            "label": {
+              "label": "unittest",
+              "tags": [
+                {
+                  "dislike": 0,
+                  "total": 1,
+                  "tag": "unittest",
+                  "votes": 1,
+                  "like": 1
+                }
+              ]
+            },
+            "tag": "unittest",
+            "dislike": 0,
+            "total": 1
+          },
+          "like": True,
+          "user": {
+            "username": "ralph",
+            "votes": 28,
+            "rank": 1
+          }
         }
-    }
-
-
-class TestTaggerLogin(Base):
-    expected_title = "fedoratagger.login.tagger (unsigned)"
-    expected_subti = "ralph logged in to fedoratagger"
-    msg = {
-        "i": 2,
-        "timestamp": 1344360950.296824,
-        "topic": "org.fedoraproject.stg.fedoratagger.login.tagger",
-        "msg": {
-            "user": {
-                "username": "ralph",
-                "votes": 26,
-                "rank": 1
-            }
-        }
+      }
     }
 
 

@@ -29,15 +29,34 @@ class TaggerProcessor(BaseProcessor):
             ]
         ])
 
+    def handle_link(self, msg, **config):
+        vote = msg.get('msg', {}).get('vote', {})
+        pack = vote.get('tag', {}).get('package', {})
+        return pack and '.fedoratagger.' in msg['topic']
+
+    def link(self, msg, **config):
+        vote = msg.get('msg', {}).get('vote', {})
+        pack = vote.get('tag', {}).get('package', {})
+        return "https://apps.fedoraproject.org/tagger/" + pack.keys()[0]
+
     def subtitle(self, msg, **config):
         if 'fedoratagger.tag.update' in msg['topic']:
-            user = msg['msg']['user']['username']
-            tag = msg['msg']['tag']['tag']
-            tmpl = self._("{user} voted on the package tag '{tag}'")
-            return tmpl.format(user=user, tag=tag)
+            user = msg['msg']['vote']['user']['username']
+            tag = msg['msg']['vote']['tag']['tag']
+            package = msg['msg']['vote']['tag']['package'].keys()[0]
+
+            if msg['msg']['vote']['like']:
+                verb = "up"
+            else:
+                verb = "down"
+
+            tmpl = self._('{user} {verb}voted "{tag}" on {package}')
+            return tmpl.format(user=user, tag=tag, verb=verb, package=package)
         elif 'fedoratagger.tag.create' in msg['topic']:
-            tag = msg['msg']['tag']['tag']
-            tmpl = self._('Added new tag "{tag}"')
-            return tmpl.format(tag=tag)
+            user = msg['msg']['vote']['user']['username']
+            tag = msg['msg']['vote']['tag']['tag']
+            package = msg['msg']['vote']['tag']['package'].keys()[0]
+            tmpl = self._('{user} added tag "{tag}" to {package}')
+            return tmpl.format(user=user, tag=tag, package=package)
         else:
             raise NotImplementedError
