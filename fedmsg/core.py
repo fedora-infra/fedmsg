@@ -21,6 +21,7 @@ import inspect
 import socket
 import time
 import warnings
+import weakref
 import zmq
 
 from kitchen.text.converters import to_utf8
@@ -118,15 +119,14 @@ class FedMsgContext(object):
         else:
             warnings.warn("fedmsg is not configured to send any messages")
 
+        # Cleanup.  See http://bit.ly/SaGeOr for discussion.
+        weakref.ref(self, self.destroy)
+
         # Sleep just to make sure that the socket gets set up before anyone
         # tries anything.  This is a documented zmq 'feature'.
         time.sleep(config['post_init_sleep'])
 
     def destroy(self):
-        self.__del__()
-
-    def __del__(self):
-        """ Destructor """
         if getattr(self, 'publisher', None):
             self.publisher.close()
             self.publisher = None
