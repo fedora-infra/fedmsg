@@ -154,7 +154,7 @@ class FedMsngrFactory(protocol.ClientFactory):
 
     def clientConnectionLost(self, connector, reason):
         log.warning("Lost connection (%s), reconnecting." % (reason,))
-        self.parent_consumer.del_irc_client(connector)
+        self.parent_consumer.del_irc_clients(factory=self)
         connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
@@ -199,8 +199,15 @@ class IRCBotConsumer(FedmsgConsumer):
     def add_irc_client(self, client):
         self.irc_clients.append(client)
 
-    def del_irc_client(self, client):
-        self.irc_clients.remove(client)
+    def del_irc_clients(self, client=None, factory=None):
+        if factory:
+            self.irc_clients = [
+                c for c in self.irc_clients
+                if c.factory != factory
+            ]
+
+        if client and client in self.irc_clients:
+            self.irc_clients.remove(client)
 
     def compile_filters(self, filters):
         compiled_filters = dict(
