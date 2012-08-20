@@ -121,7 +121,7 @@ class FedMsgContext(object):
             warnings.warn("fedmsg is not configured to send any messages")
 
         # Cleanup.  See http://bit.ly/SaGeOr for discussion.
-        weakref.ref(threading.currentThread(), self.destroy)
+        weakref.ref(threading.current_thread(), self.destroy)
 
         # Sleep just to make sure that the socket gets set up before anyone
         # tries anything.  This is a documented zmq 'feature'.
