@@ -102,8 +102,6 @@ def tail(**kw):
     # prints out each message it consumes.  That seems like overkill, so we're
     # just going to directly access the endpoints ourself.
 
-    # TODO -- colors?
-    # TODO -- tabular layout?
     for name, ep, topic, message \
             in fedmsg.__local.__context._tail_messages(**kw):
         if exclusive_regexp.search(topic):
