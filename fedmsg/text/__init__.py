@@ -39,6 +39,7 @@ import fedmsg.crypto
 from fedmsg.text.bodhi import BodhiProcessor
 from fedmsg.text.scm import SCMProcessor
 from fedmsg.text.tagger import TaggerProcessor
+from fedmsg.text.supybot import SupybotProcessor
 from fedmsg.text.mediawiki import WikiProcessor
 from fedmsg.text.fas import FASProcessor
 from fedmsg.text.logger import LoggerProcessor
@@ -48,6 +49,7 @@ processors = [
     BodhiProcessor(_),
     SCMProcessor(_),
     TaggerProcessor(_),
+    SupybotProcessor(_),
     WikiProcessor(_),
     FASProcessor(_),
     LoggerProcessor(_),

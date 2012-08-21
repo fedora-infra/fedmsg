@@ -428,6 +428,94 @@ class TestBodhiOverrideUntagged(Base):
     }
 
 
+class TestSupybotStartMeetingNoName(Base):
+    expected_title = "meetbot.meeting.start (unsigned)"
+    expected_subti = 'threebean started a meeting in #channel'
+    expected_link = 'http://logs.com/awesome'
+    msg = {
+        "i": 16,
+        "msg": {
+            "meeting_topic": None,
+            "attendees": {
+                "fedmsg-test-bot": 2,
+                "threebean": 2
+            },
+            "chairs": {},
+            "url": "http://logs.com/awesome",
+            "owner": "threebean",
+            "channel": "#channel"
+        },
+        "topic": "org.fedoraproject.dev.meetbot.meeting.start",
+        "timestamp": 1345572862.556145
+    }
+
+
+class TestSupybotStartMeeting(Base):
+    expected_title = "meetbot.meeting.start (unsigned)"
+    expected_subti = 'threebean started meeting "title" in #channel'
+    expected_link = 'http://logs.com/awesome'
+    msg = {
+        "i": 16,
+        "msg": {
+            "meeting_topic": "title",
+            "attendees": {
+                "fedmsg-test-bot": 2,
+                "threebean": 2
+            },
+            "chairs": {},
+            "url": "http://logs.com/awesome",
+            "owner": "threebean",
+            "channel": "#channel"
+        },
+        "topic": "org.fedoraproject.dev.meetbot.meeting.start",
+        "timestamp": 1345572862.556145
+    }
+
+
+class TestSupybotEndMeeting(Base):
+    expected_title = "meetbot.meeting.complete (unsigned)"
+    expected_subti = 'threebean ended meeting "title" in #channel'
+    expected_link = 'http://logs.com/awesome'
+    msg = {
+        "i": 16,
+        "msg": {
+            "meeting_topic": "title",
+            "attendees": {
+                "fedmsg-test-bot": 2,
+                "threebean": 2
+            },
+            "chairs": {},
+            "url": "http://logs.com/awesome",
+            "owner": "threebean",
+            "channel": "#channel"
+        },
+        "topic": "org.fedoraproject.dev.meetbot.meeting.complete",
+        "timestamp": 1345572862.556145
+    }
+
+
+class TestSupybotEndMeetingNoTitle(Base):
+    expected_title = "meetbot.meeting.complete (unsigned)"
+    expected_subti = 'threebean ended a meeting in #channel'
+    expected_link = 'http://logs.com/awesome'
+    msg = {
+        "i": 16,
+        "msg": {
+            "meeting_topic": None,
+            "attendees": {
+                "fedmsg-test-bot": 2,
+                "threebean": 2
+            },
+            "chairs": {},
+            "url": "http://logs.com/awesome",
+            "owner": "threebean",
+            "channel": "#channel"
+        },
+        "topic": "org.fedoraproject.dev.meetbot.meeting.complete",
+        "timestamp": 1345572862.556145
+    }
+
+
 class TestTaggerVoteAnonymous(Base):
     expected_title = "fedoratagger.tag.update (unsigned)"
     expected_subti = 'anonymous upvoted "unittest" on perl-Test-Fatal'
