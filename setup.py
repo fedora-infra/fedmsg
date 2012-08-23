@@ -90,12 +90,14 @@ setup(
             "fedmsg-tail=fedmsg.commands.tail:tail",
             "fedmsg-hub=fedmsg.commands.hub:hub",
             "fedmsg-relay=fedmsg.commands.relay:relay",
+            "fedmsg-gateway=fedmsg.commands.gateway:gateway",
             "fedmsg-config=fedmsg.commands.config:config",
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot",
         ],
         'moksha.consumer': [
             "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",
             "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer",
+            "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer",
             "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer",
         ],
         'moksha.producer': [
