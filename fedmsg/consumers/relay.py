@@ -19,7 +19,6 @@
 #
 import fedmsg
 
-from paste.deploy.converters import asbool
 from fedmsg.consumers import FedmsgConsumer
 
 import logging

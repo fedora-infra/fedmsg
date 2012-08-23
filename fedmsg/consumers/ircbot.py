@@ -33,7 +33,6 @@ import pygments
 import pygments.lexers
 import pygments.formatters
 
-from paste.deploy.converters import asbool
 from fedmsg.consumers import FedmsgConsumer
 
 from twisted.words.protocols import irc
