@@ -59,7 +59,8 @@ class FedMsgContext(object):
         # If no name is provided, use the calling module's __name__ to decide
         # which publishing endpoint to use.
         if not config.get("name", None):
-            config["name"] = self.guess_calling_module() + '.' + self.hostname
+            module_name = self.guess_calling_module(default="fedmsg")
+            config["name"] = module_name + '.' + self.hostname
 
             if any(map(config["name"].startswith, ['fedmsg'])):
                 config["name"] = None
@@ -140,15 +141,15 @@ class FedMsgContext(object):
         raise NotImplementedError
 
     # TODO -- this should be in kitchen, not fedmsg
-    def guess_calling_module(self):
+    def guess_calling_module(self, default=None):
         # Iterate up the call-stack and return the first new top-level module
         for frame in (f[0] for f in inspect.stack()):
             modname = frame.f_globals['__name__'].split('.')[0]
             if modname != "fedmsg":
                 return modname
 
-        # Otherwise, give up and just return our own module name.
-        return "fedmsg"
+        # Otherwise, give up and just return the default.
+        return default
 
     def send_message(self, topic=None, msg=None, modname=None):
         warnings.warn(".send_message is deprecated.",
@@ -167,7 +168,7 @@ class FedMsgContext(object):
             return
 
         # If no modname is supplied, then guess it from the call stack.
-        modname = modname or self.guess_calling_module()
+        modname = modname or self.guess_calling_module(default="fedmsg")
         topic = '.'.join([modname, topic])
 
         if topic[:len(self.c['topic_prefix'])] != self.c['topic_prefix']:
