@@ -41,7 +41,7 @@ def ircbot(**kw):
     )
     kw.update(moksha_options)
 
-    kw['fedmsg.consumers.ircbot.enabled'] = True
+    kw[IRCBotConsumer.config_key] = True
 
     from moksha.hub import main
     main(options=kw, consumers=[IRCBotConsumer])

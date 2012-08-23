@@ -28,14 +28,11 @@ log = logging.getLogger("moksha.hub")
 
 class DummyConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
+    config_key = 'fedmsg.consumers.dummy.enabled'
 
     def __init__(self, hub):
         self.hub = hub
         self.DBSession = None
-
-        if not asbool(hub.config.get('fedmsg.consumers.dummy.enabled', False)):
-            log.info('fedmsg.consumers.dummy:DummyConsumer disabled.')
-            return
 
         return super(DummyConsumer, self).__init__(hub)
 

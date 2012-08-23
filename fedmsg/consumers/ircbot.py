@@ -164,15 +164,19 @@ class FedMsngrFactory(protocol.ClientFactory):
 class IRCBotConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
     validate_signatures = False
+    config_key = 'fedmsg.consumers.ircbot.enabled'
 
     def __init__(self, hub):
         self.hub = hub
         self.DBSession = None
         self.irc_clients = []
 
-        ENABLED = 'fedmsg.consumers.ircbot.enabled'
-        if not asbool(hub.config.get(ENABLED, False)):
-            log.info('fedmsg.consumers.ircbot:IRCBotConsumer disabled.')
+        super(IRCBotConsumer, self).__init__(hub)
+
+        # If fedmsg doesn't think we should be enabled, then we should quit
+        # before setting up all the IRC machinery.
+        # __initialized is set in moksha.api.hub.consumer
+        if not getattr(self, "__initialized", False):
             return
 
         irc_settings = hub.config.get('irc')
@@ -193,8 +197,6 @@ class IRCBotConsumer(FedmsgConsumer):
             factory = FedMsngrFactory(channel, nickname, filters,
                                       pretty, terse, self)
             reactor.connectTCP(network, port, factory)
-
-        return super(IRCBotConsumer, self).__init__(hub)
 
     def add_irc_client(self, client):
         self.irc_clients.append(client)
