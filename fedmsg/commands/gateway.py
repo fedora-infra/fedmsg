@@ -17,31 +17,35 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-# -*- coding; utf-8 -*-
-# Author: Ryan Brown
-# Description: A bot that takes a config and puts messages matching given
-# regexes in specified IRC channels.  See fedmsg-config.py for options.
-from fedmsg.commands import command
+""" A repeater that rebroadcasts all messages received to a special zmq
+endpoint.  This is used to get messages from inside Fedora Infrastructure out to
+users.
 
-from fedmsg.consumers.ircbot import IRCBotConsumer
+"""
+
+import fedmsg
+from fedmsg.commands import command
+from fedmsg.consumers.gateway import GatewayConsumer
 
 extra_args = []
 
 
-@command(name="fedmsg-irc", extra_args=extra_args, daemonizable=True)
-def ircbot(**kw):
-    """ Relay connections from active loggers to the bus. """
+@command(name="fedmsg-gateway", extra_args=extra_args, daemonizable=True)
+def gateway(**kw):
+    """ Rebroadcast messages to a special zmq endpoint. """
 
     # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
     # with moksha's expected configuration.
     moksha_options = dict(
         zmq_subscribe_endpoints=','.join(
-            ','.join(bunch) for bunch in kw['endpoints'].values()
+            ','.join(bunch) for bunch in
+            kw['endpoints'].values()
         ),
     )
     kw.update(moksha_options)
 
-    kw[IRCBotConsumer.config_key] = True
+    # Flip the special bit that allows the GatewayConsumer to run
+    kw[GatewayConsumer.config_key] = True
 
     from moksha.hub import main
-    main(options=kw, consumers=[IRCBotConsumer])
+    main(options=kw, consumers=[GatewayConsumer])

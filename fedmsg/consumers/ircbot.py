@@ -33,7 +33,6 @@ import pygments
 import pygments.lexers
 import pygments.formatters
 
-from paste.deploy.converters import asbool
 from fedmsg.consumers import FedmsgConsumer
 
 from twisted.words.protocols import irc
@@ -154,7 +153,7 @@ class FedMsngrFactory(protocol.ClientFactory):
 
     def clientConnectionLost(self, connector, reason):
         log.warning("Lost connection (%s), reconnecting." % (reason,))
-        self.parent_consumer.del_irc_client(connector)
+        self.parent_consumer.del_irc_clients(factory=self)
         connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
@@ -164,15 +163,19 @@ class FedMsngrFactory(protocol.ClientFactory):
 class IRCBotConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
     validate_signatures = False
+    config_key = 'fedmsg.consumers.ircbot.enabled'
 
     def __init__(self, hub):
         self.hub = hub
         self.DBSession = None
         self.irc_clients = []
 
-        ENABLED = 'fedmsg.consumers.ircbot.enabled'
-        if not asbool(hub.config.get(ENABLED, False)):
-            log.info('fedmsg.consumers.ircbot:IRCBotConsumer disabled.')
+        super(IRCBotConsumer, self).__init__(hub)
+
+        # If fedmsg doesn't think we should be enabled, then we should quit
+        # before setting up all the IRC machinery.
+        # __initialized is set in moksha.api.hub.consumer
+        if not getattr(self, "__initialized", False):
             return
 
         irc_settings = hub.config.get('irc')
@@ -194,13 +197,18 @@ class IRCBotConsumer(FedmsgConsumer):
                                       pretty, terse, self)
             reactor.connectTCP(network, port, factory)
 
-        return super(IRCBotConsumer, self).__init__(hub)
-
     def add_irc_client(self, client):
         self.irc_clients.append(client)
 
-    def del_irc_client(self, client):
-        self.irc_clients.remove(client)
+    def del_irc_clients(self, client=None, factory=None):
+        if factory:
+            self.irc_clients = [
+                c for c in self.irc_clients
+                if c.factory != factory
+            ]
+
+        if client and client in self.irc_clients:
+            self.irc_clients.remove(client)
 
     def compile_filters(self, filters):
         compiled_filters = dict(

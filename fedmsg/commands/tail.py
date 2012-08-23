@@ -27,6 +27,7 @@ import pygments.formatters
 
 import fedmsg
 import fedmsg.encoding
+import fedmsg.text
 from fedmsg.commands import command
 
 
@@ -45,6 +46,12 @@ extra_args = [
     (['--really-pretty'], {
         'dest': 'really_pretty',
         'help': 'Extra-pretty print the JSON messages.',
+        'default': False,
+        'action': 'store_true',
+    }),
+    (['--terse'], {
+        'dest': 'terse',
+        'help': 'Print "english" representations of messages only.',
         'default': False,
         'action': 'store_true',
     }),
@@ -94,6 +101,9 @@ def tail(**kw):
             ).strip()
             return "\n" + fancy
 
+    if kw['terse']:
+        formatter = lambda d: "\n" + fedmsg.text.msg2repr(d, **kw)
+
     exclusive_regexp = re.compile(kw['exclusive_regexp'])
     inclusive_regexp = re.compile(kw['inclusive_regexp'])
 
@@ -102,8 +112,6 @@ def tail(**kw):
     # prints out each message it consumes.  That seems like overkill, so we're
     # just going to directly access the endpoints ourself.
 
-    # TODO -- colors?
-    # TODO -- tabular layout?
     for name, ep, topic, message \
             in fedmsg.__local.__context._tail_messages(**kw):
         if exclusive_regexp.search(topic):

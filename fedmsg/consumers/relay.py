@@ -19,7 +19,6 @@
 #
 import fedmsg
 
-from paste.deploy.converters import asbool
 from fedmsg.consumers import FedmsgConsumer
 
 import logging
@@ -28,14 +27,11 @@ log = logging.getLogger("moksha.hub")
 
 class RelayConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
+    config_key = 'fedmsg.consumers.relay.enabled'
 
     def __init__(self, hub):
         self.hub = hub
         self.DBSession = None
-
-        if not asbool(hub.config.get('fedmsg.consumers.relay.enabled', False)):
-            log.info('fedmsg.consumers.relay:RelayConsumer disabled.')
-            return
 
         super(RelayConsumer, self).__init__(hub)
 

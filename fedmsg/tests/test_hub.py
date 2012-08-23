@@ -51,6 +51,9 @@ def load_config(name='fedmsg-test-config.py'):
         ],
     )
 
+    # Enable all of our test consumers so they can do their thing.
+    config['test_consumer_enabled'] = True
+
     # TODO -- this appears everywhere and should be encapsulated in a func
     # Massage the fedmsg config into the moksha config.
     config['zmq_subscribe_endpoints'] = ','.join(
@@ -135,6 +138,7 @@ class TestHub(unittest.TestCase):
 
         class TestConsumer(fedmsg.consumers.FedmsgConsumer):
             topic = self.fq_topic
+            config_key = "test_consumer_enabled"
 
             def consume(self, message):
                 messages_received.append(
@@ -160,6 +164,7 @@ class TestHub(unittest.TestCase):
 
         class TestConsumer1(fedmsg.consumers.FedmsgConsumer):
             topic = self.fq_topic
+            config_key = "test_consumer_enabled"
 
             def consume(self, message):
                 messages_received.append(
@@ -168,6 +173,7 @@ class TestHub(unittest.TestCase):
 
         class TestConsumer2(fedmsg.consumers.FedmsgConsumer):
             topic = self.fq_topic
+            config_key = "test_consumer_enabled"
 
             def consume(self, message):
                 messages_received.append(
@@ -195,6 +201,7 @@ class TestHub(unittest.TestCase):
 
         class TestConsumer(fedmsg.consumers.FedmsgConsumer):
             topic = self.fq_topic
+            config_key = "test_consumer_enabled"
 
             def consume(self, message):
                 messages_received.append(

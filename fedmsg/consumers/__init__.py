@@ -17,16 +17,40 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
+import inspect
 import fedmsg.crypto
 import moksha.api.hub.consumer
+
+import logging
+log = logging.getLogger("moksha.hub")
 
 
 class FedmsgConsumer(moksha.api.hub.consumer.Consumer):
     validate_signatures = False
+    config_key = None
 
-    def __init__(self, *args, **kwargs):
-        super(FedmsgConsumer, self).__init__(*args, **kwargs)
-        self.validate_signatures = self.hub.config.get('validate_signatures')
+    def __init__(self, hub):
+        module = inspect.getmodule(self).__name__
+        name = self.__class__.__name__
+
+        if not self.config_key:
+            raise ValueError("%s:%s must declare a 'config_key'" % (
+                module, name))
+
+        log.debug("%s is %r" % (
+            self.config_key, hub.config.get(self.config_key)
+        ))
+
+        if not hub.config.get(self.config_key, False):
+            log.info('* disabled by config - %s:%s' % (module, name))
+            return
+
+        log.info('  enabled by config  - %s:%s' % (module, name))
+
+        # This call "completes" registration of this consumer with the hub.
+        super(FedmsgConsumer, self).__init__(hub)
+
+        self.validate_signatures = self.hub.config.get('validate_signaturs')
 
     def validate(self, message):
         """ This needs to raise an exception, caught by moksha. """

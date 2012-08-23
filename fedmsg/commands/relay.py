@@ -46,7 +46,7 @@ def relay(**kw):
     kw.update(moksha_options)
 
     # Flip the special bit that allows the RelayConsumer to run
-    kw['fedmsg.consumers.relay.enabled'] = True
+    kw[RelayConsumer.config_key] = True
 
     from moksha.hub import main
     main(options=kw, consumers=[RelayConsumer])
