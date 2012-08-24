@@ -30,6 +30,9 @@ class TaggerProcessor(BaseProcessor):
         ])
 
     def handle_link(self, msg, **config):
+        if not isinstance(msg.get('msg', {}), dict):
+            return False
+
         vote = msg.get('msg', {}).get('vote', {})
         pack = vote.get('tag', {}).get('package', {})
         return pack and '.fedoratagger.' in msg['topic']
