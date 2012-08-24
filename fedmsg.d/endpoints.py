@@ -45,7 +45,6 @@ config = dict(
         "fedoratagger.%s" % hostname: ["tcp://*:3003"],
         "mediawiki.%s" % hostname: ["tcp://*:3004"],
         "pkgdb.%s" % hostname: ["tcp://*:3005"],
-
         "busmon.%s" % hostname: ["tcp://*:3006"],
     },
 
