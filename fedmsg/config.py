@@ -37,6 +37,7 @@ import copy
 import os
 import sys
 import textwrap
+import warnings
 
 from fedmsg.encoding import pretty_dumps
 
@@ -219,7 +220,10 @@ def _process_config_file(filenames=None):
     for fname in filenames:
         if os.path.isfile(fname):
             variables = {}
-            execfile(fname, variables)
-            config.update(variables['config'])
+            try:
+                execfile(fname, variables)
+                config.update(variables['config'])
+            except IOError as e:
+                warnings.warn(str(e))
 
     return config
