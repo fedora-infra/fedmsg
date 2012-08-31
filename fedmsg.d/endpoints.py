@@ -25,6 +25,13 @@ config = dict(
     # messages.  fedmsg.init(...) requires that a 'name' argument be passed
     # to it which corresponds with one of the keys in this dict.
     endpoints={
+        # These are here so your local box can listen to the upstream
+        # infrastructure's bus.  Cool, right?  :)
+        "fedora-infrastructure": [
+            "tcp://fedoraproject.org:9940",
+            "tcp://stg.fedoraproject.org:9940",
+        ],
+
         # This is the output side of the relay to which all other
         # services can listen.
         "relay_outbound": ["tcp://*:4001"],
@@ -38,7 +45,6 @@ config = dict(
         "fedoratagger.%s" % hostname: ["tcp://*:3003"],
         "mediawiki.%s" % hostname: ["tcp://*:3004"],
         "pkgdb.%s" % hostname: ["tcp://*:3005"],
-
         "busmon.%s" % hostname: ["tcp://*:3006"],
     },
 

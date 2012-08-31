@@ -35,6 +35,13 @@ class GatewayConsumer(FedmsgConsumer):
 
     def __init__(self, hub):
         super(GatewayConsumer, self).__init__(hub)
+
+        # If fedmsg doesn't think we should be enabled, then we should quit
+        # before setting up all the extra special zmq machinery.
+        # __initialized is set in moksha.api.hub.consumer
+        if not getattr(self, "__initialized", False):
+            return
+
         self.port = hub.config['fedmsg.consumers.gateway.port']
         self.validate_signatures = False
         self._setup_special_gateway_socket()

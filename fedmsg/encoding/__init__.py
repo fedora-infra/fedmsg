@@ -20,6 +20,13 @@
 import time
 import datetime
 
+sqlalchemy = None
+try:
+    import sqlalchemy
+    import sqlalchemy.ext.declarative
+except ImportError:
+    pass
+
 try:
     # py2.7
     from collections import OrderedDict
@@ -39,6 +46,13 @@ class FedMsgEncoder(json.encoder.JSONEncoder):
             return obj.__json__()
         if isinstance(obj, datetime.datetime):
             return time.mktime(obj.timetuple())
+        if sqlalchemy:
+            # As a last ditch, try using our sqlalchemy json encoder.
+            sqla_type = sqlalchemy.ext.declarative.DeclarativeMeta
+            if isinstance(type(obj), sqla_type):
+                import fedmsg.encoding.sqla
+                return fedmsg.encoding.sqla.to_json(obj)
+
         return super(FedMsgEncoder, self).default(obj)
 
 # Ensure that the keys are ordered so that messages can be signed
