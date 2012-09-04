@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import moksha
 import unittest
 import threading
 import copy
@@ -23,7 +22,7 @@ import socket
 from time import sleep, time
 from uuid import uuid4
 
-from moksha.tests.test_hub import simulate_reactor
+from moksha.hub.tests.test_hub import simulate_reactor
 from moksha.hub.hub import MokshaHub
 from moksha.hub import CentralMokshaHub
 from fedmsg.core import FedMsgContext

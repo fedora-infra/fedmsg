@@ -19,13 +19,13 @@
 #
 import inspect
 import fedmsg.crypto
-import moksha.api.hub.consumer
+import moksha.hub.api.consumer
 
 import logging
 log = logging.getLogger("moksha.hub")
 
 
-class FedmsgConsumer(moksha.api.hub.consumer.Consumer):
+class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
     validate_signatures = False
     config_key = None
 
