@@ -17,17 +17,21 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-""" Cryptographic component of fedmsg.
+""" ``fedmsg.crypto`` - Cryptographic component of fedmsg.
+
+Introduction
+------------
 
 In general, we assume that 'everything on the bus is public'.  Even though all
 the zmq endpoints are firewalled off from the outside world with iptables, we
-intend to someday have a forwarding service setup that will indiscriminantly
-forward all messages to anyone who wants them.  So, the issue is not encrypting
-messages so they can't be read.  It is up to sensitive services like FAS to
-*not send* sensitive information in the first place (like passwords, for
-instance).
+do have a forwarding service setup that indiscriminantly
+forwards all messages to anyone who wants them.
+(See :mod:`fedmsg.commands.gateway` for that service.)
+So, the issue is not encrypting messages so they can't be read.  It is up to
+sensitive services like FAS to *not send* sensitive information in the first
+place (like passwords, for instance).
 
-Since at some point, some services will respond to and act on messages that
+However, since at some point, services will respond to and act on messages that
 come across the bus, we need facilities for guaranteeing a message comes from
 where it *ought* to come from.  (Tangentially, message consumers need a simple
 way to declare where they expect their messages to come from and have
@@ -40,13 +44,60 @@ non-critical data from a corner of Fedora Infrastructure in which it's
 difficult to sign messages.  A consumer of those messages should be allowed
 to ignore validation for those and only those expected unsigned messages
 
-This module encapsulates standalone functions for:
+Certificates
+------------
+
+To accomplish message signing, fedmsg must be able to read certificates and a
+private key on disk.  For message validation, it only need be able to read the
+certificate.  Exactly *which* certificates are used are determined by looking up
+the ``certname`` in the ``certnames`` config dict.
+
+We use a large number of certs for the deployment of fedmsg.  We have one cert
+per `service-host`.  For example, if we have 3 fedmsg-enabled services and each
+service runs on 10 hosts, then we have 30 unique certificate/key pairs in all.
+
+The intent is to create difficulty for attackers.  If a low-security service on
+a particular box is compromised, we don't want the attacker automatically have
+access to the same certificate used for signing high-security service messages.
+
+Furthermore, attempts are made at the sysadmin-level to ensure that
+fedmsg-enabled services run as users that have exclusive read access to their
+own keys.  See the `Fedora Infrastructure SOP
+<http://infrastructure.fedoraproject.org/infra/docs/fedmsg-certs.txt>`_ for more
+information (including how to generate new certs/bring up new services).
+
+Configuration
+-------------
+
+By convention, configuration values for :mod:`fedmsg.crypto` are kept in
+``/etc/fedmsg.d/ssl.py``, although technically they can be kept in any
+config ``dict`` in ``/etc/fedmsg.d`` (or in any of the config locations checked
+by :mod:`fedmsg.config`).
+
+The cryptography routines expect the following values to be defined:
+
+  - :term:`sign_messages`
+  - :term:`validate_signatures`
+  - :term:`ssldir`
+  - :term:`crl_location`
+  - :term:`crl_cache`
+  - :term:`crl_cache_expiry`
+  - :term:`certnames`
+
+For general information on configuration, see :mod:`fedmsg.config`.
+
+Module Contents
+---------------
+
+:mod:`fedmsg.crypto` encapsulates standalone functions for:
 
     - Message signing.
     - Signature validation.
+    - Stripping crypto information for view.
 
-To accomplish this, we'll use puppet's already in place PKI involving X509
-certificates and RSA signatures.
+It also contains some hidden/private machinery to handle refreshing a cached
+CRL.
+
 """
 
 
@@ -72,8 +123,10 @@ except ImportError, e:
 def sign(message, ssldir, certname, **config):
     """ Insert two new fields into the message dict and return it.
 
-        'signature' - the computed RSA message digest of the JSON repr.
-        'certificate' - the base64 X509 certificate of the sending host.
+    Those fields are:
+
+        - 'signature' - the computed RSA message digest of the JSON repr.
+        - 'certificate' - the base64 X509 certificate of the sending host.
     """
 
     certificate = M2Crypto.X509.load_cert(
@@ -172,7 +225,11 @@ def validate(message, ssldir, **config):
 
 
 def strip_credentials(message):
-    """ Strip credentials from a message dict. """
+    """ Strip credentials from a message dict.
+
+    A new dict is returned without either `signature` or `certificate` keys.
+    This method can be called safely; the original dict is not modified.
+    """
     message = copy.deepcopy(message)
     for field in ['signature', 'certificate']:
         if field in message:

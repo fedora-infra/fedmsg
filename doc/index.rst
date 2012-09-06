@@ -7,9 +7,11 @@ Fedora Infrastructure to send and receive messages to and from applications.
 You can find the source at http://github.com/ralphbean/fedmsg
 
  - :doc:`overview`
- - :doc:`status`
- - :doc:`services`
  - :doc:`topology`
+ - :doc:`status`
+ - :doc:`commands`
+ - :doc:`config`
+ - :doc:`encoding`
  - :doc:`sending`
  - :doc:`receiving`
  - :doc:`crypto`
