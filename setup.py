@@ -53,11 +53,17 @@ install_requires = [
     #'M2Crypto',
     #'m2ext',
 ]
+tests_require = [
+    'nose',
+]
 
 if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
     install_requires.extend([
         'argparse',
         'ordereddict',
+    ])
+    tests_require.extend([
+        'unittest2',
     ])
 
 
@@ -71,9 +77,7 @@ setup(
     url='http://github.com/ralphbean/fedmsg/',
     license='LGPLv2+',
     install_requires=install_requires,
-    tests_require=[
-        'nose',
-    ],
+    tests_require=tests_require,
     test_suite='nose.collector',
     packages=[
         'fedmsg',
