@@ -25,7 +25,7 @@ import warnings
 import weakref
 import zmq
 
-from kitchen.text.converters import to_utf8
+from kitchen.text.converters import to_bytes
 
 import fedmsg.encoding
 import fedmsg.crypto
@@ -179,7 +179,7 @@ class FedMsgContext(object):
             ])
 
         if type(topic) == unicode:
-            topic = to_utf8(topic)
+            topic = to_bytes(topic, encoding='utf8', nonstring="passthru")
 
         self._i += 1
         msg = dict(topic=topic, msg=msg, timestamp=time.time(), i=self._i)
