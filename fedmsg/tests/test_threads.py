@@ -115,7 +115,6 @@ class TestHub(unittest.TestCase):
 
     # Do it again just for good measure
     test_multi_threaded_again = test_multi_threaded
-    test_multi_threaded_again_and_again = test_multi_threaded
 
 
 if __name__ == '__main__':
