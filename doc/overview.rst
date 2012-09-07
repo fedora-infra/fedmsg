@@ -115,7 +115,7 @@ By adopting a messaging strategy for Fedora Infrastructure we could gain:
      injects a fedora messaging dashboard header into every page served by apps
      `X`, `Y`, and `Z`.
 
- - An irc channel, #fedora-firehose that echoes every message on the bus.
+ - An irc channel, ``#fedora-fedmsg`` that echoes every message on the bus.
  - An identi.ca account, @fedora-firehose, that echoes every message on the bus.
 
 AMQP, and 0mq
@@ -138,7 +138,7 @@ The following is recreated from J5's Publish/Subscribe Messaging Proposal
 as an example of how Fedora Infrastructure could be reorganized with AMQP
 and a set of federated AMQP brokers (qpid).
 
-.. image:: https://github.com/ralphbean/fedmsg/raw/develop/doc/_static/reorganize-amqp-j5.png
+.. image:: _static/reorganize-amqp-j5.png
 
 The gist is that each service in the Fedora Infrastructure would have the
 address of a central message broker on hand.  On startup, each service would
@@ -191,8 +191,8 @@ In reality, (almost) every service both `produces` and `consumes` messages.  For
 the sake of argument, we'll talk here just about a separate `producing
 service` and some `consuming services`.
 
-Scenario:  the producing service starts up, producing socket (with a hidden
-queue), and begins producing messages.  Consuming services `X`, `Y`, and `Z`
+Scenario:  the producing service starts up a producing socket (with a hidden
+queue) and begins producing messages.  Consuming services `X`, `Y`, and `Z`
 are interested in this and they would like to connect.
 
 With AMQP, this is simplified.  You have one central broker and each consuming
@@ -227,82 +227,8 @@ pushing a raw text file to every server involves much-the-same workflow:
 with the rest of Infrastructure work, it makes more sense to go with the third
 option.  Better not to touch DNS when we don't have to.
 
-That file is ``/etc/fedmsg-config.py``.  It should define a python dict called
-``config`` which may look something like the following in a development
-environment::
-
-    # TODO -- update this.  It is out of date.
-    config = dict(
-        # This is a dict of possible addresses from which fedmsg can send
-        # messages.  fedmsg.init(...) requires that a 'name' argument be passed
-        # to it which corresponds with one of the keys in this dict.
-        endpoints=dict(
-            # For other, more 'normal' services, fedmsg will try to guess the
-            # name of it's calling module to determine which endpoint definition
-            # to use.  This can be overridden by explicitly providing the name in
-            # the initial call to fedmsg.init(...).
-            bodhi="tcp://*:3001",
-            fas="tcp://*:3002",
-            fedoratagger="tcp://*:3003",
-
-            # This is the output side of the relay to which all other
-            # services can listen.
-            relay_outbound="tcp://*:4001",
-        ),
-
-        # This is the address of an active->passive relay.  It is used for the
-        # fedmsg-logger command which requires another service with a stable
-        # listening address for it to send messages to.
-        relay_inbound="tcp://127.0.0.1:2003",
-
-        # Set this to dev if you're hacking on fedmsg or an app.
-        # Set to stg or prod if running in the Fedora Infrastructure
-        environment="dev",
-
-        # Default is 0
-        high_water_mark=1,
-
-        io_threads=1,
-    )
-
-``fedmsg`` will look for a config file in ``/etc/``, ``$HOME``, and ``.`` (the
-current working directory).  If it finds multiple files, it will read all of
-them but overwrite values from the system (``/etc/``) file with the more local
-file (``$HOME``).
-
-Different buses
----------------
-
-TODO -
-
- - critical and statistical buses (critical is subset of statistical).
-
-Authn, authz
-------------
-
-TODO -
-
- - (func has certs laying around already).
- - Read http://www.zeromq.org/topics:pubsub-security.  ``comphappy`` reports
-   that it has some interesting points.
-
-network load
-------------
-
-TODO -
-
- - calculate network load -
-http://lists.zeromq.org/pipermail/zeromq-dev/2010-August/005254.html
-
-fringe services
----------------
-
-TODO -
-
- - example of building a relay that condenses messages from `n`
-   proxies and re-emits them.
- - example of bridging amqp and 0mq
- - bugzilla-push - https://github.com/LegNeato/bugzilla-push
+That configuration is kept in ``/etc/fedmsg.d/``, is read by the code in
+:doc:`fedmsg.config`.  The config value of interest is :term:`endpoints`.
 
 Namespace considerations
 ------------------------
@@ -352,7 +278,7 @@ Where:
    ``OBJECT`` is `package`, for instance)
  - ``EVENT`` is a verb like `update`, `create`, or `complete`.
 
-All 'fields' in a topic **must**:
+All 'fields' in a topic **should**:
 
  - Be `singular` (Use `package`, not `packages`)
  - Use existing fields as much as possible (since `complete` is already used
@@ -649,6 +575,4 @@ See also :doc:`status`.
 Other Ideas
 -----------
 
- - Error messages from cron jobs
  - The Nag-once script could be enhanced to send output to the bus
- - Nagios alerts
