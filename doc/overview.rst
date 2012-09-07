@@ -3,27 +3,11 @@ Proposal - Fedora Messaging with 0mq (``fedmsg``)
 
 .. contents::
 
-This proposal reviews existing services in the Fedora infrastructure, reviews
-the problem of complexity in the interaction of those services, reviews previous
-work by the `Fedora Messaging SIG (special interest group)
-<http://fedoraproject.org/wiki/Messaging_SIG>`_ on AMQP, and introduces an
-architecture-level description of a solution using 0mq.
-
-----
-
 For discussion, check
 https://admin.fedoraproject.org/mailman/listinfo/messaging-sig
 
 Get (or modify) the source for this document:
 http://github.com/ralphbean/fedmsg
-
-Authors:
- - Ralph Bean (threebean)
-
-.. note:: This document is out of date and should just be considered a
-   "historical" document.  What you're probably looking for is the
-   :doc:`overview` document: the start of the narrative documentation.  It is
-   the most-up-to-date version of this page.
 
 tl;dr
 =====
