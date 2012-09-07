@@ -1,5 +1,5 @@
-Proposal - Fedora Messaging with 0mq (``fedmsg``)
-=================================================
+Overview
+========
 
 .. contents::
 
@@ -169,7 +169,7 @@ The following depicts an overview of a subset of Fedora Infrastructure
 organized with a decentralized 0mq bus parallel to the spirit of J5's
 recreated diagram in the AMQP section above.
 
-.. image:: https://github.com/ralphbean/fedmsg/raw/develop/doc/_static/reorganize-0mq-overview.png
+.. image:: _static/reorganize-0mq-overview.png
 
 No broker.  The gist is that each service will open a port and begin
 publishing messages ("bind to" in zmq-language).  Each other service will
@@ -231,7 +231,7 @@ That configuration is kept in ``/etc/fedmsg.d/``, is read by the code in
 :doc:`fedmsg.config`.  The config value of interest is :term:`endpoints`.
 
 Namespace considerations
-------------------------
+========================
 
 In the above examples, the topic names are derived from the service names.
 For instance, pkgdb publishes messages to
