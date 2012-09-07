@@ -110,10 +110,14 @@ def load_config(extra_args,
     return config
 
 
-def _process_arguments(declared_args, doc, config):
+def _build_parser(declared_args, doc, config=None, prog=None):
+    config = config or copy.deepcopy(defaults)
+    prog = prog or sys.argv[0]
+
     parser = argparse.ArgumentParser(
         description=textwrap.dedent(doc),
         formatter_class=argparse.RawDescriptionHelpFormatter,
+        prog=prog,
     )
 
     parser.add_argument(
@@ -166,7 +170,6 @@ def _process_arguments(declared_args, doc, config):
     )
 
     for args, kwargs in declared_args:
-
         # Replace the hard-coded extra_args default with the config file value
         # (if it exists)
         if all([k in kwargs for k in ['dest', 'default']]):
@@ -176,6 +179,11 @@ def _process_arguments(declared_args, doc, config):
         # Having slurped smart defaults from the config file, add the CLI arg.
         parser.add_argument(*args, **kwargs)
 
+    return parser
+
+
+def _process_arguments(declared_args, doc, config):
+    parser = _build_parser(declared_args, doc, config)
     args = parser.parse_args()
     return dict(args._get_kwargs())
 
