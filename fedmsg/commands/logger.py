@@ -74,7 +74,7 @@ def logger(**kwargs):
     Emit log messages to the FI bus.
 
     If the fedmsg-relay service is not running at the address specified in
-    fedmsg-config.py, then this command will *hang* until that service becomes
+    the config, then this command will *hang* until that service becomes
     available.
 
     If --message is not specified, this command accepts messages from stdin.

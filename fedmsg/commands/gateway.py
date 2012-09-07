@@ -20,7 +20,6 @@
 """ A repeater that rebroadcasts all messages received to a special zmq
 endpoint.  This is used to get messages from inside Fedora Infrastructure out to
 users.
-
 """
 
 import fedmsg

@@ -72,7 +72,7 @@ extra_args = [
 
 @command(name="fedmsg-tail", extra_args=extra_args)
 def tail(**kw):
-    """ Watch the bus. """
+    """ Watch all endpoints on the bus and print each message to stdout. """
 
     # Disable sending
     kw['publish_endpoint'] = None
