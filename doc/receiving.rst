@@ -1,8 +1,9 @@
 Python API:  Consuming Messages
 -------------------------------
 
-TODO - naive consumption
-TODO - autodoc FedmsgConsumer
+ * TODO - naive consumption
+ * TODO - autodoc FedmsgConsumer
+ * TODO - example of writing a client/desktop consumer
 
 Consuming events is accomplished by way of the fedmsg-hub.  For example,
 in the `busmon <https://github.com/ralphbean/busmon>`_ app, all messages from

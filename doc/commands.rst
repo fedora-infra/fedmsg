@@ -17,24 +17,26 @@ fedmsg-tail
 Service Daemons
 ===============
 
- - ``fedmsg-hub`` - the all-purpose daemon.  This should be run on every host
-   that has services which declare their own consumers.  ``fedmsg-hub`` will
-   listen to every endpoint discovered by :mod:`fedmsg.config` and forward
-   messages in-process to the locally-declared consumers.
- - ``fedmsg-relay`` - a service which binds to two ports, listens for messages
-   on one and emits them on the other.  ``fedmsg-logger`` requires that an
-   instance of ``fedmsg-relay`` be running *somewhere* and that it's inbound
-   address be listed in the config as :term:`relay_inbound`.
+fedmsg-hub
+----------
+.. autofunction:: fedmsg.commands.hub.hub
 
- TODO - add irc
- TODO - add gateway
+fedmsg-relay
+------------
+.. autofunction:: fedmsg.commands.relay.relay
 
-TODO - autodoc all those commands
+fedmsg-irc
+----------
+.. autofunction:: fedmsg.commands.ircbot.irc
+
+fedmsg-gateway
+--------------
+.. autofunction:: fedmsg.commands.gateway.gateway
 
 Writing your own fedmsg commands
 ================================
 
-The :mod:`fedmsg.commands` module provides an ``@command`` decorator to help simplify this.
+The :mod:`fedmsg.commands` module provides a ``@command`` decorator to help simplify this.
 
 .. automodule:: fedmsg.commands
     :members:

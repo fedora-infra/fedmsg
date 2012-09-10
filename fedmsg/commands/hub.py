@@ -32,7 +32,20 @@ extra_args = [
 
 @command(name="fedmsg-hub", extra_args=extra_args, daemonizable=True)
 def hub(**kw):
-    """ Run the fedmsg hub. """
+    """ Run the fedmsg hub.
+
+    ``fedmsg-hub`` is the all-purpose daemon.  This should be run on every host
+    that has services which declare their own consumers.  ``fedmsg-hub`` will
+    listen to every endpoint discovered by :mod:`fedmsg.config` and forward
+    messages in-process to the locally-declared consumers.  It is a thin wrapper
+    over a moksha-hub.
+
+    Other commands like ``fedmsg-irc`` are just specialized, restricted
+    versions of ``fedmsg-hub``.  ``fedmsg-hub`` is the most general/abstract.
+
+    ``fedmsg-hub`` also houses the functions to run a websocket server.
+
+    """
 
     # Check if the user wants the websocket server to run
     if kw['moksha.livesocket.websocket.port']:

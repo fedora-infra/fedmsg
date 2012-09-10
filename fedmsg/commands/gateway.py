@@ -17,9 +17,7 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-""" A repeater that rebroadcasts all messages received to a special zmq
-endpoint.  This is used to get messages from inside Fedora Infrastructure out to
-users.
+"""
 """
 
 import fedmsg
@@ -31,7 +29,16 @@ extra_args = []
 
 @command(name="fedmsg-gateway", extra_args=extra_args, daemonizable=True)
 def gateway(**kw):
-    """ Rebroadcast messages to a special zmq endpoint. """
+    """ Rebroadcast messages to a special zmq endpoint.
+
+    A repeater that rebroadcasts all messages received to a special zmq
+    endpoint.  This is used to get messages from inside Fedora Infrastructure
+    out to users.  Its communication is uni-directional.  It does not relay
+    messages from "outside the bus" back in.
+
+    This service is what makes using the ":doc:`receiving`" outside the
+    VPN/firewalled bus environment possible.
+    """
 
     # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
     # with moksha's expected configuration.
