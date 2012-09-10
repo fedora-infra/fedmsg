@@ -1,7 +1,14 @@
 Python API:  Consuming Messages
--------------------------------
+===============================
+
+"Naive" Consuming
+-----------------
 
  * TODO - naive consumption
+
+With Twisted
+------------
+
  * TODO - autodoc FedmsgConsumer
  * TODO - example of writing a client/desktop consumer
 
