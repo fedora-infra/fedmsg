@@ -27,7 +27,7 @@ fedmsg-relay
 
 fedmsg-irc
 ----------
-.. autofunction:: fedmsg.commands.ircbot.irc
+.. autofunction:: fedmsg.commands.ircbot.ircbot
 
 fedmsg-gateway
 --------------
