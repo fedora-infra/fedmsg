@@ -26,6 +26,37 @@ log = logging.getLogger("moksha.hub")
 
 
 class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
+    """ Base class for fedmsg consumers.
+
+    The fedmsg consumption API is really just a thin wrapper over moksha.
+    Moksha expects consumers to:
+
+        * Declare themselves on the moksha.consumers python entry-point.
+        * Declare a ``consume(...)`` method.
+        * Specify a ``topic``.
+
+    All this class does in addition to moksha is:
+
+        * Provide a mechanism for disabling/enabling consumers by configuration
+          in a consistent way (namely, by use of ``config_key``).
+
+          If you set ``validate_signatures = False`` on your consumer, it will
+          be exempt from global validation rules.  Messages will not be
+          checked for authenticity before being handed off to your consume
+          method.  This is handy if you're developing or building a special-case
+          consumer.  The consumer used by ``fedmsg-relay`` (described in
+          :doc:`commands`) sets ``validate_signatures = False`` so that it can
+          transparently forward along everything and let the terminal endpoints
+          decide whether or not to consume particular messages.
+
+        * Provide a mechanism for automatically validating fedmsg messages
+          with :mod:`fedmsg.crypto`.
+
+          You must set ``config_key`` to some string.  A config value by
+          that name must be True in the config parsed by :mod:`fedmsg.config`
+          in order for the consumer to be activated.
+    """
+
     validate_signatures = False
     config_key = None
 
