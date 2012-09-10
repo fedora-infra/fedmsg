@@ -40,7 +40,7 @@ confusing at first.
 
 To consume messages and do with them what you'd like, you need to:
 
- * Write a class which extends :doc:`fedmsg.consumers.FedmsgConsumer`
+ * Write a class which extends :class:`fedmsg.consumers.FedmsgConsumer`
  * Override certain properties and methods of that class.  Namely,
 
    * ``topic`` -- A string used soley for constraining what messages make
