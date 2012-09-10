@@ -36,7 +36,7 @@ def gateway(**kw):
     out to users.  Its communication is uni-directional.  It does not relay
     messages from "outside the bus" back in.
 
-    This service is what makes using the ":doc:`receiving`" outside the
+    This service is what makes using the ":doc:`consuming`" outside the
     VPN/firewalled bus environment possible.
     """
 
