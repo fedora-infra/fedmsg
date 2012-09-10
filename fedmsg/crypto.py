@@ -26,7 +26,7 @@ In general, we assume that 'everything on the bus is public'.  Even though all
 the zmq endpoints are firewalled off from the outside world with iptables, we
 do have a forwarding service setup that indiscriminantly
 forwards all messages to anyone who wants them.
-(See :mod:`fedmsg.commands.gateway` for that service.)
+(See :mod:`fedmsg.commands.gateway.gateway` for that service.)
 So, the issue is not encrypting messages so they can't be read.  It is up to
 sensitive services like FAS to *not send* sensitive information in the first
 place (like passwords, for instance).
