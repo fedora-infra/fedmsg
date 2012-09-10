@@ -34,8 +34,8 @@ Contents
  - :doc:`commands`
  - :doc:`config`
  - :doc:`encoding`
- - :doc:`sending`
- - :doc:`receiving`
+ - :doc:`publishing`
+ - :doc:`consuming`
  - :doc:`crypto`
 
 ----
