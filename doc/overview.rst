@@ -10,7 +10,7 @@ Get (or modify) the source for this document:
 http://github.com/ralphbean/fedmsg
 
 tl;dr
-=====
+-----
 
 We want to hook all the services in Fedora Infrastructure up to send messages to
 one another over a message bus instead of communicating with each other in
@@ -21,7 +21,7 @@ easily.  It's built on `0mq <http://zeromq.org>`_ and `moksha
 <http://moksha.fedorahosted.org>`_.
 
 Planned Stages of development/deployment
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  1) Start writing ``fedmsg``
  2) Send messages from existing services (koji, bodhi, pkgdb, fas, etc...).
@@ -34,10 +34,10 @@ Planned Stages of development/deployment
     start making existing services depend on it for their functioning.
 
 Introduction
-============
+------------
 
 Description of the problem
---------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Fedora Infrastructure is composed of a number of services (koji, fedpkg, pkgdb,
 etc..) some of which are maintained outside the Fedora Project and some of which
@@ -75,7 +75,7 @@ more complicated:  commits to one project require a spidering of code changes
 to all the others.
 
 How messaging might address the problem
----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 jkeating's `talk on messaging in the Fedora Instructure
 <http://jkeating.fedorapeople.org/lfnw-messaging-2009.pdf>`_ proposed the
@@ -101,7 +101,7 @@ A message bus architecture, once complete, would dramatically reduce the work
 required to update and maintain services in the Fedora infrastructure.
 
 Other benefits
---------------
+~~~~~~~~~~~~~~
 
 By adopting a messaging strategy for Fedora Infrastructure we could gain:
 
@@ -119,10 +119,10 @@ By adopting a messaging strategy for Fedora Infrastructure we could gain:
  - An identi.ca account, @fedora-firehose, that echoes every message on the bus.
 
 AMQP, and 0mq
-=============
+-------------
 
 AMQP or "Broker?  Damn near killed 'er!"
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When discussions on the `Fedora Messaging SIG
 <http://fedoraproject.org/wiki/Messaging_SIG>`_ began, AMQP was the choice by
@@ -155,7 +155,7 @@ configurations, my qpid brokers' queues would bloat over time until \*pop\*,
 the broker would fall over.
 
 0mq or "Going for Broke(rless)"
--------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 0mq is developed by a team that had a hand in the original development of AMQP.
 It claims to be a number of things: an "intelligent transport layer",
@@ -231,7 +231,7 @@ That configuration is kept in ``/etc/fedmsg.d/``, is read by the code in
 :doc:`fedmsg.config`.  The config value of interest is :term:`endpoints`.
 
 Namespace considerations
-========================
+------------------------
 
 In the above examples, the topic names are derived from the service names.
 For instance, pkgdb publishes messages to
@@ -263,7 +263,7 @@ misery.
 Consequently, our namespace follows a `service-oriented` pattern.
 
 The scheme
-----------
+~~~~~~~~~~
 
 Event topics will follow the rule::
 

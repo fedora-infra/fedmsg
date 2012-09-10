@@ -28,15 +28,18 @@ Build Status
 Contents
 --------
 
- - :doc:`overview`
- - :doc:`topology`
- - :doc:`status`
- - :doc:`commands`
- - :doc:`config`
- - :doc:`encoding`
- - :doc:`publishing`
- - :doc:`consuming`
- - :doc:`crypto`
+.. toctree::
+   :maxdepth: 2
+
+   overview
+   topology
+   status
+   commands
+   config
+   encoding
+   publishing
+   consuming
+   crypto
 
 ----
 
