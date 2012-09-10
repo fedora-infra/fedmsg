@@ -58,6 +58,8 @@ def API_function(func):
             assert(__local.__context)
 
         return func(*args, **kw)
+
+    _wrapper.__doc__ = func.__doc__
     return _wrapper
 
 
@@ -93,19 +95,6 @@ send_message = publish
 
 
 @API_function
-def subscribe(topic, callback, **kw):
-    """ Subscribe a callback to a zeromq topic.
-
-    Well, really it's a little more complicated:
-
-     - If the zeromq context is not initialized, initialize it.
-     - 'org.fedorahosted.' is prepended to the topic.
-    """
-
-    return __local.__context.subscribe(topic, callback)
-
-
-@API_function
 def destroy(**kw):
     """ Destroy a fedmsg context.
 
@@ -114,3 +103,15 @@ def destroy(**kw):
     """
 
     return __local.__context.destroy()
+
+
+@API_function
+def tail_messages(**kw):
+    """ Tail messages on the bus.
+
+    Generator that yields tuples of the form
+    ``(name, endpoint, topic, message)``
+    """
+
+    for item in __local.__context._tail_messages(**kw):
+        yield item

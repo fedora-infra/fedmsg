@@ -137,9 +137,6 @@ class FedMsgContext(object):
             self.context.term()
             self.context = None
 
-    def subscribe(self, topic, callback):
-        raise NotImplementedError
-
     # TODO -- this should be in kitchen, not fedmsg
     def guess_calling_module(self, default=None):
         # Iterate up the call-stack and return the first new top-level module
@@ -190,12 +187,6 @@ class FedMsgContext(object):
         self.publisher.send_multipart([topic, fedmsg.encoding.dumps(msg)])
 
     def _tail_messages(self, endpoints, topic="", passive=False, **kw):
-        """
-        Generator that yields messages on the bus in the form of tuples::
-
-        >>> (endpoint, topic, message)
-        """
-
         # TODO -- the 'passive' here and the 'active' are ambiguous.  They
         # don't actually mean the same thing.  This should be resolved.
         method = passive and 'bind' or 'connect'
