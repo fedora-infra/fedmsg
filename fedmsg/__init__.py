@@ -37,6 +37,16 @@ __all__ = [
 
 
 def init(**kw):
+    """ Initialize an instance of :class:`fedmsg.core.FedMsgContext`.
+
+    The config is loaded with :func:`fedmsg.config.load_config` and updated
+    by any keyword arguments.  This config is used to initialize the context
+    object.
+
+    The object is stored in a thread local as
+    :data:`fedmsg.__local.__context`.
+    """
+
     if hasattr(__local, '__context'):
         raise ValueError("fedmsg already initialized")
 
@@ -50,68 +60,41 @@ def init(**kw):
     return __local.__context
 
 
-def API_function(func):
+def API_function(doc=None):
+    def api_function(func):
 
-    def _wrapper(*args, **kw):
-        if not hasattr(__local, '__context'):
-            init(**kw)
-            assert(__local.__context)
+        def _wrapper(*args, **kw):
+            if not hasattr(__local, '__context'):
+                init(**kw)
+                assert(__local.__context)
 
-        return func(*args, **kw)
+            return func(*args, **kw)
 
-    _wrapper.__doc__ = func.__doc__
-    return _wrapper
+        if not doc:
+            _wrapper.__doc__ = func.__doc__
+        else:
+            _wrapper.__doc__ = doc
+
+        _wrapper.__name__ = func.__name__
+        return _wrapper
+
+    return api_function
 
 
-@API_function
+@API_function(doc=fedmsg.core.FedMsgContext.publish.__doc__)
 def publish(topic=None, msg=None, **kw):
-    """ Send a message over the publishing zeromq socket.
-
-    Well, really it's a little more complicated:
-
-     - If the zeromq context is not initialized, initialize it.
-     - 'org.fedorahosted.' is prepended to the topic.
-
-    FIXME - what if this is used in a webapp and the db transaction
-    fails later on (during the commit)?  Then we will have sent this
-    message to the bus without there really being a new tag in the DB.
-
-    THOUGHT - We could solve this by putting all the hooks in
-    sqlalchemy's post_commit dungeon.
-
-    THOUGHT - We could have fedmsg intentionally defer the sending
-    until after the next commit succeeds.  That way the 'call' still
-    stays here in the controller (explicit == good).  This should be
-    disablable, i.e. defer=False.
-
-    >>> fedmsg.publish(topic='tag.create', tag.__json__())
-
-    """
-
     return __local.__context.publish(topic, msg, **kw)
 
 # This is old-school, and deprecated.
 send_message = publish
 
 
-@API_function
+@API_function(doc=fedmsg.core.FedMsgContext.destroy.__doc__)
 def destroy(**kw):
-    """ Destroy a fedmsg context.
-
-    You only need to call this if using fedmsg in a
-    multi-threaded environment.
-    """
-
     return __local.__context.destroy()
 
 
-@API_function
+@API_function(doc=fedmsg.core.FedMsgContext.tail_messages.__doc__)
 def tail_messages(**kw):
-    """ Tail messages on the bus.
-
-    Generator that yields tuples of the form
-    ``(name, endpoint, topic, message)``
-    """
-
-    for item in __local.__context._tail_messages(**kw):
+    for item in __local.__context.tail_messages(**kw):
         yield item

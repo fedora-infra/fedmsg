@@ -129,6 +129,8 @@ class FedMsgContext(object):
         time.sleep(config['post_init_sleep'])
 
     def destroy(self):
+        """ Destroy a fedmsg context """
+
         if getattr(self, 'publisher', None):
             self.publisher.close()
             self.publisher = None
@@ -155,6 +157,70 @@ class FedMsgContext(object):
         return self.publish(topic, msg, modname)
 
     def publish(self, topic=None, msg=None, modname=None):
+        """ Send a message over the publishing zeromq socket.
+
+          >>> import fedmsg
+          >>> fedmsg.publish(topic='testing', modname='test', msg={
+          ...     'test': "Hello World",
+          ... })
+
+        The above snippet will send the message ``'{test: "Hello World"}'``
+        over the ``org.fedoraproject.dev.test.testing`` topic.
+
+        This function (and other API functions) do a little bit more
+        heavy lifting than they let on.  If the "zeromq context" is not yet
+        initialized, :func:`fedmsg.init` is called to construct it and
+        store it as :data:`fedmsg.__local.__context` before anything else is
+        done.
+
+        The ``modname`` argument will be omitted in most use cases.  By
+        default, ``fedmsg`` will try to guess the name of the module that
+        called it and use that to produce an intelligent topic.  Specifying
+        ``modname`` explicitly overrides this behavior.
+
+        The fully qualified topic of a message is constructed out of the
+        following pieces:
+
+         <:term:`topic_prefix`>.<:term:`environment`>.<``modname``>.<``topic``>
+
+        ----
+
+        **An example from Fedora Tagger -- SQLAlchemy encoding**
+
+        Here's an example from
+        `fedora-tagger <http://github.com/ralphbean/fedora-tagger>`_ that
+        sends the information about a new tag over
+        ``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``::
+
+          >>> import fedmsg
+          >>> fedmsg.publish(topic='tag.update', msg={
+          ...     'user': user,
+          ...     'tag': tag,
+          ... })
+
+        Note that the `tag` and `user` objects are SQLAlchemy objects defined
+        by tagger.  They both have ``.__json__()`` methods which
+        :func:`fedmsg.publish` uses to encode both objects as stringified
+        JSON for you.  Under the hood, specifically, ``.publish`` uses
+        :mod:`fedmsg.encoding` to do this.
+
+        ``fedmsg`` has also guessed the module name (``modname``) of it's
+        caller and inserted it into the topic for you.  The code from which
+        we stole the above snippet lives in
+        ``fedoratagger.controllers.root``.  ``fedmsg`` figured that out and
+        stripped it down to just ``fedoratagger`` for the final topic of
+        ``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``.
+
+        ----
+
+        **Shell Usage**
+
+        You could also use the ``fedmsg-logger`` from a shell script like so::
+
+            $ echo "Hello, world." | fedmsg-logger --topic testing
+            $ echo '{"foo": "bar"}' | fedmsg-logger --json-input
+
+        """
 
         if not topic:
             warnings.warn("Attempted to send message with no topic.  Bailing.")
@@ -186,7 +252,13 @@ class FedMsgContext(object):
 
         self.publisher.send_multipart([topic, fedmsg.encoding.dumps(msg)])
 
-    def _tail_messages(self, endpoints, topic="", passive=False, **kw):
+    def tail_messages(self, endpoints, topic="", passive=False, **kw):
+        """ Tail messages on the bus.
+
+        Generator that yields tuples of the form:
+        ``(name, endpoint, topic, message)``
+        """
+
         # TODO -- the 'passive' here and the 'active' are ambiguous.  They
         # don't actually mean the same thing.  This should be resolved.
         method = passive and 'bind' or 'connect'

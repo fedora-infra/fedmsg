@@ -6,6 +6,8 @@ Configuration
     :undoc-members:
     :show-inheritance:
 
+.. autofunction:: fedmsg.init
+
 Glossary of Configuration Values
 --------------------------------
 
@@ -36,7 +38,7 @@ Glossary of Configuration Values
 
     crl_location
         ``str`` - This should be a URL where the certificate revocation list can
-        be found.  This is checked by :function:`fedmsg.crypto.validate` and
+        be found.  This is checked by :func:`fedmsg.crypto.validate` and
         cached on disk.
 
     crl_cache
