@@ -1,0 +1,83 @@
+{% extends "!layout.html" %}
+{% block extrahead %}
+<link rel="stylesheet" type="text/css"
+      href="{{ pathto('_static/editor.css', 1) }}" />
+<script type="text/javascript">
+
+  // Store editor pop-up help state in localStorage
+  // so it does not re-pop-up itself between page loads.
+  // Do not even to pretend to support IE gracefully.
+  (function($) {
+
+    $(document).ready(function() {
+      var box = $("#editor-trap");
+      var klass = "toggled";
+      var storageKey = "toggled";
+
+      function toggle() {
+        box.toggleClass(klass);
+        // Store the toggle status in local storage as "has value string" or null
+        window.localStorage.setItem(storageKey, box.hasClass(klass) ? "toggled" : "not-toggled");
+      }
+
+      box.click(toggle);
+
+      // Check the persistent state of the editor pop-up
+      // Note that localStorage does not necessarily support boolean values (ugh!)
+      // http://stackoverflow.com/questions/3263161/cannot-set-boolean-values-in-localstorage
+      var v = window.localStorage.getItem(storageKey);
+      if(v == "toggled" || !v) {
+        box.addClass(klass);
+      }
+
+    });
+
+  })(jQuery);
+</script>
+{% endblock %}
+{% block footer %}
+<div id="editor-trap">
+  <h3>Edit this document</h3>
+
+  <p>
+  The source code of this file is hosted on GitHub. Everyone can
+  update and fix errors in this document with few clicks -
+  no downloads needed.
+  <p>
+
+  <ol>
+
+    <li>
+    Go to
+    <a href="https://github.com/ralphbean/fedmsg/blob/develop/doc/{{ pagename }}.rst">
+      {{ title }}
+    </a> on GitHub.
+    </li>
+
+    <li>
+    Press the <b>Fork</b> button. This will create your own personal copy of the documentation.
+    </li>
+
+    <li>
+    <b>Edit</b> files using GitHub's text editor in your web browser
+    </li>
+
+    <li>
+    Fill in the <b>Commit message</b> text box at the end of the page telling <i>why</i>
+    you did the changes. Press the <b>Propose file change</b> button next to it when done.
+    </li>
+
+
+    <li>
+    Then head to the <i>Send a pull request</i> page (you won't need to fill in any additional text). Just
+    press <b>Send pull request</b> button.
+    </li>
+
+    <li>
+    Your changes are now queued for review under project's <a href="https://github.com/ralphbean/fedmsg/pulls">Pull requests</a> tab on Github.
+    </li>
+  </ol>
+
+</div>
+{{ super() }}
+{% endblock %}
