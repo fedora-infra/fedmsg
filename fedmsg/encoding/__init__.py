@@ -17,6 +17,27 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
+""" fedmsg messages are encoded as JSON.
+
+Use the functions :func:`fedmsg.encoding.loads`, :func:`fedmsg.encoding.dumps`,
+and :func:`fedmsg.encoding.pretty_dumps` to encode/decode.
+
+When serializing objects (usually python dicts) with
+:func:`fedmsg.encoding.dumps` and :func:`fedmsg.encoding.pretty_dumps`, the
+following exceptions to normal JSON serialization are observed.
+
+ * :class:`datetime.datetime` objects are correctly converted to seconds since
+   the epoch.
+ * For objects that are not JSON serializable, if they have a ``.__json__()``
+   method, that will be used instead.
+ * SQLAlchemy models that do not specify a ``.__json__()`` method will be run
+   through :func:`fedmsg.encoding.sqla.to_json` which recursively produces a
+   dict of all attributes and relations of the object(!)  Be careful using
+   this, as you might expose information to the bus that you do not want to.
+   See :doc:`crypto` for considerations.
+
+"""
+
 import time
 import datetime
 
@@ -39,7 +60,7 @@ import json.encoder
 
 
 class FedMsgEncoder(json.encoder.JSONEncoder):
-    """ Encoder with support for __json__ methods. """
+    """ Encoder with convenience support. """
 
     def default(self, obj):
         if hasattr(obj, '__json__'):
@@ -54,6 +75,7 @@ class FedMsgEncoder(json.encoder.JSONEncoder):
                 return fedmsg.encoding.sqla.to_json(obj)
 
         return super(FedMsgEncoder, self).default(obj)
+
 
 # Ensure that the keys are ordered so that messages can be signed
 # consistently.  See https://github.com/ralphbean/fedmsg/issues/42
