@@ -47,7 +47,6 @@ class command(object):
         from moksha.hub.reactor import reactor
         from moksha.hub import hub
         from twisted.internet.error import ReactorNotRunning
-        import signal  # TODO -- is this import necessary?
 
         if hub._hub:
             hub._hub.stop()
