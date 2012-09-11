@@ -85,11 +85,13 @@ exclude_trees = ['.build']
 #show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'monokai'
 
 
 # Options for HTML output
 # -----------------------
+
+html_theme = "default"
 
 # The style sheet to use for HTML and HTML Help pages. A file of that name
 # must exist either in Sphinx' static/ path, or in one of the custom paths
