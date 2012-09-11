@@ -203,6 +203,48 @@ Glossary of Configuration Values
         ``fedmsg-gateway`` command is described in more detail in
         :doc:`commands`.
 
+    irc
+        ``list`` - A list of ircbot configuration dicts.  This is the primary
+        way of configuring the ``fedmsg-irc`` bot implemented in
+        :func:`fedmsg.commands.ircbot.ircbot`.
+
+        Each dict contains a number of possible options.  Take the following
+        example:
+
+          >>> config = dict(
+          ...     irc=[
+          ...         dict(
+          ...             network='irc.freenode.net',
+          ...             port=6667,
+          ...             nickname='fedmsg-dev',
+          ...             channel='fedora-fedmsg',
+          ...
+          ...             make_pretty=True,
+          ...             make_terse=True,
+          ...
+          ...             filters=dict(
+          ...                 topic=['koji'],
+          ...                 body=['ralph'],
+          ...             ),
+          ...         ),
+          ...     ],
+          ... )
+
+        Here, one bot is configured.  It is to connect to the freenode network
+        on port 6667.  The bot's name will be ``fedmsg-dev`` and it will
+        join the ``#fedora-fedmsg`` channel.
+
+        ``make_pretty`` specifies that colors should be used, if possible.
+
+        ``make_terse`` specifies that the "natural language" representations
+        produced by :mod:`fedmsg.text` should be echoed into the channel instead
+        of raw or dumb representations.
+
+        The ``filters`` dict is not very smart.  In the above case, any message
+        that has 'koji' anywhere in the topic or 'ralph' anywhere in the JSON
+        body will be discarded and not echoed into ``#fedora-fedmsg``.  This is
+        an area that could use some improvement.
+
     zmq_enabled
         ``bool`` - A value that must be true.  It is present solely
         for compatibility/interoperability with `moksha
