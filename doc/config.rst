@@ -13,6 +13,40 @@ Glossary of Configuration Values
 
 .. glossary::
 
+    topic_prefix
+        ``str`` - A string prefixed to the topics of all outgoing messages.
+        Typically "org.fedoraproject".  Used when :func:`fedmsg.publish`
+        constructs the fully-qualified topic for an outgoing message.
+
+    environment
+        ``str`` - A string that must be one of ``['prod', 'stg', 'dev']``.  It
+        signifies the environment in which this fedmsg process is running and
+        can be used to weakly separate different logical buses running in the
+        same infrastructure.  It is used by :func:`fedmsg.publish` when it is
+        constructing a fully-qualified topic.
+
+    high_water_mark
+        ``int`` - An option to zeromq that specifies a hard limit on the maximum
+        number of outstanding messages to be queued in memory before reaching an
+        exceptional state.
+
+        For our pub/sub zeromq sockets, the exceptional state means *dropping
+        messages*.  See the upstream documentation for `ZMQ_HWM
+        <http://api.zeromq.org/2-1:zmq-setsockopt>`_ and `ZMQ_PUB
+        <http://api.zeromq.org/2-1:zmq-socket>`_.
+
+        A :term:`high_water_mark` of ``0`` means "no limit" and is the
+        recommended value for fedmsg.  It is referenced when initializing
+        sockets in :func:`fedmsg.init`.
+
+    io_threads
+        ``int`` - An option that specifies the size of a zeromq thread pool to
+        handle I/O operations.  See the upstream documentation for `zmq_init
+        <http://api.zeromq.org/2-1:zmq-init>`_.
+
+        This value is referenced when initializing the zeromq context in
+        :func:`fedmsg.init`.
+
     sign_messages
         ``bool`` - If set to true, then :mod:`fedmsg.core` will try to sign
         every message sent using the machinery from :mod:`fedmsg.crypto`.
@@ -87,3 +121,17 @@ Glossary of Configuration Values
             we can't rely on programatically extracting the fully qualified
             domain names of the host machine during runtime, we need to
             explicitly list all of the certs in the config.
+
+    zmq_enabled
+        ``bool`` - A value that must be true.  It is present solely
+        for compatibility/interoperability with `moksha
+        <http://mokshaproject.net>`_.
+
+    zmq_strict
+        ``bool`` - When false, allow splats ('*') in topic names when
+        subscribing.  When true, disallow splats and accept only strict matches
+        of topic names.
+
+        This is an argument to `moksha <http://mokshaproject.net>`_ and arose
+        there to help abstract away differences between the "topics" of zeromq
+        and the "routing_keys" of AMQP.
