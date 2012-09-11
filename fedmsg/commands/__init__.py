@@ -90,7 +90,7 @@ class command(object):
                     print
 
         # Attach the --help message as the doc string.
-        parser = fedmsg.config._build_parser(
+        parser = fedmsg.config.build_parser(
             self.extra_args,
             func.__doc__,
             prog=self.name,
