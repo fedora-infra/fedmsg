@@ -40,6 +40,7 @@ Contents
    publishing
    consuming
    crypto
+   text
 
 ----
 
