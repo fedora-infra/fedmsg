@@ -76,11 +76,18 @@ def tail(**kw):
 
     # Disable sending
     kw['publish_endpoint'] = None
+
     # Disable timeouts.  We want to tail forever!
     kw['timeout'] = 0
+
     # Even though fedmsg-tail won't be sending any messages, give it a name to
     # conform with the other commands.
     kw['name'] = 'relay_inbound'
+
+    # Tail is never going to send any messages, so we suppress warnings about
+    # having no publishing sockets established.
+    kw['mute'] = True
+
     fedmsg.init(**kw)
 
     # Build a message formatter

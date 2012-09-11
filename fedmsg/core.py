@@ -78,6 +78,7 @@ class FedMsgContext(object):
 
         # Actually set up our publisher
         if (
+            not config.get("mute", False) and
             config.get("name", None) and
             config.get("endpoints", None) and
             config['endpoints'].get(config['name'])
@@ -118,11 +119,11 @@ class FedMsgContext(object):
             if not _established:
                 raise IOError("Couldn't find an available endpoint.")
 
+        elif config.get('mute', False):
+            # Our caller doesn't intend to send any messages.  Pass silently.
+            pass
         else:
-            # TODO - replace this with a "mute" option that won't complain in
-            # the case of, for example "fedmsg-tail" which should never be
-            # sending messages anyways.  We don't need a "warning" for that..
-            # it just introduces confusion.
+            # Something is wrong.
             warnings.warn("fedmsg is not configured to send any messages")
 
         # Cleanup.  See http://bit.ly/SaGeOr for discussion.
