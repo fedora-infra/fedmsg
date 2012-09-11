@@ -122,6 +122,12 @@ Glossary of Configuration Values
             domain names of the host machine during runtime, we need to
             explicitly list all of the certs in the config.
 
+    fedmsg.consumers.gateway.port
+        ``int`` - A port number for the special outbound zeromq PUB socket
+        posted by :func:`fedmsg.commands.gateway.gateway`.  The
+        ``fedmsg-gateway`` command is described in more detail in
+        :doc:`commands`.
+
     zmq_enabled
         ``bool`` - A value that must be true.  It is present solely
         for compatibility/interoperability with `moksha
