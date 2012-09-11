@@ -47,6 +47,81 @@ Glossary of Configuration Values
         This value is referenced when initializing the zeromq context in
         :func:`fedmsg.init`.
 
+    post_init_sleep
+        ``float`` - A number of seconds to sleep after initializing and before
+        sending any messages.  Setting this to a value greater than zero is
+        required so that zeromq doesn't drop messages that we ask it to send
+        before the pub socket is finished initializing.
+
+        Experimentation needs to be done to determine and sufficiently small and
+        safe value for this number.  ``1`` is definitely safe, but annoyingly
+        large.
+
+    endpoints
+        ``dict`` - A mapping of "service keys" to "zeromq endpoints"; the
+        heart of fedmsg.
+
+        :term:`endpoints` is "a list of possible addresses from which fedmsg can
+        send messages."  Thus, "subscribing to the bus" means subscribing to
+        every address listed in :term:`endpoints`.
+
+        :term:`endpoints` is also an index where a fedmsg process can look up
+        what port it should bind to to begin emitting messages.
+
+        When :func:`fedmsg.init` is invoked, a "name" is determined.  It is
+        either passed explicitly, or guessed from the call stack.  The name is
+        combined with the hostname of the process and used as a lookup key in
+        the :term:`endpoints` dict.
+
+        When sending, fedmsg will attempt to bind to each of the addresses
+        listed under its service key until it can succeed in acquiring the port.
+        There needs to be as many endpoints listed as there will be
+        ``processes * threads`` trying to publish messages for a given
+        service key.
+
+        For example, the following config provides for four WSGI processes on
+        bodhi on the machine app01 to send fedmsg messages.
+
+          >>> config = dict(
+          ...     endpoints={
+          ...         "bodhi.app01":  [
+          ...               "tcp://app01.phx2.fedoraproject.org:3000",
+          ...               "tcp://app01.phx2.fedoraproject.org:3001",
+          ...               "tcp://app01.phx2.fedoraproject.org:3002",
+          ...               "tcp://app01.phx2.fedoraproject.org:3003",
+          ...         ],
+          ...     },
+          ... )
+
+        If apache is configured to start up five WSGI processes, the fifth
+        one will produce tracebacks complaining with
+        ``IOError("Couldn't find an available endpoint.")``.
+
+        If apache is configured to start up four WSGI processes, but with two
+        threads each, four of those threads will raise exceptions with the same
+        complaints.
+
+        A process subscribing to the fedmsg bus will connect a zeromq SUB
+        socket to every endpoint listed in the :term:`endpoints` dict.  Using
+        the above config, it would connect to the four ports on
+        app01.phx2.fedoraproject.org.
+
+        .. note::  This is possibly the most complicated and hardest to
+           understand part of fedmsg.  It is the black sheep of the design.  All
+           of the simplicity enjoyed by the python API is achieved at cost of
+           offloading the complexity here.
+
+           Some work could be done to clarify the language used for "name" and
+           "service key".  It is not always consistent in :mod:`fedmsg.core`.
+
+    relay_inbound
+        ``str`` - A string set to a special zeromq endpoint where the inbound,
+        passive zmq SUB socket for ``fedmsg-relay`` is listening.
+        Commands like ``fedmsg-logger`` actively connect here and publish their
+        messages.
+
+        See :doc:`topology` and :doc:`commands` for more information.
+
     sign_messages
         ``bool`` - If set to true, then :mod:`fedmsg.core` will try to sign
         every message sent using the machinery from :mod:`fedmsg.crypto`.

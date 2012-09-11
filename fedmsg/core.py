@@ -119,6 +119,10 @@ class FedMsgContext(object):
                 raise IOError("Couldn't find an available endpoint.")
 
         else:
+            # TODO - replace this with a "mute" option that won't complain in
+            # the case of, for example "fedmsg-tail" which should never be
+            # sending messages anyways.  We don't need a "warning" for that..
+            # it just introduces confusion.
             warnings.warn("fedmsg is not configured to send any messages")
 
         # Cleanup.  See http://bit.ly/SaGeOr for discussion.
