@@ -3,11 +3,7 @@ fedmsg - Fedora Infrastructure Message Bus
 
 fedmsg (Fedora-Messaging) is a python package and API used around
 Fedora Infrastructure to send and receive messages to and from applications.
-
 You can find the source at http://github.com/ralphbean/fedmsg
-
-Build Status
-------------
 
 .. |master| image:: https://secure.travis-ci.org/ralphbean/fedmsg.png?branch=master
    :alt: Build Status - master branch
@@ -17,13 +13,13 @@ Build Status
    :alt: Build Status - develop branch
    :target: http://travis-ci.org/#!/ralphbean/fedmsg
 
-+----------+-----------+
-| Branch   | Status    |
-+==========+===========+
-| master   | |master|  |
-+----------+-----------+
-| develop  | |develop| |
-+----------+-----------+
++----------+--------------+
+| Branch   | Build Status |
++==========+==============+
+| master   | |master|     |
++----------+--------------+
+| develop  | |develop|    |
++----------+--------------+
 
 Contents
 --------
