@@ -17,19 +17,33 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-""" This module handles the conversion of fedmsg messages (dict-like json
-objects) into internationalized human-readable strings:  strings like
-"nirik voted on a tag in tagger" and "lmacken commented on a bodhi update."
+""" :mod:`fedmsg.text` handles the conversion of fedmsg messages
+(dict-like json objects) into internationalized human-readable
+strings:  strings like ``"nirik voted on a tag in tagger"`` and
+``"lmacken commented on a bodhi update."``
 
-The intent is to use the module 1) in the fedmsg-irc bot and 2) in the
-gnome-shell desktop notification widget.  The sky's the limit, though.
+The intent is to use the module 1) in the ``fedmsg-irc`` bot and 2) in the
+gnome-shell desktop notification widget.  The sky is the limit, though.
 
-Message processing is handled by a list of MessageProcessors defined in
+The primary entry point is :func:`fedmsg.text.msg2repr` which takes a dict and
+returns the string representation.  Portions of that string are in turn
+produced by :func:`fedmsg.text._msg2title`, :func:`fedmsg.text._msg2subtitle`,
+and :func:fedmsg.text._msg2link`.
+
+Message processing is handled by a list of MessageProcessors (instances of
+:class:`fedmsg.text.base.BaseProcessor`) which defined in
 submodules of this module.  Messages for which no MessageProcessor exists are
 handled gracefully.
+
+If you'd like to add a new processor, you'll need to extend
+:class:`fedmsg.text.base.BaseProcessor` and override the appropriate methods.
+Your new class will need to be added to the :data:`fedmsg.text.processors` list
+to be used.
+
 """
 
-# TODO - internationalization
+# gettext is used for internationalization.  I have tested that it can produce
+# the correct files, but I haven't submitted it to anyone for translation.
 import gettext
 t = gettext.translation('fedmsg', 'locale', fallback=True)
 _ = t.ugettext
@@ -58,6 +72,11 @@ processors = [
 
 
 def msg2repr(msg, **config):
+    """ Return a human-readable or "natural language" representation of a
+    dict-like fedmsg message.
+
+    """
+
     fmt = "{title} -- {subtitle} {link}"
     title = _msg2title(msg, **config)
     subtitle = _msg2subtitle(msg, **config)

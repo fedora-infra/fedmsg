@@ -20,19 +20,62 @@
 
 
 class BaseProcessor(object):
-    """ Base Processor... can't handle anything.
+    """ Base Processor.  Without being extended, this doesn't actually handle
+    any messages.
 
-    Override handle_{title,subtitle} to use.
+    Override handle_{title,subtitle,link} to use.
     """
 
     def __init__(self, internationalization_callable):
         self._ = internationalization_callable
 
     def handle_title(self, msg, **config):
+        """ Return true if this processor can produce a "title" for this
+        message.
+
+        For this base class, this always returns ``False``.  Override it to
+        return True in situations for which your :meth:`title` method can
+        produce a title.
+        """
         return False
+
+    def title(self, msg, **config):
+        """ Return a "title" for the message.
+
+        This is only called if :meth:`handle_title` returned True.
+        """
+        raise NotImplementedError
 
     def handle_subtitle(self, msg, **config):
+        """ Return true if this processor can produce a "subtitle" for this
+        message.
+
+        For this base class, this always returns ``False``.  Override it to
+        return True in situations for which your :meth:`subtitle` method can
+        produce a subtitle.
+        """
         return False
 
+    def subtitle(self, msg, **config):
+        """ Return a "subtitle" for the message.
+
+        This is only called if :meth:`handle_subtitle` returned True.
+        """
+        raise NotImplementedError
+
     def handle_link(self, msg, **config):
+        """ Return true if this processor can produce a "link" for this
+        message.
+
+        For this base class, this always returns ``False``.  Override it to
+        return True in situations for which your :meth:`link` method can
+        produce a link.
+        """
         return False
+
+    def link(self, msg, **config):
+        """ Return a "link" for the message.
+
+        This is only called if :meth:`handle_link` returned True.
+        """
+        raise NotImplementedError

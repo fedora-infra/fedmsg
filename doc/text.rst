@@ -5,3 +5,10 @@
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. autodata:: processors
+
+.. automodule:: fedmsg.text.base
+    :members:
+    :undoc-members:
+    :show-inheritance:
