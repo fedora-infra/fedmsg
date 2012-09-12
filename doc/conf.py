@@ -23,6 +23,44 @@ import sys, os
 
 # General configuration
 # ---------------------
+# import Cloud
+import cloud_sptheme as csp
+
+# ... some contents omitted ...
+
+# set the html theme
+html_theme = "cloud"
+
+# ... some contents omitted ...
+
+# set the theme path to point to cloud's theme data
+html_theme_path = [csp.get_theme_dir()]
+
+# [optional] set some of the options listed above...
+html_theme_options = {
+    "roottarget": "index",
+
+    # Style it like Fedora..
+    "bodyfont":         "Cantarell",
+    #"headfont":         "Comfortaa",
+
+    "linkcolor":        "#db3279", # Friends Magenta
+    "highlightcolor":   "#e59728", # Features Orange
+    "codetrimcolor":    "#79db32", # First Green
+    "headlinkcolor":    "#db3279", # Friends Magenta
+    "rubricbgcolor":    "#3c6eb4", # Fedora Blue
+    "footerbgcolor":    "#294172", # Fedora Dark Blue
+
+    # This one is fun to play with
+    #"relbarbgcolor":    "#3c6eb4", # Fedora Blue
+    #"sectionbgcolor":   "#3c6eb4", # Fedora Blue
+    #"relbarbgcolor":    "#db3279", # Friends Magenta
+    #"sectionbgcolor":   "#db3279", # Friends Magenta
+    "relbarbgcolor":    "#79db32", # First Green
+    "sectionbgcolor":   "#79db32", # First Green
+
+}
+
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
