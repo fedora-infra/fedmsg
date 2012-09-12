@@ -40,12 +40,18 @@ html_theme_path = [csp.get_theme_dir()]
 html_theme_options = {
     "roottarget": "index",
 
+    "sidebarwidth":     "200px",
+    "max_width":        "900px",
+    "compact_width":    "800px",
+    "minimal_width":    "700px",
+
     # Style it like Fedora..
     "bodyfont":         "Cantarell",
     #"headfont":         "Comfortaa",
 
+
     "linkcolor":        "#db3279", # Friends Magenta
-    "highlightcolor":   "#e59728", # Features Orange
+    "highlightcolor":   "#79db32", # First Green
     "codetrimcolor":    "#79db32", # First Green
     "headlinkcolor":    "#db3279", # Friends Magenta
     "rubricbgcolor":    "#3c6eb4", # Fedora Blue
@@ -53,11 +59,11 @@ html_theme_options = {
 
     # This one is fun to play with
     #"relbarbgcolor":    "#3c6eb4", # Fedora Blue
-    #"sectionbgcolor":   "#3c6eb4", # Fedora Blue
+    "sectionbgcolor":   "#3c6eb4", # Fedora Blue
     #"relbarbgcolor":    "#db3279", # Friends Magenta
     #"sectionbgcolor":   "#db3279", # Friends Magenta
     "relbarbgcolor":    "#79db32", # First Green
-    "sectionbgcolor":   "#79db32", # First Green
+    #"sectionbgcolor":   "#79db32", # First Green
 
 }
 

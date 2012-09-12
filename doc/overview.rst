@@ -1,8 +1,6 @@
 Overview
 ========
 
-.. contents::
-
 For discussion, check
 https://admin.fedoraproject.org/mailman/listinfo/messaging-sig
 
