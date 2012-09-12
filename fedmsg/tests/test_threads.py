@@ -113,9 +113,6 @@ class TestHub(unittest.TestCase):
         eq_(len(messages_received), 5)
         eq_(messages_received[0]['msg'], secret)
 
-    # Do it again just for good measure
-    test_multi_threaded_again = test_multi_threaded
-
 
 if __name__ == '__main__':
     unittest.main()
