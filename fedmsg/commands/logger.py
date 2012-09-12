@@ -89,7 +89,6 @@ def logger(**kwargs):
     """
 
     kwargs['active'] = True
-    kwargs['endpoints']['relay_inbound'] = kwargs['relay_inbound']
     fedmsg.init(name='relay_inbound', **kwargs)
 
     if kwargs.get('logger_message'):

@@ -76,6 +76,17 @@ class FedMsgContext(object):
 
             self.c['certname'] = self.c['certnames'][cert_index]
 
+        # Do a little special-case mangling.  We never want to "listen" to the
+        # relay_inbound address, but in the special case that we want to emit
+        # our messages there, we add it to the :term:`endpoints` dict so that
+        # the code below where we "Actually set up our publisher" can be
+        # simplified.  See Issue #37 - http://bit.ly/KN6dEK
+        if config.get('active', False):
+            # If the user has called us with "active=True" then presumably they
+            # have given us a "name" as well.
+            name = config.get("name", "relay_inbound")
+            config['endpoints'][name] = config[name]
+
         # Actually set up our publisher
         if (
             not config.get("mute", False) and
