@@ -31,12 +31,12 @@ Contents
    topology
    status
    commands
-   config
-   encoding
    publishing
    consuming
+   encoding
    crypto
    text
+   config
 
 ----
 
