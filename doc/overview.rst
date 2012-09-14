@@ -1,5 +1,9 @@
+========
 Overview
 ========
+
+Introduction
+------------
 
 We want to hook all the services in Fedora Infrastructure up to send messages to
 one another over a message bus instead of communicating with each other in
@@ -44,10 +48,6 @@ Rough Outline of Stages of development/deployment
     This comes last because we want to make sure that message-sending works
     and is reliable before we start making existing services depend on it
     for their functioning.
-
-
-Introduction
-------------
 
 Description of the problem
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

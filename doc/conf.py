@@ -38,7 +38,7 @@ html_theme_path = [csp.get_theme_dir()]
 
 # [optional] set some of the options listed above...
 html_theme_options = {
-    "roottarget": "overview",
+    "roottarget":       "overview",
 
     "sidebarwidth":     "200px",
     "max_width":        "900px",
