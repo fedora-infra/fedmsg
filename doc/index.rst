@@ -1,31 +1,74 @@
-fedmsg - Fedora Infrastructure Message Bus
-==========================================
+Fedora Infrastructure Message Bus
+=================================
 
-fedmsg (Fedora-Messaging) is a python package and API used around
+We want to hook all the services in Fedora Infrastructure up to send messages to
+one another over a message bus instead of communicating with each other in
+the heterogenous, "Rube-Goldberg" ways they do now.
+
+``fedmsg`` (Fedora-Messaging) is a python package and API used around
 Fedora Infrastructure to send and receive messages to and from applications.
-You can find the source at http://github.com/ralphbean/fedmsg
+See :doc:`overview` for a thorough introduction.
 
-.. |master| image:: https://secure.travis-ci.org/ralphbean/fedmsg.png?branch=master
-   :alt: Build Status - master branch
-   :target: http://travis-ci.org/#!/ralphbean/fedmsg
+Publishing Messages with Python
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. |develop| image:: https://secure.travis-ci.org/ralphbean/fedmsg.png?branch=develop
-   :alt: Build Status - develop branch
-   :target: http://travis-ci.org/#!/ralphbean/fedmsg
+.. code-block:: python
 
-+----------+--------------+
-| Branch   | Build Status |
-+==========+==============+
-| master   | |master|     |
-+----------+--------------+
-| develop  | |develop|    |
-+----------+--------------+
+   import fedmsg
+   fedmsg.publish(topic='testing', modname='test', msg={
+       'test': "Hello World",
+   })
 
-Contents
---------
+Publishing Messages from the Shell
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   $ echo "Hello World." | fedmsg-logger --modname=git --topic=repo.update
+   $ echo '{"a": 1}' | fedmsg-logger --json-input
+   $ fedmsg-logger --message="This is a message."
+   $ fedmsg-logger --message='{"a": 1}' --json-input
+
+
+Community
+~~~~~~~~~
+
+The source for this document can be found `on github
+<http://github.com/ralphbean/fedmsg>`_.  The issue tracker can be `found
+there. <http://github.com/ralphbean/fedmsg/issues>`_.
+
+Almost all discussion happens in ``#fedora-apps`` on the freenode network.
+There is also a `mailing list
+<https://admin.fedoraproject.org/mailman/listinfo/messaging-sig>`_ that
+doesn't have much traffic.
+
+
+Rough Outline of Stages of development/deployment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 1) Start writing ``fedmsg`` core.
+ 2) Use ``fedmsg`` to send messages from existing services (koji, bodhi,
+    pkgdb, fas, etc...).  The status of this is kept in :doc:`status` and
+    :doc:`topology`.
+ 3) Consume messages for statistics, i.e. an independent statistics webapp.
+    This will some day be the responsibility of `datanommer
+    <http://github.com/ralphbean/datanommer>`_.  See :doc:`status` for its
+    status in our infrastructure.
+ 4) Consume messages for user experience, i.e. any or all of rss, email,
+    gnome-shell notifications, javascript notifications in FI webapps.  One
+    example of this is `rossdylan's <http://github.com/rossdylan>`_ `desktop
+    notifier <http://github.com/rossdylan/fedmsg-notify-consumer>`_.
+ 5) Consume messages for service interoperability: for example, have koji
+    invalidate it's cache when it sees pkgdb messages go by on the bus.  Or,
+    have the mirrors starts to sync once a new compose of branched or rawhide is
+    complete.
+
+    This comes last because we want to make sure that message-sending works
+    and is reliable before we start making existing services depend on it
+    for their functioning.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 0
 
    overview
    topology
@@ -40,5 +83,6 @@ Contents
 
 ----
 
-:doc:`proposal` is a now out-moded document, but is kept here for historical
-purposes.
+.. note::
+   :doc:`proposal` is a now out-moded document, but is kept here for historical
+   purposes.
