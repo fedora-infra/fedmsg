@@ -1,35 +1,50 @@
 Overview
 ========
 
-For discussion, check
-https://admin.fedoraproject.org/mailman/listinfo/messaging-sig
-
-Get (or modify) the source for this document:
-http://github.com/ralphbean/fedmsg
-
-tl;dr
------
-
 We want to hook all the services in Fedora Infrastructure up to send messages to
 one another over a message bus instead of communicating with each other in
-heterogenous ways they do now.
+the heterogenous ways they do now.
 
 We're writing a python library called ``fedmsg`` to help apps handle this more
 easily.  It's built on `0mq <http://zeromq.org>`_ and `moksha
-<http://moksha.fedorahosted.org>`_.
+<http://mokshaproject.net>`_.
 
-Planned Stages of development/deployment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Community
+~~~~~~~~~
 
- 1) Start writing ``fedmsg``
- 2) Send messages from existing services (koji, bodhi, pkgdb, fas, etc...).
+The source for this document can be found `on github
+<http://github.com/ralphbean/fedmsg>`_.
+
+Almost all discussion happens in ``#fedora-apps`` on the freenode network.
+There is also a `mailing list
+<https://admin.fedoraproject.org/mailman/listinfo/messaging-sig>`_ that
+doesn't have much traffic.
+
+
+Rough Outline of Stages of development/deployment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 1) Start writing ``fedmsg`` core.
+ 2) Use ``fedmsg`` to send messages from existing services (koji, bodhi,
+    pkgdb, fas, etc...).  The status of this is kept in :doc:`status` and
+    :doc:`topology`.
  3) Consume messages for statistics, i.e. an independent statistics webapp.
+    This will some day be the responsibility of `datanommer
+    <http://github.com/ralphbean/datanommer>`_.  See :doc:`status` for its
+    status in our infrastructure.
  4) Consume messages for user experience, i.e. any or all of rss, email,
-    gnome-shell notifications, javascript notifications in FI webapps.
- 5) Consume messages for service interoperability, i.e. koji invalidates it's
-    cache when it sees pkgdb messages go by on the bus.  This comes last because
-    we want to make sure that message-sending works and is reliable before we
-    start making existing services depend on it for their functioning.
+    gnome-shell notifications, javascript notifications in FI webapps.  One
+    example of this is `rossdylan's <http://github.com/rossdylan>`_ `desktop
+    notifier <http://github.com/rossdylan/fedmsg-notify-consumer>`_.
+ 5) Consume messages for service interoperability: for example, have koji
+    invalidate it's cache when it sees pkgdb messages go by on the bus.  Or,
+    have the mirrors starts to sync once a new compose of branched or rawhide is
+    complete.
+
+    This comes last because we want to make sure that message-sending works
+    and is reliable before we start making existing services depend on it
+    for their functioning.
+
 
 Introduction
 ------------
