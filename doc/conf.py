@@ -38,7 +38,7 @@ html_theme_path = [csp.get_theme_dir()]
 
 # [optional] set some of the options listed above...
 html_theme_options = {
-    "roottarget": "index",
+    "roottarget": "overview",
 
     "sidebarwidth":     "200px",
     "max_width":        "900px",
@@ -47,23 +47,32 @@ html_theme_options = {
 
     # Style it like Fedora..
     "bodyfont":         "Cantarell",
-    #"headfont":         "Comfortaa",
 
-
-    "linkcolor":        "#db3279", # Friends Magenta
     "highlightcolor":   "#79db32", # First Green
-    "codetrimcolor":    "#79db32", # First Green
-    "headlinkcolor":    "#db3279", # Friends Magenta
-    "rubricbgcolor":    "#3c6eb4", # Fedora Blue
-    "footerbgcolor":    "#294172", # Fedora Dark Blue
 
-    # This one is fun to play with
-    #"relbarbgcolor":    "#3c6eb4", # Fedora Blue
-    "sectionbgcolor":   "#3c6eb4", # Fedora Blue
-    #"relbarbgcolor":    "#db3279", # Friends Magenta
-    #"sectionbgcolor":   "#db3279", # Friends Magenta
-    "relbarbgcolor":    "#79db32", # First Green
-    #"sectionbgcolor":   "#79db32", # First Green
+    "sidebarbgcolor":   "#FEFEFE",
+    "sidebartrimcolor": "#FEFEFE",
+
+    "sectionbgcolor":   "#FEFEFE",
+    "sectiontrimcolor": "#FEFEFE",
+    "sectiontextcolor": "#444444",
+
+    "relbarbgcolor":    "#FEFEFE",
+    "relbartextcolor":  "#444444",
+    "relbarlinkcolor":  "#444444",
+
+    "bgcolor":          "#FEFEFE",
+    "textcolor":        "#444444",
+    "linkcolor":        "#79db32", # First Green
+
+    "headtextcolor":    "#444444",
+    "headlinkcolor":    "#444444",
+
+    #"codebgcolor"
+    #"codetextcolor"
+    "codetrimcolor":    "#79db32", # First Green
+
+    "footerbgcolor":    "#FEFEFE",
 
 }
 
