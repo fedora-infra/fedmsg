@@ -25,17 +25,17 @@ There is no information here about *receiving* messages, only sending.
 +---------------+-----------+------------+----------+-----------+
 | busmon        | DONE      |   DONE     | DONE     |           |
 +---------------+-----------+------------+----------+-----------+
-| compose       |           |            |          |           |
+| compose       | DONE [0_] |            |          |           |
 +---------------+-----------+------------+----------+-----------+
-| elections     |           |            |          |           |
+| elections     | DONE [1_] |            |          |           |
 +---------------+-----------+------------+----------+-----------+
 | fas           | DONE      |  DONE      | DONE     |           |
 +---------------+-----------+------------+----------+-----------+
-| fuss          | rossdylan_|            |          |           |
+| fuss [2_]     |           |            |          |           |
 +---------------+-----------+------------+----------+-----------+
 | httpd         |           |            |          |           |
 +---------------+-----------+------------+----------+-----------+
-| koji          | DONE?     | blocked_   |          |           |
+| koji          | DONE?     |BLOCKED [3]_|          |           |
 +---------------+-----------+------------+----------+-----------+
 | meetbot       | DONE      | N/A        |          |           |
 +---------------+-----------+------------+----------+-----------+
@@ -54,5 +54,8 @@ There is no information here about *receiving* messages, only sending.
 | zabbix        |           |            |          |           |
 +---------------+-----------+------------+----------+-----------+
 
-.. _rossdylan:  http://github.com/rossdylan/fuss
-.. _blocked:  https://fedorahosted.org/fedora-infrastructure/ticket/3438
+
+.. _0: http://lists.fedoraproject.org/pipermail/infrastructure/2012-September/012148.html
+.. _1: https://github.com/abadger/fedora-elections-flask/pull/1
+.. _2: http://github.com/rossdylan/fuss
+.. _3: https://fedorahosted.org/fedora-infrastructure/ticket/3438
