@@ -47,7 +47,6 @@ class command(object):
         from moksha.hub.reactor import reactor
         from moksha.hub import hub
         from twisted.internet.error import ReactorNotRunning
-        import signal  # TODO -- is this import necessary?
 
         if hub._hub:
             hub._hub.stop()
@@ -88,5 +87,13 @@ class command(object):
                     return func(**config)
                 except KeyboardInterrupt:
                     print
+
+        # Attach the --help message as the doc string.
+        parser = fedmsg.config.build_parser(
+            self.extra_args,
+            func.__doc__,
+            prog=self.name,
+        )
+        wrapper.__doc__ = parser.format_help()
 
         return wrapper

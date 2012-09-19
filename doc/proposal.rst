@@ -20,9 +20,10 @@ http://github.com/ralphbean/fedmsg
 Authors:
  - Ralph Bean (threebean)
 
-.. note:: This document should be considered `alpha`.  The original author is
-   still in the process of getting familiarized with the Fedora Infrastructure.
-   Feedback, criticism, and patches are as always welcome.
+.. note:: This document is out of date and should just be considered a
+   "historical" document.  What you're probably looking for is the
+   :doc:`overview` document: the start of the narrative documentation.  It is
+   the most-up-to-date version of this page.
 
 tl;dr
 =====

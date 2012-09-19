@@ -72,15 +72,22 @@ extra_args = [
 
 @command(name="fedmsg-tail", extra_args=extra_args)
 def tail(**kw):
-    """ Watch the bus. """
+    """ Watch all endpoints on the bus and print each message to stdout. """
 
     # Disable sending
     kw['publish_endpoint'] = None
+
     # Disable timeouts.  We want to tail forever!
     kw['timeout'] = 0
+
     # Even though fedmsg-tail won't be sending any messages, give it a name to
     # conform with the other commands.
     kw['name'] = 'relay_inbound'
+
+    # Tail is never going to send any messages, so we suppress warnings about
+    # having no publishing sockets established.
+    kw['mute'] = True
+
     fedmsg.init(**kw)
 
     # Build a message formatter
@@ -112,8 +119,7 @@ def tail(**kw):
     # prints out each message it consumes.  That seems like overkill, so we're
     # just going to directly access the endpoints ourself.
 
-    for name, ep, topic, message \
-            in fedmsg.__local.__context._tail_messages(**kw):
+    for name, ep, topic, message in fedmsg.tail_messages(**kw):
         if exclusive_regexp.search(topic):
             continue
 

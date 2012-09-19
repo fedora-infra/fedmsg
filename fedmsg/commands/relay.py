@@ -17,12 +17,7 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-""" A SUB.bind()->PUB.bind() relay.
-
-This works by flipping a special boolean in the config that enables
-fedmsg.consumers.relay:RelayConsumer to run before starting up an
-instance of the fedmsg-hub.
-
+"""
 """
 
 import fedmsg
@@ -34,7 +29,19 @@ extra_args = []
 
 @command(name="fedmsg-relay", extra_args=extra_args, daemonizable=True)
 def relay(**kw):
-    """ Relay connections from active loggers to the bus. """
+    """ Relay connections from active loggers to the bus.
+
+    ``fedmsg-relay`` is a service which binds to two ports, listens for
+    messages on one and emits them on the other.  ``fedmsg-logger``
+    requires that an instance of ``fedmsg-relay`` be running *somewhere*
+    and that it's inbound address be listed in the config as
+    :term:`relay_inbound`.
+
+    ``fedmsg-relay`` becomes a necessity for integration points that cannot
+    bind consistently to and serve from a port.  See :doc:`topology` for the
+    mile-high view.  More specifically, ``fedmsg-relay`` is a
+    SUB.bind()->PUB.bind() relay.
+    """
 
     # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
     # with moksha's expected configuration.

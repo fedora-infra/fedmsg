@@ -7,3 +7,4 @@ dist
 *.pdf
 _build
 html-output
+htmldoc

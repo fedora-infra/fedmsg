@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import moksha
 import unittest
 
 import os
@@ -22,7 +21,7 @@ import socket
 from time import sleep, time
 from uuid import uuid4
 
-from moksha.tests.test_hub import simulate_reactor
+from moksha.hub.tests.test_hub import simulate_reactor
 from moksha.hub.hub import MokshaHub
 from moksha.hub import CentralMokshaHub
 from fedmsg.core import FedMsgContext
@@ -66,7 +65,8 @@ def load_config(name='fedmsg-test-config.py'):
     return config
 
 
-@raises(KeyError)
+# This used to raise a keyerror, but no longer.
+#@raises(KeyError)
 def test_init_missing_endpoint():
     """ Try to initialize the context with a nonexistant service name. """
     config = load_config()

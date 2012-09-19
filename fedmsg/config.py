@@ -17,9 +17,11 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-""" Handles loading, processing and validation of all configuration.
+""" :mod:`fedmsg.config` handles loading, processing and validation of
+all configuration.
 
-Configuration values are determined by checking in the following order
+The configuration values used at runtime are determined by checking in
+the following order
 
     - Built-in defaults
     - Config file (/etc/fedmsg-config.py)
@@ -29,6 +31,10 @@ For example, if a config value does not appear in either the config file or on
 the command line, then the built-in default is used.  If a value appears in
 both the config file and as a command line argument, then the command line
 value is used.
+
+You can print the runtime configuration to the terminal by using the
+``fedmsg-config`` command implemented by
+:func:`fedmsg.commands.config.config`.
 """
 
 import argparse
@@ -62,11 +68,15 @@ def load_config(extra_args,
                 filenames=None,
                 invalidate_cache=False,
                 fedmsg_command=False):
-    """ Setup a config file from the following sources ordered by importance:
+    """ Setup a runtime config dict by integrating the following sources
+    (ordered by precedence):
 
       - defaults
       - config file
       - command line arguments
+
+    If the ``fedmsg_command`` argument is False, no command line arguments are
+    checked.
 
     """
     global __cache
@@ -110,10 +120,20 @@ def load_config(extra_args,
     return config
 
 
-def _process_arguments(declared_args, doc, config):
+def build_parser(declared_args, doc, config=None, prog=None):
+    """ Return the global :class:`argparse.ArgumentParser` used by all fedmsg
+    commands.
+
+    Extra arguments can be supplied with the `declared_args` argument.
+    """
+
+    config = config or copy.deepcopy(defaults)
+    prog = prog or sys.argv[0]
+
     parser = argparse.ArgumentParser(
         description=textwrap.dedent(doc),
         formatter_class=argparse.RawDescriptionHelpFormatter,
+        prog=prog,
     )
 
     parser.add_argument(
@@ -166,7 +186,6 @@ def _process_arguments(declared_args, doc, config):
     )
 
     for args, kwargs in declared_args:
-
         # Replace the hard-coded extra_args default with the config file value
         # (if it exists)
         if all([k in kwargs for k in ['dest', 'default']]):
@@ -176,6 +195,11 @@ def _process_arguments(declared_args, doc, config):
         # Having slurped smart defaults from the config file, add the CLI arg.
         parser.add_argument(*args, **kwargs)
 
+    return parser
+
+
+def _process_arguments(declared_args, doc, config):
+    parser = build_parser(declared_args, doc, config)
     args = parser.parse_args()
     return dict(args._get_kwargs())
 

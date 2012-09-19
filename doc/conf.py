@@ -23,13 +23,64 @@ import sys, os
 
 # General configuration
 # ---------------------
+# import Cloud
+import cloud_sptheme as csp
+
+# ... some contents omitted ...
+
+# set the html theme
+html_theme = "cloud"
+
+# ... some contents omitted ...
+
+# set the theme path to point to cloud's theme data
+html_theme_path = [csp.get_theme_dir()]
+
+# [optional] set some of the options listed above...
+html_theme_options = {
+    "sidebarwidth":     "200px",
+    "max_width":        "900px",
+    "compact_width":    "800px",
+    "minimal_width":    "700px",
+
+    # Style it like Fedora..
+    "bodyfont":         "Cantarell",
+
+    "highlightcolor":   "#79db32", # First Green
+
+    "sidebarbgcolor":   "#FEFEFE",
+    "sidebartrimcolor": "#FEFEFE",
+
+    "sectionbgcolor":   "#FEFEFE",
+    "sectiontrimcolor": "#FEFEFE",
+    "sectiontextcolor": "#444444",
+
+    "relbarbgcolor":    "#FEFEFE",
+    "relbartextcolor":  "#444444",
+    "relbarlinkcolor":  "#444444",
+
+    "bgcolor":          "#FEFEFE",
+    "textcolor":        "#444444",
+    "linkcolor":        "#79db32", # First Green
+
+    "headtextcolor":    "#444444",
+    "headlinkcolor":    "#444444",
+
+    #"codebgcolor"
+    #"codetextcolor"
+    "codetrimcolor":    "#79db32", # First Green
+
+    "footerbgcolor":    "#FEFEFE",
+
+}
+
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc']
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['.templates']
+templates_path = ['_templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst'
@@ -115,7 +166,7 @@ pygments_style = 'sphinx'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['.static']
+html_static_path = ['_static']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -126,7 +177,13 @@ html_static_path = ['.static']
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
+html_sidebars = {
+    '**': [
+        'localtoc.html',
+        'relations.html',
+        'githubedit.html',
+    ],
+}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.

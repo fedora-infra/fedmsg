@@ -30,7 +30,10 @@ extra_args = []
 
 @command(name="fedmsg-irc", extra_args=extra_args, daemonizable=True)
 def ircbot(**kw):
-    """ Relay connections from active loggers to the bus. """
+    """ Relay messages from the bus to any number of IRC channels.
+
+    This is highly configurable by way of the :term:`irc` config value.
+    """
 
     # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
     # with moksha's expected configuration.

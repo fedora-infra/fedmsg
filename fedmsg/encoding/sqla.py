@@ -17,12 +17,20 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-""" Utility functions for JSONifying sqlalchemy models that do not define
-their own .__json__ methods.
+""" :mod:`fedmsg.encoding.sqla` houses utility functions for JSONifying
+sqlalchemy models that do not define their own ``.__json__()`` methods.
+
+Use at your own risk.  :func:`fedmsg.encoding.sqla.to_json` will expose all
+attributes and relations of your sqlalchemy object and may expose information
+you not want it to.  See :doc:`crypto` for considerations.
 """
 
-from sqlalchemy.orm import class_mapper
-from sqlalchemy.orm.properties import RelationshipProperty
+try:
+    from sqlalchemy.orm import class_mapper
+    from sqlalchemy.orm.properties import RelationshipProperty
+except ImportError:
+    pass
+
 
 def to_json(obj, seen=None):
     """ Returns a dict representation of the object.
@@ -44,18 +52,19 @@ def to_json(obj, seen=None):
     d = dict([(attr, getattr(obj, attr)) for attr in attrs])
 
     for attr in relationships:
-        d[attr] = _expand(obj, getattr(obj, attr), seen)
+        d[attr] = expand(obj, getattr(obj, attr), seen)
 
     return d
 
-def _expand(obj, relation, seen):
+
+def expand(obj, relation, seen):
     """ Return the to_json or id of a sqlalchemy relationship. """
 
     if hasattr(relation, 'all'):
         relation = relation.all()
 
     if hasattr(relation, '__iter__'):
-        return [_expand(obj, item, seen) for item in relation]
+        return [expand(obj, item, seen) for item in relation]
 
     if type(relation) not in seen:
         return to_json(relation, seen + [type(obj)])

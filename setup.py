@@ -45,7 +45,7 @@ install_requires = [
     'pyzmq',
     'fabulous',
     'kitchen',
-    'moksha>=0.8.8',
+    'moksha.hub',
     'requests',
     #'daemon',
 
@@ -53,17 +53,23 @@ install_requires = [
     #'M2Crypto',
     #'m2ext',
 ]
+tests_require = [
+    'nose',
+]
 
 if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
     install_requires.extend([
         'argparse',
         'ordereddict',
     ])
+    tests_require.extend([
+        'unittest2',
+    ])
 
 
 setup(
     name='fedmsg',
-    version='0.3.9',
+    version='0.4.1',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -71,12 +77,11 @@ setup(
     url='http://github.com/ralphbean/fedmsg/',
     license='LGPLv2+',
     install_requires=install_requires,
-    tests_require=[
-        'nose',
-    ],
+    tests_require=tests_require,
     test_suite='nose.collector',
     packages=[
         'fedmsg',
+        'fedmsg.encoding',
         'fedmsg.commands',
         'fedmsg.consumers',
         'fedmsg.text',
