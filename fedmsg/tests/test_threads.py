@@ -113,6 +113,32 @@ class TestHub(unittest.TestCase):
         eq_(len(messages_received), 5)
         eq_(messages_received[0]['msg'], secret)
 
+    def test_reinitialize(self):
+        """ In a thread, try to destroy and re-init the API. """
+
+        test_name = "__main__.%s" % socket.gethostname()
+        self.config['name'] = test_name
+
+        self.test_reinit_success = False
+
+        class Publisher(threading.Thread):
+            def run(shmelf):
+                config = copy.deepcopy(self.config)
+                import fedmsg
+                fedmsg.init(**config)
+                fedmsg.destroy()
+                fedmsg.init(**config)
+                fedmsg.destroy()
+                fedmsg.init(**config)
+                fedmsg.destroy()
+                self.test_reinit_success = True
+
+
+        thread = Publisher()
+        thread.start()
+        thread.join()
+
+        assert(self.test_reinit_success == True)
 
 if __name__ == '__main__':
     unittest.main()
