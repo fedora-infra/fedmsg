@@ -47,6 +47,7 @@ install_requires = [
     'kitchen',
     'moksha.hub',
     'requests',
+    'pygments',
     #'daemon',
 
     # These are "optional" for now to make installation from pypi easier.
