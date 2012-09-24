@@ -172,12 +172,6 @@ class IRCBotConsumer(FedmsgConsumer):
 
         super(IRCBotConsumer, self).__init__(hub)
 
-        # If fedmsg doesn't think we should be enabled, then we should quit
-        # before setting up all the IRC machinery.
-        # __initialized is set in moksha.api.hub.consumer
-        if not getattr(self, "__initialized", False):
-            return
-
         irc_settings = hub.config.get('irc')
         for settings in irc_settings:
             network = settings.get('network', 'irc.freenode.net')
