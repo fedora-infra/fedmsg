@@ -187,12 +187,13 @@ class IRCBotConsumer(FedmsgConsumer):
             nickname = settings.get('nickname', "fedmsg-bot")
             pretty = settings.get('make_pretty', False)
             terse = settings.get('make_terse', False)
+            timeout = settings.get('timeout', 120)
 
             filters = self.compile_filters(settings.get('filters', None))
 
             factory = FedMsngrFactory(channel, nickname, filters,
                                       pretty, terse, self)
-            reactor.connectTCP(network, port, factory)
+            reactor.connectTCP(network, port, factory, timeout=timeout)
 
     def add_irc_client(self, client):
         self.irc_clients.append(client)
