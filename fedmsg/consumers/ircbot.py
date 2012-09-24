@@ -178,9 +178,12 @@ class IRCBotConsumer(FedmsgConsumer):
             port = settings.get('port', 6667)
             channel = settings.get('channel', None)
             if not channel:
-                log.error("No channel specified")
-                exit(1)
-            channel = "#" + channel
+                log.error("No channel specified.  Ignoring entry.")
+                continue
+
+            if not channel.startswith("#"):
+                channel = "#" + channel
+
             nickname = settings.get('nickname', "fedmsg-bot")
             pretty = settings.get('make_pretty', False)
             terse = settings.get('make_terse', False)
