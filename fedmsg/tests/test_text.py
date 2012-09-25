@@ -175,6 +175,50 @@ class TestFASGroupApply(Base):
     }
 
 
+class TestComposeBranchedComplete(Base):
+    expected_title = "compose.branched.complete (unsigned)"
+    expected_subti = "branched compose completed"
+    expected_link = \
+            "http://alt.fedoraproject.org/pub/fedora/linux/development"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.complete",
+    }
+
+
+class TestComposeBranchedStart(Base):
+    expected_title = "compose.branched.start (unsigned)"
+    expected_subti = "branched compose started"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.start",
+    }
+
+
+class TestComposeRawhideComplete(Base):
+    expected_title = "compose.rawhide.complete (unsigned)"
+    expected_subti = "rawhide compose completed"
+    expected_link = \
+            "http://alt.fedoraproject.org/pub/fedora/linux/development/rawhide"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.complete",
+    }
+
+
+class TestComposeRawhideStart(Base):
+    expected_title = "compose.rawhide.start (unsigned)"
+    expected_subti = "rawhide compose started"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.start",
+    }
+
+
 class TestBodhiUpdateComplete(Base):
     expected_title = "bodhi.update.complete.testing (unsigned)"
     expected_subti = "ralph's fedmsg-0.2.7-2.el6 bodhi update " + \

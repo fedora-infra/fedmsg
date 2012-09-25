@@ -56,6 +56,7 @@ from fedmsg.text.tagger import TaggerProcessor
 from fedmsg.text.supybot import SupybotProcessor
 from fedmsg.text.mediawiki import WikiProcessor
 from fedmsg.text.fas import FASProcessor
+from fedmsg.text.compose import ComposeProcessor
 from fedmsg.text.logger import LoggerProcessor
 from fedmsg.text.default import DefaultProcessor
 
@@ -66,6 +67,7 @@ processors = [
     SupybotProcessor(_),
     WikiProcessor(_),
     FASProcessor(_),
+    ComposeProcessor(_),
     LoggerProcessor(_),
     DefaultProcessor(_),
 ]
