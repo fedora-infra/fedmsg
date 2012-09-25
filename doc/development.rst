@@ -82,7 +82,7 @@ Configuration
 -------------
 
 There is a folder in the root of the upstream git checkout named ``fedmsg.d/``.
-:module:`fedmsg.config` will try to read this whenever the fedmsg API is
+:mod:`fedmsg.config` will try to read this whenever the fedmsg API is
 invoked.  If you're starting a new project like a consumer or a webapp that is
 sending fedmsg messages, you'll need to copy the ``fedmsg.d/`` directory to the
 root directory of that project.  In :doc:`deployment`, that folder is kept in

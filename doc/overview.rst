@@ -194,7 +194,7 @@ with the rest of Infrastructure work, it makes more sense to go with the third
 option.  Better not to touch DNS when we don't have to.
 
 That configuration is kept in ``/etc/fedmsg.d/``, is read by the code in
-:module:`fedmsg.config`.  The config value of interest is :term:`endpoints`.
+:mod:`fedmsg.config`.  The config value of interest is :term:`endpoints`.
 
 Namespace considerations
 ------------------------
