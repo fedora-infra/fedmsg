@@ -79,7 +79,7 @@ def msg2repr(msg, **config):
 
     """
 
-    fmt = "{title} -- {subtitle} {link}"
+    fmt = u"{title} -- {subtitle} {link}"
     title = _msg2title(msg, **config)
     subtitle = _msg2subtitle(msg, **config)
     link = _msg2link(msg, **config)
