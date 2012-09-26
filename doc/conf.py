@@ -93,7 +93,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Fedora Messaging'
-copyright = u'Copyright © 2012 Red Hat, Inc. and others.'
+copyright = u'2012 Red Hat, Inc. and others.'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
