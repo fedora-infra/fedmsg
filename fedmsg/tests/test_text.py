@@ -197,6 +197,69 @@ class TestComposeBranchedStart(Base):
     }
 
 
+class TestComposeBranchedMashStart(Base):
+    expected_title = "compose.branched.mash.start (unsigned)"
+    expected_subti = "branched compose started mashing"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.mash.start",
+    }
+
+
+class TestComposeBranchedMashComplete(Base):
+    expected_title = "compose.branched.mash.complete (unsigned)"
+    expected_subti = "branched compose finished mashing"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.mash.complete",
+    }
+
+
+class TestComposeBranchedPungifyStart(Base):
+    expected_title = "compose.branched.pungify.start (unsigned)"
+    expected_subti = "started building boot.iso for branched"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.pungify.start",
+    }
+
+
+class TestComposeBranchedPungifyComplete(Base):
+    expected_title = "compose.branched.pungify.complete (unsigned)"
+    expected_subti = "finished building boot.iso for branched"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.pungify.complete",
+    }
+
+
+class TestComposeBranchedRsyncStart(Base):
+    expected_title = "compose.branched.rsync.start (unsigned)"
+    expected_subti = "started rsyncing branched compose for public consumption"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.rsync.start",
+    }
+
+
+class TestComposeBranchedRsyncComplete(Base):
+    expected_title = "compose.branched.rsync.complete (unsigned)"
+    expected_subti = \
+            "finished rsync of branched compose for public consumption"
+    expected_link = \
+            "http://alt.fedoraproject.org/pub/fedora/linux/development"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.rsync.complete",
+    }
+
+
 class TestComposeRawhideComplete(Base):
     expected_title = "compose.rawhide.complete (unsigned)"
     expected_subti = "rawhide compose completed"
@@ -216,6 +279,48 @@ class TestComposeRawhideStart(Base):
         "i": 1,
         "timestamp": 1344447839.891876,
         "topic": "org.fedoraproject.prod.compose.rawhide.start",
+    }
+
+
+class TestComposeRawhideMashStart(Base):
+    expected_title = "compose.rawhide.mash.start (unsigned)"
+    expected_subti = "rawhide compose started mashing"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.mash.start",
+    }
+
+
+class TestComposeRawhideMashComplete(Base):
+    expected_title = "compose.rawhide.mash.complete (unsigned)"
+    expected_subti = "rawhide compose finished mashing"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.mash.complete",
+    }
+
+
+class TestComposeRawhideRsyncStart(Base):
+    expected_title = "compose.rawhide.rsync.start (unsigned)"
+    expected_subti = "started rsyncing rawhide compose for public consumption"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.rsync.start",
+    }
+
+
+class TestComposeRawhideRsyncComplete(Base):
+    expected_title = "compose.rawhide.rsync.complete (unsigned)"
+    expected_subti = "finished rsync of rawhide compose for public consumption"
+    expected_link = \
+            "http://alt.fedoraproject.org/pub/fedora/linux/development/rawhide"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.rsync.complete",
     }
 
 

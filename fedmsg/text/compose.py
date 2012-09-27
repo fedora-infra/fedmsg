@@ -25,25 +25,52 @@ class ComposeProcessor(BaseProcessor):
         result = any([target in msg['topic'] for target in [
             'compose.rawhide.start',
             'compose.rawhide.complete',
+            'compose.rawhide.mash.start',
+            'compose.rawhide.mash.complete',
+            'compose.rawhide.rsync.start',
+            'compose.rawhide.rsync.complete',
             'compose.branched.start',
             'compose.branched.complete',
+            'compose.branched.mash.start',
+            'compose.branched.mash.complete',
+            'compose.branched.rsync.start',
+            'compose.branched.rsync.complete',
+            'compose.branched.pungify.start',
+            'compose.branched.pungify.complete',
         ]])
-        print msg['topic'], result
         return result
 
     def handle_link(self, msg, **config):
         result = any([target in msg['topic'] for target in [
             'compose.rawhide.complete',
+            'compose.rawhide.rsync.complete',
             'compose.branched.complete',
+            'compose.branched.rsync.complete',
         ]])
-        print msg['topic'], result
         return result
 
     def subtitle(self, msg, **config):
-        branch = msg['topic'].split('.')[-2]
+        branch = msg['topic'].split('.')[4]
 
-        print "hai.. here in subtitle"
-        if msg['topic'].endswith('.start'):
+        if msg['topic'].endswith('.rsync.start'):
+            tmpl = self._(
+                "started rsyncing {branch} compose for public consumption")
+        elif msg['topic'].endswith('.rsync.complete'):
+            tmpl = self._(
+                "finished rsync of {branch} compose for public consumption")
+        elif msg['topic'].endswith('.mash.start'):
+            tmpl = self._(
+                "{branch} compose started mashing")
+        elif msg['topic'].endswith('.mash.complete'):
+            tmpl = self._(
+                "{branch} compose finished mashing")
+        elif msg['topic'].endswith('.pungify.start'):
+            tmpl = self._(
+                "started building boot.iso for {branch}")
+        elif msg['topic'].endswith('.pungify.complete'):
+            tmpl = self._(
+                "finished building boot.iso for {branch}")
+        elif msg['topic'].endswith('.start'):
             tmpl = self._("{branch} compose started")
         elif msg['topic'].endswith('.complete'):
             tmpl = self._("{branch} compose completed")
@@ -54,9 +81,10 @@ class ComposeProcessor(BaseProcessor):
 
     def link(self, msg, **config):
         base = "http://alt.fedoraproject.org/pub/fedora/linux/development"
-        if 'compose.rawhide.complete' in msg['topic']:
+        if 'rawhide' in msg['topic']:
             return base + "/rawhide"
         else:
-            # For branched.  I'd rather not hardcode the branch name (f18) here
-            # if we can help it..
+            # For branched.  I'd rather not hardcode the branch name (f18)
+            # here -- if we can help it -- so that we don't have to update this
+            # code every time we do a new mass branch.
             return base
