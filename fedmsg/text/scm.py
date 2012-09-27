@@ -22,7 +22,22 @@ from fedmsg.text.base import BaseProcessor
 
 class SCMProcessor(BaseProcessor):
     def handle_subtitle(self, msg, **config):
-        return '.git.receive.' in msg['topic']
+        result = any([target in msg['topic'] for target in [
+            '.git.receive.',
+            '.git.branch.',
+            '.git.pkgdb2branch.start',
+            '.git.pkgdb2branch.complete',
+            '.git.mass_branch.start',
+            '.git.mass_branch.complete',
+        ]])
+        return result
+
+    def handle_link(self, msg, **config):
+        result = any([target in msg['topic'] for target in [
+            '.git.receive.',
+            '.git.branch.',
+        ]])
+        return result
 
     def subtitle(self, msg, **config):
         if '.git.receive.' in msg['topic']:
@@ -33,20 +48,54 @@ class SCMProcessor(BaseProcessor):
             tmpl = self._('{user} pushed to {repo} ({branch}).  "{summary}"')
             return tmpl.format(user=user, repo=repo,
                                branch=branch, summary=summ)
+        elif '.git.branch.' in msg['topic']:
+            repo = '.'.join(msg['topic'].split('.')[5:-1])
+            branch = msg['topic'].split('.')[-1]
+            agent = msg['msg']['agent']
+            tmpl = self._(
+                "{agent} created branch '{branch}' for the '{repo}' package"
+            )
+            return tmpl.format(agent=agent, branch=branch, repo=repo)
+        elif '.git.mass_branch.start' in msg['topic']:
+            tmpl = self._('{agent} started a mass branch')
+        elif '.git.mass_branch.complete' in msg['topic']:
+            tmpl = self._('mass branch started by {agent} completed')
+        elif '.git.pkgdb2branch.start' in msg['topic']:
+            tmpl = self._('{agent} started a run of pkgdb2branch')
+        elif '.git.pkgdb2branch.complete' in msg['topic']:
+            errors = len(msg['msg']['unbranchedPackages'])
+            if errors == 0:
+                tmpl = self._(
+                    'run of pkgdb2branch started by {agent} completed')
+            elif errors == 1:
+                tmpl = self._(
+                    'run of pkgdb2branch started by {agent} completed' +
+                    ' with 1 error'
+                )
+            else:
+                tmpl = self._(
+                    'run of pkgdb2branch started by {agent} completed' +
+                    ' with %i errors'
+                ) % errors
         else:
             raise NotImplementedError
 
-    def handle_link(self, msg, **config):
-        return '.git.receive.' in msg['topic']
+        agent = msg['msg']['agent']
+        return tmpl.format(agent=agent)
 
     def link(self, msg, **config):
+        prefix = "http://pkgs.fedoraproject.org/cgit"
         if '.git.receive.' in msg['topic']:
             repo = '.'.join(msg['topic'].split('.')[5:-1])
             rev = msg['msg']['commit']['rev']
             branch = msg['msg']['commit']['branch']
-            prefix = "http://pkgs.fedoraproject.org/cgit"
             tmpl = "{prefix}/{repo}.git/commit/?h={branch}&id={rev}"
             return tmpl.format(prefix=prefix, repo=repo,
                                branch=branch, rev=rev)
+        elif '.git.branch.' in msg['topic']:
+            repo = '.'.join(msg['topic'].split('.')[5:-1])
+            branch = msg['topic'].split('.')[-1]
+            tmpl = "{prefix}/{repo}.git/log/?h={branch}"
+            return tmpl.format(prefix=prefix, repo=repo, branch=branch)
         else:
             raise NotImplementedError

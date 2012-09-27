@@ -47,6 +47,8 @@ There is no information here about *receiving* messages, only sending.
 +---------------+-----------+------------+----------+-----------+
 | scm           | DONE      |  DONE      | DONE     | DONE      |
 +---------------+-----------+------------+----------+-----------+
+| pkgdb2branch  | DONE      |  DONE      | DONE     | DONE      |
++---------------+-----------+------------+----------+-----------+
 | tagger        | DONE      |  DONE      | DONE     | DONE      |
 +---------------+-----------+------------+----------+-----------+
 | wiki          | DONE      |  DONE      | DONE     | DONE      |

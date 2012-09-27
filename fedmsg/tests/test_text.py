@@ -882,6 +882,105 @@ class TestLoggerJSON(Base):
     }
 
 
+class TestPkgdb2BrMassStart(Base):
+    expected_title = "git.mass_branch.start (unsigned)"
+    expected_subti = "dgilmore started a mass branch"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.mass_branch.start",
+        "msg": {
+            "agent": "dgilmore",
+        },
+    }
+
+
+class TestPkgdb2BrMassComplete(Base):
+    expected_title = "git.mass_branch.complete (unsigned)"
+    expected_subti = "mass branch started by dgilmore completed"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.mass_branch.complete",
+        "msg": {
+            "agent": "dgilmore",
+        },
+    }
+
+
+class TestPkgdb2BrRunStart(Base):
+    expected_title = "git.pkgdb2branch.start (unsigned)"
+    expected_subti = "limburgher started a run of pkgdb2branch"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.pkgdb2branch.start",
+        "msg": {
+            "agent": "limburgher",
+        },
+    }
+
+
+class TestPkgdb2BrRunComplete(Base):
+    expected_title = "git.pkgdb2branch.complete (unsigned)"
+    expected_subti = "run of pkgdb2branch started by limburgher completed"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.pkgdb2branch.complete",
+        "msg": {
+            "agent": "limburgher",
+            "unbranchedPackages": [],
+        },
+    }
+
+
+class TestPkgdb2BrRunCompleteWithError(Base):
+    expected_title = "git.pkgdb2branch.complete (unsigned)"
+    expected_subti = "run of pkgdb2branch started by limburgher completed" + \
+            " with 1 error"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.pkgdb2branch.complete",
+        "msg": {
+            "agent": "limburgher",
+            "unbranchedPackages": ['foo'],
+        },
+    }
+
+
+class TestPkgdb2BrRunCompleteWithErrors(Base):
+    expected_title = "git.pkgdb2branch.complete (unsigned)"
+    expected_subti = "run of pkgdb2branch started by limburgher completed" + \
+            " with 2 errors"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.pkgdb2branch.complete",
+        "msg": {
+            "agent": "limburgher",
+            "unbranchedPackages": ['foo', 'bar'],
+        },
+    }
+
+
+class TestPkgdb2BrCreate(Base):
+    expected_title = "git.branch.valgrind.master (unsigned)"
+    expected_subti = \
+       "limburgher created branch 'master' for the 'valgrind' package"
+    expected_link = \
+       "http://pkgs.fedoraproject.org/cgit/valgrind.git/log/?h=master"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.branch.valgrind.master",
+        "msg": {
+            "agent": "limburgher",
+        },
+    }
+
+
 class TestSCM(Base):
     expected_title = "git.receive.valgrind.master (unsigned)"
     expected_subti = 'Mark Wielaard pushed to valgrind (master).  ' + \
