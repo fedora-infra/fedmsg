@@ -580,7 +580,6 @@ class TestBodhiOverrideUntagged(Base):
 class TestSupybotStartMeetingNoName(Base):
     expected_title = "meetbot.meeting.start (unsigned)"
     expected_subti = 'threebean started a meeting in #channel'
-    expected_link = 'http://logs.com/awesome'
     msg = {
         "i": 16,
         "msg": {
@@ -602,7 +601,6 @@ class TestSupybotStartMeetingNoName(Base):
 class TestSupybotStartMeeting(Base):
     expected_title = "meetbot.meeting.start (unsigned)"
     expected_subti = 'threebean started meeting "title" in #channel'
-    expected_link = 'http://logs.com/awesome'
     msg = {
         "i": 16,
         "msg": {
@@ -624,7 +622,7 @@ class TestSupybotStartMeeting(Base):
 class TestSupybotEndMeeting(Base):
     expected_title = "meetbot.meeting.complete (unsigned)"
     expected_subti = 'threebean ended meeting "title" in #channel'
-    expected_link = 'http://logs.com/awesome'
+    expected_link = 'http://logs.com/awesome.html'
     msg = {
         "i": 16,
         "msg": {
@@ -646,7 +644,7 @@ class TestSupybotEndMeeting(Base):
 class TestSupybotEndMeetingNoTitle(Base):
     expected_title = "meetbot.meeting.complete (unsigned)"
     expected_subti = 'threebean ended a meeting in #channel'
-    expected_link = 'http://logs.com/awesome'
+    expected_link = 'http://logs.com/awesome.html'
     msg = {
         "i": 16,
         "msg": {

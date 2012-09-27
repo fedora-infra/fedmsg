@@ -30,10 +30,14 @@ class SupybotProcessor(BaseProcessor):
         ])
 
     def handle_link(self, msg, **config):
-        return self.handle_subtitle(msg, **config)
+        return any([
+            target in msg['topic'] for target in [
+                'meetbot.meeting.complete',
+            ]
+        ])
 
     def link(self, msg, **config):
-        return msg['msg']['url']
+        return msg['msg']['url'] + ".html"
 
     def subtitle(self, msg, **config):
         if 'meetbot.meeting.start' in msg['topic']:
