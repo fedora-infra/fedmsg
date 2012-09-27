@@ -175,6 +175,155 @@ class TestFASGroupApply(Base):
     }
 
 
+class TestComposeBranchedComplete(Base):
+    expected_title = "compose.branched.complete (unsigned)"
+    expected_subti = "branched compose completed"
+    expected_link = \
+            "http://alt.fedoraproject.org/pub/fedora/linux/development"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.complete",
+    }
+
+
+class TestComposeBranchedStart(Base):
+    expected_title = "compose.branched.start (unsigned)"
+    expected_subti = "branched compose started"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.start",
+    }
+
+
+class TestComposeBranchedMashStart(Base):
+    expected_title = "compose.branched.mash.start (unsigned)"
+    expected_subti = "branched compose started mashing"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.mash.start",
+    }
+
+
+class TestComposeBranchedMashComplete(Base):
+    expected_title = "compose.branched.mash.complete (unsigned)"
+    expected_subti = "branched compose finished mashing"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.mash.complete",
+    }
+
+
+class TestComposeBranchedPungifyStart(Base):
+    expected_title = "compose.branched.pungify.start (unsigned)"
+    expected_subti = "started building boot.iso for branched"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.pungify.start",
+    }
+
+
+class TestComposeBranchedPungifyComplete(Base):
+    expected_title = "compose.branched.pungify.complete (unsigned)"
+    expected_subti = "finished building boot.iso for branched"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.pungify.complete",
+    }
+
+
+class TestComposeBranchedRsyncStart(Base):
+    expected_title = "compose.branched.rsync.start (unsigned)"
+    expected_subti = "started rsyncing branched compose for public consumption"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.rsync.start",
+    }
+
+
+class TestComposeBranchedRsyncComplete(Base):
+    expected_title = "compose.branched.rsync.complete (unsigned)"
+    expected_subti = \
+            "finished rsync of branched compose for public consumption"
+    expected_link = \
+            "http://alt.fedoraproject.org/pub/fedora/linux/development"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.branched.rsync.complete",
+    }
+
+
+class TestComposeRawhideComplete(Base):
+    expected_title = "compose.rawhide.complete (unsigned)"
+    expected_subti = "rawhide compose completed"
+    expected_link = \
+            "http://alt.fedoraproject.org/pub/fedora/linux/development/rawhide"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.complete",
+    }
+
+
+class TestComposeRawhideStart(Base):
+    expected_title = "compose.rawhide.start (unsigned)"
+    expected_subti = "rawhide compose started"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.start",
+    }
+
+
+class TestComposeRawhideMashStart(Base):
+    expected_title = "compose.rawhide.mash.start (unsigned)"
+    expected_subti = "rawhide compose started mashing"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.mash.start",
+    }
+
+
+class TestComposeRawhideMashComplete(Base):
+    expected_title = "compose.rawhide.mash.complete (unsigned)"
+    expected_subti = "rawhide compose finished mashing"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.mash.complete",
+    }
+
+
+class TestComposeRawhideRsyncStart(Base):
+    expected_title = "compose.rawhide.rsync.start (unsigned)"
+    expected_subti = "started rsyncing rawhide compose for public consumption"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.rsync.start",
+    }
+
+
+class TestComposeRawhideRsyncComplete(Base):
+    expected_title = "compose.rawhide.rsync.complete (unsigned)"
+    expected_subti = "finished rsync of rawhide compose for public consumption"
+    expected_link = \
+            "http://alt.fedoraproject.org/pub/fedora/linux/development/rawhide"
+    msg = {
+        "i": 1,
+        "timestamp": 1344447839.891876,
+        "topic": "org.fedoraproject.prod.compose.rawhide.rsync.complete",
+    }
+
+
 class TestBodhiUpdateComplete(Base):
     expected_title = "bodhi.update.complete.testing (unsigned)"
     expected_subti = "ralph's fedmsg-0.2.7-2.el6 bodhi update " + \
@@ -431,7 +580,6 @@ class TestBodhiOverrideUntagged(Base):
 class TestSupybotStartMeetingNoName(Base):
     expected_title = "meetbot.meeting.start (unsigned)"
     expected_subti = 'threebean started a meeting in #channel'
-    expected_link = 'http://logs.com/awesome'
     msg = {
         "i": 16,
         "msg": {
@@ -453,7 +601,6 @@ class TestSupybotStartMeetingNoName(Base):
 class TestSupybotStartMeeting(Base):
     expected_title = "meetbot.meeting.start (unsigned)"
     expected_subti = 'threebean started meeting "title" in #channel'
-    expected_link = 'http://logs.com/awesome'
     msg = {
         "i": 16,
         "msg": {
@@ -475,7 +622,7 @@ class TestSupybotStartMeeting(Base):
 class TestSupybotEndMeeting(Base):
     expected_title = "meetbot.meeting.complete (unsigned)"
     expected_subti = 'threebean ended meeting "title" in #channel'
-    expected_link = 'http://logs.com/awesome'
+    expected_link = 'http://logs.com/awesome.html'
     msg = {
         "i": 16,
         "msg": {
@@ -497,7 +644,7 @@ class TestSupybotEndMeeting(Base):
 class TestSupybotEndMeetingNoTitle(Base):
     expected_title = "meetbot.meeting.complete (unsigned)"
     expected_subti = 'threebean ended a meeting in #channel'
-    expected_link = 'http://logs.com/awesome'
+    expected_link = 'http://logs.com/awesome.html'
     msg = {
         "i": 16,
         "msg": {
@@ -730,6 +877,105 @@ class TestLoggerJSON(Base):
         "msg": {
             "foo": "bar"
         }
+    }
+
+
+class TestPkgdb2BrMassStart(Base):
+    expected_title = "git.mass_branch.start (unsigned)"
+    expected_subti = "dgilmore started a mass branch"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.mass_branch.start",
+        "msg": {
+            "agent": "dgilmore",
+        },
+    }
+
+
+class TestPkgdb2BrMassComplete(Base):
+    expected_title = "git.mass_branch.complete (unsigned)"
+    expected_subti = "mass branch started by dgilmore completed"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.mass_branch.complete",
+        "msg": {
+            "agent": "dgilmore",
+        },
+    }
+
+
+class TestPkgdb2BrRunStart(Base):
+    expected_title = "git.pkgdb2branch.start (unsigned)"
+    expected_subti = "limburgher started a run of pkgdb2branch"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.pkgdb2branch.start",
+        "msg": {
+            "agent": "limburgher",
+        },
+    }
+
+
+class TestPkgdb2BrRunComplete(Base):
+    expected_title = "git.pkgdb2branch.complete (unsigned)"
+    expected_subti = "run of pkgdb2branch started by limburgher completed"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.pkgdb2branch.complete",
+        "msg": {
+            "agent": "limburgher",
+            "unbranchedPackages": [],
+        },
+    }
+
+
+class TestPkgdb2BrRunCompleteWithError(Base):
+    expected_title = "git.pkgdb2branch.complete (unsigned)"
+    expected_subti = "run of pkgdb2branch started by limburgher completed" + \
+            " with 1 error"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.pkgdb2branch.complete",
+        "msg": {
+            "agent": "limburgher",
+            "unbranchedPackages": ['foo'],
+        },
+    }
+
+
+class TestPkgdb2BrRunCompleteWithErrors(Base):
+    expected_title = "git.pkgdb2branch.complete (unsigned)"
+    expected_subti = "run of pkgdb2branch started by limburgher completed" + \
+            " with 2 errors"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.pkgdb2branch.complete",
+        "msg": {
+            "agent": "limburgher",
+            "unbranchedPackages": ['foo', 'bar'],
+        },
+    }
+
+
+class TestPkgdb2BrCreate(Base):
+    expected_title = "git.branch.valgrind.master (unsigned)"
+    expected_subti = \
+       "limburgher created branch 'master' for the 'valgrind' package"
+    expected_link = \
+       "http://pkgs.fedoraproject.org/cgit/valgrind.git/log/?h=master"
+    msg = {
+        "i": 1,
+        "timestamp": 1344350850.8867381,
+        "topic": "org.fedoraproject.prod.git.branch.valgrind.master",
+        "msg": {
+            "agent": "limburgher",
+        },
     }
 
 

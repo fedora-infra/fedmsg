@@ -218,6 +218,7 @@ Glossary of Configuration Values
           ...             port=6667,
           ...             nickname='fedmsg-dev',
           ...             channel='fedora-fedmsg',
+          ...             timeout=120,
           ...
           ...             make_pretty=True,
           ...             make_terse=True,

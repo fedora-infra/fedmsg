@@ -170,7 +170,8 @@ function article_save(
   } else {
     $titletext = $title->getText();
   }
-  $url = $title->getFullURL('diff=');
+  $url = $title->getFullURL('diff=prev&oldid=' . $revision->getId());
+
 
   # Just send on all the information we can...  change the attr names to be
   # more pythonic in style, though.

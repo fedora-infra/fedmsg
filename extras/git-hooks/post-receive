@@ -19,6 +19,11 @@ def _build_commit(rev):
     old, rev, branch = rev
     branch = '/'.join(branch.split('/')[2:])
     commit = repo.rev_parse(rev=rev)
+
+    # We just don't handle these
+    if isinstance(commit, git.TagObject):
+        return None
+
     return dict(
         name=commit.author.name,
         email=commit.author.email,
@@ -41,6 +46,10 @@ config['endpoints']['relay_inbound'] = config['relay_inbound']
 fedmsg.init(name='relay_inbound', cert_prefix='scm', **config)
 
 for commit in commits:
+
+    if commit is None:
+        continue
+
     fedmsg.publish(
         topic="receive.%s.%s" % (repo_name, commit['branch']),
         msg=dict(commit=commit),

@@ -47,7 +47,7 @@ def init(**kw):
     :data:`fedmsg.__local.__context`.
     """
 
-    if hasattr(__local, '__context'):
+    if getattr(__local, '__context', None):
         raise ValueError("fedmsg already initialized")
 
     # Read config from CLI args and a config file
@@ -91,7 +91,9 @@ send_message = publish
 
 @API_function(doc=fedmsg.core.FedMsgContext.destroy.__doc__)
 def destroy(**kw):
-    return __local.__context.destroy()
+    if hasattr(__local, '__context'):
+        __local.__context.destroy()
+        __local.__context = None
 
 
 @API_function(doc=fedmsg.core.FedMsgContext.tail_messages.__doc__)

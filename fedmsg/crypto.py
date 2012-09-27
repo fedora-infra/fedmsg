@@ -50,7 +50,7 @@ Certificates
 To accomplish message signing, fedmsg must be able to read certificates and a
 private key on disk.  For message validation, it only need be able to read the
 certificate.  Exactly *which* certificates are used are determined by looking up
-the ``certname`` in the ``certnames`` config dict.
+the ``certname`` in the :term:`certnames` config dict.
 
 We use a large number of certs for the deployment of fedmsg.  We have one cert
 per `service-host`.  For example, if we have 3 fedmsg-enabled services and each

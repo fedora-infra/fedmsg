@@ -172,30 +172,28 @@ class IRCBotConsumer(FedmsgConsumer):
 
         super(IRCBotConsumer, self).__init__(hub)
 
-        # If fedmsg doesn't think we should be enabled, then we should quit
-        # before setting up all the IRC machinery.
-        # __initialized is set in moksha.api.hub.consumer
-        if not getattr(self, "__initialized", False):
-            return
-
         irc_settings = hub.config.get('irc')
         for settings in irc_settings:
             network = settings.get('network', 'irc.freenode.net')
             port = settings.get('port', 6667)
             channel = settings.get('channel', None)
             if not channel:
-                log.error("No channel specified")
-                exit(1)
-            channel = "#" + channel
+                log.error("No channel specified.  Ignoring entry.")
+                continue
+
+            if not channel.startswith("#"):
+                channel = "#" + channel
+
             nickname = settings.get('nickname', "fedmsg-bot")
             pretty = settings.get('make_pretty', False)
             terse = settings.get('make_terse', False)
+            timeout = settings.get('timeout', 120)
 
             filters = self.compile_filters(settings.get('filters', None))
 
             factory = FedMsngrFactory(channel, nickname, filters,
                                       pretty, terse, self)
-            reactor.connectTCP(network, port, factory)
+            reactor.connectTCP(network, port, factory, timeout=timeout)
 
     def add_irc_client(self, client):
         self.irc_clients.append(client)

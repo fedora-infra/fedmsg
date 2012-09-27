@@ -56,6 +56,7 @@ from fedmsg.text.tagger import TaggerProcessor
 from fedmsg.text.supybot import SupybotProcessor
 from fedmsg.text.mediawiki import WikiProcessor
 from fedmsg.text.fas import FASProcessor
+from fedmsg.text.compose import ComposeProcessor
 from fedmsg.text.logger import LoggerProcessor
 from fedmsg.text.default import DefaultProcessor
 
@@ -66,6 +67,7 @@ processors = [
     SupybotProcessor(_),
     WikiProcessor(_),
     FASProcessor(_),
+    ComposeProcessor(_),
     LoggerProcessor(_),
     DefaultProcessor(_),
 ]
@@ -77,7 +79,7 @@ def msg2repr(msg, **config):
 
     """
 
-    fmt = "{title} -- {subtitle} {link}"
+    fmt = u"{title} -- {subtitle} {link}"
     title = _msg2title(msg, **config)
     subtitle = _msg2subtitle(msg, **config)
     link = _msg2link(msg, **config)

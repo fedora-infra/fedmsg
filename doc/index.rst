@@ -12,6 +12,8 @@ See :doc:`overview` for a thorough introduction.
 Publishing Messages with Python
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+See :doc:`development` on setting up your environment and workflow.
+
 .. code-block:: python
 
    import fedmsg
@@ -73,6 +75,8 @@ Rough Outline of Stages of development/deployment
    overview
    topology
    status
+   development
+   deployment
    commands
    publishing
    consuming
