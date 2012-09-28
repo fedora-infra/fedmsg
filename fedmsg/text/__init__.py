@@ -122,6 +122,17 @@ def _msg2link(msg, **config):
     raise RuntimeError("No text processor caught the message.")
 
 
+def _msg2icon(msg, **config):
+    for p in processors:
+        if not p.handle_icon(msg, **config):
+            continue
+        return p.icon(msg, **config)
+
+    # This should never happen.
+    # DefaultProcessor should always catch messages.
+    raise RuntimeError("No text processor caught the message.")
+
+
 def _msg2suffix(msg, **config):
     if 'signature' not in msg:
         return _("(unsigned)")

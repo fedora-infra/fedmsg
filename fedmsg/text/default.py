@@ -30,6 +30,9 @@ class DefaultProcessor(BaseProcessor):
     def handle_link(self, msg, **config):
         return True
 
+    def handle_icon(self, msg, **config):
+        return True
+
     def title(self, msg, **config):
         return '.'.join(msg['topic'].split('.')[3:])
 
@@ -38,3 +41,6 @@ class DefaultProcessor(BaseProcessor):
 
     def link(self, msg, **config):
         return ""
+
+    def icon(self, msg, **config):
+        return None

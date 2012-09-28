@@ -39,6 +39,12 @@ class SCMProcessor(BaseProcessor):
         ]])
         return result
 
+    def handle_icon(self, msg, **config):
+        return True
+
+    def icon(self, msg, **config):
+        return "http://git-scm.com/images/logo.png"
+
     def subtitle(self, msg, **config):
         if '.git.receive.' in msg['topic']:
             repo = '.'.join(msg['topic'].split('.')[5:-1])

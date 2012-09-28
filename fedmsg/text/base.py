@@ -23,7 +23,7 @@ class BaseProcessor(object):
     """ Base Processor.  Without being extended, this doesn't actually handle
     any messages.
 
-    Override handle_{title,subtitle,link} to use.
+    Override handle_{title,subtitle,link,icon} to use.
     """
 
     def __init__(self, internationalization_callable):
@@ -77,5 +77,22 @@ class BaseProcessor(object):
         """ Return a "link" for the message.
 
         This is only called if :meth:`handle_link` returned True.
+        """
+        raise NotImplementedError
+
+    def handle_icon(self, msg, **config):
+        """ Return true if this processor can produce a "icon" for this
+        message.
+
+        For this base class, this always returns ``False``.  Override it to
+        return True in situations for which your :meth:`icon` method can
+        produce a icon.
+        """
+        return False
+
+    def icon(self, msg, **config):
+        """ Return a "icon" for the message.
+
+        This is only called if :meth:`handle_icon` returned True.
         """
         raise NotImplementedError
