@@ -29,6 +29,10 @@
                    | hub  +-------------+       |
                    \--------------------/       |
                                                 |
+                          /-------------\       |
+                          | fedmsg-tail |<------+
+                          \-------------/       |
+                                                |
             (presently most of this runs        |
              on busgateway01.  In the           |
              future we should distribute        |
