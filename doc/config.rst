@@ -115,8 +115,10 @@ Glossary of Configuration Values
            "service key".  It is not always consistent in :mod:`fedmsg.core`.
 
     relay_inbound
-        ``str`` - A string set to a special zeromq endpoint where the inbound,
-        passive zmq SUB socket for ``fedmsg-relay`` is listening.
+        ``str`` - A list of special zeromq endpoints where the inbound,
+        passive zmq SUB sockets for for instances of ``fedmsg-relay`` are
+        listening.
+
         Commands like ``fedmsg-logger`` actively connect here and publish their
         messages.
 

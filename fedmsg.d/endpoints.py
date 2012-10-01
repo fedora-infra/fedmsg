@@ -34,7 +34,9 @@ config = dict(
 
         # This is the output side of the relay to which all other
         # services can listen.
-        "relay_outbound": ["tcp://*:4001"],
+        "relay_outbound": [
+            "tcp://*:4001",
+        ],
 
         # For other, more 'normal' services, fedmsg will try to guess the
         # name of it's calling module to determine which endpoint definition
@@ -54,5 +56,7 @@ config = dict(
     # It is also used by the git-hook, for the same reason.
     # It is also used by the mediawiki php plugin which, due to the oddities of
     # php, can't maintain a single passive-bind endpoint of it's own.
-    relay_inbound="tcp://127.0.0.1:2003",
+    relay_inbound=[
+        "tcp://127.0.0.1:2003",
+    ],
 )

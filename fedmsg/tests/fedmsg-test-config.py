@@ -58,7 +58,7 @@ config = dict(
             "tcp://www.flugle.horn:88",
         ],
     },
-    relay_inbound="tcp://127.0.0.1:%i" % (port - 1),
+    relay_inbound=["tcp://127.0.0.1:%i" % (port - 1)],
     environment="dev",
     high_water_mark=0,
     io_threads=1,

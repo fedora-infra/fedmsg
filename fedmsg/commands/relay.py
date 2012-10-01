@@ -21,6 +21,7 @@
 """
 
 import fedmsg
+from fedmsg.core import _listify
 from fedmsg.commands import command
 from fedmsg.consumers.relay import RelayConsumer
 
@@ -34,8 +35,8 @@ def relay(**kw):
     ``fedmsg-relay`` is a service which binds to two ports, listens for
     messages on one and emits them on the other.  ``fedmsg-logger``
     requires that an instance of ``fedmsg-relay`` be running *somewhere*
-    and that it's inbound address be listed in the config as
-    :term:`relay_inbound`.
+    and that it's inbound address be listed in the config as one of the entries
+    in :term:`relay_inbound`.
 
     ``fedmsg-relay`` becomes a necessity for integration points that cannot
     bind consistently to and serve from a port.  See :doc:`topology` for the
@@ -43,11 +44,16 @@ def relay(**kw):
     SUB.bind()->PUB.bind() relay.
     """
 
+    # TODO - Works is needed here in order for multiple failover fedmsg-relays
+    # to work.  If three endpoints are declared for relay_outbound, which one
+    # should *this* relay use?  Same goes for relay_inbound.
+    # The config format underspecifies.
+
     # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
     # with moksha's expected configuration.
     moksha_options = dict(
         zmq_publish_endpoints=",".join(kw['endpoints']["relay_outbound"]),
-        zmq_subscribe_endpoints=kw['relay_inbound'],
+        zmq_subscribe_endpoints=",".join(_listify(kw['relay_inbound'])),
         zmq_subscribe_method="bind",
     )
     kw.update(moksha_options)
