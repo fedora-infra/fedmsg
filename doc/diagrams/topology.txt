@@ -5,32 +5,56 @@
                |          |          |
                V          V          V
             /------------+--------------\   (the bus)
-            | fedmsg-hub | fedmsg-relay |<------+
+            | fedmsg-hub | fedmsg-relay |------>|
             |            +--------------+       |
             \---------------------------/       |
                                                 |
                     /-----------+-------\       |
-                    | apache    | bodhi |<------+
+                    | apache    | bodhi |------>+
                     | mod_wsgi  +-+-----+       |
-                    |             | fas |<------+
+                    |             | fas |------>+
                     |          +--+-----+       |
-                    |          | tagger |<------+
+                    |          | tagger |------>+
+                    |          +--------+       |
+                    |          | busmon |       |
                     \----------+--------/       |
                                                 |
             /----------+----------------\       |
-            | supybot/ | supybot-fedmsg |<------+
+            | supybot/ | supybot-fedmsg |------>+
             | meetbot  +----------------+       |
             \---------------------------/       |
                                                 |
                    /------+-------------\       |
-                   | koji | koji plugin |<------+
+                   | koji | koji plugin |------>+
                    | hub  +-------------+       |
                    \--------------------/       |
                                                 |
+            (presently most of this runs        |
+             on busgateway01.  In the           |
+             future we should distribute        |
+             what we can across more            |
+             machines as appropriate.)          |
           /----------------+------------\       |
         <-| fedmsg-gateway | fedmsg-hub |<------+
-          +------------+---+            |
-Clients <-| fedmsg-irc |                |
-          +------------+-----+          |
-        <-| websocket-server |          |
-          \------------------+----------/
+          +------------+---+            |       |
+Clients <-| fedmsg-irc |                |       |
+          +------------+-----+          |       |
+        <-| websocket-server |          |       |
+          +------------------+          |       |
+          |                             |       |
+          |          +------------------+       |
+          |          | busmon-colorizer |------>|
+          |          +------------------+
+          |                             |
+          |       +---------------------+  +--------------------+
+          |       |herlo's fama updater |->| {d} xmlrpc -> trac |
+          |       +---------------------+  +--------------------+
+          |                +------------+  +--------------+
+          |                | datanommer |->| {s} postgres |
+          |                +------------+  +--------------+
+          |    +------------------------+  +----------------+
+          |    |busmon-memcached-stuffer|->| {s} memcached  |
+          |    +------------------------+  |                |
+          |                             |  | read by apache |
+          \-----------------------------/  | busmon app     |
+                                           +----------------+
