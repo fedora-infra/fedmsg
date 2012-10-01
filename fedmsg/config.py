@@ -55,6 +55,7 @@ defaults = dict(
     timeout=2,
     print_config=False,
     high_water_mark=0,  # zero means no limit
+    zmq_linger=1000,    # Wait one second before timing out on fedmsg-relay
     active=False,       # generally only true for fedmsg-logger
 )
 
@@ -183,6 +184,13 @@ def build_parser(declared_args, doc, config=None, prog=None):
         help="Limit on the number of messages in the queue before blocking.",
         type=int,
         default=config['high_water_mark'],
+    )
+    parser.add_argument(
+        '--linger',
+        dest='zmq_linger',
+        help="Number of milliseconds to wait before timing out connections.",
+        type=int,
+        default=config['zmq_linger'],
     )
 
     for args, kwargs in declared_args:
