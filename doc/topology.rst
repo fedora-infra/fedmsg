@@ -7,5 +7,5 @@ evolve as we are able to integrate more services.
 
 .. image:: _static/topology.png
 
-The section on the right labelled ``(the bus)`` is the NxN connection mesh
+The section on the right labelled ``(the bus)`` is the NxM connection mesh
 described in :doc:`overview`.
