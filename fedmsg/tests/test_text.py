@@ -979,6 +979,26 @@ class TestPkgdb2BrCreate(Base):
     }
 
 
+class TestLookaside(Base):
+    expected_title = "git.lookaside.texlive.new (unsigned)"
+    expected_subti = 'jnovy uploaded pst-diffraction.doc.tar.xz for texlive'
+    expected_link = 'http://pkgs.fedoraproject.org/lookaside/pkgs/' + \
+            'texlive/pst-diffraction.doc.tar.xz/' + \
+            'dacad985394b3977f9dcf0c75f51a357/' + \
+            'pst-diffraction.doc.tar.xz'
+    msg = {
+      "i": 1,
+      "timestamp": 1349197866.215465,
+      "topic": "org.fedoraproject.prod.git.lookaside.texlive.new",
+      "msg": {
+        "agent": "jnovy",
+        "md5sum": "dacad985394b3977f9dcf0c75f51a357",
+        "name": "texlive",
+        "filename": "pst-diffraction.doc.tar.xz"
+      }
+    }
+
+
 class TestSCM(Base):
     expected_title = "git.receive.valgrind.master (unsigned)"
     expected_subti = 'Mark Wielaard pushed to valgrind (master).  ' + \
