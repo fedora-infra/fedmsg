@@ -42,6 +42,13 @@ class BodhiProcessor(BaseProcessor):
             'bodhi.update.complete',
         ]])
 
+    def handle_icon(self, msg, **config):
+        return True
+
+    def icon(self, msg, **config):
+        return "https://admin.fedoraproject.org/updates" + \
+                "/static/images/bodhi-icon-48.png"
+
     def subtitle(self, msg, **config):
         if 'bodhi.update.comment' in msg['topic']:
             author = msg['msg']['comment']['author']

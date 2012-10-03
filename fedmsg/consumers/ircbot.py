@@ -172,6 +172,9 @@ class IRCBotConsumer(FedmsgConsumer):
 
         super(IRCBotConsumer, self).__init__(hub)
 
+        if not getattr(self, '_initialized', False):
+            return
+
         irc_settings = hub.config.get('irc')
         for settings in irc_settings:
             network = settings.get('network', 'irc.freenode.net')

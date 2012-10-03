@@ -99,6 +99,9 @@ class FedMsgContext(object):
             if config['high_water_mark']:
                 self.publisher.setsockopt(zmq.HWM, config['high_water_mark'])
 
+            if method == 'connect':
+                self.publisher.setsockopt(zmq.LINGER, config['zmq_linger'])
+
             config['endpoints'][config['name']] = _listify(
                 config['endpoints'][config['name']])
 
@@ -266,7 +269,10 @@ class FedMsgContext(object):
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)
 
-        self.publisher.send_multipart([topic, fedmsg.encoding.dumps(msg)])
+        self.publisher.send_multipart(
+            [topic, fedmsg.encoding.dumps(msg)],
+            flags=zmq.NOBLOCK,
+        )
 
     def tail_messages(self, endpoints, topic="", passive=False, **kw):
         """ Tail messages on the bus.

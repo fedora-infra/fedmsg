@@ -25,6 +25,7 @@ class SCMProcessor(BaseProcessor):
         result = any([target in msg['topic'] for target in [
             '.git.receive.',
             '.git.branch.',
+            '.git.lookaside.',
             '.git.pkgdb2branch.start',
             '.git.pkgdb2branch.complete',
             '.git.mass_branch.start',
@@ -36,8 +37,15 @@ class SCMProcessor(BaseProcessor):
         result = any([target in msg['topic'] for target in [
             '.git.receive.',
             '.git.branch.',
+            '.git.lookaside.',
         ]])
         return result
+
+    def handle_icon(self, msg, **config):
+        return True
+
+    def icon(self, msg, **config):
+        return "http://git-scm.com/images/logo.png"
 
     def subtitle(self, msg, **config):
         if '.git.receive.' in msg['topic']:
@@ -56,6 +64,14 @@ class SCMProcessor(BaseProcessor):
                 "{agent} created branch '{branch}' for the '{repo}' package"
             )
             return tmpl.format(agent=agent, branch=branch, repo=repo)
+        elif '.git.lookaside.' in msg['topic']:
+            name = msg['msg']['name']
+            agent = msg['msg']['agent']
+            filename = msg['msg']['filename']
+            tmpl = self._(
+                "{agent} uploaded {filename} for {name}"
+            )
+            return tmpl.format(agent=agent, name=name, filename=filename)
         elif '.git.mass_branch.start' in msg['topic']:
             tmpl = self._('{agent} started a mass branch')
         elif '.git.mass_branch.complete' in msg['topic']:
@@ -97,5 +113,13 @@ class SCMProcessor(BaseProcessor):
             branch = msg['topic'].split('.')[-1]
             tmpl = "{prefix}/{repo}.git/log/?h={branch}"
             return tmpl.format(prefix=prefix, repo=repo, branch=branch)
+        elif '.git.lookaside.' in msg['topic']:
+            prefix = "http://pkgs.fedoraproject.org/lookaside/pkgs"
+            name = msg['msg']['name']
+            md5sum = msg['msg']['md5sum']
+            filename = msg['msg']['filename']
+            tmpl = "{prefix}/{name}/{filename}/{md5sum}/{filename}"
+            return tmpl.format(prefix=prefix, name=name,
+                               md5sum=md5sum, filename=filename)
         else:
             raise NotImplementedError

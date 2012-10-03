@@ -77,7 +77,15 @@ function initialize() {
 
   $context = new ZMQContext(1, true);
   $queue = $context->getSocket(ZMQ::SOCKET_PUB, "pub-a-dub-dub");
-  $queue->connect($config['relay_inbound']);
+  if (is_array($config['relay_inbound'])) {
+    // API for fedmsg >= 0.5.2
+    // TODO - be more robust here and if connecting to the first one fails, try
+    // the next, and the next, and etc...
+    $queue->connect($config['relay_inbound'][0]);
+  } else {
+    // API for fedmsg <= 0.5.1
+    $queue->connect($config['relay_inbound']);
+  }
   return true;
 }
 
