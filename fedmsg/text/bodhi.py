@@ -43,7 +43,11 @@ class BodhiProcessor(BaseProcessor):
         ]])
 
     def handle_icon(self, msg, **config):
-        return True
+        return any([target in msg['topic'] for target in [
+            'bodhi.update',
+            'bodhi.mashtask',
+            'bodhi.buildroot_override',
+        ]])
 
     def icon(self, msg, **config):
         return "https://admin.fedoraproject.org/updates" + \
