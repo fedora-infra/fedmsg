@@ -58,8 +58,8 @@ Rough Outline of Stages of development/deployment
     status in our infrastructure.
  4) Consume messages for user experience, i.e. any or all of rss, email,
     gnome-shell notifications, javascript notifications in FI webapps.  One
-    example of this is `rossdylan's <http://github.com/rossdylan>`_ `desktop
-    notifier <http://github.com/rossdylan/fedmsg-notify-consumer>`_.
+    example of this is `lmacken's <http://lewk.org>`_ dbus-based `fedmsg-notify
+    <https://github.com/lmacken/fedmsg-notify>`_.
  5) Consume messages for service interoperability: for example, have koji
     invalidate it's cache when it sees pkgdb messages go by on the bus.  Or,
     have the mirrors starts to sync once a new compose of branched or rawhide is
