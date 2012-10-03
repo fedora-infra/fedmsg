@@ -42,7 +42,15 @@ class SCMProcessor(BaseProcessor):
         return result
 
     def handle_icon(self, msg, **config):
-        return True
+        return any([target in msg['topic'] for target in [
+            '.git.receive.',
+            '.git.branch.',
+            '.git.lookaside.',
+            '.git.pkgdb2branch.',
+            '.git.pkgdb2branch.',
+            '.git.mass_branch.',
+            '.git.mass_branch.',
+        ]])
 
     def icon(self, msg, **config):
         return "http://git-scm.com/images/logo.png"
