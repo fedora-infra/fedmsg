@@ -21,6 +21,11 @@ from fedmsg.text.base import BaseProcessor
 
 
 class WikiProcessor(BaseProcessor):
+    __name__ = "Wiki"
+    __description__ = "the Fedora Wiki"
+    __link__ = "https://fedoraproject.org/wiki"
+    __docs__ = "https://fedoraproject.org/wiki"
+
     def handle_subtitle(self, msg, **config):
         return any([
             target in msg['topic'] for target in [

@@ -21,6 +21,11 @@ from fedmsg.text.base import BaseProcessor
 
 
 class BodhiProcessor(BaseProcessor):
+    __name__ = "Bodhi"
+    __description__ = "the Fedora update system"
+    __link__ = "https://admin.fedoraproject.org/updates"
+    __docs__ = "http://fedoraproject.org/wiki/Bodhi"
+
     def handle_subtitle(self, msg, **config):
         return any([target in msg['topic'] for target in [
             'bodhi.update.comment',

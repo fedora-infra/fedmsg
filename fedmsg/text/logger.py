@@ -21,6 +21,11 @@ from fedmsg.text.base import BaseProcessor
 
 
 class LoggerProcessor(BaseProcessor):
+    __name__ = "logger"
+    __description__ = "miscellaneous Fedora Infrastructure shell scripts"
+    __link__ = "http://fedoraproject.org/wiki/Infrastructure"
+    __docs__ = "http://fedoraproject.org/wiki/Infrastructure"
+
     def handle_subtitle(self, msg, **config):
         return 'logger.log' in msg['topic']
 
