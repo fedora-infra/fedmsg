@@ -65,3 +65,13 @@ class WikiProcessor(BaseProcessor):
             return msg['msg']['url']
         else:
             raise NotImplementedError
+
+    def handle_icon(self, msg, **config):
+        return any([target in msg['topic'] for target in [
+            'wiki.article.edit',
+            'wiki.upload.complete',
+        ]])
+
+    def icon(self, msg, **config):
+        return "https://upload.wikimedia.org/wikipedia/commons/thumb" + \
+               "/3/3d/Mediawiki-logo.png/53px-Mediawiki-logo.png"
