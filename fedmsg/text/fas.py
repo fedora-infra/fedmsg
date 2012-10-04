@@ -20,20 +20,13 @@
 from fedmsg.text.base import BaseProcessor
 from fedmsg.text.fasshim import gravatar_url
 
+
 class FASProcessor(BaseProcessor):
     __name__ = "FAS"
     __description__ = "the Fedora Account System"
     __link__ = "https://admin.fedoraproject.org/accounts"
     __docs__ = "https://fedoraproject.org/wiki/Account_System"
     __obj__ = "Account Changes"
-
-    def handle_icon(self, msg, **config):
-        # If I can handle a subtitle, I can handle an icon.
-        return self.handle_subtitle(msg, **config)
-
-    def icon(self, msg, **config):
-        # Every fas fedmsg message has an "agent" field.. "whodunnit"
-        return gravatar_url(username=msg['msg']['agent']['username'])
 
     def handle_subtitle(self, msg, **config):
         return any([target in msg['topic'] for target in [
@@ -95,7 +88,7 @@ class FASProcessor(BaseProcessor):
             group = msg['msg']['group']['name']
             fields = ", ".join(msg['msg']['fields'])
             tmpl = self._(
-                "{agent} edited the following fields of the {group} " + \
+                "{agent} edited the following fields of the {group} " +
                 "FAS group:  {fields}"
             )
             return tmpl.format(agent=agent, group=group, fields=fields)
@@ -109,3 +102,13 @@ class FASProcessor(BaseProcessor):
             return tmpl.format(agent=agent, group=group, user=user)
         else:
             raise NotImplementedError
+
+    handle_icon = handle_secondary_icon = handle_subtitle
+
+    def icon(self, msg, **config):
+        return "https://admin.fedoraproject.org/accounts/static/" + \
+               "theme/fas/images/account.png"
+
+    def secondary_icon(self, msg, **config):
+        # Every fas fedmsg message has an "agent" field.. "whodunnit"
+        return gravatar_url(username=msg['msg']['agent']['username'])

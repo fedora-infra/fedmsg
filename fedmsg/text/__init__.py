@@ -16,6 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
+#           Luke Macken <lmacken@redhat.com>
 #
 """ :mod:`fedmsg.text` handles the conversion of fedmsg messages
 (dict-like json objects) into internationalized human-readable
@@ -131,6 +132,13 @@ def _msg2icon(msg, **config):
     # This should never happen.
     # DefaultProcessor should always catch messages.
     raise RuntimeError("No text processor caught the message.")
+
+
+def _msg2secondary_icon(msg, **config):
+    for p in processors:
+        if not p.handle_secondary_icon(msg, **config):
+            continue
+        return p.secondary_icon(msg, **config)
 
 
 def _msg2suffix(msg, **config):
