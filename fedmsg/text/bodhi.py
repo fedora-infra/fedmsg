@@ -16,8 +16,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
-#
+#           Luke Macken <lmacken@redhat.com>
+
 from fedmsg.text.base import BaseProcessor
+from fedmsg.text.fasshim import gravatar_url
 
 
 class BodhiProcessor(BaseProcessor):
@@ -57,7 +59,21 @@ class BodhiProcessor(BaseProcessor):
 
     def icon(self, msg, **config):
         return "https://admin.fedoraproject.org/updates" + \
-                "/static/images/bodhi-icon-48.png"
+               "/static/images/bodhi-icon-48.png"
+
+    def handle_secondary_icon(self, msg, **config):
+        return self.handle_icon(msg, **config)
+
+    def secondary_icon(self, msg, **config):
+        username = ''
+        if 'bodhi.update.comment' in msg['topic']:
+            username = msg['msg']['comment']['author']
+        else:
+            username = msg['msg'].get('update', {}).get('submitter')
+        gravatar = ''
+        if username:
+            gravatar = gravatar_url(username)
+        return gravatar
 
     def subtitle(self, msg, **config):
         if 'bodhi.update.comment' in msg['topic']:
