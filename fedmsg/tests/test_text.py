@@ -80,7 +80,11 @@ class TestUnhandled(Base):
 class TestFASUserCreate(Base):
     expected_title = "fas.user.create (unsigned)"
     expected_subti = "New FAS account:  'ralph'  (created by 'ralph')"
-    expected_icon = "http://www.gravatar.com/avatar/2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2Ffedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'i': 1,
         u'timestamp': 1344432054.8098609,
@@ -100,6 +104,11 @@ class TestFASEditProfile(Base):
     expected_title = "fas.user.update (unsigned)"
     expected_subti = "ralph edited the following fields of ralph's " + \
             "FAS profile:  comments"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.user.update',
         u'msg': {
@@ -114,6 +123,11 @@ class TestFASEditGroup(Base):
     expected_title = "fas.group.update (unsigned)"
     expected_subti = "ralph edited the following fields of the " + \
             "ambassadors FAS group:  display_name"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.update',
         u'msg': {
@@ -127,6 +141,11 @@ class TestFASEditGroup(Base):
 class TestFASGroupCreate(Base):
     expected_title = "fas.group.create (unsigned)"
     expected_subti = "ralph created new FAS group ambassadors"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.create',
         u'msg': {
@@ -139,6 +158,11 @@ class TestFASGroupCreate(Base):
 class TestFASRoleUpdate(Base):
     expected_title = "fas.role.update (unsigned)"
     expected_subti = "toshio changed ralph's role in the ambassadors group"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.role.update',
         u'msg': {
@@ -151,8 +175,12 @@ class TestFASRoleUpdate(Base):
 
 class TestFASGroupRemove(Base):
     expected_title = "fas.group.member.remove (unsigned)"
-    expected_subti = "toshio removed ralph from " + \
-            "the ambassadors group"
+    expected_subti = "toshio removed ralph from the ambassadors group"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.remove',
         u'msg': {
@@ -166,7 +194,12 @@ class TestFASGroupRemove(Base):
 class TestFASGroupSponsor(Base):
     expected_title = "fas.group.member.sponsor (unsigned)"
     expected_subti = "toshio sponsored ralph's membership " + \
-            "in the ambassadors group"
+                     "in the ambassadors group"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.sponsor',
         u'msg': {
@@ -180,7 +213,12 @@ class TestFASGroupSponsor(Base):
 class TestFASGroupApply(Base):
     expected_title = "fas.group.member.apply (unsigned)"
     expected_subti = "ralph applied for ralph's membership " + \
-            "in the ambassadors group"
+        "in the ambassadors group"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.apply',
         u'msg': {
