@@ -18,7 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 from fedmsg.text.base import BaseProcessor
-
+from fedmsg.text.fasshim import gravatar_url
 
 class FASProcessor(BaseProcessor):
     __name__ = "FAS"
@@ -26,6 +26,14 @@ class FASProcessor(BaseProcessor):
     __link__ = "https://admin.fedoraproject.org/accounts"
     __docs__ = "https://fedoraproject.org/wiki/Account_System"
     __obj__ = "Account Changes"
+
+    def handle_icon(self, msg, **config):
+        # If I can handle a subtitle, I can handle an icon.
+        return self.handle_subtitle(msg, **config)
+
+    def icon(self, msg, **config):
+        # Every fas fedmsg message has an "agent" field.. "whodunnit"
+        return gravatar_url(username=msg['msg']['agent']['username'])
 
     def handle_subtitle(self, msg, **config):
         return any([target in msg['topic'] for target in [
