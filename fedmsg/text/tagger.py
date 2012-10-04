@@ -25,6 +25,7 @@ class TaggerProcessor(BaseProcessor):
     __description__ = "the Fedora package labeller/tagger"
     __link__ = "https://apps.fedoraproject.org/tagger"
     __docs__ = "https://github.com/ralphbean/fedora-tagger"
+    __obj__ = "Package Tag Votes"
 
     def handle_subtitle(self, msg, **config):
         return any([

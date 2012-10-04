@@ -25,6 +25,7 @@ class WikiProcessor(BaseProcessor):
     __description__ = "the Fedora Wiki"
     __link__ = "https://fedoraproject.org/wiki"
     __docs__ = "https://fedoraproject.org/wiki"
+    __obj__ = "Wiki Edits"
 
     def handle_subtitle(self, msg, **config):
         return any([

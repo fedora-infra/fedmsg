@@ -25,6 +25,7 @@ class ComposeProcessor(BaseProcessor):
     __description__ = "Fedora Release Engineering"
     __link__ = "http://git.fedorahosted.org/cgit/releng"
     __docs__ = "http://fedoraproject.org/wiki/ReleaseEngineering"
+    __obj__ = "Composes"
 
     def handle_subtitle(self, msg, **config):
         result = any([target in msg['topic'] for target in [

@@ -26,7 +26,7 @@ class BaseProcessor(object):
     Override handle_{title,subtitle,link,icon} to use.
     """
 
-    # These four properties must be overridden by child-classes.
+    # These five properties must be overridden by child-classes.
     # They can be used by applications to give more context to messages.  If
     # the BodhiProcessor can handle a message, then our caller's code can use
     # these attributes to say "btw, this message is from Bodhi, the Fedora
@@ -36,6 +36,7 @@ class BaseProcessor(object):
     __description__ = None
     __link__ = None
     __docs__ = None
+    __obj__ = None
 
     def __init__(self, internationalization_callable):
         self._ = internationalization_callable
@@ -47,6 +48,8 @@ class BaseProcessor(object):
             raise ValueError("Must declare a __link__")
         if not self.__docs__:
             raise ValueError("Must declare a __docs__")
+        if not self.__obj__:
+            raise ValueError("Must declare a __obj__")
 
     def handle_title(self, msg, **config):
         """ Return true if this processor can produce a "title" for this

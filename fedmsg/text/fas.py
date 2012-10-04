@@ -25,6 +25,7 @@ class FASProcessor(BaseProcessor):
     __description__ = "the Fedora Account System"
     __link__ = "https://admin.fedoraproject.org/accounts"
     __docs__ = "https://fedoraproject.org/wiki/Account_System"
+    __obj__ = "Account Changes"
 
     def handle_subtitle(self, msg, **config):
         return any([target in msg['topic'] for target in [

@@ -25,6 +25,7 @@ class BodhiProcessor(BaseProcessor):
     __description__ = "the Fedora update system"
     __link__ = "https://admin.fedoraproject.org/updates"
     __docs__ = "http://fedoraproject.org/wiki/Bodhi"
+    __obj__ = "Package Updates"
 
     def handle_subtitle(self, msg, **config):
         return any([target in msg['topic'] for target in [

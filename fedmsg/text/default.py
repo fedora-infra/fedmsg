@@ -25,6 +25,7 @@ class DefaultProcessor(BaseProcessor):
     __description__ = "fedmsg doesn't know how to handle this message"
     __link__ = "http://github.com/ralphbean/fedmsg"
     __docs__ = "http://fedmsg.rtfd.org"
+    __obj__ = "Everything Else"
 
     def handle_title(self, msg, **config):
         return True
