@@ -336,9 +336,12 @@ class TestComposeRawhideRsyncComplete(Base):
 class TestBodhiUpdateComplete(Base):
     expected_title = "bodhi.update.complete.testing (unsigned)"
     expected_subti = "ralph's fedmsg-0.2.7-2.el6 bodhi update " + \
-            "completed push to testing"
-    expected_link = \
-            "https://admin.fedoraproject.org/updates/fedmsg-0.2.7-2.el6"
+                     "completed push to testing"
+    expected_link = "https://admin.fedoraproject.org/updates/" + \
+                    "fedmsg-0.2.7-2.el6"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+
     msg = {
         "i": 88,
         "timestamp": 1344447839.891876,
@@ -413,6 +416,8 @@ class TestBodhiUpdateComplete(Base):
 class TestBodhiMashTaskMashing(Base):
     expected_title = "bodhi.mashtask.mashing (unsigned)"
     expected_subti = "bodhi masher is mashing test_repo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.mashing",
         'msg': {
@@ -424,6 +429,8 @@ class TestBodhiMashTaskMashing(Base):
 class TestBodhiMashTaskStart(Base):
     expected_title = "bodhi.mashtask.start (unsigned)"
     expected_subti = "bodhi masher started its mashtask"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.start",
         'msg': {}
@@ -433,6 +440,8 @@ class TestBodhiMashTaskStart(Base):
 class TestBodhiMashTaskComplete(Base):
     expected_title = "bodhi.mashtask.complete (unsigned)"
     expected_subti = "bodhi masher failed to complete its mashtask!"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.complete",
         'msg': {'success': False}
@@ -442,6 +451,8 @@ class TestBodhiMashTaskComplete(Base):
 class TestBodhiMashTaskSyncWait(Base):
     expected_title = "bodhi.mashtask.sync.wait (unsigned)"
     expected_subti = "bodhi masher is waiting on mirror repos to sync"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.sync.wait",
         'msg': {}
@@ -451,6 +462,8 @@ class TestBodhiMashTaskSyncWait(Base):
 class TestBodhiMashTaskSyncWait(Base):
     expected_title = "bodhi.mashtask.sync.done (unsigned)"
     expected_subti = "bodhi masher finished waiting on mirror repos to sync"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.sync.done",
         'msg': {}
@@ -461,6 +474,8 @@ class TestBodhiRequestUnpush(Base):
     expected_title = "bodhi.update.request.unpush (unsigned)"
     expected_subti = "lmacken unpushed foo"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.unpush",
         'msg': {
@@ -476,6 +491,8 @@ class TestBodhiRequestObsolete(Base):
     expected_title = "bodhi.update.request.obsolete (unsigned)"
     expected_subti = "lmacken obsoleted foo"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.obsolete",
         'msg': {
@@ -491,6 +508,8 @@ class TestBodhiRequestStable(Base):
     expected_title = "bodhi.update.request.stable (unsigned)"
     expected_subti = "lmacken submitted foo to stable"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.stable",
         'msg': {
@@ -506,6 +525,8 @@ class TestBodhiRequestRevoke(Base):
     expected_title = "bodhi.update.request.revoke (unsigned)"
     expected_subti = "lmacken revoked foo"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.revoke",
         'msg': {
@@ -521,6 +542,8 @@ class TestBodhiRequestTesting(Base):
     expected_title = "bodhi.update.request.testing (unsigned)"
     expected_subti = "lmacken submitted foo to testing"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.testing",
         'msg': {
@@ -536,6 +559,8 @@ class TestBodhiComment(Base):
     expected_title = "bodhi.update.comment (unsigned)"
     expected_subti = "ralph commented on bodhi update fedmsg-1.0-1 (karma: -1)"
     expected_link = "https://admin.fedoraproject.org/updates/fedmsg-1.0-1"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -557,6 +582,8 @@ class TestBodhiComment(Base):
 class TestBodhiOverrideTagged(Base):
     expected_title = "bodhi.buildroot_override.tag (unsigned)"
     expected_subti = "lmacken submitted a buildroot override for fedmsg-1.0-1"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -573,6 +600,8 @@ class TestBodhiOverrideTagged(Base):
 class TestBodhiOverrideUntagged(Base):
     expected_title = "bodhi.buildroot_override.untag (unsigned)"
     expected_subti = "lmacken expired a buildroot override for fedmsg-1.0-1"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
     msg = {
         "i": 1,
         "timestamp": 1344964395.207541,
@@ -793,6 +822,8 @@ class TestMediaWikiEdit(Base):
     expected_title = "wiki.article.edit (unsigned)"
     expected_subti = 'Ralph made a wiki edit to "Messaging SIG".'
     expected_link = "http://this-is-a-link.org"
+    expected_icon = "https://upload.wikimedia.org/wikipedia/commons/" + \
+                    "thumb/3/3d/Mediawiki-logo.png/53px-Mediawiki-logo.png"
 
     msg = {
         "topic": "org.fedoraproject.stg.wiki.article.edit",
@@ -815,7 +846,9 @@ class TestMediaWikiEdit(Base):
 class TestMediaWikiUpload(Base):
     expected_title = "wiki.upload.complete (unsigned)"
     expected_subti = 'Ralph uploaded File:Cat.jpg to the wiki: ' + \
-            '"This is a beautiful cat..."'
+                     '"This is a beautiful cat..."'
+    expected_icon = "https://upload.wikimedia.org/wikipedia/commons/" + \
+                    "thumb/3/3d/Mediawiki-logo.png/53px-Mediawiki-logo.png"
     msg = {
         "topic": "org.fedoraproject.stg.wiki.upload.complete",
         "msg": {
