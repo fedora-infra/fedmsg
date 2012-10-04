@@ -26,7 +26,8 @@ import fedmsg.text
 
 
 class Base(unittest.TestCase):
-    msg, expected_title, expected_subti, expected_link = None, None, None, None
+    msg, expected_title, expected_subti, expected_link, expected_icon = \
+            None, None, None, None, None
 
     def setUp(self):
         self.config = {
@@ -53,6 +54,13 @@ class Base(unittest.TestCase):
         actual_link = fedmsg.text._msg2link(self.msg, **self.config)
         eq_(actual_link, self.expected_link)
 
+    def test_icon(self):
+        """ Does fedmsg.text produce the expected icon? """
+        if None in (self.msg, self.expected_icon):
+            return
+        actual_icon = fedmsg.text._msg2icon(self.msg, **self.config)
+        eq_(actual_icon, self.expected_icon)
+
 
 class TestUnhandled(Base):
     expected_title = "unhandled_service.some_event (unsigned)"
@@ -65,6 +73,7 @@ class TestUnhandled(Base):
 class TestFASUserCreate(Base):
     expected_title = "fas.user.create (unsigned)"
     expected_subti = "New FAS account:  'ralph'  (created by 'ralph')"
+    expected_icon = "http://www.gravatar.com/avatar/2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2Ffedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'i': 1,
         u'timestamp': 1344432054.8098609,
