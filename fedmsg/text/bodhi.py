@@ -68,6 +68,8 @@ class BodhiProcessor(BaseProcessor):
         username = ''
         if 'bodhi.update.comment' in msg['topic']:
             username = msg['msg']['comment']['author']
+        elif 'bodhi.buildroot_override' in msg['topic']:
+            username = msg['msg']['override']['submitter']
         else:
             username = msg['msg'].get('update', {}).get('submitter')
         gravatar = ''
