@@ -21,6 +21,12 @@ from fedmsg.text.base import BaseProcessor
 
 
 class WikiProcessor(BaseProcessor):
+    __name__ = "Wiki"
+    __description__ = "the Fedora Wiki"
+    __link__ = "https://fedoraproject.org/wiki"
+    __docs__ = "https://fedoraproject.org/wiki"
+    __obj__ = "Wiki Edits"
+
     def handle_subtitle(self, msg, **config):
         return any([
             target in msg['topic'] for target in [
@@ -59,3 +65,13 @@ class WikiProcessor(BaseProcessor):
             return msg['msg']['url']
         else:
             raise NotImplementedError
+
+    def handle_icon(self, msg, **config):
+        return any([target in msg['topic'] for target in [
+            'wiki.article.edit',
+            'wiki.upload.complete',
+        ]])
+
+    def icon(self, msg, **config):
+        return "https://upload.wikimedia.org/wikipedia/commons/thumb" + \
+               "/3/3d/Mediawiki-logo.png/53px-Mediawiki-logo.png"

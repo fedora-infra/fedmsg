@@ -21,6 +21,12 @@ from fedmsg.text.base import BaseProcessor
 
 
 class SCMProcessor(BaseProcessor):
+    __name__ = "git"
+    __description__ = "the Fedora version control system"
+    __link__ = "http://pkgs.fedoraproject.org/cgit"
+    __docs__ = "https://fedoraproject.org/wiki/Using_Fedora_GIT"
+    __obj__ = "Package Commits"
+
     def handle_subtitle(self, msg, **config):
         result = any([target in msg['topic'] for target in [
             '.git.receive.',
@@ -42,7 +48,15 @@ class SCMProcessor(BaseProcessor):
         return result
 
     def handle_icon(self, msg, **config):
-        return True
+        return any([target in msg['topic'] for target in [
+            '.git.receive.',
+            '.git.branch.',
+            '.git.lookaside.',
+            '.git.pkgdb2branch.',
+            '.git.pkgdb2branch.',
+            '.git.mass_branch.',
+            '.git.mass_branch.',
+        ]])
 
     def icon(self, msg, **config):
         return "http://git-scm.com/images/logo.png"

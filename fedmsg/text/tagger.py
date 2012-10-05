@@ -21,6 +21,12 @@ from fedmsg.text.base import BaseProcessor
 
 
 class TaggerProcessor(BaseProcessor):
+    __name__ = "Tagger"
+    __description__ = "the Fedora package labeller/tagger"
+    __link__ = "https://apps.fedoraproject.org/tagger"
+    __docs__ = "https://github.com/ralphbean/fedora-tagger"
+    __obj__ = "Package Tag Votes"
+
     def handle_subtitle(self, msg, **config):
         return any([
             target in msg['topic'] for target in [

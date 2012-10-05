@@ -147,6 +147,8 @@ function emit_message($subtopic, $message) {
     "topic" => $topic,
     "msg" => $message,
     "timestamp" => time(),
+    # TODO -> we don't have a good way to increment this counter from php yet.
+    "i" => 1,
   );
   if (array_key_exists('sign_messages', $config) and to_bool($config['sign_messages'])) {
     $message_obj = sign_message($message_obj);

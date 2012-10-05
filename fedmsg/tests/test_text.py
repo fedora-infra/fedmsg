@@ -26,7 +26,8 @@ import fedmsg.text
 
 
 class Base(unittest.TestCase):
-    msg, expected_title, expected_subti, expected_link = None, None, None, None
+    msg, expected_title, expected_subti, expected_link, expected_icon, \
+        expected_secondary_icon = None, None, None, None, None, None
 
     def setUp(self):
         self.config = {
@@ -53,6 +54,20 @@ class Base(unittest.TestCase):
         actual_link = fedmsg.text._msg2link(self.msg, **self.config)
         eq_(actual_link, self.expected_link)
 
+    def test_icon(self):
+        """ Does fedmsg.text produce the expected icon? """
+        if None in (self.msg, self.expected_icon):
+            return
+        actual_icon = fedmsg.text._msg2icon(self.msg, **self.config)
+        eq_(actual_icon, self.expected_icon)
+
+    def test_secondary_icon(self):
+        """ Does fedmsg.text produce the expected secondary icon? """
+        if None in (self.msg, self.expected_secondary_icon):
+            return
+        actual_icon = fedmsg.text._msg2secondary_icon(self.msg, **self.config)
+        eq_(actual_icon, self.expected_secondary_icon)
+
 
 class TestUnhandled(Base):
     expected_title = "unhandled_service.some_event (unsigned)"
@@ -65,6 +80,11 @@ class TestUnhandled(Base):
 class TestFASUserCreate(Base):
     expected_title = "fas.user.create (unsigned)"
     expected_subti = "New FAS account:  'ralph'  (created by 'ralph')"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'i': 1,
         u'timestamp': 1344432054.8098609,
@@ -84,6 +104,11 @@ class TestFASEditProfile(Base):
     expected_title = "fas.user.update (unsigned)"
     expected_subti = "ralph edited the following fields of ralph's " + \
             "FAS profile:  comments"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.user.update',
         u'msg': {
@@ -98,6 +123,11 @@ class TestFASEditGroup(Base):
     expected_title = "fas.group.update (unsigned)"
     expected_subti = "ralph edited the following fields of the " + \
             "ambassadors FAS group:  display_name"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.update',
         u'msg': {
@@ -111,6 +141,11 @@ class TestFASEditGroup(Base):
 class TestFASGroupCreate(Base):
     expected_title = "fas.group.create (unsigned)"
     expected_subti = "ralph created new FAS group ambassadors"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.create',
         u'msg': {
@@ -123,6 +158,11 @@ class TestFASGroupCreate(Base):
 class TestFASRoleUpdate(Base):
     expected_title = "fas.role.update (unsigned)"
     expected_subti = "toshio changed ralph's role in the ambassadors group"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.role.update',
         u'msg': {
@@ -135,8 +175,12 @@ class TestFASRoleUpdate(Base):
 
 class TestFASGroupRemove(Base):
     expected_title = "fas.group.member.remove (unsigned)"
-    expected_subti = "toshio removed ralph from " + \
-            "the ambassadors group"
+    expected_subti = "toshio removed ralph from the ambassadors group"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.remove',
         u'msg': {
@@ -150,7 +194,12 @@ class TestFASGroupRemove(Base):
 class TestFASGroupSponsor(Base):
     expected_title = "fas.group.member.sponsor (unsigned)"
     expected_subti = "toshio sponsored ralph's membership " + \
-            "in the ambassadors group"
+                     "in the ambassadors group"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.sponsor',
         u'msg': {
@@ -164,7 +213,12 @@ class TestFASGroupSponsor(Base):
 class TestFASGroupApply(Base):
     expected_title = "fas.group.member.apply (unsigned)"
     expected_subti = "ralph applied for ralph's membership " + \
-            "in the ambassadors group"
+        "in the ambassadors group"
+    expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
+                    "/theme/fas/images/account.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.apply',
         u'msg': {
@@ -327,9 +381,15 @@ class TestComposeRawhideRsyncComplete(Base):
 class TestBodhiUpdateComplete(Base):
     expected_title = "bodhi.update.complete.testing (unsigned)"
     expected_subti = "ralph's fedmsg-0.2.7-2.el6 bodhi update " + \
-            "completed push to testing"
-    expected_link = \
-            "https://admin.fedoraproject.org/updates/fedmsg-0.2.7-2.el6"
+                     "completed push to testing"
+    expected_link = "https://admin.fedoraproject.org/updates/" + \
+                    "fedmsg-0.2.7-2.el6"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
+
     msg = {
         "i": 88,
         "timestamp": 1344447839.891876,
@@ -404,6 +464,9 @@ class TestBodhiUpdateComplete(Base):
 class TestBodhiMashTaskMashing(Base):
     expected_title = "bodhi.mashtask.mashing (unsigned)"
     expected_subti = "bodhi masher is mashing test_repo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = ''
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.mashing",
         'msg': {
@@ -415,6 +478,9 @@ class TestBodhiMashTaskMashing(Base):
 class TestBodhiMashTaskStart(Base):
     expected_title = "bodhi.mashtask.start (unsigned)"
     expected_subti = "bodhi masher started its mashtask"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = ''
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.start",
         'msg': {}
@@ -424,6 +490,9 @@ class TestBodhiMashTaskStart(Base):
 class TestBodhiMashTaskComplete(Base):
     expected_title = "bodhi.mashtask.complete (unsigned)"
     expected_subti = "bodhi masher failed to complete its mashtask!"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = ''
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.complete",
         'msg': {'success': False}
@@ -433,6 +502,9 @@ class TestBodhiMashTaskComplete(Base):
 class TestBodhiMashTaskSyncWait(Base):
     expected_title = "bodhi.mashtask.sync.wait (unsigned)"
     expected_subti = "bodhi masher is waiting on mirror repos to sync"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = ''
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.sync.wait",
         'msg': {}
@@ -442,6 +514,9 @@ class TestBodhiMashTaskSyncWait(Base):
 class TestBodhiMashTaskSyncWait(Base):
     expected_title = "bodhi.mashtask.sync.done (unsigned)"
     expected_subti = "bodhi masher finished waiting on mirror repos to sync"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = ''
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.sync.done",
         'msg': {}
@@ -452,6 +527,11 @@ class TestBodhiRequestUnpush(Base):
     expected_title = "bodhi.update.request.unpush (unsigned)"
     expected_subti = "lmacken unpushed foo"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.unpush",
         'msg': {
@@ -467,6 +547,11 @@ class TestBodhiRequestObsolete(Base):
     expected_title = "bodhi.update.request.obsolete (unsigned)"
     expected_subti = "lmacken obsoleted foo"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.obsolete",
         'msg': {
@@ -482,6 +567,11 @@ class TestBodhiRequestStable(Base):
     expected_title = "bodhi.update.request.stable (unsigned)"
     expected_subti = "lmacken submitted foo to stable"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.stable",
         'msg': {
@@ -497,6 +587,11 @@ class TestBodhiRequestRevoke(Base):
     expected_title = "bodhi.update.request.revoke (unsigned)"
     expected_subti = "lmacken revoked foo"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.revoke",
         'msg': {
@@ -512,6 +607,11 @@ class TestBodhiRequestTesting(Base):
     expected_title = "bodhi.update.request.testing (unsigned)"
     expected_subti = "lmacken submitted foo to testing"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.testing",
         'msg': {
@@ -527,6 +627,11 @@ class TestBodhiComment(Base):
     expected_title = "bodhi.update.comment (unsigned)"
     expected_subti = "ralph commented on bodhi update fedmsg-1.0-1 (karma: -1)"
     expected_link = "https://admin.fedoraproject.org/updates/fedmsg-1.0-1"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -548,6 +653,11 @@ class TestBodhiComment(Base):
 class TestBodhiOverrideTagged(Base):
     expected_title = "bodhi.buildroot_override.tag (unsigned)"
     expected_subti = "lmacken submitted a buildroot override for fedmsg-1.0-1"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -564,6 +674,11 @@ class TestBodhiOverrideTagged(Base):
 class TestBodhiOverrideUntagged(Base):
     expected_title = "bodhi.buildroot_override.untag (unsigned)"
     expected_subti = "lmacken expired a buildroot override for fedmsg-1.0-1"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+                    "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     msg = {
         "i": 1,
         "timestamp": 1344964395.207541,
@@ -784,6 +899,8 @@ class TestMediaWikiEdit(Base):
     expected_title = "wiki.article.edit (unsigned)"
     expected_subti = 'Ralph made a wiki edit to "Messaging SIG".'
     expected_link = "http://this-is-a-link.org"
+    expected_icon = "https://upload.wikimedia.org/wikipedia/commons/" + \
+                    "thumb/3/3d/Mediawiki-logo.png/53px-Mediawiki-logo.png"
 
     msg = {
         "topic": "org.fedoraproject.stg.wiki.article.edit",
@@ -806,7 +923,9 @@ class TestMediaWikiEdit(Base):
 class TestMediaWikiUpload(Base):
     expected_title = "wiki.upload.complete (unsigned)"
     expected_subti = 'Ralph uploaded File:Cat.jpg to the wiki: ' + \
-            '"This is a beautiful cat..."'
+                     '"This is a beautiful cat..."'
+    expected_icon = "https://upload.wikimedia.org/wikipedia/commons/" + \
+                    "thumb/3/3d/Mediawiki-logo.png/53px-Mediawiki-logo.png"
     msg = {
         "topic": "org.fedoraproject.stg.wiki.upload.complete",
         "msg": {

@@ -21,6 +21,12 @@ from fedmsg.text.base import BaseProcessor
 
 
 class SupybotProcessor(BaseProcessor):
+    __name__ = "zodbot"
+    __description__ = "the Fedora IRC bot"
+    __link__ = "http://meetbot.fedoraproject.org/"
+    __docs__ = "http://fedoraproject.org/wiki/Zodbot"
+    __obj__ = "IRC Meetings"
+
     def handle_subtitle(self, msg, **config):
         return any([
             target in msg['topic'] for target in [
