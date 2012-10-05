@@ -118,3 +118,20 @@ class BaseProcessor(object):
         This is only called if :meth:`handle_icon` returned True.
         """
         raise NotImplementedError
+
+    def handle_secondary_icon(self, msg, **config):
+        """ Return true if this processor can produce a "secondary icon" for
+        this message.
+
+        For this base class, this always returns ``False``.  Override it to
+        return True in situations for which your :meth:`icon` method can
+        produce a icon.
+        """
+        return False
+
+    def secondary_icon(self, msg, **config):
+        """ Return a "secondary icon" for the message.
+
+        This is only called if :meth:`handle_icon` returned True.
+        """
+        raise NotImplementedError
