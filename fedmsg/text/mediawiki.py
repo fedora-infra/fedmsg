@@ -18,6 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 from fedmsg.text.base import BaseProcessor
+from fedmsg.text.fasshim import gravatar_url
 
 
 class WikiProcessor(BaseProcessor):
@@ -74,3 +75,9 @@ class WikiProcessor(BaseProcessor):
 
     def icon(self, msg, **config):
         return "https://fedoraproject.org/w/skins/common/images/mediawiki.png"
+
+    handle_secondary_icon = handle_icon
+
+    def secondary_icon(self, msg, **config):
+        user = msg['msg'].get('user', msg['msg'].get('user_text', ''))
+        return gravatar_url(user.lower())

@@ -18,6 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 from fedmsg.text.base import BaseProcessor
+from fedmsg.text.fasshim import gravatar_url
 
 
 class TaggerProcessor(BaseProcessor):
@@ -69,3 +70,8 @@ class TaggerProcessor(BaseProcessor):
             return tmpl.format(user=user, tag=tag, package=package)
         else:
             raise NotImplementedError
+
+    handle_icon = handle_subtitle
+
+    def icon(self, msg, **config):
+        return gravatar_url(msg['msg']['vote']['user']['username'])
