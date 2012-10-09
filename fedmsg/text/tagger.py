@@ -33,6 +33,7 @@ class TaggerProcessor(BaseProcessor):
             target in msg['topic'] for target in [
                 'fedoratagger.tag.update',
                 'fedoratagger.tag.create',
+                'fedoratagger.user.rank.update',
             ]
         ])
 
@@ -68,6 +69,11 @@ class TaggerProcessor(BaseProcessor):
             package = msg['msg']['vote']['tag']['package'].keys()[0]
             tmpl = self._('{user} added tag "{tag}" to {package}')
             return tmpl.format(user=user, tag=tag, package=package)
+        elif 'fedoratagger.user.rank.update' in msg['topic']:
+            user = msg['msg']['user']['username']
+            rank = msg['msg']['user']['rank']
+            tmpl = self._("{user}'s rank changed to {rank}")
+            return tmpl.format(user=user, rank=rank)
         else:
             raise NotImplementedError
 
