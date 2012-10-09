@@ -18,6 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 from fedmsg.text.base import BaseProcessor
+from fedmsg.text.fasshim import gravatar_url
 
 
 class SCMProcessor(BaseProcessor):
@@ -60,6 +61,13 @@ class SCMProcessor(BaseProcessor):
 
     def icon(self, msg, **config):
         return "http://git-scm.com/images/logo.png"
+
+    handle_secondary_icon = handle_icon
+
+    def secondary_icon(self, msg, **config):
+        if '.git.receive.' in msg['topic']:
+            user = msg['msg']['commit']['name']
+            return gravatar_url(user)
 
     def subtitle(self, msg, **config):
         if '.git.receive.' in msg['topic']:
