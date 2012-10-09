@@ -899,8 +899,8 @@ class TestMediaWikiEdit(Base):
     expected_title = "wiki.article.edit (unsigned)"
     expected_subti = 'Ralph made a wiki edit to "Messaging SIG".'
     expected_link = "http://this-is-a-link.org"
-    expected_icon = "https://upload.wikimedia.org/wikipedia/commons/" + \
-                    "thumb/3/3d/Mediawiki-logo.png/53px-Mediawiki-logo.png"
+    expected_icon = "https://fedoraproject.org/w/skins/common/" + \
+                    "images/mediawiki.png"
 
     msg = {
         "topic": "org.fedoraproject.stg.wiki.article.edit",
@@ -924,8 +924,8 @@ class TestMediaWikiUpload(Base):
     expected_title = "wiki.upload.complete (unsigned)"
     expected_subti = 'Ralph uploaded File:Cat.jpg to the wiki: ' + \
                      '"This is a beautiful cat..."'
-    expected_icon = "https://upload.wikimedia.org/wikipedia/commons/" + \
-                    "thumb/3/3d/Mediawiki-logo.png/53px-Mediawiki-logo.png"
+    expected_icon = "https://fedoraproject.org/w/skins/common/" + \
+                    "images/mediawiki.png"
     msg = {
         "topic": "org.fedoraproject.stg.wiki.upload.complete",
         "msg": {
