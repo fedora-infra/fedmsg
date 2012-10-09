@@ -20,6 +20,9 @@
 from fedmsg.text.base import BaseProcessor
 from fedmsg.text.fasshim import gravatar_url
 
+from hashlib import md5
+import urllib
+
 
 class SCMProcessor(BaseProcessor):
     __name__ = "git"
@@ -66,8 +69,14 @@ class SCMProcessor(BaseProcessor):
 
     def secondary_icon(self, msg, **config):
         if '.git.receive.' in msg['topic']:
-            user = msg['msg']['commit']['name']
-            return gravatar_url(user)
+            query_string = urllib.urlencode({
+                's': 64,
+                'd': "http://git-scm.com/images/logo.png",
+            })
+            email = msg['msg']['commit']['email']
+            hash = md5(email).hexdigest()
+            tmpl = "http://www.gravatar.com/avatar/%s?%s"
+            return tmpl % (hash, query_string)
 
     def subtitle(self, msg, **config):
         if '.git.receive.' in msg['topic']:

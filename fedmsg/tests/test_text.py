@@ -1125,6 +1125,11 @@ class TestSCM(Base):
     expected_link = "http://pkgs.fedoraproject.org/cgit/" + \
             "valgrind.git/commit/" + \
             "?h=master&id=7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1"
+    expected_icon = "http://git-scm.com/images/logo.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+            "923419d315c8f23eface39852bf32a5f?s=64&" + \
+            "d=http%3A%2F%2Fgit-scm.com%2Fimages%2Flogo.png"
+
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
