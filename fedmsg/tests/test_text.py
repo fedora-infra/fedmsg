@@ -899,8 +899,8 @@ class TestMediaWikiEdit(Base):
     expected_title = "wiki.article.edit (unsigned)"
     expected_subti = 'Ralph made a wiki edit to "Messaging SIG".'
     expected_link = "http://this-is-a-link.org"
-    expected_icon = "https://upload.wikimedia.org/wikipedia/commons/" + \
-                    "thumb/3/3d/Mediawiki-logo.png/53px-Mediawiki-logo.png"
+    expected_icon = "https://fedoraproject.org/w/skins/common/" + \
+                    "images/mediawiki.png"
 
     msg = {
         "topic": "org.fedoraproject.stg.wiki.article.edit",
@@ -924,8 +924,8 @@ class TestMediaWikiUpload(Base):
     expected_title = "wiki.upload.complete (unsigned)"
     expected_subti = 'Ralph uploaded File:Cat.jpg to the wiki: ' + \
                      '"This is a beautiful cat..."'
-    expected_icon = "https://upload.wikimedia.org/wikipedia/commons/" + \
-                    "thumb/3/3d/Mediawiki-logo.png/53px-Mediawiki-logo.png"
+    expected_icon = "https://fedoraproject.org/w/skins/common/" + \
+                    "images/mediawiki.png"
     msg = {
         "topic": "org.fedoraproject.stg.wiki.upload.complete",
         "msg": {
@@ -1125,6 +1125,11 @@ class TestSCM(Base):
     expected_link = "http://pkgs.fedoraproject.org/cgit/" + \
             "valgrind.git/commit/" + \
             "?h=master&id=7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1"
+    expected_icon = "http://git-scm.com/images/logo.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+            "923419d315c8f23eface39852bf32a5f?s=64&" + \
+            "d=http%3A%2F%2Fgit-scm.com%2Fimages%2Flogo.png"
+
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,

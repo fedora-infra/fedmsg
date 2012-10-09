@@ -66,11 +66,12 @@ def load_config(name='fedmsg-test-config.py'):
 
 
 # This used to raise a keyerror, but no longer.
-#@raises(KeyError)
+@raises(KeyError)
 def test_init_missing_endpoint():
     """ Try to initialize the context with a nonexistant service name. """
     config = load_config()
     config['name'] = "failboat"
+    config['sign_messages'] = True
     context = FedMsgContext(**config)
 
 

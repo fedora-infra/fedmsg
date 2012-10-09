@@ -224,6 +224,25 @@ def _gather_configs_in(directory):
         return []
 
 
+def _recursive_update(d1, d2):
+    """ Little helper function that does what d1.update(d2) does,
+    but works nice and recursively with dicts of dicts of dicts.
+
+    It's not necessarily very efficient.
+    """
+
+    for k in set(d1).intersection(d2):
+        if isinstance(d1[k], dict) and isinstance(d2[k], dict):
+            d1[k] = _recursive_update(d1[k], d2[k])
+        else:
+            d1[k] = d2[k]
+
+    for k in set(d2).difference(d1):
+        d1[k] = d2[k]
+
+    return d1
+
+
 def _process_config_file(filenames=None):
 
     filenames = filenames or []
@@ -254,7 +273,7 @@ def _process_config_file(filenames=None):
             variables = {}
             try:
                 execfile(fname, variables)
-                config.update(variables['config'])
+                config = _recursive_update(config, variables['config'])
             except IOError as e:
                 warnings.warn(str(e))
 

@@ -18,6 +18,10 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 from fedmsg.text.base import BaseProcessor
+from fedmsg.text.fasshim import gravatar_url
+
+from hashlib import md5
+import urllib
 
 
 class SCMProcessor(BaseProcessor):
@@ -60,6 +64,19 @@ class SCMProcessor(BaseProcessor):
 
     def icon(self, msg, **config):
         return "http://git-scm.com/images/logo.png"
+
+    handle_secondary_icon = handle_icon
+
+    def secondary_icon(self, msg, **config):
+        if '.git.receive.' in msg['topic']:
+            query_string = urllib.urlencode({
+                's': 64,
+                'd': "http://git-scm.com/images/logo.png",
+            })
+            email = msg['msg']['commit']['email']
+            hash = md5(email).hexdigest()
+            tmpl = "http://www.gravatar.com/avatar/%s?%s"
+            return tmpl % (hash, query_string)
 
     def subtitle(self, msg, **config):
         if '.git.receive.' in msg['topic']:

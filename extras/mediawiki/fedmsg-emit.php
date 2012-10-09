@@ -188,7 +188,6 @@ function article_save(
   $msg = array(
     "title" => $titletext,
     "user" => $user->getName(),
-    "text" => $text,
     "summary" => $summary,
     "minor_edit" => $minoredit,
     "watch_this" => $watchthis,
@@ -196,6 +195,7 @@ function article_save(
     "revision" => $revision,
     "base_rev_id" => $baseRevId,
     "url" => $url,
+    #"text" => $text,  # We *could* send this, but it's a lot of spam.
     # TODO - flags?
     # TODO - status?
   );
