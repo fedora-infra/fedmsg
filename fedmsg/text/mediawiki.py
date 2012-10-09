@@ -73,5 +73,4 @@ class WikiProcessor(BaseProcessor):
         ]])
 
     def icon(self, msg, **config):
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb" + \
-               "/3/3d/Mediawiki-logo.png/53px-Mediawiki-logo.png"
+        return "https://fedoraproject.org/w/skins/common/images/mediawiki.png"
