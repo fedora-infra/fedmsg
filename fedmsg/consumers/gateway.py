@@ -53,6 +53,13 @@ class GatewayConsumer(FedmsgConsumer):
         log.info("Setting up special gateway socket on port %r" % self.port)
         self._context = zmq.Context(1)
         self.gateway_socket = self._context.socket(zmq.PUB)
+
+        # Set this to an absurdly high number to increase the number of clients
+        # we can serve.  To be effective, also increase nofile for fedmsg in
+        # /etc/security/limits.conf to near fs.file-limit.  Try 160000.
+        hwm = self.hub.config['fedmsg.consumers.gateway.high_water_mark']
+        self.gateway_socket.setsockopt(zmq.HWM, hwm)
+
         self.gateway_socket.bind("tcp://*:{port}".format(port=self.port))
         log.info("Gateway socket established.")
 
