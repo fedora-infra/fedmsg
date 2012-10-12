@@ -77,6 +77,8 @@ function initialize() {
 
   $context = new ZMQContext(1, true);
   $queue = $context->getSocket(ZMQ::SOCKET_PUB, "pub-a-dub-dub");
+  $queue->setSockOpt(ZMQ::SOCKOPT_LINGER, $config['zmq_linger']);
+
   if (is_array($config['relay_inbound'])) {
     // API for fedmsg >= 0.5.2
     // TODO - be more robust here and if connecting to the first one fails, try
@@ -155,8 +157,8 @@ function emit_message($subtopic, $message) {
   }
 
   $envelope = json_encode($message_obj);
-  $queue->send($topic, ZMQ::MODE_SNDMORE);
-  $queue->send($envelope);
+  $queue->send($topic, ZMQ::MODE_SNDMORE | ZMQ::MODE_NOBLOCK);
+  $queue->send($envelope, ZMQ::MODE_NOBLOCK);
 }
 
 function article_save(
