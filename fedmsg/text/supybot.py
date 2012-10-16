@@ -21,7 +21,7 @@ from fedmsg.text.base import BaseProcessor
 
 
 class SupybotProcessor(BaseProcessor):
-    __name__ = "zodbot"
+    __name__ = "meetbot"
     __description__ = "the Fedora IRC bot"
     __link__ = "http://meetbot.fedoraproject.org/"
     __docs__ = "http://fedoraproject.org/wiki/Zodbot"
