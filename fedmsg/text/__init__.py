@@ -149,3 +149,10 @@ def _msg2suffix(msg, **config):
             return _("(invalid signature!)")
 
     return ""
+
+
+def msg2processor(msg, **config):
+    """ For a given message return the text processor that can handle it """
+    for processor in processors:
+        if processor.handle_msg(msg, **config):
+            yield processor

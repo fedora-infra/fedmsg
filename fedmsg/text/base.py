@@ -18,6 +18,9 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 
+import re
+import fedmsg.config
+
 
 class BaseProcessor(object):
     """ Base Processor.  Without being extended, this doesn't actually handle
@@ -50,6 +53,19 @@ class BaseProcessor(object):
             raise ValueError("Must declare a __docs__")
         if not self.__obj__:
             raise ValueError("Must declare a __obj__")
+
+        cfg = fedmsg.config.load_config(None, None)
+        self.__prefix__ = re.compile('^%s\.(%s)(\.\w+)*$' % (
+            cfg['topic_prefix_re'], self.__name__.lower()))
+
+    def handle_msg(self, msg, **config):
+        """
+        If we can handle the given message, return the remainder of the topic.
+        """
+        match = self.__prefix__.match(msg['topic'])
+        if match:
+            # strip the leading periods from the topic sections
+            return tuple(map(lambda x: x[1:], match.groups()[2:]))
 
     def handle_title(self, msg, **config):
         """ Return true if this processor can produce a "title" for this
