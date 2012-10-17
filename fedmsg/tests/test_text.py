@@ -37,35 +37,35 @@ class Base(unittest.TestCase):
         """ Does fedmsg.text produce the expected title? """
         if None in (self.msg, self.expected_title):
             return
-        actual_title = fedmsg.text._msg2title(self.msg, **self.config)
+        actual_title = fedmsg.text.msg2title(self.msg, **self.config)
         eq_(actual_title, self.expected_title)
 
     def test_subtitle(self):
         """ Does fedmsg.text produce the expected subtitle? """
         if None in (self.msg, self.expected_subti):
             return
-        actual_subti = fedmsg.text._msg2subtitle(self.msg, **self.config)
+        actual_subti = fedmsg.text.msg2subtitle(self.msg, **self.config)
         eq_(actual_subti, self.expected_subti)
 
     def test_link(self):
         """ Does fedmsg.text produce the expected link? """
         if None in (self.msg, self.expected_link):
             return
-        actual_link = fedmsg.text._msg2link(self.msg, **self.config)
+        actual_link = fedmsg.text.msg2link(self.msg, **self.config)
         eq_(actual_link, self.expected_link)
 
     def test_icon(self):
         """ Does fedmsg.text produce the expected icon? """
         if None in (self.msg, self.expected_icon):
             return
-        actual_icon = fedmsg.text._msg2icon(self.msg, **self.config)
+        actual_icon = fedmsg.text.msg2icon(self.msg, **self.config)
         eq_(actual_icon, self.expected_icon)
 
     def test_secondary_icon(self):
         """ Does fedmsg.text produce the expected secondary icon? """
         if None in (self.msg, self.expected_secondary_icon):
             return
-        actual_icon = fedmsg.text._msg2secondary_icon(self.msg, **self.config)
+        actual_icon = fedmsg.text.msg2secondary_icon(self.msg, **self.config)
         eq_(actual_icon, self.expected_secondary_icon)
 
 
