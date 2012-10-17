@@ -49,6 +49,7 @@ def load_config(name='fedmsg-test-config.py'):
         filenames=[
             test_config,
         ],
+        invalidate_cache=True
     )
 
     # TODO -- this appears everywhere and should be encapsulated in a func

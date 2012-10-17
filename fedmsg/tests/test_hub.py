@@ -48,6 +48,7 @@ def load_config(name='fedmsg-test-config.py'):
         filenames=[
             test_config,
         ],
+        invalidate_cache=True
     )
 
     # Enable all of our test consumers so they can do their thing.
