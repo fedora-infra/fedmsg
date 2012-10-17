@@ -27,21 +27,6 @@ class SupybotProcessor(BaseProcessor):
     __docs__ = "http://fedoraproject.org/wiki/Zodbot"
     __obj__ = "IRC Meetings"
 
-    def handle_subtitle(self, msg, **config):
-        return any([
-            target in msg['topic'] for target in [
-                'meetbot.meeting.start',
-                'meetbot.meeting.complete',
-            ]
-        ])
-
-    def handle_link(self, msg, **config):
-        return any([
-            target in msg['topic'] for target in [
-                'meetbot.meeting.complete',
-            ]
-        ])
-
     def link(self, msg, **config):
         return msg['msg']['url'] + ".html"
 
