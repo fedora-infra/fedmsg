@@ -218,7 +218,7 @@ def _gather_configs_in(directory):
     """ Return list of fully qualified python filenames in the given dir """
     try:
         return [
-            directory + fname
+            os.path.join(directory, fname)
             for fname in os.listdir(directory)
             if fname.endswith('.py')
         ]
