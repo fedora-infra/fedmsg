@@ -26,27 +26,3 @@ class DefaultProcessor(BaseProcessor):
     __link__ = "http://github.com/ralphbean/fedmsg"
     __docs__ = "http://fedmsg.rtfd.org"
     __obj__ = "Everything Else"
-
-    def handle_title(self, msg, **config):
-        return True
-
-    def handle_subtitle(self, msg, **config):
-        return True
-
-    def handle_link(self, msg, **config):
-        return True
-
-    def handle_icon(self, msg, **config):
-        return True
-
-    def title(self, msg, **config):
-        return '.'.join(msg['topic'].split('.')[3:])
-
-    def subtitle(self, msg, **config):
-        return ""
-
-    def link(self, msg, **config):
-        return ""
-
-    def icon(self, msg, **config):
-        return None

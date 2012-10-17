@@ -27,9 +27,6 @@ class LoggerProcessor(BaseProcessor):
     __docs__ = "http://fedoraproject.org/wiki/Infrastructure"
     __obj__ = "System Logs"
 
-    def handle_subtitle(self, msg, **config):
-        return 'logger.log' in msg['topic']
-
     def subtitle(self, msg, **config):
         if 'logger.log' in msg['topic']:
             if 'log' in msg['msg']:

@@ -26,7 +26,6 @@ class BaseProcessor(object):
     """ Base Processor.  Without being extended, this doesn't actually handle
     any messages.
 
-    Override handle_{title,subtitle,link,icon} to use.
     """
 
     # These five properties must be overridden by child-classes.
@@ -146,8 +145,4 @@ class BaseProcessor(object):
         return False
 
     def secondary_icon(self, msg, **config):
-        """ Return a "secondary icon" for the message.
-
-        This is only called if :meth:`handle_icon` returned True.
-        """
-        raise NotImplementedError
+        """ Return a "secondary icon" for the message. """
