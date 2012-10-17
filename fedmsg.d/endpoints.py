@@ -29,7 +29,7 @@ config = dict(
         # infrastructure's bus.  Cool, right?  :)
         "fedora-infrastructure": [
             "tcp://hub.fedoraproject.org:9940",
-            "tcp://stg.fedoraproject.org:9940",
+            #"tcp://stg.fedoraproject.org:9940",
         ],
 
         # For other, more 'normal' services, fedmsg will try to guess the
