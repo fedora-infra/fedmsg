@@ -16,7 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
-#
+#           Luke Macken <lmacken@redhat.com>
+
 
 import re
 import fedmsg.config
@@ -54,7 +55,7 @@ class BaseProcessor(object):
             raise ValueError("Must declare a __obj__")
 
         cfg = fedmsg.config.load_config(None, None)
-        self.__prefix__ = re.compile('^%s\.(%s)(\.\w+)*$' % (
+        self.__prefix__ = re.compile('^%s\.(%s)\.?(.*)$' % (
             cfg['topic_prefix_re'], self.__name__.lower()))
 
     def handle_msg(self, msg, **config):
@@ -63,18 +64,7 @@ class BaseProcessor(object):
         """
         match = self.__prefix__.match(msg['topic'])
         if match:
-            # strip the leading periods from the topic sections
-            return tuple(map(lambda x: x[1:], match.groups()[2:]))
-
-    def handle_title(self, msg, **config):
-        """ Return true if this processor can produce a "title" for this
-        message.
-
-        For this base class, this always returns ``False``.  Override it to
-        return True in situations for which your :meth:`title` method can
-        produce a title.
-        """
-        return False
+            return match.groups()[-1]
 
     def title(self, msg, **config):
         """ Return a "title" for the message.
