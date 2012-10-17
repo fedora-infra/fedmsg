@@ -99,7 +99,7 @@ def msg2repr(msg, **config):
 
 def msg2title(msg, processor=None, **config):
     if not processor:
-        processor = msg2processor(msg)
+        processor = msg2processor(msg, **config)
     title = processor.title(msg, **config)
     suffix = _msg2suffix(msg, **config)
     if suffix:
@@ -109,25 +109,25 @@ def msg2title(msg, processor=None, **config):
 
 def msg2subtitle(msg, processor=None, **config):
     if not processor:
-        processor = msg2processor(msg)
+        processor = msg2processor(msg, **config)
     return processor.subtitle(msg, **config)
 
 
 def msg2link(msg, processor=None, **config):
     if not processor:
-        processor = msg2processor(msg)
+        processor = msg2processor(msg, **config)
     return processor.link(msg, **config)
 
 
 def msg2icon(msg, processor=None, **config):
     if not processor:
-        processor = msg2processor(msg)
+        processor = msg2processor(msg, **config)
     return processor.icon(msg, **config)
 
 
 def msg2secondary_icon(msg, processor=None, **config):
     if not processor:
-        processor = msg2processor(msg)
+        processor = msg2processor(msg, **config)
     return processor.secondary_icon(msg, **config)
 
 
