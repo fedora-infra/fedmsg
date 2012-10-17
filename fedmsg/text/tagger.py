@@ -22,7 +22,7 @@ from fedmsg.text.fasshim import gravatar_url
 
 
 class TaggerProcessor(BaseProcessor):
-    __name__ = "Tagger"
+    __name__ = "fedoratagger"
     __description__ = "the Fedora package labeller/tagger"
     __link__ = "https://apps.fedoraproject.org/tagger"
     __docs__ = "https://github.com/ralphbean/fedora-tagger"
