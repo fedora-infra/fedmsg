@@ -28,8 +28,8 @@ gnome-shell desktop notification widget.  The sky is the limit, though.
 
 The primary entry point is :func:`fedmsg.text.msg2repr` which takes a dict and
 returns the string representation.  Portions of that string are in turn
-produced by :func:`fedmsg.text._msg2title`, :func:`fedmsg.text._msg2subtitle`,
-and :func:`fedmsg.text._msg2link`.
+produced by :func:`fedmsg.text.msg2title`, :func:`fedmsg.text.msg2subtitle`,
+and :func:`fedmsg.text.msg2link`.
 
 Message processing is handled by a list of MessageProcessors (instances of
 :class:`fedmsg.text.base.BaseProcessor`) which defined in
