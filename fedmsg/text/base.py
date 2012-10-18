@@ -18,9 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #           Luke Macken <lmacken@redhat.com>
 
-
 import re
-import fedmsg.config
 
 
 class BaseProcessor(object):
@@ -41,6 +39,9 @@ class BaseProcessor(object):
     __docs__ = None
     __obj__ = None
 
+    # An automatically generated regex to match messages for this processor
+    __prefix__ = None
+
     def __init__(self, internationalization_callable):
         self._ = internationalization_callable
         if not self.__name__:
@@ -54,14 +55,13 @@ class BaseProcessor(object):
         if not self.__obj__:
             raise ValueError("Must declare a __obj__")
 
-        cfg = fedmsg.config.load_config(None, None)
-        self.__prefix__ = re.compile('^%s\.(%s)\.?(.*)$' % (
-            cfg['topic_prefix_re'], self.__name__.lower()))
-
     def handle_msg(self, msg, **config):
         """
         If we can handle the given message, return the remainder of the topic.
         """
+        if not self.__prefix__:
+            self.__prefix__ = re.compile('^%s\.(%s)\.?(.*)$' % (
+                config['topic_prefix_re'], self.__name__.lower()))
         match = self.__prefix__.match(msg['topic'])
         if match:
             return match.groups()[-1]
