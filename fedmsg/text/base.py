@@ -64,7 +64,7 @@ class BaseProcessor(object):
                 config['topic_prefix_re'], self.__name__.lower()))
         match = self.__prefix__.match(msg['topic'])
         if match:
-            return match.groups()[-1]
+            return match.groups()[-1].split('.')
 
     def title(self, msg, **config):
         return '.'.join(msg['topic'].split('.')[3:])
