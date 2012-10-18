@@ -27,34 +27,6 @@ class ComposeProcessor(BaseProcessor):
     __docs__ = "http://fedoraproject.org/wiki/ReleaseEngineering"
     __obj__ = "Composes"
 
-    def handle_subtitle(self, msg, **config):
-        result = any([target in msg['topic'] for target in [
-            'compose.rawhide.start',
-            'compose.rawhide.complete',
-            'compose.rawhide.mash.start',
-            'compose.rawhide.mash.complete',
-            'compose.rawhide.rsync.start',
-            'compose.rawhide.rsync.complete',
-            'compose.branched.start',
-            'compose.branched.complete',
-            'compose.branched.mash.start',
-            'compose.branched.mash.complete',
-            'compose.branched.rsync.start',
-            'compose.branched.rsync.complete',
-            'compose.branched.pungify.start',
-            'compose.branched.pungify.complete',
-        ]])
-        return result
-
-    def handle_link(self, msg, **config):
-        result = any([target in msg['topic'] for target in [
-            'compose.rawhide.complete',
-            'compose.rawhide.rsync.complete',
-            'compose.branched.complete',
-            'compose.branched.rsync.complete',
-        ]])
-        return result
-
     def subtitle(self, msg, **config):
         branch = msg['topic'].split('.')[4]
 

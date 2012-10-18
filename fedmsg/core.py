@@ -25,6 +25,7 @@ import warnings
 import weakref
 import zmq
 
+from kitchen.iterutils import iterate
 from kitchen.text.converters import to_bytes
 
 import fedmsg.encoding
@@ -32,13 +33,6 @@ import fedmsg.crypto
 
 import logging
 log = logging.getLogger("fedmsg")
-
-
-def _listify(obj):
-    if not isinstance(obj, list):
-        obj = [obj]
-
-    return obj
 
 
 class FedMsgContext(object):
@@ -102,8 +96,8 @@ class FedMsgContext(object):
             if method == 'connect':
                 self.publisher.setsockopt(zmq.LINGER, config['zmq_linger'])
 
-            config['endpoints'][config['name']] = _listify(
-                config['endpoints'][config['name']])
+            config['endpoints'][config['name']] = list(iterate(
+                config['endpoints'][config['name']]))
 
             _established = False
             for endpoint in config['endpoints'][config['name']]:

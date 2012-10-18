@@ -28,16 +28,6 @@ class FASProcessor(BaseProcessor):
     __docs__ = "https://fedoraproject.org/wiki/Account_System"
     __obj__ = "Account Changes"
 
-    def handle_subtitle(self, msg, **config):
-        return any([target in msg['topic'] for target in [
-            'fas.user.create',
-            'fas.user.update',
-            'fas.group.member.',
-            'fas.group.create',
-            'fas.group.update',
-            'fas.role.update',
-        ]])
-
     def subtitle(self, msg, **config):
         if 'fas.user.create' in msg['topic']:
             agent = msg['msg']['agent']['username']
@@ -102,8 +92,6 @@ class FASProcessor(BaseProcessor):
             return tmpl.format(agent=agent, group=group, user=user)
         else:
             raise NotImplementedError
-
-    handle_icon = handle_secondary_icon = handle_subtitle
 
     def icon(self, msg, **config):
         return "https://admin.fedoraproject.org/accounts/static/" + \

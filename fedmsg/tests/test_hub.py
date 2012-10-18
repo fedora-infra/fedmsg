@@ -48,6 +48,7 @@ def load_config(name='fedmsg-test-config.py'):
         filenames=[
             test_config,
         ],
+        invalidate_cache=True
     )
 
     # Enable all of our test consumers so they can do their thing.
@@ -150,7 +151,7 @@ class TestHub(unittest.TestCase):
 
         # Now, send a generic message to that topic, and see if the consumer
         # processed it.
-        fedmsg.publish(topic=self.topic, msg=obj)
+        self.context.publish(topic=self.topic, msg=obj)
 
         simulate_reactor(sleep_duration)
         sleep(sleep_duration)
@@ -186,7 +187,7 @@ class TestHub(unittest.TestCase):
 
         # Now, send a generic message to that topic, and see if the consumer
         # processed it.
-        fedmsg.publish(topic=self.topic, msg=obj)
+        self.context.publish(topic=self.topic, msg=obj)
 
         simulate_reactor(sleep_duration)
         sleep(sleep_duration)
@@ -213,7 +214,7 @@ class TestHub(unittest.TestCase):
                 raise RuntimeWarning("Marking message as invalid.")
 
         self.fake_register_consumer(TestConsumer)
-        fedmsg.publish(topic=self.topic, msg=obj)
+        self.context.publish(topic=self.topic, msg=obj)
         simulate_reactor(sleep_duration)
         sleep(sleep_duration)
 

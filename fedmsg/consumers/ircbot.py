@@ -237,9 +237,9 @@ class IRCBotConsumer(FedmsgConsumer):
         if terse:
             if pretty:
                 return ircprettify(
-                    title=fedmsg.text._msg2title(msg, **self.hub.config),
-                    subtitle=fedmsg.text._msg2subtitle(msg, **self.hub.config),
-                    link=fedmsg.text._msg2link(msg, **self.hub.config),
+                    title=fedmsg.text.msg2title(msg, **self.hub.config),
+                    subtitle=fedmsg.text.msg2subtitle(msg, **self.hub.config),
+                    link=fedmsg.text.msg2link(msg, **self.hub.config),
                 )
             else:
                 return fedmsg.text.msg2repr(msg, **self.hub.config)
