@@ -89,7 +89,7 @@ def msg2repr(msg, **config):
     dict-like fedmsg message.
 
     """
-    processor = msg2processor(msg)
+    processor = msg2processor(msg, **config)
     fmt = u"{title} -- {subtitle} {link}"
     title = msg2title(msg, **config)
     subtitle = processor.subtitle(msg, **config)
