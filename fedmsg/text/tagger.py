@@ -22,28 +22,11 @@ from fedmsg.text.fasshim import gravatar_url
 
 
 class TaggerProcessor(BaseProcessor):
-    __name__ = "Tagger"
+    __name__ = "fedoratagger"
     __description__ = "the Fedora package labeller/tagger"
     __link__ = "https://apps.fedoraproject.org/tagger"
     __docs__ = "https://github.com/ralphbean/fedora-tagger"
     __obj__ = "Package Tag Votes"
-
-    def handle_subtitle(self, msg, **config):
-        return any([
-            target in msg['topic'] for target in [
-                'fedoratagger.tag.update',
-                'fedoratagger.tag.create',
-                'fedoratagger.user.rank.update',
-            ]
-        ])
-
-    def handle_link(self, msg, **config):
-        if not isinstance(msg.get('msg', {}), dict):
-            return False
-
-        vote = msg.get('msg', {}).get('vote', {})
-        pack = vote.get('tag', {}).get('package', {})
-        return pack and '.fedoratagger.' in msg['topic']
 
     def link(self, msg, **config):
         vote = msg.get('msg', {}).get('vote', {})
@@ -76,8 +59,6 @@ class TaggerProcessor(BaseProcessor):
             return tmpl.format(user=user, rank=rank)
         else:
             raise NotImplementedError
-
-    handle_icon = handle_subtitle
 
     def icon(self, msg, **config):
         return gravatar_url(msg['msg']['vote']['user']['username'])

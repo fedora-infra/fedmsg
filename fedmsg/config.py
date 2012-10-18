@@ -47,8 +47,12 @@ import warnings
 
 from fedmsg.encoding import pretty_dumps
 
+VALID_ENVIRONMENTS = ['dev', 'stg', 'prod']
+
 defaults = dict(
     topic_prefix="org.fedoraproject",
+    topic_prefix_re = r'org\.fedoraproject\.(%s)' % (
+        '|'.join(VALID_ENVIRONMENTS)),
     environment="dev",
     io_threads=1,
     post_init_sleep=0.5,
@@ -58,8 +62,6 @@ defaults = dict(
     zmq_linger=1000,    # Wait one second before timing out on fedmsg-relay
     active=False,       # generally only true for fedmsg-logger
 )
-
-VALID_ENVIRONMENTS = ['dev', 'stg', 'prod']
 
 __cache = {}
 
@@ -216,7 +218,7 @@ def _gather_configs_in(directory):
     """ Return list of fully qualified python filenames in the given dir """
     try:
         return [
-            directory + fname
+            os.path.join(directory, fname)
             for fname in os.listdir(directory)
             if fname.endswith('.py')
         ]
