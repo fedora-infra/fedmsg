@@ -61,18 +61,28 @@ from fedmsg.text.compose import ComposeProcessor
 from fedmsg.text.logger import LoggerProcessor
 from fedmsg.text.default import DefaultProcessor
 
-processors = [
-    BodhiProcessor(_),
-    SCMProcessor(_),
-    TaggerProcessor(_),
-    SupybotProcessor(_),
-    WikiProcessor(_),
-    FASProcessor(_),
-    ComposeProcessor(_),
-    LoggerProcessor(_),
-    # This should always be last
-    DefaultProcessor(_),
-]
+
+class ProcessorsNotInitialized(Exception):
+    def __iter__(self):
+        raise self
+    __len__ = __iter__
+
+processors = ProcessorsNotInitialized("You must first call "
+                                      "fedmsg.text.make_processors(**config)")
+
+processor_classes = (BodhiProcessor, SCMProcessor, TaggerProcessor,
+                     SupybotProcessor, WikiProcessor, FASProcessor,
+                     ComposeProcessor, LoggerProcessor,
+                     # This should always be last
+                     DefaultProcessor)
+
+
+def make_processors(**config):
+    """ Initialize all of the text processors """
+    global processors
+    processors = []
+    for processor in processor_classes:
+        processors.append(processor(_, **config))
 
 
 def msg2processor(msg, **config):
