@@ -24,7 +24,7 @@ from nose.tools import eq_
 
 import fedmsg.text
 
-from test_hub import load_config
+from common import load_config
 
 
 class Base(unittest.TestCase):
