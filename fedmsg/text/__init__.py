@@ -65,6 +65,7 @@ from fedmsg.text.default import DefaultProcessor
 class ProcessorsNotInitialized(Exception):
     def __iter__(self):
         raise self
+    __len__ = __iter__
 
 processors = ProcessorsNotInitialized("You must first call "
                                       "fedmsg.text.make_processors(**config)")
