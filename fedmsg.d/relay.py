@@ -23,7 +23,7 @@ config = dict(
         # This is the output side of the relay to which all other
         # services can listen.
         "relay_outbound": [
-            "tcp://*:4001",
+            "tcp://127.0.0.1:4001",
         ],
     },
 

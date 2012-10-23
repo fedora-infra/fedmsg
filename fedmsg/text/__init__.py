@@ -28,8 +28,8 @@ gnome-shell desktop notification widget.  The sky is the limit, though.
 
 The primary entry point is :func:`fedmsg.text.msg2repr` which takes a dict and
 returns the string representation.  Portions of that string are in turn
-produced by :func:`fedmsg.text._msg2title`, :func:`fedmsg.text._msg2subtitle`,
-and :func:`fedmsg.text._msg2link`.
+produced by :func:`fedmsg.text.msg2title`, :func:`fedmsg.text.msg2subtitle`,
+and :func:`fedmsg.text.msg2link`.
 
 Message processing is handled by a list of MessageProcessors (instances of
 :class:`fedmsg.text.base.BaseProcessor`) which defined in
@@ -89,7 +89,7 @@ def msg2repr(msg, **config):
     dict-like fedmsg message.
 
     """
-    processor = msg2processor(msg)
+    processor = msg2processor(msg, **config)
     fmt = u"{title} -- {subtitle} {link}"
     title = msg2title(msg, **config)
     subtitle = processor.subtitle(msg, **config)
@@ -99,7 +99,7 @@ def msg2repr(msg, **config):
 
 def msg2title(msg, processor=None, **config):
     if not processor:
-        processor = msg2processor(msg)
+        processor = msg2processor(msg, **config)
     title = processor.title(msg, **config)
     suffix = _msg2suffix(msg, **config)
     if suffix:
@@ -109,25 +109,25 @@ def msg2title(msg, processor=None, **config):
 
 def msg2subtitle(msg, processor=None, **config):
     if not processor:
-        processor = msg2processor(msg)
+        processor = msg2processor(msg, **config)
     return processor.subtitle(msg, **config)
 
 
 def msg2link(msg, processor=None, **config):
     if not processor:
-        processor = msg2processor(msg)
+        processor = msg2processor(msg, **config)
     return processor.link(msg, **config)
 
 
 def msg2icon(msg, processor=None, **config):
     if not processor:
-        processor = msg2processor(msg)
+        processor = msg2processor(msg, **config)
     return processor.icon(msg, **config)
 
 
 def msg2secondary_icon(msg, processor=None, **config):
     if not processor:
-        processor = msg2processor(msg)
+        processor = msg2processor(msg, **config)
     return processor.secondary_icon(msg, **config)
 
 

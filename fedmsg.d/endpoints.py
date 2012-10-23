@@ -29,18 +29,18 @@ config = dict(
         # infrastructure's bus.  Cool, right?  :)
         "fedora-infrastructure": [
             "tcp://hub.fedoraproject.org:9940",
-            "tcp://stg.fedoraproject.org:9940",
+            #"tcp://stg.fedoraproject.org:9940",
         ],
 
         # For other, more 'normal' services, fedmsg will try to guess the
         # name of it's calling module to determine which endpoint definition
         # to use.  This can be overridden by explicitly providing the name in
         # the initial call to fedmsg.init(...).
-        "bodhi.%s" % hostname: ["tcp://*:3001"],
-        "fas.%s" % hostname: ["tcp://*:3002"],
-        "fedoratagger.%s" % hostname: ["tcp://*:3003"],
-        "mediawiki.%s" % hostname: ["tcp://*:3004"],
-        "pkgdb.%s" % hostname: ["tcp://*:3005"],
-        "busmon.%s" % hostname: ["tcp://*:3006"],
+        "bodhi.%s" % hostname: ["tcp://127.0.0.1:3001"],
+        "fas.%s" % hostname: ["tcp://127.0.0.1:3002"],
+        "fedoratagger.%s" % hostname: ["tcp://127.0.0.1:3003"],
+        "mediawiki.%s" % hostname: ["tcp://127.0.0.1:3004"],
+        "pkgdb.%s" % hostname: ["tcp://127.0.0.1:3005"],
+        "busmon.%s" % hostname: ["tcp://127.0.0.1:3006"],
     },
 )

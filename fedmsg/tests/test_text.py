@@ -24,14 +24,16 @@ from nose.tools import eq_
 
 import fedmsg.text
 
+from test_hub import load_config
+
 
 class Base(unittest.TestCase):
     msg, expected_title, expected_subti, expected_link, expected_icon, \
         expected_secondary_icon = None, None, None, None, None, None
 
     def setUp(self):
-        self.config = {
-        }
+        self.config = fedmsg.config.load_config(None, None,
+                                                invalidate_cache=True)
 
     def test_title(self):
         """ Does fedmsg.text produce the expected title? """
