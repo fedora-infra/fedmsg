@@ -28,14 +28,6 @@ class WikiProcessor(BaseProcessor):
     __docs__ = "https://fedoraproject.org/wiki"
     __obj__ = "Wiki Edits"
 
-    def handle_subtitle(self, msg, **config):
-        return any([
-            target in msg['topic'] for target in [
-                'wiki.article.edit',
-                'wiki.upload.complete',
-            ]
-        ])
-
     def subtitle(self, msg, **config):
         if 'wiki.article.edit' in msg['topic']:
             user = msg['msg']['user']
@@ -54,29 +46,14 @@ class WikiProcessor(BaseProcessor):
         else:
             raise NotImplementedError
 
-    def handle_link(self, msg, **config):
-        return any([
-            target in msg['topic'] for target in [
-                'wiki.article.edit',
-            ]
-        ])
-
     def link(self, msg, **config):
         if 'wiki.article.edit' in msg['topic']:
             return msg['msg']['url']
         else:
             raise NotImplementedError
 
-    def handle_icon(self, msg, **config):
-        return any([target in msg['topic'] for target in [
-            'wiki.article.edit',
-            'wiki.upload.complete',
-        ]])
-
     def icon(self, msg, **config):
         return "https://fedoraproject.org/w/skins/common/images/mediawiki.png"
-
-    handle_secondary_icon = handle_icon
 
     def secondary_icon(self, msg, **config):
         user = msg['msg'].get('user', msg['msg'].get('user_text', ''))

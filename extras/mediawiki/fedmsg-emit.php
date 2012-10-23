@@ -77,6 +77,8 @@ function initialize() {
 
   $context = new ZMQContext(1, true);
   $queue = $context->getSocket(ZMQ::SOCKET_PUB, "pub-a-dub-dub");
+  $queue->setSockOpt(ZMQ::SOCKOPT_LINGER, $config['zmq_linger']);
+
   if (is_array($config['relay_inbound'])) {
     // API for fedmsg >= 0.5.2
     // TODO - be more robust here and if connecting to the first one fails, try
@@ -89,13 +91,9 @@ function initialize() {
   return true;
 }
 
-# If we can successfully initialize a zmq socket, then we'll go ahead and
-# register our hooks with mediawiki.  If we fail for some reason, we don't want
-# mediawiki calling us, so we'll fail quietly.
-if (initialize()) {
-  $wgHooks['ArticleSaveComplete'][] = 'article_save';
-  $wgHooks['UploadComplete'][] = 'upload_complete';
-}
+# Register our hooks with mediawiki
+$wgHooks['ArticleSaveComplete'][] = 'article_save';
+$wgHooks['UploadComplete'][] = 'upload_complete';
 
 # This is a reimplementation of the python code in fedmsg/crypto.py
 # That file is authoritative.  Changes there should be reflected here.
@@ -155,8 +153,8 @@ function emit_message($subtopic, $message) {
   }
 
   $envelope = json_encode($message_obj);
-  $queue->send($topic, ZMQ::MODE_SNDMORE);
-  $queue->send($envelope);
+  $queue->send($topic, ZMQ::MODE_SNDMORE | ZMQ::MODE_NOBLOCK);
+  $queue->send($envelope, ZMQ::MODE_NOBLOCK);
 }
 
 function article_save(
@@ -173,6 +171,9 @@ function article_save(
   $baseRevId
 ) {
 
+  # If for some reason or another we can't create our socket, then bail.
+  if (!initialize()) { return false; }
+
   $topic = "article.edit";
   $title = $article->getTitle();
   if ( $title->getNsText() ) {
@@ -180,8 +181,12 @@ function article_save(
   } else {
     $titletext = $title->getText();
   }
-  $url = $title->getFullURL('diff=prev&oldid=' . $revision->getId());
 
+  if ( is_object($revision) ) {
+    $url = $title->getFullURL('diff=prev&oldid=' . $revision->getId());
+  } else {
+    $url = $title->getFullURL();
+  }
 
   # Just send on all the information we can...  change the attr names to be
   # more pythonic in style, though.
@@ -205,6 +210,10 @@ function article_save(
 }
 
 function upload_complete(&$image) {
+
+  # If for some reason or another we can't create our socket, then bail.
+  if (!initialize()) { return false; }
+
   $topic = "upload.complete";
   $msg = array(
     "file_exists" => $image->getLocalFile()->fileExists,  // 1 or 0

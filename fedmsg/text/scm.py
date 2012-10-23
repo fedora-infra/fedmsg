@@ -31,41 +31,8 @@ class SCMProcessor(BaseProcessor):
     __docs__ = "https://fedoraproject.org/wiki/Using_Fedora_GIT"
     __obj__ = "Package Commits"
 
-    def handle_subtitle(self, msg, **config):
-        result = any([target in msg['topic'] for target in [
-            '.git.receive.',
-            '.git.branch.',
-            '.git.lookaside.',
-            '.git.pkgdb2branch.start',
-            '.git.pkgdb2branch.complete',
-            '.git.mass_branch.start',
-            '.git.mass_branch.complete',
-        ]])
-        return result
-
-    def handle_link(self, msg, **config):
-        result = any([target in msg['topic'] for target in [
-            '.git.receive.',
-            '.git.branch.',
-            '.git.lookaside.',
-        ]])
-        return result
-
-    def handle_icon(self, msg, **config):
-        return any([target in msg['topic'] for target in [
-            '.git.receive.',
-            '.git.branch.',
-            '.git.lookaside.',
-            '.git.pkgdb2branch.',
-            '.git.pkgdb2branch.',
-            '.git.mass_branch.',
-            '.git.mass_branch.',
-        ]])
-
     def icon(self, msg, **config):
         return "http://git-scm.com/images/logo.png"
-
-    handle_secondary_icon = handle_icon
 
     def secondary_icon(self, msg, **config):
         if '.git.receive.' in msg['topic']:

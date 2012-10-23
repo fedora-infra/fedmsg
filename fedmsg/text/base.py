@@ -16,14 +16,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
-#
+#           Luke Macken <lmacken@redhat.com>
+
+import re
 
 
 class BaseProcessor(object):
     """ Base Processor.  Without being extended, this doesn't actually handle
     any messages.
 
-    Override handle_{title,subtitle,link,icon} to use.
     """
 
     # These five properties must be overridden by child-classes.
@@ -38,6 +39,9 @@ class BaseProcessor(object):
     __docs__ = None
     __obj__ = None
 
+    # An automatically generated regex to match messages for this processor
+    __prefix__ = None
+
     def __init__(self, internationalization_callable):
         self._ = internationalization_callable
         if not self.__name__:
@@ -51,87 +55,31 @@ class BaseProcessor(object):
         if not self.__obj__:
             raise ValueError("Must declare a __obj__")
 
-    def handle_title(self, msg, **config):
-        """ Return true if this processor can produce a "title" for this
-        message.
-
-        For this base class, this always returns ``False``.  Override it to
-        return True in situations for which your :meth:`title` method can
-        produce a title.
+    def handle_msg(self, msg, **config):
         """
-        return False
+        If we can handle the given message, return the remainder of the topic.
+        """
+        if not self.__prefix__:
+            self.__prefix__ = re.compile('^%s\.(%s)\.?(.*)$' % (
+                config['topic_prefix_re'], self.__name__.lower()))
+        match = self.__prefix__.match(msg['topic'])
+        if match:
+            return match.groups()[-1]
 
     def title(self, msg, **config):
-        """ Return a "title" for the message.
-
-        This is only called if :meth:`handle_title` returned True.
-        """
-        raise NotImplementedError
-
-    def handle_subtitle(self, msg, **config):
-        """ Return true if this processor can produce a "subtitle" for this
-        message.
-
-        For this base class, this always returns ``False``.  Override it to
-        return True in situations for which your :meth:`subtitle` method can
-        produce a subtitle.
-        """
-        return False
+        return '.'.join(msg['topic'].split('.')[3:])
 
     def subtitle(self, msg, **config):
-        """ Return a "subtitle" for the message.
-
-        This is only called if :meth:`handle_subtitle` returned True.
-        """
-        raise NotImplementedError
-
-    def handle_link(self, msg, **config):
-        """ Return true if this processor can produce a "link" for this
-        message.
-
-        For this base class, this always returns ``False``.  Override it to
-        return True in situations for which your :meth:`link` method can
-        produce a link.
-        """
-        return False
+        """ Return a "subtitle" for the message. """
+        return ""
 
     def link(self, msg, **config):
-        """ Return a "link" for the message.
-
-        This is only called if :meth:`handle_link` returned True.
-        """
-        raise NotImplementedError
-
-    def handle_icon(self, msg, **config):
-        """ Return true if this processor can produce a "icon" for this
-        message.
-
-        For this base class, this always returns ``False``.  Override it to
-        return True in situations for which your :meth:`icon` method can
-        produce a icon.
-        """
-        return False
+        """ Return a "link" for the message. """
+        return ""
 
     def icon(self, msg, **config):
-        """ Return a "icon" for the message.
-
-        This is only called if :meth:`handle_icon` returned True.
-        """
-        raise NotImplementedError
-
-    def handle_secondary_icon(self, msg, **config):
-        """ Return true if this processor can produce a "secondary icon" for
-        this message.
-
-        For this base class, this always returns ``False``.  Override it to
-        return True in situations for which your :meth:`icon` method can
-        produce a icon.
-        """
-        return False
+        """ Return a "icon" for the message. """
+        return None
 
     def secondary_icon(self, msg, **config):
-        """ Return a "secondary icon" for the message.
-
-        This is only called if :meth:`handle_icon` returned True.
-        """
-        raise NotImplementedError
+        """ Return a "secondary icon" for the message. """

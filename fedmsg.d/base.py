@@ -37,9 +37,6 @@ config = dict(
     # topics.
     zmq_strict=False,
 
-    # TODO - consider removing the whole concept of post_init_sleep in the
-    # future.
-    # This used to be set to 1 for safety, but it turns out it was
-    # unnecessary.
-    post_init_sleep=0,
+    # Number of seconds to sleep after initializing waiting for sockets to sync.
+    post_init_sleep=0.2,
 )

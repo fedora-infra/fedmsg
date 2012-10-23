@@ -29,40 +29,9 @@ class BodhiProcessor(BaseProcessor):
     __docs__ = "http://fedoraproject.org/wiki/Bodhi"
     __obj__ = "Package Updates"
 
-    def handle_subtitle(self, msg, **config):
-        return any([target in msg['topic'] for target in [
-            'bodhi.update.comment',
-            'bodhi.update.request',
-            'bodhi.update.complete.',
-            'bodhi.mashtask.mashing',
-            'bodhi.mashtask.start',
-            'bodhi.mashtask.complete',
-            'bodhi.mashtask.sync.wait',
-            'bodhi.mashtask.sync.done',
-            'bodhi.buildroot_override.tag',
-            'bodhi.buildroot_override.untag',
-        ]])
-
-    def handle_link(self, msg, **config):
-        return any([target in msg['topic'] for target in [
-            'bodhi.update.comment',
-            'bodhi.update.request',
-            'bodhi.update.complete',
-        ]])
-
-    def handle_icon(self, msg, **config):
-        return any([target in msg['topic'] for target in [
-            'bodhi.update',
-            'bodhi.mashtask',
-            'bodhi.buildroot_override',
-        ]])
-
     def icon(self, msg, **config):
         return "https://admin.fedoraproject.org/updates" + \
                "/static/images/bodhi-icon-48.png"
-
-    def handle_secondary_icon(self, msg, **config):
-        return self.handle_icon(msg, **config)
 
     def secondary_icon(self, msg, **config):
         username = ''

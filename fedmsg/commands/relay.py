@@ -21,9 +21,10 @@
 """
 
 import fedmsg
-from fedmsg.core import _listify
 from fedmsg.commands import command
 from fedmsg.consumers.relay import RelayConsumer
+
+from kitchen.iterutils import iterate
 
 extra_args = []
 
@@ -53,7 +54,7 @@ def relay(**kw):
     # with moksha's expected configuration.
     moksha_options = dict(
         zmq_publish_endpoints=",".join(kw['endpoints']["relay_outbound"]),
-        zmq_subscribe_endpoints=",".join(_listify(kw['relay_inbound'])),
+        zmq_subscribe_endpoints=",".join(list(iterate(kw['relay_inbound']))),
         zmq_subscribe_method="bind",
     )
     kw.update(moksha_options)

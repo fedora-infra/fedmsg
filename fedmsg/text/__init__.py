@@ -28,8 +28,8 @@ gnome-shell desktop notification widget.  The sky is the limit, though.
 
 The primary entry point is :func:`fedmsg.text.msg2repr` which takes a dict and
 returns the string representation.  Portions of that string are in turn
-produced by :func:`fedmsg.text._msg2title`, :func:`fedmsg.text._msg2subtitle`,
-and :func:`fedmsg.text._msg2link`.
+produced by :func:`fedmsg.text.msg2title`, :func:`fedmsg.text.msg2subtitle`,
+and :func:`fedmsg.text.msg2link`.
 
 Message processing is handled by a list of MessageProcessors (instances of
 :class:`fedmsg.text.base.BaseProcessor`) which defined in
@@ -70,8 +70,18 @@ processors = [
     FASProcessor(_),
     ComposeProcessor(_),
     LoggerProcessor(_),
+    # This should always be last
     DefaultProcessor(_),
 ]
+
+
+def msg2processor(msg, **config):
+    """ For a given message return the text processor that can handle it """
+    for processor in processors:
+        if processor.handle_msg(msg, **config):
+            return processor
+    else:
+        return processors[-1]  # DefaultProcessor
 
 
 def msg2repr(msg, **config):
@@ -79,66 +89,46 @@ def msg2repr(msg, **config):
     dict-like fedmsg message.
 
     """
-
+    processor = msg2processor(msg, **config)
     fmt = u"{title} -- {subtitle} {link}"
-    title = _msg2title(msg, **config)
-    subtitle = _msg2subtitle(msg, **config)
-    link = _msg2link(msg, **config)
+    title = msg2title(msg, **config)
+    subtitle = processor.subtitle(msg, **config)
+    link = processor.link(msg, **config)
     return fmt.format(**locals())
 
 
-def _msg2title(msg, **config):
-    for p in processors:
-        if not p.handle_title(msg, **config):
-            continue
-        title = p.title(msg, **config)
-        break
-
+def msg2title(msg, processor=None, **config):
+    if not processor:
+        processor = msg2processor(msg, **config)
+    title = processor.title(msg, **config)
     suffix = _msg2suffix(msg, **config)
     if suffix:
         title = title + " " + suffix
-
     return title
 
 
-def _msg2subtitle(msg, **config):
-    for p in processors:
-        if not p.handle_subtitle(msg, **config):
-            continue
-        return p.subtitle(msg, **config)
-
-    # This should never happen.
-    # DefaultProcessor should always catch messages.
-    raise RuntimeError("No text processor caught the message.")
+def msg2subtitle(msg, processor=None, **config):
+    if not processor:
+        processor = msg2processor(msg, **config)
+    return processor.subtitle(msg, **config)
 
 
-def _msg2link(msg, **config):
-    for p in processors:
-        if not p.handle_link(msg, **config):
-            continue
-        return p.link(msg, **config)
-
-    # This should never happen.
-    # DefaultProcessor should always catch messages.
-    raise RuntimeError("No text processor caught the message.")
+def msg2link(msg, processor=None, **config):
+    if not processor:
+        processor = msg2processor(msg, **config)
+    return processor.link(msg, **config)
 
 
-def _msg2icon(msg, **config):
-    for p in processors:
-        if not p.handle_icon(msg, **config):
-            continue
-        return p.icon(msg, **config)
-
-    # This should never happen.
-    # DefaultProcessor should always catch messages.
-    raise RuntimeError("No text processor caught the message.")
+def msg2icon(msg, processor=None, **config):
+    if not processor:
+        processor = msg2processor(msg, **config)
+    return processor.icon(msg, **config)
 
 
-def _msg2secondary_icon(msg, **config):
-    for p in processors:
-        if not p.handle_secondary_icon(msg, **config):
-            continue
-        return p.secondary_icon(msg, **config)
+def msg2secondary_icon(msg, processor=None, **config):
+    if not processor:
+        processor = msg2processor(msg, **config)
+    return processor.secondary_icon(msg, **config)
 
 
 def _msg2suffix(msg, **config):
