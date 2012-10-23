@@ -89,6 +89,7 @@ def tail(**kw):
     kw['mute'] = True
 
     fedmsg.init(**kw)
+    fedmsg.text.make_processors(**kw)
 
     # Build a message formatter
     formatter = lambda d: d

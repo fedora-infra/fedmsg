@@ -42,7 +42,7 @@ class BaseProcessor(object):
     # An automatically generated regex to match messages for this processor
     __prefix__ = None
 
-    def __init__(self, internationalization_callable):
+    def __init__(self, internationalization_callable, **config):
         self._ = internationalization_callable
         if not self.__name__:
             raise ValueError("Must declare a __name__")
@@ -55,13 +55,14 @@ class BaseProcessor(object):
         if not self.__obj__:
             raise ValueError("Must declare a __obj__")
 
+        # Build a regular expression used to match message topics for us
+        self.__prefix__ = re.compile('^%s\.(%s)\.?(.*)$' % (
+            config['topic_prefix_re'], self.__name__.lower()))
+
     def handle_msg(self, msg, **config):
         """
         If we can handle the given message, return the remainder of the topic.
         """
-        if not self.__prefix__:
-            self.__prefix__ = re.compile('^%s\.(%s)\.?(.*)$' % (
-                config['topic_prefix_re'], self.__name__.lower()))
         match = self.__prefix__.match(msg['topic'])
         if match:
             return match.groups()[-1]
