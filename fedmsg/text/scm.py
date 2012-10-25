@@ -91,8 +91,6 @@ class SCMProcessor(BaseProcessor):
                     'run of pkgdb2branch started by {agent} completed' +
                     ' with %i errors'
                 ) % errors
-        else:
-            raise NotImplementedError
 
         agent = msg['msg']['agent']
         return tmpl.format(agent=agent)
@@ -119,5 +117,3 @@ class SCMProcessor(BaseProcessor):
             tmpl = "{prefix}/{name}/{filename}/{md5sum}/{filename}"
             return tmpl.format(prefix=prefix, name=name,
                                md5sum=md5sum, filename=filename)
-        else:
-            raise NotImplementedError
