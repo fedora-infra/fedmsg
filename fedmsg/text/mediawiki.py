@@ -43,14 +43,10 @@ class WikiProcessor(BaseProcessor):
             )
             return tmpl.format(user=user, filename=filename,
                                description=description)
-        else:
-            raise NotImplementedError
 
     def link(self, msg, **config):
         if 'wiki.article.edit' in msg['topic']:
             return msg['msg']['url']
-        else:
-            raise NotImplementedError
 
     def icon(self, msg, **config):
         return "https://fedoraproject.org/w/skins/common/images/mediawiki.png"
