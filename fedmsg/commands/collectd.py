@@ -88,7 +88,7 @@ class CollectdProducer(PollingProducer):
 
 @command(name="fedmsg-collectd", extra_args=extra_args)
 def collectd(**kw):
-    """ Print out collectd commands indicating activity on the bus. """
+    """ Print machine-readable information for collectd to monitor the bus. """
 
     # Initialize the processors before CollectdConsumer is instantiated.
     fedmsg.text.make_processors(**kw)
