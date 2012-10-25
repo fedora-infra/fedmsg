@@ -17,6 +17,11 @@ fedmsg-tail
 
 .. autofunction:: fedmsg.commands.tail.tail
 
+fedmsg-collectd
+~~~~~~~~~~~~~~~
+
+.. autofunction:: fedmsg.commands.collectd.collectd
+
 Service Daemons
 ---------------
 
