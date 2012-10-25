@@ -34,15 +34,18 @@ from fedmsg.commands import command
 
 
 extra_args = [
+    (['--collectd-interval'], {
+        'dest': 'collectd_interval',
+        'type': int,
+        'help': 'Number of seconds to sleep between collectd updates.',
+        'default': 20,
+    }),
 ]
 
 
 @command(name="fedmsg-collectd", extra_args=extra_args)
 def collectd(**kw):
     """ Print out collectd commands indicating activity on the bus. """
-
-    # TODO -- make this a real CLI argument
-    kw['collectd_interval'] = 2
 
     # Build a message formatter
     host = socket.gethostname()
