@@ -117,5 +117,3 @@ class BodhiProcessor(BaseProcessor):
             return tmpl.format(title=msg['msg']['update']['title'])
         elif 'bodhi.update.request' in msg['topic']:
             return tmpl.format(title=msg['msg']['update']['title'])
-        else:
-            raise NotImplementedError
