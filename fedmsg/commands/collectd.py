@@ -17,11 +17,10 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import pprint
-import re
-import threading
-import time
+import datetime
+import logging
 import socket
+import time
 
 import pygments
 import pygments.lexers
@@ -30,8 +29,11 @@ import pygments.formatters
 import fedmsg
 import fedmsg.encoding
 import fedmsg.text
-from fedmsg.commands import command
 
+from fedmsg.commands import command
+from fedmsg.consumers import FedmsgConsumer
+from moksha.hub.api import PollingProducer
+from kitchen.iterutils import iterate
 
 extra_args = [
     (['--collectd-interval'], {
@@ -43,48 +45,70 @@ extra_args = [
 ]
 
 
-@command(name="fedmsg-collectd", extra_args=extra_args)
-def collectd(**kw):
-    """ Print out collectd commands indicating activity on the bus. """
+class CollectdConsumer(FedmsgConsumer):
+    topic = "org.fedoraproject.*"
+    config_key = "fedmsg.commands.collectd.enabled"
 
-    # Build a message formatter
-    host = socket.gethostname()
-    template = "PUTVAL {host}/fedmsg/{modname} {timestamp}:{value}"
+    def __init__(self, hub):
+        super(CollectdConsumer, self).__init__(hub)
+        self._dict = dict([
+            (p.__name__.lower(), 0) for p in fedmsg.text.processors
+        ])
+        self.host = socket.gethostname()
 
-    def formatter(modname, value):
+    def consume(self, msg):
+        modname = msg['topic'].split('.')[3]
+        self._dict[modname] += 1
+
+    def dump(self):
+        """ Called by CollectdProducer every `n` seconds. """
+        for k, v in self._dict.items():
+            # Print each entry to stdout
+            print self.formatter(k, v)
+            # Reset each entry to zero
+            self._dict[k] = 0
+
+    def formatter(self, modname, value):
+        """ Format messages for collectd to consume. """
+        template = "PUTVAL {host}/fedmsg/{modname} {timestamp}:{value}"
         timestamp = int(time.time())
         return template.format(
-            host=host,
+            host=self.host,
             modname=modname,
             timestamp=timestamp,
             value=value,
         )
 
+
+class CollectdProducer(PollingProducer):
+    # "Frequency" is set later at runtime.
+    def poll(self):
+        self.hub.consumers[0].dump()
+
+
+@command(name="fedmsg-collectd", extra_args=extra_args)
+def collectd(**kw):
+    """ Print out collectd commands indicating activity on the bus. """
+
+    # Initialize the processors before CollectdConsumer is instantiated.
     fedmsg.text.make_processors(**kw)
 
-    class ConsumerThread(threading.Thread):
-        _dict = dict([(p.__name__.lower(), 0) for p in fedmsg.text.processors])
+    # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
+    # with moksha's expected configuration.
+    moksha_options = dict(
+        zmq_publish_endpoints=",".join(kw['endpoints']["relay_outbound"]),
+        zmq_subscribe_endpoints=",".join(list(iterate(kw['relay_inbound']))),
+        zmq_subscribe_method="bind",
+    )
+    kw.update(moksha_options)
+    kw[CollectdConsumer.config_key] = True
 
-        def run(self):
-            kw['publish_endpoint'] = None
-            kw['timeout'] = 0
-            kw['name'] = 'relay_inbound'
-            kw['mute'] = True
-            fedmsg.init(**kw)
+    CollectdProducer.frequency = datetime.timedelta(
+        seconds=kw['collectd_interval']
+    )
 
-            for name, ep, topic, message in fedmsg.tail_messages(**kw):
-                modname = topic.split('.')[3]
-                self._dict[modname] += 1
+    # Turn off moksha logging.
+    logging.disable(logging.INFO)
 
-        def dump(self):
-            for k, v in self._dict.items():
-                print formatter(k, v)
-                # Reset each entry to zero
-                self._dict[k] = 0
-
-    t = ConsumerThread()
-    t.start()
-
-    while True:
-        t.dump()
-        time.sleep(kw['collectd_interval'])
+    from moksha.hub import main
+    main(kw, [CollectdConsumer], [CollectdProducer])
