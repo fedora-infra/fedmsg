@@ -171,6 +171,7 @@ class IRCBotConsumer(FedmsgConsumer):
         self.irc_clients = []
 
         super(IRCBotConsumer, self).__init__(hub)
+        fedmsg.text.make_processors(**hub.config)
 
         if not getattr(self, '_initialized', False):
             return

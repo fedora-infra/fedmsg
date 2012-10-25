@@ -81,10 +81,10 @@ def logger(**kwargs):
 
     Some examples::
 
-        $ echo '{"a": 1}' | fedmsg-logger --json-input
+        $ echo "\"{'a': 1}\"" | fedmsg-logger --json-input
         $ echo "Hai there." | fedmsg-logger --modname=git --topic=repo.update
         $ fedmsg-logger --message="This is a message."
-        $ fedmsg-logger --message='{"a": 1}' --json-input
+        $ fedmsg-logger --message="\"{'a': 1}\"" --json-input
 
     """
 

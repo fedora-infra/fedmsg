@@ -70,7 +70,7 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
 
 setup(
     name='fedmsg',
-    version='0.5.5',
+    version='0.5.6',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -99,6 +99,7 @@ setup(
             "fedmsg-gateway=fedmsg.commands.gateway:gateway",
             "fedmsg-config=fedmsg.commands.config:config",
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot",
+            "fedmsg-collectd=fedmsg.commands.collectd:collectd",
         ],
         'moksha.consumer': [
             "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",

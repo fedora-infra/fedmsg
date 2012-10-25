@@ -24,7 +24,7 @@ from nose.tools import eq_
 
 import fedmsg.text
 
-from test_hub import load_config
+from common import load_config
 
 
 class Base(unittest.TestCase):
@@ -34,6 +34,7 @@ class Base(unittest.TestCase):
     def setUp(self):
         self.config = fedmsg.config.load_config(None, None,
                                                 invalidate_cache=True)
+        fedmsg.text.make_processors(**self.config)
 
     def test_title(self):
         """ Does fedmsg.text produce the expected title? """
