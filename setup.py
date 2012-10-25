@@ -99,6 +99,7 @@ setup(
             "fedmsg-gateway=fedmsg.commands.gateway:gateway",
             "fedmsg-config=fedmsg.commands.config:config",
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot",
+            "fedmsg-collectd=fedmsg.commands.collectd:collectd",
         ],
         'moksha.consumer': [
             "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",
