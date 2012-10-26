@@ -27,7 +27,7 @@ class BaseProcessor(object):
 
     """
 
-    # These five properties must be overridden by child-classes.
+    # These six properties must be overridden by child-classes.
     # They can be used by applications to give more context to messages.  If
     # the BodhiProcessor can handle a message, then our caller's code can use
     # these attributes to say "btw, this message is from Bodhi, the Fedora
@@ -38,6 +38,7 @@ class BaseProcessor(object):
     __link__ = None
     __docs__ = None
     __obj__ = None
+    __icon__ = None
 
     # An automatically generated regex to match messages for this processor
     __prefix__ = None
@@ -80,7 +81,7 @@ class BaseProcessor(object):
 
     def icon(self, msg, **config):
         """ Return a "icon" for the message. """
-        return None
+        return self.__icon__
 
     def secondary_icon(self, msg, **config):
         """ Return a "secondary icon" for the message. """
