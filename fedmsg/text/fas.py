@@ -27,6 +27,8 @@ class FASProcessor(BaseProcessor):
     __link__ = "https://admin.fedoraproject.org/accounts"
     __docs__ = "https://fedoraproject.org/wiki/Account_System"
     __obj__ = "Account Changes"
+    __icon__ = "https://admin.fedoraproject.org/accounts/static/" + \
+               "theme/fas/images/account.png"
 
     def subtitle(self, msg, **config):
         if 'fas.user.create' in msg['topic']:
@@ -92,10 +94,6 @@ class FASProcessor(BaseProcessor):
             return tmpl.format(agent=agent, group=group, user=user)
         else:
             raise NotImplementedError
-
-    def icon(self, msg, **config):
-        return "https://admin.fedoraproject.org/accounts/static/" + \
-               "theme/fas/images/account.png"
 
     def secondary_icon(self, msg, **config):
         # Every fas fedmsg message has an "agent" field.. "whodunnit"

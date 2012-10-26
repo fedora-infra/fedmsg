@@ -30,9 +30,7 @@ class SCMProcessor(BaseProcessor):
     __link__ = "http://pkgs.fedoraproject.org/cgit"
     __docs__ = "https://fedoraproject.org/wiki/Using_Fedora_GIT"
     __obj__ = "Package Commits"
-
-    def icon(self, msg, **config):
-        return "http://git-scm.com/images/logo.png"
+    __icon__ = "http://git-scm.com/images/logo.png"
 
     def secondary_icon(self, msg, **config):
         if '.git.receive.' in msg['topic']:
