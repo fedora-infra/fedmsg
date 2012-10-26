@@ -28,9 +28,7 @@ class BodhiProcessor(BaseProcessor):
     __link__ = "https://admin.fedoraproject.org/updates"
     __docs__ = "http://fedoraproject.org/wiki/Bodhi"
     __obj__ = "Package Updates"
-
-    def icon(self, msg, **config):
-        return "https://admin.fedoraproject.org/updates" + \
+    __icon__ = "https://admin.fedoraproject.org/updates" + \
                "/static/images/bodhi-icon-48.png"
 
     def secondary_icon(self, msg, **config):
