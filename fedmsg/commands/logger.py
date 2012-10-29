@@ -86,6 +86,13 @@ def logger(**kwargs):
         $ fedmsg-logger --message="This is a message."
         $ fedmsg-logger --message='{"a": 1}' --json-input
 
+    Note that the python JSON parser is picky about the format of messages if
+    you're using the --json-input option.  Double-quotes must be on the "inside"
+    of the string and single quotes must be on the outside::
+
+        '{"a": 1}' is good.
+        "{'a': 1}" is bad.
+
     """
 
     kwargs['active'] = True
