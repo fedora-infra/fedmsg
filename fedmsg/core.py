@@ -231,7 +231,7 @@ class FedMsgContext(object):
         You could also use the ``fedmsg-logger`` from a shell script like so::
 
             $ echo "Hello, world." | fedmsg-logger --topic testing
-            $ echo "\"{'foo': 'bar'}\"" | fedmsg-logger --json-input
+            $ echo '{"foo": "bar"}' | fedmsg-logger --json-input
 
         """
 
