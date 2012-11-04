@@ -52,6 +52,10 @@ Create a new, empty virtualenv and install all the dependencies from `pypi
     $ mkvirtualenv fedmsg
     (fedmsg)$ python setup.py develop
 
+.. note::  If the mkvirtualenv command is unavailable try
+   ``source /usr/bin/virtualenvwrapper.sh`` on Fedora (if you do not run Fedora
+   you might have to adjust the command a little).
+
 You should also run the tests, just to make sure everything is sane::
 
     (fedmsg)$ python setup.py test
