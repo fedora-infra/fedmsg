@@ -17,6 +17,8 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
+
+import getpass
 import inspect
 import socket
 import threading
@@ -258,7 +260,13 @@ class FedMsgContext(object):
             topic = to_bytes(topic, encoding='utf8', nonstring="passthru")
 
         self._i += 1
-        msg = dict(topic=topic, msg=msg, timestamp=time.time(), i=self._i)
+        msg = dict(
+            topic=topic,
+            msg=msg,
+            timestamp=time.time(),
+            i=self._i,
+            username=getpass.getuser(),
+        )
 
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)
