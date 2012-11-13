@@ -309,25 +309,22 @@ class FedMsgContext(object):
                 subscriber = self.context.socket(zmq.SUB)
                 subscriber.setsockopt(zmq.SUBSCRIBE, topic)
                 getattr(subscriber, method)(endpoint)
-                subs[endpoint] = subscriber
+                subs[subscriber] = (_name, endpoint)
 
-        timeout = kw['timeout']
-        tic = time.time()
+        # Register the sockets we just built with a zmq Poller.
+        poller = zmq.Poller()
+        for subscriber in subs:
+            poller.register(subscriber, zmq.POLLIN)
+
+        # Poll that poller.  This is much more efficient than it used to be.
         try:
             while True:
-                for _name, endpoint_list in endpoints.iteritems():
-                    for e in endpoint_list:
-                        if e not in subs:
-                            continue
-                        try:
-                            _topic, message = \
-                                    subs[e].recv_multipart(zmq.NOBLOCK)
-                            tic = time.time()
-                            encoded = fedmsg.encoding.loads(message)
-                            yield _name, e, _topic, encoded
-                        except zmq.ZMQError:
-                            if timeout and (time.time() - tic) > timeout:
-                                return
+                sockets = dict(poller.poll())
+                for s in sockets:
+                    _name, ep = subs[s]
+                    _topic, message = s.recv_multipart()
+                    yield _name, ep, _topic, fedmsg.encoding.loads(message)
+
         finally:
-            for endpoint, subscriber in subs.items():
+            for subscriber in subs:
                 subscriber.close()

@@ -15,13 +15,16 @@ form ``(name, endpoint, topic, message)``::
     ...     print name, endpoint, topic, message
 
 The API is easy to use and should hopefully make your scripts easy to understand
-and maintain.  The downside here is that :func:`fedmsg.tail_messages` is
-spinning in a sleep, listen, yield loop that is quite costly in IO and CPU
-terms.  Typically, a script that uses :func:`fedmsg.tail_messages` will
-consume 100% of a CPU.
+and maintain.
 
 For production services, you will want to use the hub-consumer approach
 described further below.
+
+Note that the :func:`fedmsg.tail_messages` used to be quite inefficient;
+it spun in a sleep, listen, yield loop that was quite costly in IO and CPU
+terms.  Typically, a script that used :func:`fedmsg.tail_messages` would
+consume 100% of a CPU.  That has since be resolved by introducing the use
+of a ``zmq.Poller``.
 
 .. note:: The ``fedmsg-tail`` command described in :doc:`commands` uses
           :func:`fedmsg.tail_messages` to "tail" the bus.
