@@ -62,3 +62,23 @@ class TaggerProcessor(BaseProcessor):
 
     def icon(self, msg, **config):
         return gravatar_url(msg['msg']['vote']['user']['username'])
+
+    def usernames(self, msg, **config):
+        user = 'anonymous'
+        if 'fedoratagger.tag.' in msg['topic']:
+            user = msg['msg']['vote']['user']['username']
+        elif 'fedoratagger.user.rank.update' in msg['topic']:
+            user = msg['msg']['user']['username']
+
+        if user is 'anonymous':
+            return set()
+        else:
+            return set([user])
+
+    def packages(self, msg, **config):
+        if 'fedoratagger.tag.' in msg['topic']:
+            return set([
+                msg['msg']['vote']['tag']['package'].keys()[0]
+            ])
+
+        return set()

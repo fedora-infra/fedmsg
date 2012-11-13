@@ -49,3 +49,6 @@ class SupybotProcessor(BaseProcessor):
         channel = msg['msg']['channel']
 
         return tmpl.format(user=user, name=name, channel=channel)
+
+    def usernames(self, msg, **config):
+        return set(msg['msg']['attendees'].keys())

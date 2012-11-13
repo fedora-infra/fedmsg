@@ -115,3 +115,15 @@ class SCMProcessor(BaseProcessor):
             tmpl = "{prefix}/{name}/{filename}/{md5sum}/{filename}"
             return tmpl.format(prefix=prefix, name=name,
                                md5sum=md5sum, filename=filename)
+
+    def usernames(self, msg, **config):
+        return set([msg['username']])
+
+    def packages(self, msg, **config):
+        if 'git.receive.' in msg['topic'] or 'git.branch.' in msg['topic']:
+            return set(['.'.join(msg['topic'].split('.')[5:-1])])
+        elif '.git.pkgdb2branch.complete' in msg['topic']:
+            return set(msg['msg']['unbranchedPackages'] +
+                       msg['msg']['branchedPackages'])
+
+        return set()
