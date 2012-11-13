@@ -162,14 +162,14 @@ def msg2secondary_icon(msg, processor=None, **config):
 
 
 def msg2usernames(msg, processor=None, **config):
-    """ Return a list of FAS usernames associated with a message. """
+    """ Return a set of FAS usernames associated with a message. """
     if not processor:
         processor = msg2processor(msg, **config)
     return processor.usernames(msg, **config)
 
 
 def msg2packages(msg, processor=None, **config):
-    """ Return a list of package names associated with a message. """
+    """ Return a set of package names associated with a message. """
     if not processor:
         processor = msg2processor(msg, **config)
     return processor.packages(msg, **config)

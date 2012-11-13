@@ -30,7 +30,7 @@ from common import load_config
 class Base(unittest.TestCase):
     msg, expected_title, expected_subti, expected_link, expected_icon, \
         expected_secondary_icon, expected_usernames, expected_packages = \
-        None, None, None, None, None, None, [], []
+        None, None, None, None, None, None, set(), set()
 
     def setUp(self):
         self.config = fedmsg.config.load_config(None, None,
@@ -103,7 +103,7 @@ class TestFASUserCreate(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['ralph']
+    expected_usernames = set(['ralph'])
     msg = {
         u'i': 1,
         u'timestamp': 1344432054.8098609,
@@ -128,7 +128,7 @@ class TestFASEditProfile(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['ralph']
+    expected_usernames = set(['ralph'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.user.update',
         u'msg': {
@@ -148,7 +148,7 @@ class TestFASEditGroup(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['ralph']
+    expected_usernames = set(['ralph'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.update',
         u'msg': {
@@ -167,7 +167,7 @@ class TestFASGroupCreate(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['ralph']
+    expected_usernames = set(['ralph'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.create',
         u'msg': {
@@ -185,7 +185,7 @@ class TestFASRoleUpdate(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['ralph', 'toshio']
+    expected_usernames = set(['ralph', 'toshio'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.role.update',
         u'msg': {
@@ -204,7 +204,7 @@ class TestFASGroupRemove(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['ralph', 'toshio']
+    expected_usernames = set(['ralph', 'toshio'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.remove',
         u'msg': {
@@ -224,7 +224,7 @@ class TestFASGroupSponsor(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['ralph', 'toshio']
+    expected_usernames = set(['ralph', 'toshio'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.sponsor',
         u'msg': {
@@ -244,7 +244,7 @@ class TestFASGroupApply(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['ralph']
+    expected_usernames = set(['ralph'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.apply',
         u'msg': {
@@ -415,8 +415,8 @@ class TestBodhiUpdateComplete(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['ralph', 'bodhi']
-    expected_packages = ['fedmsg']
+    expected_usernames = set(['ralph', 'bodhi'])
+    expected_packages = set(['fedmsg'])
 
     msg = {
         "i": 88,
@@ -560,8 +560,8 @@ class TestBodhiRequestUnpush(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['lmacken']
-    expected_packages = ['foo']
+    expected_usernames = set(['lmacken'])
+    expected_packages = set(['foo'])
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.unpush",
         'msg': {
@@ -582,8 +582,8 @@ class TestBodhiRequestObsolete(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['lmacken']
-    expected_packages = ['foo']
+    expected_usernames = set(['lmacken'])
+    expected_packages = set(['foo'])
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.obsolete",
         'msg': {
@@ -604,8 +604,8 @@ class TestBodhiRequestStable(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['lmacken']
-    expected_packages = ['foo']
+    expected_usernames = set(['lmacken'])
+    expected_packages = set(['foo'])
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.stable",
         'msg': {
@@ -626,8 +626,8 @@ class TestBodhiRequestRevoke(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['lmacken']
-    expected_packages = ['foo']
+    expected_usernames = set(['lmacken'])
+    expected_packages = set(['foo'])
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.revoke",
         'msg': {
@@ -648,8 +648,8 @@ class TestBodhiRequestTesting(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['lmacken']
-    expected_packages = ['foo']
+    expected_usernames = set(['lmacken'])
+    expected_packages = set(['foo'])
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.testing",
         'msg': {
@@ -670,9 +670,9 @@ class TestBodhiComment(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['ralph']
+    expected_usernames = set(['ralph'])
     # TODO -- can we do this?  We should be able to do this.
-    #expected_packages = ['fedmsg']
+    #expected_packages = set(['fedmsg'])
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -699,9 +699,9 @@ class TestBodhiOverrideTagged(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['lmacken']
+    expected_usernames = set(['lmacken'])
     # TODO -- can we do this?  We should be able to do this.
-    #expected_packages = ['fedmsg']
+    #expected_packages = set(['fedmsg'])
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -723,9 +723,9 @@ class TestBodhiOverrideUntagged(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = ['lmacken']
+    expected_usernames = set(['lmacken'])
     # TODO -- can we do this?  We should be able to do this.
-    #expected_packages = ['fedmsg']
+    #expected_packages = set(['fedmsg'])
     msg = {
         "i": 1,
         "timestamp": 1344964395.207541,
@@ -742,7 +742,7 @@ class TestBodhiOverrideUntagged(Base):
 class TestSupybotStartMeetingNoName(Base):
     expected_title = "meetbot.meeting.start (unsigned)"
     expected_subti = 'threebean started a meeting in #channel'
-    expected_usernames = ['threebean', 'fedmsg-test-bot']
+    expected_usernames = set(['threebean', 'fedmsg-test-bot'])
     msg = {
         "i": 16,
         "msg": {
@@ -764,7 +764,7 @@ class TestSupybotStartMeetingNoName(Base):
 class TestSupybotStartMeeting(Base):
     expected_title = "meetbot.meeting.start (unsigned)"
     expected_subti = 'threebean started meeting "title" in #channel'
-    expected_usernames = ['threebean', 'fedmsg-test-bot']
+    expected_usernames = set(['threebean', 'fedmsg-test-bot'])
     msg = {
         "i": 16,
         "msg": {
@@ -787,7 +787,7 @@ class TestSupybotEndMeeting(Base):
     expected_title = "meetbot.meeting.complete (unsigned)"
     expected_subti = 'threebean ended meeting "title" in #channel'
     expected_link = 'http://logs.com/awesome.html'
-    expected_usernames = ['threebean', 'fedmsg-test-bot']
+    expected_usernames = set(['threebean', 'fedmsg-test-bot'])
     msg = {
         "i": 16,
         "msg": {
@@ -810,7 +810,7 @@ class TestSupybotEndMeetingNoTitle(Base):
     expected_title = "meetbot.meeting.complete (unsigned)"
     expected_subti = 'threebean ended a meeting in #channel'
     expected_link = 'http://logs.com/awesome.html'
-    expected_usernames = ['threebean', 'fedmsg-test-bot']
+    expected_usernames = set(['threebean', 'fedmsg-test-bot'])
     msg = {
         "i": 16,
         "msg": {
@@ -833,8 +833,8 @@ class TestTaggerVoteAnonymous(Base):
     expected_title = "fedoratagger.tag.update (unsigned)"
     expected_subti = 'anonymous upvoted "unittest" on perl-Test-Fatal'
     expected_link = 'https://apps.fedoraproject.org/tagger/perl-Test-Fatal'
-    expected_usernames = []
-    expected_packages = ['perl-Test-Fatal']
+    expected_usernames = set([])
+    expected_packages = set(['perl-Test-Fatal'])
     msg = {
       "i": 1,
       "timestamp": 1345220838.2775879,
@@ -894,8 +894,8 @@ class TestTaggerCreate(Base):
     expected_title = "fedoratagger.tag.create (unsigned)"
     expected_subti = 'ralph added tag "unittest" to perl-Test-Fatal'
     expected_link = 'https://apps.fedoraproject.org/tagger/perl-Test-Fatal'
-    expected_usernames = ['ralph']
-    expected_packages = ['perl-Test-Fatal']
+    expected_usernames = set(['ralph'])
+    expected_packages = set(['perl-Test-Fatal'])
     msg = {
       "i": 1,
       "timestamp": 1345220073.4948981,
@@ -956,7 +956,7 @@ class TestMediaWikiEdit(Base):
     expected_link = "http://this-is-a-link.org"
     expected_icon = "https://fedoraproject.org/w/skins/common/" + \
                     "images/mediawiki.png"
-    expected_usernames = ['ralph']
+    expected_usernames = set(['ralph'])
 
     msg = {
         "topic": "org.fedoraproject.stg.wiki.article.edit",
@@ -982,7 +982,7 @@ class TestMediaWikiUpload(Base):
                      '"This is a beautiful cat..."'
     expected_icon = "https://fedoraproject.org/w/skins/common/" + \
                     "images/mediawiki.png"
-    expected_usernames = ['ralph']
+    expected_usernames = set(['ralph'])
     msg = {
         "topic": "org.fedoraproject.stg.wiki.upload.complete",
         "msg": {
@@ -1033,7 +1033,7 @@ class TestMediaWikiUpload(Base):
 class TestLoggerNormal(Base):
     expected_title = "logger.log (unsigned)"
     expected_subti = 'hello, world.'
-    expected_usernames = ['ralph']
+    expected_usernames = set(['ralph'])
     msg = {
         "i": 1,
         "timestamp": 1344352873.714926,
@@ -1048,7 +1048,7 @@ class TestLoggerNormal(Base):
 class TestLoggerJSON(Base):
     expected_title = "logger.log (unsigned)"
     expected_subti = '<custom JSON message>'
-    expected_usernames = ['root']
+    expected_usernames = set(['root'])
     msg = {
         "i": 1,
         "timestamp": 1344352929.415939,
@@ -1063,7 +1063,7 @@ class TestLoggerJSON(Base):
 class TestPkgdb2BrMassStart(Base):
     expected_title = "git.mass_branch.start (unsigned)"
     expected_subti = "dgilmore started a mass branch"
-    expected_usernames = ['dgilmore']
+    expected_usernames = set(['dgilmore'])
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1077,7 +1077,7 @@ class TestPkgdb2BrMassStart(Base):
 class TestPkgdb2BrMassComplete(Base):
     expected_title = "git.mass_branch.complete (unsigned)"
     expected_subti = "mass branch started by dgilmore completed"
-    expected_usernames = ['dgilmore']
+    expected_usernames = set(['dgilmore'])
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1091,7 +1091,7 @@ class TestPkgdb2BrMassComplete(Base):
 class TestPkgdb2BrRunStart(Base):
     expected_title = "git.pkgdb2branch.start (unsigned)"
     expected_subti = "limburgher started a run of pkgdb2branch"
-    expected_usernames = ['limburgher']
+    expected_usernames = set(['limburgher'])
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1105,8 +1105,8 @@ class TestPkgdb2BrRunStart(Base):
 class TestPkgdb2BrRunComplete(Base):
     expected_title = "git.pkgdb2branch.complete (unsigned)"
     expected_subti = "run of pkgdb2branch started by limburgher completed"
-    expected_usernames = ['limburgher']
-    expected_packages = ['nethack']
+    expected_usernames = set(['limburgher'])
+    expected_packages = set(['nethack'])
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1123,8 +1123,8 @@ class TestPkgdb2BrRunCompleteWithError(Base):
     expected_title = "git.pkgdb2branch.complete (unsigned)"
     expected_subti = "run of pkgdb2branch started by limburgher completed" + \
             " with 1 error"
-    expected_usernames = ['limburgher']
-    expected_packages = ['foo']
+    expected_usernames = set(['limburgher'])
+    expected_packages = set(['foo'])
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1141,8 +1141,8 @@ class TestPkgdb2BrRunCompleteWithErrors(Base):
     expected_title = "git.pkgdb2branch.complete (unsigned)"
     expected_subti = "run of pkgdb2branch started by limburgher completed" + \
             " with 2 errors"
-    expected_usernames = ['limburgher']
-    expected_packages = ['foo', 'bar']
+    expected_usernames = set(['limburgher'])
+    expected_packages = set(['foo', 'bar'])
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1160,8 +1160,8 @@ class TestPkgdb2BrCreate(Base):
        "limburgher created branch 'master' for the 'valgrind' package"
     expected_link = \
        "http://pkgs.fedoraproject.org/cgit/valgrind.git/log/?h=master"
-    expected_usernames = ['limburgher']
-    expected_packages = ['valgrind']
+    expected_usernames = set(['limburgher'])
+    expected_packages = set(['valgrind'])
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1179,8 +1179,8 @@ class TestLookaside(Base):
             'texlive/pst-diffraction.doc.tar.xz/' + \
             'dacad985394b3977f9dcf0c75f51a357/' + \
             'pst-diffraction.doc.tar.xz'
-    expected_usernames = ['jnovy']
-    expected_packages = ['texlive']
+    expected_usernames = set(['jnovy'])
+    expected_packages = set(['texlive'])
     msg = {
       "i": 1,
       "timestamp": 1349197866.215465,
@@ -1205,8 +1205,8 @@ class TestSCM(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
             "923419d315c8f23eface39852bf32a5f?s=64&" + \
             "d=http%3A%2F%2Fgit-scm.com%2Fimages%2Flogo.png"
-    expected_usernames = ['mjw']
-    expected_packages = ['valgrind']
+    expected_usernames = set(['mjw'])
+    expected_packages = set(['valgrind'])
 
     msg = {
         "i": 1,

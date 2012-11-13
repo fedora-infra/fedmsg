@@ -87,9 +87,9 @@ class BaseProcessor(object):
         """ Return a "secondary icon" for the message. """
 
     def usernames(self, msg, **config):
-        """ Return a list of FAS usernames associated with a message. """
-        return []
+        """ Return a set of FAS usernames associated with a message. """
+        return set()
 
     def packages(self, msg, **config):
-        """ Return a list of package names associated with a message. """
-        return []
+        """ Return a set of package names associated with a message. """
+        return set()
