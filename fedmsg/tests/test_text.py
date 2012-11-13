@@ -1051,6 +1051,7 @@ class TestPkgdb2BrRunComplete(Base):
         "msg": {
             "agent": "limburgher",
             "unbranchedPackages": [],
+            "branchedPackages": ["nethack"],
         },
     }
 
