@@ -108,7 +108,6 @@ def msg2processor(msg, **config):
     else:
         return processors[-1]  # DefaultProcessor
 
-
 def msg2repr(msg, **config):
     """ Return a human-readable or "natural language" representation of a
     dict-like fedmsg message.  Think of this as the 'top-most level' function
@@ -160,6 +159,20 @@ def msg2secondary_icon(msg, processor=None, **config):
     if not processor:
         processor = msg2processor(msg, **config)
     return processor.secondary_icon(msg, **config)
+
+
+def msg2usernames(msg, processor=None, **config):
+    """ Return a list of FAS usernames associated with a message. """
+    if not processor:
+        processor = msg2processor(msg, **config)
+    return processor.usernames(msg, **config)
+
+
+def msg2packages(msg, processor=None, **config):
+    """ Return a list of package names associated with a message. """
+    if not processor:
+        processor = msg2processor(msg, **config)
+    return processor.packages(msg, **config)
 
 
 def _msg2suffix(msg, **config):
