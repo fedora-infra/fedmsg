@@ -1124,7 +1124,7 @@ class TestLookaside(Base):
 
 class TestSCM(Base):
     expected_title = "git.receive.valgrind.master (unsigned)"
-    expected_subti = 'Mark Wielaard pushed to valgrind (master).  ' + \
+    expected_subti = 'mjw pushed to valgrind (master).  ' + \
             '"Clear CFLAGS CXXFLAGS LDFLAGS."'
     expected_link = "http://pkgs.fedoraproject.org/cgit/" + \
             "valgrind.git/commit/" + \
@@ -1161,6 +1161,7 @@ class TestSCM(Base):
                 "message": """Clear CFLAGS CXXFLAGS LDFLAGS.
                 This is a bit of a hammer.""",
                 "email": "mjw@redhat.com",
+                "username": "mjw",
                 "branch": "master",
             }
         }

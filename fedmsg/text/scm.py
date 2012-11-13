@@ -46,7 +46,7 @@ class SCMProcessor(BaseProcessor):
     def subtitle(self, msg, **config):
         if '.git.receive.' in msg['topic']:
             repo = '.'.join(msg['topic'].split('.')[5:-1])
-            user = msg['msg']['commit']['name']
+            user = msg['msg']['commit']['username']
             summ = msg['msg']['commit']['summary']
             branch = msg['msg']['commit']['branch']
             tmpl = self._('{user} pushed to {repo} ({branch}).  "{summary}"')
