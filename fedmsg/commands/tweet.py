@@ -33,7 +33,7 @@ def tweet(**kw):
     """ Rebroadcast messages to twitter """
 
     # First, sanity checking.
-    if not 'tweet_settings' in kw and not 'statusnet_settings' in kw:
+    if not kw.get('tweet_endpoints', None):
         raise ValueError("Not configured to tweet.")
 
     # Boilerplate..
@@ -45,16 +45,9 @@ def tweet(**kw):
     fedmsg.init(**kw)
     fedmsg.text.make_processors(**kw)
 
-    apis = []
-    # Set up twitter if configured
-    settings = kw.get('tweet_settings', [])
-    if settings:
-        apis.append(twitter_api.Api(**settings))
-
-    # Set up statusnet if configured
-    settings = kw.get('statusnet_settings', [])
-    if settings:
-        apis.append(twitter_api.Api(**settings))
+    # Set up twitter and statusnet.. multiple accounts if configured
+    settings = kw.get('tweet_endpoints', [])
+    apis = [twitter_api.Api(**endpoint) for endpoint in settings]
 
     # Set up bitly
     settings = kw['bitly_settings']
