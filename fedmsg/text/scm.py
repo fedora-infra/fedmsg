@@ -117,7 +117,10 @@ class SCMProcessor(BaseProcessor):
                                md5sum=md5sum, filename=filename)
 
     def usernames(self, msg, **config):
-        return set([msg['username']])
+        if 'agent' in msg['msg']:
+            return set([msg['msg']['agent']])
+        else:
+            return set([msg['msg']['commit']['username']])
 
     def packages(self, msg, **config):
         if 'git.receive.' in msg['topic'] or 'git.branch.' in msg['topic']:
@@ -125,5 +128,7 @@ class SCMProcessor(BaseProcessor):
         elif '.git.pkgdb2branch.complete' in msg['topic']:
             return set(msg['msg']['unbranchedPackages'] +
                        msg['msg']['branchedPackages'])
+        elif '.git.lookaside.' in msg['topic']:
+            return set([msg['msg']['name']])
 
         return set()

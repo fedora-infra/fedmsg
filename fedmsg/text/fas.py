@@ -98,3 +98,18 @@ class FASProcessor(BaseProcessor):
     def secondary_icon(self, msg, **config):
         # Every fas fedmsg message has an "agent" field.. "whodunnit"
         return gravatar_url(username=msg['msg']['agent']['username'])
+
+    def usernames(self, msg, **config):
+        users = []
+
+        try:
+            users.append(msg['msg']['agent']['username'])
+        except KeyError:
+            pass
+
+        try:
+            users.append(msg['msg']['user']['username'])
+        except KeyError:
+            pass
+
+        return set(users)

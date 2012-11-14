@@ -52,3 +52,7 @@ class WikiProcessor(BaseProcessor):
     def secondary_icon(self, msg, **config):
         user = msg['msg'].get('user', msg['msg'].get('user_text', ''))
         return gravatar_url(user.lower())
+
+    def usernames(self, msg, **config):
+        user = msg['msg'].get('user', msg['msg'].get('user_text', ''))
+        return set([user.lower()])
