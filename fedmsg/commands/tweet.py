@@ -30,7 +30,20 @@ from fedmsg.commands import command
 
 @command(name="fedmsg-tweet", extra_args=[], daemonizable=True)
 def tweet(**kw):
-    """ Rebroadcast messages to twitter """
+    """ Rebroadcast messages to twitter and statusnet
+
+    New values in the fedmsg configuration are needed for this to work.  Lists
+    and dicts of authentication credentials such as:
+
+        - :term:`tweet_endpoints`
+        - :term:`bitly_settings`
+
+    And scalars to help with rate limiting such as:
+
+        - :term:`tweet_hibernate_duration`
+        - :term:`tweet_intermessage_pause`
+
+    """
 
     # First, sanity checking.
     if not kw.get('tweet_endpoints', None):
