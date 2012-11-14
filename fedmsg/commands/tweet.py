@@ -82,7 +82,7 @@ def tweet(**kw):
 
         if link:
             link = bitly.shorten(longUrl=link)['url']
-            message = (message[:139] + " ")[:139 - len(link)] + link
+            message = (message[:138] + " ")[:139 - len(link)] + link
         else:
             message = message[:140]
 
