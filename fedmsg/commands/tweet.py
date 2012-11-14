@@ -61,11 +61,16 @@ def tweet(**kw):
         settings['api_key'],
     )
 
-    for name, ep, topic, message in fedmsg.tail_messages(**kw):
-        link = fedmsg.text.msg2link(message, **kw)
-        link = bitly.shorten(longUrl=link)['url']
-        message = fedmsg.text.msg2subtitle(message, **kw)
-        message = (message[:139] + " ")[:139 - len(link)] + link
+    for name, ep, topic, msg in fedmsg.tail_messages(**kw):
+        message = fedmsg.text.msg2subtitle(msg, **kw)
+        link = fedmsg.text.msg2link(msg, **kw)
+
+        if link:
+            link = bitly.shorten(longUrl=link)['url']
+            message = (message[:139] + " ")[:139 - len(link)] + link
+        else:
+            message = message[:140]
+
         print("Tweeting %r" % message)
         for api in apis:
             try:
