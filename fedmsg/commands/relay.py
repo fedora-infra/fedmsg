@@ -45,11 +45,6 @@ def relay(**kw):
     SUB.bind()->PUB.bind() relay.
     """
 
-    # TODO - Works is needed here in order for multiple failover fedmsg-relays
-    # to work.  If three endpoints are declared for relay_outbound, which one
-    # should *this* relay use?  Same goes for relay_inbound.
-    # The config format underspecifies.
-
     # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
     # with moksha's expected configuration.
     moksha_options = dict(
