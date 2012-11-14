@@ -415,7 +415,7 @@ class TestBodhiUpdateComplete(Base):
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
-    expected_usernames = set(['ralph', 'bodhi'])
+    expected_usernames = set(['ralph'])
     expected_packages = set(['fedmsg'])
 
     msg = {
@@ -671,8 +671,7 @@ class TestBodhiComment(Base):
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['ralph'])
-    # TODO -- can we do this?  We should be able to do this.
-    #expected_packages = set(['fedmsg'])
+    expected_packages = set(['fedmsg'])
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -700,8 +699,7 @@ class TestBodhiOverrideTagged(Base):
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['lmacken'])
-    # TODO -- can we do this?  We should be able to do this.
-    #expected_packages = set(['fedmsg'])
+    expected_packages = set(['fedmsg'])
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -724,8 +722,7 @@ class TestBodhiOverrideUntagged(Base):
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['lmacken'])
-    # TODO -- can we do this?  We should be able to do this.
-    #expected_packages = set(['fedmsg'])
+    expected_packages = set(['fedmsg'])
     msg = {
         "i": 1,
         "timestamp": 1344964395.207541,
@@ -1150,6 +1147,7 @@ class TestPkgdb2BrRunCompleteWithErrors(Base):
         "msg": {
             "agent": "limburgher",
             "unbranchedPackages": ['foo', 'bar'],
+            "branchedPackages": [],
         },
     }
 
