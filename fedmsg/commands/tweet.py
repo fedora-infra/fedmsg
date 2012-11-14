@@ -30,6 +30,10 @@ from fedmsg.commands import command
 def tweet(**kw):
     """ Rebroadcast messages to twitter """
 
+    # First, sanity checking.
+    if not 'tweet_settings' in kw and not 'statusnet_settings' in kw:
+        raise ValueError("Not configured to tweet.")
+
     # Boilerplate..
     kw['publish_endpoint'] = None
     kw['name'] = 'relay_inbound'
@@ -39,14 +43,16 @@ def tweet(**kw):
     fedmsg.init(**kw)
     fedmsg.text.make_processors(**kw)
 
-    # Set up twitter
-    settings = kw['tweet_settings']
-    api = twitter_api.Api(
-        settings['consumer_key'],
-        settings['consumer_secret'],
-        settings['oauth_token'],
-        settings['oauth_token_secret'],
-    )
+    apis = []
+    # Set up twitter if configured
+    settings = kw.get('tweet_settings', [])
+    if settings:
+        apis.append(twitter_api.Api(**settings))
+
+    # Set up statusnet if configured
+    settings = kw.get('statusnet_settings', [])
+    if settings:
+        apis.append(twitter_api.Api(**settings))
 
     # Set up bitly
     settings = kw['bitly_settings']
@@ -61,11 +67,12 @@ def tweet(**kw):
         message = fedmsg.text.msg2subtitle(message, **kw)
         message = (message[:139] + " ")[:139 - len(link)] + link
         print("Tweeting %r" % message)
-        try:
-            api.PostUpdate(message)
-        except Exception as e:
-            if 'Status is a duplicate' in str(e):
-                # Let it slide ...
-                pass
-            else:
-                raise
+        for api in apis:
+            try:
+                api.PostUpdate(message)
+            except Exception as e:
+                if 'Status is a duplicate' in str(e):
+                    # Let it slide ...
+                    pass
+                else:
+                    raise
