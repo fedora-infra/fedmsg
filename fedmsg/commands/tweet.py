@@ -83,6 +83,9 @@ def tweet(**kw):
                 print "Sleeping for", hibernate_duration
                 time.sleep(hibernate_duration)
                 _post_to_api(api, message)
+            elif 'json decoding' in str(e):
+                # Let it slide ... no idea what this one is.
+                pass
             elif 'duplicate' in str(e):
                 # Let it slide ...
                 pass
