@@ -1,10 +1,13 @@
 config = dict(
-    tweet_settings=dict(
-        consumer_key="get",
-        consumer_secret="these",
-        access_token_key="from",
-        access_token_secret="dev.twitter.com",
-    ),
+    tweet_intermessage_pause=1,  # seconds
+    tweet_hibernate_duration=60 * 3,  # seconds
+    # Actually using twitter.com is unlikely due to their daily tweet limit.
+    #tweet_settings=dict(
+    #    consumer_key="get",
+    #    consumer_secret="these",
+    #    access_token_key="from",
+    #    access_token_secret="dev.twitter.com",
+    #),
     statusnet_settings=dict(
         base_url="http://identi.ca/api",
         consumer_key="get this from",

@@ -18,6 +18,8 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 
+import time
+
 import twitter as twitter_api
 import bitlyapi
 
@@ -61,6 +63,26 @@ def tweet(**kw):
         settings['api_key'],
     )
 
+    # How long to sleep if we spew too fast.
+    hibernate_duration = kw['tweet_hibernate_duration']
+    # Sleep a second or two inbetween messages to try and avoid the hibernate
+    intermessage_pause = kw['tweet_intermessage_pause']
+
+    def _post_to_api(api, message):
+        try:
+            api.PostUpdate(message)
+        except Exception as e:
+            if 'Too many notices too fast;' in str(e):
+                # Cool our heels then try again.
+                print "Sleeping for", hibernate_duration
+                time.sleep(hibernate_duration)
+                _post_to_api(api, message)
+            elif 'duplicate' in str(e):
+                # Let it slide ...
+                pass
+            else:
+                raise
+
     for name, ep, topic, msg in fedmsg.tail_messages(**kw):
         message = fedmsg.text.msg2subtitle(msg, **kw)
         link = fedmsg.text.msg2link(msg, **kw)
@@ -73,11 +95,6 @@ def tweet(**kw):
 
         print("Tweeting %r" % message)
         for api in apis:
-            try:
-                api.PostUpdate(message)
-            except Exception as e:
-                if 'Status is a duplicate' in str(e):
-                    # Let it slide ...
-                    pass
-                else:
-                    raise
+            _post_to_api(api, message)
+
+        time.sleep(intermessage_pause)
