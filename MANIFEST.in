@@ -1,6 +1,7 @@
 include LICENSE
 include README.rst
 include dev_certs
+include logrotate
 recursive-include dev_certs *
 recursive-include fedmsg/tests/test_certs *
 recursive-include extras *
