@@ -48,9 +48,12 @@ config = dict(
         "org.fedoraproject.prod.announce.announcement": [
             "announce-lockbox.phx2.fedoraproject.org",
         ],
-        # Drop all announcements from stg, regardless of signature.
-        "org.fedoraproject.stg.announce.announcement": [],
-        # Drop all announcements from dev, regardless of signature.
-        "org.fedoraproject.stg.announce.announcement": [],
     },
+
+    # Set this to True if you want messages to be dropped that aren't explicitly
+    # whitelisted in the routing_policy.
+    # When this is False, only messages that have a topic in the routing_policy
+    # but whose cert names aren't in the associated list are dropped; messages
+    # whose topics do not appear in the routing_policy are not dropped.
+    routing_nitpicky=False,
 )
