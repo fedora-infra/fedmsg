@@ -283,6 +283,10 @@ class FedMsgContext(object):
         ``(name, endpoint, topic, message)``
         """
 
+        # TODO -- do the zmq_strict logic dance with "topic" here.
+        # It is buried in moksha.hub, but we need it to work the same way
+        # here.
+
         # TODO -- the 'passive' here and the 'active' are ambiguous.  They
         # don't actually mean the same thing.  This should be resolved.
         method = passive and 'bind' or 'connect'
