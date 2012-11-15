@@ -101,6 +101,7 @@ setup(
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot",
             "fedmsg-collectd=fedmsg.commands.collectd:collectd",
             "fedmsg-tweet=fedmsg.commands.tweet:tweet",
+            "fedmsg-announce=fedmsg.commands.announce:announce",
         ],
         'moksha.consumer': [
             "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",
