@@ -320,6 +320,9 @@ class FedMsgContext(object):
         for subscriber in subs:
             poller.register(subscriber, zmq.POLLIN)
 
+        # TODO -- what if the user wants to pass in validate_signatures in **kw?
+        validate = self.c.get('validate_signatures', False)
+
         # Poll that poller.  This is much more efficient than it used to be.
         try:
             while True:
@@ -327,7 +330,17 @@ class FedMsgContext(object):
                 for s in sockets:
                     _name, ep = subs[s]
                     _topic, message = s.recv_multipart()
-                    yield _name, ep, _topic, fedmsg.encoding.loads(message)
+                    msg = fedmsg.encoding.loads(message)
+                    if not validate:
+                        yield _name, ep, _topic, msg
+                    elif self.crypto.validate(msg, **self.c):
+                        yield _name, ep, _topic, msg
+                    else:
+                        # Else.. we are supposed to be validating, but the
+                        # message failed validation.
+
+                        # Warn, but don't throw an exception.  Keep tailing.
+                        warnings.warn("!! invalid message received: %r" % msg)
 
         finally:
             for subscriber in subs:
