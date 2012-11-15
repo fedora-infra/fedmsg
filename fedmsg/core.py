@@ -333,7 +333,7 @@ class FedMsgContext(object):
                     msg = fedmsg.encoding.loads(message)
                     if not validate:
                         yield _name, ep, _topic, msg
-                    elif self.crypto.validate(msg, **self.c):
+                    elif fedmsg.crypto.validate(msg, **self.c):
                         yield _name, ep, _topic, msg
                     else:
                         # Else.. we are supposed to be validating, but the
