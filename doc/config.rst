@@ -199,6 +199,36 @@ Glossary of Configuration Values
             domain names of the host machine during runtime, we need to
             explicitly list all of the certs in the config.
 
+    routing_nitpicky
+        ``bool`` - When set to True, messages whose topics do not appear in
+        :term:`routing_policy` automatically fail the validation process
+        described in :mod:`fedmsg.crypto`.  It defaults to ``False``.
+
+    routing_policy
+        ``dict`` - A dict mapping fully-qualified topic names to lists of cert
+        names.  If a message's topic appears in the :term:`routing_policy` and
+        the name on its certificate does not appear in the associated list, then
+        that message fails the validation process in :mod:`fedmsg.crypto`.
+
+        For example, a routing policy might look like this::
+
+            routing_policy={
+                "org.fedoraproject.prod.bodhi.buildroot_override.untag": [
+                    "bodhi-app01.phx2.fedoraproject.org",
+                    "bodhi-app02.phx2.fedoraproject.org",
+                    "bodhi-app03.phx2.fedoraproject.org",
+                    "bodhi-app04.phx2.fedoraproject.org",
+                ],
+            }
+
+        The above loosely translates to "messages about bodhi buildroot
+        overrides being untagged may only come from the first four app
+        servers."  If a message with that topic bears a cert signed by any
+        other name, then that message fails the validation process.
+
+        Expect that your :term:`routing_policy` (if you define one) will
+        become quite long.  It defaults to the empty dict, ``{}``.
+
     fedmsg.consumers.gateway.port
         ``int`` - A port number for the special outbound zeromq PUB socket
         posted by :func:`fedmsg.commands.gateway.gateway`.  The
