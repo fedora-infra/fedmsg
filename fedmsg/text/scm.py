@@ -47,7 +47,12 @@ class SCMProcessor(BaseProcessor):
         if '.git.receive.' in msg['topic']:
             repo = '.'.join(msg['topic'].split('.')[5:-1])
             user = msg['msg']['commit']['username']
+
             summ = msg['msg']['commit']['summary']
+            whole = msg['msg']['commit']['message']
+            if summ.strip() != whole.strip():
+                summ += " (..more)"
+
             branch = msg['msg']['commit']['branch']
             tmpl = self._('{user} pushed to {repo} ({branch}).  "{summary}"')
             return tmpl.format(user=user, repo=repo,

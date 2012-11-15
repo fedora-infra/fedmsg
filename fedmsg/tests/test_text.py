@@ -99,7 +99,7 @@ class TestFASUserCreate(Base):
     expected_title = "fas.user.create (unsigned)"
     expected_subti = "New FAS account:  'ralph'  (created by 'ralph')"
     expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
-                    "/theme/fas/images/account.png"
+        "/theme/fas/images/account.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -122,9 +122,9 @@ class TestFASUserCreate(Base):
 class TestFASEditProfile(Base):
     expected_title = "fas.user.update (unsigned)"
     expected_subti = "ralph edited the following fields of ralph's " + \
-            "FAS profile:  comments"
+        "FAS profile:  comments"
     expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
-                    "/theme/fas/images/account.png"
+        "/theme/fas/images/account.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -142,9 +142,9 @@ class TestFASEditProfile(Base):
 class TestFASEditGroup(Base):
     expected_title = "fas.group.update (unsigned)"
     expected_subti = "ralph edited the following fields of the " + \
-            "ambassadors FAS group:  display_name"
+        "ambassadors FAS group:  display_name"
     expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
-                    "/theme/fas/images/account.png"
+        "/theme/fas/images/account.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -163,7 +163,7 @@ class TestFASGroupCreate(Base):
     expected_title = "fas.group.create (unsigned)"
     expected_subti = "ralph created new FAS group ambassadors"
     expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
-                    "/theme/fas/images/account.png"
+        "/theme/fas/images/account.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -181,7 +181,7 @@ class TestFASRoleUpdate(Base):
     expected_title = "fas.role.update (unsigned)"
     expected_subti = "toshio changed ralph's role in the ambassadors group"
     expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
-                    "/theme/fas/images/account.png"
+        "/theme/fas/images/account.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -200,7 +200,7 @@ class TestFASGroupRemove(Base):
     expected_title = "fas.group.member.remove (unsigned)"
     expected_subti = "toshio removed ralph from the ambassadors group"
     expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
-                    "/theme/fas/images/account.png"
+        "/theme/fas/images/account.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -218,9 +218,9 @@ class TestFASGroupRemove(Base):
 class TestFASGroupSponsor(Base):
     expected_title = "fas.group.member.sponsor (unsigned)"
     expected_subti = "toshio sponsored ralph's membership " + \
-                     "in the ambassadors group"
+        "in the ambassadors group"
     expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
-                    "/theme/fas/images/account.png"
+        "/theme/fas/images/account.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -240,7 +240,7 @@ class TestFASGroupApply(Base):
     expected_subti = "ralph applied for ralph's membership " + \
         "in the ambassadors group"
     expected_icon = "https://admin.fedoraproject.org/accounts/static" + \
-                    "/theme/fas/images/account.png"
+        "/theme/fas/images/account.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -259,7 +259,7 @@ class TestComposeBranchedComplete(Base):
     expected_title = "compose.branched.complete (unsigned)"
     expected_subti = "branched compose completed"
     expected_link = \
-            "http://alt.fedoraproject.org/pub/fedora/linux/development"
+        "http://alt.fedoraproject.org/pub/fedora/linux/development"
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -330,9 +330,9 @@ class TestComposeBranchedRsyncStart(Base):
 class TestComposeBranchedRsyncComplete(Base):
     expected_title = "compose.branched.rsync.complete (unsigned)"
     expected_subti = \
-            "finished rsync of branched compose for public consumption"
+        "finished rsync of branched compose for public consumption"
     expected_link = \
-            "http://alt.fedoraproject.org/pub/fedora/linux/development"
+        "http://alt.fedoraproject.org/pub/fedora/linux/development"
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -344,7 +344,7 @@ class TestComposeRawhideComplete(Base):
     expected_title = "compose.rawhide.complete (unsigned)"
     expected_subti = "rawhide compose completed"
     expected_link = \
-            "http://alt.fedoraproject.org/pub/fedora/linux/development/rawhide"
+        "http://alt.fedoraproject.org/pub/fedora/linux/development/rawhide"
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -396,7 +396,7 @@ class TestComposeRawhideRsyncComplete(Base):
     expected_title = "compose.rawhide.rsync.complete (unsigned)"
     expected_subti = "finished rsync of rawhide compose for public consumption"
     expected_link = \
-            "http://alt.fedoraproject.org/pub/fedora/linux/development/rawhide"
+        "http://alt.fedoraproject.org/pub/fedora/linux/development/rawhide"
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -407,11 +407,11 @@ class TestComposeRawhideRsyncComplete(Base):
 class TestBodhiUpdateComplete(Base):
     expected_title = "bodhi.update.complete.testing (unsigned)"
     expected_subti = "ralph's fedmsg-0.2.7-2.el6 bodhi update " + \
-                     "completed push to testing"
+        "completed push to testing"
     expected_link = "https://admin.fedoraproject.org/updates/" + \
-                    "fedmsg-0.2.7-2.el6"
+        "fedmsg-0.2.7-2.el6"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -434,8 +434,8 @@ class TestBodhiUpdateComplete(Base):
                     {
                         "group": None,
                         "author": "bodhi",
-                        "text": "This update has been submitted for " + \
-                                "testing by ralph. ",
+                        "text": "This update has been submitted for " +
+                        "testing by ralph. ",
                         "karma": 0,
                         "anonymous": False,
                         "timestamp": 1344266157.0
@@ -443,9 +443,9 @@ class TestBodhiUpdateComplete(Base):
                     {
                         "group": None,
                         "author": "bodhi",
-                        "text": "This update is currently being pushed " + \
-                                "to the Fedora EPEL 6 testing updates " + \
-                                "repository.",
+                        "text": "This update is currently being pushed " +
+                        "to the Fedora EPEL 6 testing updates " +
+                        "repository.",
                         "karma": 0,
                         "anonymous": False,
                         "timestamp": 1344443927.0
@@ -477,8 +477,8 @@ class TestBodhiUpdateComplete(Base):
                     }
                 ],
                 "date_modified": None,
-                "notes": "Bugfix - Added a forgotten new " + \
-                        "requirement on python-requests.",
+                "notes": "Bugfix - Added a forgotten new " +
+                "requirement on python-requests.",
                 "request": None,
                 "bugs": [],
                 "critpath_approved": False,
@@ -493,7 +493,7 @@ class TestBodhiMashTaskMashing(Base):
     expected_title = "bodhi.mashtask.mashing (unsigned)"
     expected_subti = "bodhi masher is mashing test_repo"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = ''
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.mashing",
@@ -507,7 +507,7 @@ class TestBodhiMashTaskStart(Base):
     expected_title = "bodhi.mashtask.start (unsigned)"
     expected_subti = "bodhi masher started its mashtask"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = ''
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.start",
@@ -519,7 +519,7 @@ class TestBodhiMashTaskComplete(Base):
     expected_title = "bodhi.mashtask.complete (unsigned)"
     expected_subti = "bodhi masher failed to complete its mashtask!"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = ''
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.complete",
@@ -531,7 +531,7 @@ class TestBodhiMashTaskSyncWait(Base):
     expected_title = "bodhi.mashtask.sync.wait (unsigned)"
     expected_subti = "bodhi masher is waiting on mirror repos to sync"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = ''
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.sync.wait",
@@ -543,7 +543,7 @@ class TestBodhiMashTaskSyncWait(Base):
     expected_title = "bodhi.mashtask.sync.done (unsigned)"
     expected_subti = "bodhi masher finished waiting on mirror repos to sync"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = ''
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.sync.done",
@@ -556,7 +556,7 @@ class TestBodhiRequestUnpush(Base):
     expected_subti = "lmacken unpushed foo"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -578,7 +578,7 @@ class TestBodhiRequestObsolete(Base):
     expected_subti = "lmacken obsoleted foo"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -600,7 +600,7 @@ class TestBodhiRequestStable(Base):
     expected_subti = "lmacken submitted foo to stable"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -622,7 +622,7 @@ class TestBodhiRequestRevoke(Base):
     expected_subti = "lmacken revoked foo"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -644,7 +644,7 @@ class TestBodhiRequestTesting(Base):
     expected_subti = "lmacken submitted foo to testing"
     expected_link = "https://admin.fedoraproject.org/updates/foo"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -666,7 +666,7 @@ class TestBodhiComment(Base):
     expected_subti = "ralph commented on bodhi update fedmsg-1.0-1 (karma: -1)"
     expected_link = "https://admin.fedoraproject.org/updates/fedmsg-1.0-1"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -694,7 +694,7 @@ class TestBodhiOverrideTagged(Base):
     expected_title = "bodhi.buildroot_override.tag (unsigned)"
     expected_subti = "lmacken submitted a buildroot override for fedmsg-1.0-1"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -717,7 +717,7 @@ class TestBodhiOverrideUntagged(Base):
     expected_title = "bodhi.buildroot_override.untag (unsigned)"
     expected_subti = "lmacken expired a buildroot override for fedmsg-1.0-1"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
-                    "/static/images/bodhi-icon-48.png"
+        "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
         "0c35a75019e58e54fb58202db20d2c24?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
@@ -833,57 +833,57 @@ class TestTaggerVoteAnonymous(Base):
     expected_usernames = set([])
     expected_packages = set(['perl-Test-Fatal'])
     msg = {
-      "i": 1,
-      "timestamp": 1345220838.2775879,
-      "topic": "org.fedoraproject.stg.fedoratagger.tag.update",
-      "msg": {
-        "vote": {
-          "tag": {
-            "votes": 2,
-            "like": 2,
-            "package": {
-              "perl-Test-Fatal": [
-                {
-                  "dislike": 0,
-                  "total": 1,
-                  "tag": "perl",
-                  "votes": 1,
-                  "like": 1
+        "i": 1,
+        "timestamp": 1345220838.2775879,
+        "topic": "org.fedoraproject.stg.fedoratagger.tag.update",
+        "msg": {
+            "vote": {
+                "tag": {
+                    "votes": 2,
+                    "like": 2,
+                    "package": {
+                        "perl-Test-Fatal": [
+                            {
+                                "dislike": 0,
+                                "total": 1,
+                                "tag": "perl",
+                                "votes": 1,
+                                "like": 1
+                            },
+                            {
+                                "dislike": 0,
+                                "total": 2,
+                                "tag": "unittest",
+                                "votes": 2,
+                                "like": 2
+                            }
+                        ]
+                    },
+                    "label": {
+                        "label": "unittest",
+                        "tags": [
+                            {
+                                "dislike": 0,
+                                "total": 2,
+                                "tag": "unittest",
+                                "votes": 2,
+                                "like": 2
+                            }
+                        ]
+                    },
+                    "tag": "unittest",
+                    "dislike": 0,
+                    "total": 2
                 },
-                {
-                  "dislike": 0,
-                  "total": 2,
-                  "tag": "unittest",
-                  "votes": 2,
-                  "like": 2
+                "like": True,
+                "user": {
+                    "username": "anonymous",
+                    "all_votes": [],
+                    "votes": 0,
+                    "rank": -1
                 }
-              ]
-            },
-            "label": {
-              "label": "unittest",
-              "tags": [
-                {
-                  "dislike": 0,
-                  "total": 2,
-                  "tag": "unittest",
-                  "votes": 2,
-                  "like": 2
-                }
-              ]
-            },
-            "tag": "unittest",
-            "dislike": 0,
-            "total": 2
-          },
-          "like": True,
-          "user": {
-            "username": "anonymous",
-            "all_votes": [],
-            "votes": 0,
-            "rank": -1
-          }
+            }
         }
-      }
     }
 
 
@@ -894,56 +894,56 @@ class TestTaggerCreate(Base):
     expected_usernames = set(['ralph'])
     expected_packages = set(['perl-Test-Fatal'])
     msg = {
-      "i": 1,
-      "timestamp": 1345220073.4948981,
-      "topic": "org.fedoraproject.stg.fedoratagger.tag.create",
-      "msg": {
-        "vote": {
-          "tag": {
-            "votes": 1,
-            "like": 1,
-            "package": {
-              "perl-Test-Fatal": [
-                {
-                  "dislike": 0,
-                  "total": 1,
-                  "tag": "unittest",
-                  "votes": 1,
-                  "like": 1
+        "i": 1,
+        "timestamp": 1345220073.4948981,
+        "topic": "org.fedoraproject.stg.fedoratagger.tag.create",
+        "msg": {
+            "vote": {
+                "tag": {
+                    "votes": 1,
+                    "like": 1,
+                    "package": {
+                        "perl-Test-Fatal": [
+                            {
+                                "dislike": 0,
+                                "total": 1,
+                                "tag": "unittest",
+                                "votes": 1,
+                                "like": 1
+                            },
+                            {
+                                "dislike": 0,
+                                "total": 1,
+                                "tag": "perl",
+                                "votes": 1,
+                                "like": 1
+                            }
+                        ]
+                    },
+                    "label": {
+                        "label": "unittest",
+                        "tags": [
+                            {
+                                "dislike": 0,
+                                "total": 1,
+                                "tag": "unittest",
+                                "votes": 1,
+                                "like": 1
+                            }
+                        ]
+                    },
+                    "tag": "unittest",
+                    "dislike": 0,
+                    "total": 1
                 },
-                {
-                  "dislike": 0,
-                  "total": 1,
-                  "tag": "perl",
-                  "votes": 1,
-                  "like": 1
+                "like": True,
+                "user": {
+                    "username": "ralph",
+                    "votes": 28,
+                    "rank": 1
                 }
-              ]
-            },
-            "label": {
-              "label": "unittest",
-              "tags": [
-                {
-                  "dislike": 0,
-                  "total": 1,
-                  "tag": "unittest",
-                  "votes": 1,
-                  "like": 1
-                }
-              ]
-            },
-            "tag": "unittest",
-            "dislike": 0,
-            "total": 1
-          },
-          "like": True,
-          "user": {
-            "username": "ralph",
-            "votes": 28,
-            "rank": 1
-          }
+            }
         }
-      }
     }
 
 
@@ -952,7 +952,7 @@ class TestMediaWikiEdit(Base):
     expected_subti = 'Ralph made a wiki edit to "Messaging SIG".'
     expected_link = "http://this-is-a-link.org"
     expected_icon = "https://fedoraproject.org/w/skins/common/" + \
-                    "images/mediawiki.png"
+        "images/mediawiki.png"
     expected_usernames = set(['ralph'])
 
     msg = {
@@ -976,9 +976,9 @@ class TestMediaWikiEdit(Base):
 class TestMediaWikiUpload(Base):
     expected_title = "wiki.upload.complete (unsigned)"
     expected_subti = 'Ralph uploaded File:Cat.jpg to the wiki: ' + \
-                     '"This is a beautiful cat..."'
+        '"This is a beautiful cat..."'
     expected_icon = "https://fedoraproject.org/w/skins/common/" + \
-                    "images/mediawiki.png"
+        "images/mediawiki.png"
     expected_usernames = set(['ralph'])
     msg = {
         "topic": "org.fedoraproject.stg.wiki.upload.complete",
@@ -1119,7 +1119,7 @@ class TestPkgdb2BrRunComplete(Base):
 class TestPkgdb2BrRunCompleteWithError(Base):
     expected_title = "git.pkgdb2branch.complete (unsigned)"
     expected_subti = "run of pkgdb2branch started by limburgher completed" + \
-            " with 1 error"
+        " with 1 error"
     expected_usernames = set(['limburgher'])
     expected_packages = set(['foo'])
     msg = {
@@ -1137,7 +1137,7 @@ class TestPkgdb2BrRunCompleteWithError(Base):
 class TestPkgdb2BrRunCompleteWithErrors(Base):
     expected_title = "git.pkgdb2branch.complete (unsigned)"
     expected_subti = "run of pkgdb2branch started by limburgher completed" + \
-            " with 2 errors"
+        " with 2 errors"
     expected_usernames = set(['limburgher'])
     expected_packages = set(['foo', 'bar'])
     msg = {
@@ -1155,9 +1155,9 @@ class TestPkgdb2BrRunCompleteWithErrors(Base):
 class TestPkgdb2BrCreate(Base):
     expected_title = "git.branch.valgrind.master (unsigned)"
     expected_subti = \
-       "limburgher created branch 'master' for the 'valgrind' package"
+        "limburgher created branch 'master' for the 'valgrind' package"
     expected_link = \
-       "http://pkgs.fedoraproject.org/cgit/valgrind.git/log/?h=master"
+        "http://pkgs.fedoraproject.org/cgit/valgrind.git/log/?h=master"
     expected_usernames = set(['limburgher'])
     expected_packages = set(['valgrind'])
     msg = {
@@ -1174,35 +1174,35 @@ class TestLookaside(Base):
     expected_title = "git.lookaside.texlive.new (unsigned)"
     expected_subti = 'jnovy uploaded pst-diffraction.doc.tar.xz for texlive'
     expected_link = 'http://pkgs.fedoraproject.org/lookaside/pkgs/' + \
-            'texlive/pst-diffraction.doc.tar.xz/' + \
-            'dacad985394b3977f9dcf0c75f51a357/' + \
-            'pst-diffraction.doc.tar.xz'
+        'texlive/pst-diffraction.doc.tar.xz/' + \
+        'dacad985394b3977f9dcf0c75f51a357/' + \
+        'pst-diffraction.doc.tar.xz'
     expected_usernames = set(['jnovy'])
     expected_packages = set(['texlive'])
     msg = {
-      "i": 1,
-      "timestamp": 1349197866.215465,
-      "topic": "org.fedoraproject.prod.git.lookaside.texlive.new",
-      "msg": {
-        "agent": "jnovy",
-        "md5sum": "dacad985394b3977f9dcf0c75f51a357",
-        "name": "texlive",
-        "filename": "pst-diffraction.doc.tar.xz"
-      }
+        "i": 1,
+        "timestamp": 1349197866.215465,
+        "topic": "org.fedoraproject.prod.git.lookaside.texlive.new",
+        "msg": {
+            "agent": "jnovy",
+            "md5sum": "dacad985394b3977f9dcf0c75f51a357",
+            "name": "texlive",
+            "filename": "pst-diffraction.doc.tar.xz"
+        }
     }
 
 
 class TestSCM(Base):
     expected_title = "git.receive.valgrind.master (unsigned)"
     expected_subti = 'mjw pushed to valgrind (master).  ' + \
-            '"Clear CFLAGS CXXFLAGS LDFLAGS."'
+        '"Clear CFLAGS CXXFLAGS LDFLAGS. (..more)"'
     expected_link = "http://pkgs.fedoraproject.org/cgit/" + \
-            "valgrind.git/commit/" + \
-            "?h=master&id=7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1"
+        "valgrind.git/commit/" + \
+        "?h=master&id=7a98f80d9b61ce167e4ef8129c81ed9284ecf4e1"
     expected_icon = "http://git-scm.com/images/logo.png"
     expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
-            "923419d315c8f23eface39852bf32a5f?s=64&" + \
-            "d=http%3A%2F%2Fgit-scm.com%2Fimages%2Flogo.png"
+        "923419d315c8f23eface39852bf32a5f?s=64&" + \
+        "d=http%3A%2F%2Fgit-scm.com%2Fimages%2Flogo.png"
     expected_usernames = set(['mjw'])
     expected_packages = set(['valgrind'])
 
@@ -1235,6 +1235,53 @@ class TestSCM(Base):
                 "email": "mjw@redhat.com",
                 "username": "mjw",
                 "branch": "master",
+            }
+        }
+    }
+
+
+class TestSCMSingleLine(Base):
+    expected_title = "git.receive.ember.master (unsigned)"
+    expected_subti = 'spot pushed to ember (master).  ' + \
+        '"another missing patch? ridiculous."'
+    expected_link = "http://pkgs.fedoraproject.org/cgit/" + \
+        "ember.git/commit/" + \
+        "?h=master&id=aa2df80f3d8dd217c7cbfe2d3451190028f3fe14"
+    expected_icon = "http://git-scm.com/images/logo.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "461761d9572bdc1d04925a1125a41797?s=64&" + \
+        "d=http%3A%2F%2Fgit-scm.com%2Fimages%2Flogo.png"
+    expected_usernames = set(['spot'])
+    expected_packages = set(['ember'])
+
+    msg = {
+        "i": 1,
+        "timestamp": 1352998154.368305,
+        "topic": "org.fedoraproject.prod.git.receive.ember.master",
+        "msg": {
+            "commit": {
+                "username": "spot",
+                "stats": {
+                    "files": {
+                        "ember-0.6.3-gcc47.patch": {
+                            "deletions": 0,
+                            "lines": 26,
+                            "insertions": 26
+                        }
+                    },
+                    "total": {
+                        "deletions": 0,
+                        "files": 1,
+                        "insertions": 26,
+                        "lines": 26
+                    }
+                },
+                "name": "Tom Callaway",
+                "rev": "aa2df80f3d8dd217c7cbfe2d3451190028f3fe14",
+                "summary": "another missing patch? ridiculous.",
+                "branch": "master",
+                "message": "another missing patch? ridiculous.\n",
+                "email": "spot@fedoraproject.org"
             }
         }
     }
