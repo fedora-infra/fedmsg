@@ -8,3 +8,5 @@ recursive-include extras *
 recursive-include doc *
 recursive-include fedmsg.d *.py
 recursive-include init.d *
+
+graft scripts

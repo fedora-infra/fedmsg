@@ -1,0 +1,4 @@
+#!/usr/bin/env python
+
+import fedmsg.commands.config
+fedmsg.commands.config.config()
