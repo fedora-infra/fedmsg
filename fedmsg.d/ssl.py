@@ -38,4 +38,13 @@ config = dict(
         # Unfortunately, we can't use socket.getfqdn()
         #"app01.stg": "app01.stg.phx2.fedoraproject.org",
     },
+
+    # A mapping of fully qualified topics to a list of cert names for which the
+    # a valid signature is to be considered authorized.  Messages on topics not
+    # listed here are considered automatically authorized.
+    routing_policy={
+        # This would completely disable logger messages since there is no such
+        # cert.
+        "org.fedoraproject.dev.logger.log": ["a-non-existant-certificate"],
+    },
 )

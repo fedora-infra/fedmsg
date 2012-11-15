@@ -86,6 +86,10 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
     def validate(self, message):
         """ This needs to raise an exception, caught by moksha. """
 
+        # We assume these match inside fedmsg.crypto, so we should enforce it.
+        if not message['topic'] == message['body']['topic']:
+            raise RuntimeWarning("Topic envelope mismatch.")
+
         # If we're not validating, then everything is valid.
         # If this is turned on globally, our child class can override it.
         if not self.validate_signatures:

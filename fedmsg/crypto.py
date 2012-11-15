@@ -66,6 +66,36 @@ own keys.  See the `Fedora Infrastructure SOP
 <http://infrastructure.fedoraproject.org/infra/docs/fedmsg-certs.txt>`_ for more
 information (including how to generate new certs/bring up new services).
 
+Routing Policy
+--------------
+
+Messages are also checked to see if the name of the certificate they bear and
+the topic they're routed on match up in a :term:`routing_policy` dict.  Is the
+build server allowed to send messages about wiki updates?  Not if the routing
+policy has anything to say about it.
+
+.. note::  By analogy, "signature validation is to authentication as
+           routing policy checks are to authorization."
+
+If the topic of a message appears in the :term:`routing_policy`, the name born
+on the certificate must also appear under the associated list of permitted
+publishers or the message is marked invalid.
+
+If the topic of a message does *not* appear in the :term:`routing_policy`, two
+different courses of action are possible:
+
+    - If :term:`routing_nitpicky` is set to ``False``, then the message is given
+      the green light.  Our routing policy doesn't have anything specific to say
+      about messages of this topic and so who are we to deny it passage, right?
+    - If :term:`routing_nitpicky` is set to ``True``, then we deny the message
+      and mark it as invalid.
+
+Typically, you'll deploy fedmsg with nitpicky mode turned off.  You can build
+your policy over time as you determine what services will be sending what
+messages.  Once deployment of fedmsg reaches a certain level of stability, you
+can turn nitpicky mode on for enhanced security, but by doing so you may break
+certain message paths that you've forgotten to include in your routing policy.
+
 Configuration
 -------------
 
@@ -83,6 +113,8 @@ The cryptography routines expect the following values to be defined:
   - :term:`crl_cache`
   - :term:`crl_cache_expiry`
   - :term:`certnames`
+  - :term:`routing_policy`
+  - :term:`routing_nitpicky`
 
 For general information on configuration, see :mod:`fedmsg.config`.
 
@@ -151,19 +183,16 @@ def sign(message, ssldir, certname, **config):
 def validate(message, ssldir, **config):
     """ Return true or false if the message is signed appropriately.
 
-    Three things must be true:
+    Four things must be true:
 
       1) The X509 cert must be signed by our CA
       2) The cert must not be in our CRL.
       3) We must be able to verify the signature using the RSA public key
          contained in the X509 cert.
+      4) The topic of the message and the CN on the cert must appear in the
+         :term:`routing_policy` dict.
 
-    Later, a consumer may check that the name on the cert matches the name from
-    which they expect a message of this type to originate.
     """
-
-    # TODO -- expose the cert name to the Consumer API so it can do more
-    #         fine-grained checks.
 
     def fail(reason):
         log.warn("Failed validation.  %s" % reason)
@@ -220,6 +249,48 @@ def validate(message, ssldir, **config):
             raise M2Crypto.RSA.RSAError("RSA signature failed to validate.")
     except M2Crypto.RSA.RSAError as e:
         return fail(str(e))
+
+    # Now we know that the cert is valid.  The message is *authenticated*.
+    # * Next step:  Authorization *
+
+    # Load our policy from the config dict.
+    routing_policy = config.get('routing_policy', {})
+
+    # Determine the name of the signer of the message.
+    # This will be something like "shell-pkgs01.stg.phx2.fedoraproject.org"
+    subject = cert.get_subject()
+    signer = subject.get_entries_by_nid(subject.nid['CN'])[0]\
+        .get_data().as_text()
+
+    # Perform the authz dance
+    # Do we have a list of permitted senders for the topic of this message?
+    if message['topic'] in routing_policy:
+        # If so.. is the signer one of those permitted senders?
+        if signer in routing_policy[message['topic']]:
+            # We are good.  The signer of this message is explicitly whitelisted
+            # to send on this topic in our config policy.
+            pass
+        else:
+            # We have a policy for this topic and $homeboy isn't on the list.
+            return fail("Authorization/routing_policy error.")
+    else:
+        # We don't have a policy for this topic.  How we react next for an
+        # underspecified routing_policy is based on a configuration option.
+
+        # Ideally, we are in nitpicky mode.  We leave it disabled while
+        # standing up fedmsg across our environment so that we can build our
+        # policy without having the whole thing come crashing down.
+        if config.get('routing_nitpicky', False):
+            # We *are* in nitpicky mode.  We don't have an entry in the
+            # routing_policy for the topic of this message.. and *nobody*
+            # gets in without a pass.  That means that we fail the message.
+            return fail("Authorization/routing_policy underspecified.")
+        else:
+            # We are *not* in nitpicky mode.  We don't have an entry in the
+            # routing_policy for the topic of this message.. but we don't
+            # really care.  We pass on the message and ultimately return
+            # True later on.
+            pass
 
     return True
 
