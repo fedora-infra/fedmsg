@@ -276,12 +276,16 @@ class FedMsgContext(object):
             flags=zmq.NOBLOCK,
         )
 
-    def tail_messages(self, endpoints, topic="", passive=False, **kw):
+    def tail_messages(self, topic="", passive=False, **kw):
         """ Tail messages on the bus.
 
         Generator that yields tuples of the form:
         ``(name, endpoint, topic, message)``
         """
+
+        # TODO -- do the zmq_strict logic dance with "topic" here.
+        # It is buried in moksha.hub, but we need it to work the same way
+        # here.
 
         # TODO -- the 'passive' here and the 'active' are ambiguous.  They
         # don't actually mean the same thing.  This should be resolved.
@@ -289,7 +293,7 @@ class FedMsgContext(object):
 
         failed_hostnames = []
         subs = {}
-        for _name, endpoint_list in endpoints.iteritems():
+        for _name, endpoint_list in self.c['endpoints'].iteritems():
             for endpoint in endpoint_list:
                 # First, some sanity checking.  zeromq will potentially
                 # segfault if we don't do this check.
