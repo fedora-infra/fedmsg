@@ -1,0 +1,8 @@
+/var/log/fedmsg/*.log {
+    weekly
+    missingok
+    compress
+    delaycompress
+    copytruncate
+    minsize 100k
+}

@@ -81,10 +81,17 @@ def logger(**kwargs):
 
     Some examples::
 
-        $ echo "\"{'a': 1}\"" | fedmsg-logger --json-input
+        $ echo '{"a": 1}; | fedmsg-logger --json-input
         $ echo "Hai there." | fedmsg-logger --modname=git --topic=repo.update
         $ fedmsg-logger --message="This is a message."
-        $ fedmsg-logger --message="\"{'a': 1}\"" --json-input
+        $ fedmsg-logger --message='{"a": 1}' --json-input
+
+    Note that the python JSON parser is picky about the format of messages if
+    you're using the --json-input option.  Double-quotes must be on the "inside"
+    of the string and single quotes must be on the outside::
+
+        '{"a": 1}' is good.
+        "{'a': 1}" is bad.
 
     """
 

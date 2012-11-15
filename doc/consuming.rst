@@ -11,17 +11,31 @@ The most straightforward way, programmatically, to consume messages is to use
 form ``(name, endpoint, topic, message)``::
 
     >>> import fedmsg
-    >>> for name, endpoint, topic, message in fedmsg.tail_messages():
-    ...     print name, endpoint, topic, message
+
+    >>> # Read in the config from /etc/fedmsg.d/
+    >>> config = fedmsg.config.load_config([], None)
+
+    >>> # Disable a warning about not sending.  We know.  We only want to tail.
+    >>> config['mute'] = True
+
+    >>> # Disable timing out so that we can tail forever.  This is deprecated
+    >>> # and will disappear in future versions.
+    >>> config['timeout'] = 0
+
+    >>> for name, endpoint, topic, msg in fedmsg.tail_messages(**config):
+    ...     print topic, msg  # or use fedmsg.encoding.pretty_dumps(msg)
 
 The API is easy to use and should hopefully make your scripts easy to understand
-and maintain.  The downside here is that :func:`fedmsg.tail_messages` is
-spinning in a sleep, listen, yield loop that is quite costly in IO and CPU
-terms.  Typically, a script that uses :func:`fedmsg.tail_messages` will
-consume 100% of a CPU.
+and maintain.
 
 For production services, you will want to use the hub-consumer approach
 described further below.
+
+Note that the :func:`fedmsg.tail_messages` used to be quite inefficient;
+it spun in a sleep, listen, yield loop that was quite costly in IO and CPU
+terms.  Typically, a script that used :func:`fedmsg.tail_messages` would
+consume 100% of a CPU.  That has since be resolved by introducing the use
+of a ``zmq.Poller``.
 
 .. note:: The ``fedmsg-tail`` command described in :doc:`commands` uses
           :func:`fedmsg.tail_messages` to "tail" the bus.
@@ -121,3 +135,45 @@ on the ``moksha.consumer`` entry point and loads them
 FedmsgConsumer API
 ~~~~~~~~~~~~~~~~~~
 .. autoclass:: fedmsg.consumers.FedmsgConsumer
+
+
+DIY - Listening with Raw zeromq
+-------------------------------
+
+So you want to receive messages without using any fedmsg libs? (say you're on
+some ancient system where moksha and twisted won't fly) If you can get
+python-zmq built, you're in good shape.  Use the following example script as a
+starting point for whatever you want to build::
+
+    #!/usr/bin/env python
+
+    import json
+    import pprint
+    import zmq
+
+
+    def listen_and_print():
+        # You can listen to stg at "tcp://stg.fedoraproject.org:9940"
+        endpoint = "tcp://hub.fedoraproject.org:9940"
+        # Set this to something like org.fedoraproject.prod.compose
+        topic = 'org.fedoraproject.prod.'
+
+        ctx = zmq.Context()
+        s = ctx.socket(zmq.SUB)
+        s.connect(endpoint)
+
+        s.setsockopt(zmq.SUBSCRIBE, topic)
+
+        poller = zmq.Poller()
+        poller.register(s, zmq.POLLIN)
+
+        while True:
+            evts = poller.poll()  # This blocks until a message arrives
+            topic, msg = s.recv_multipart()
+            print topic, pprint.pformat(json.loads(msg))
+
+    if __name__ == "__main__":
+        listen_and_print()
+
+Just bear in mind that you don't reap any of the benefits of
+:mod:`fedmsg.crypto` or :mod:`fedmsg.text`.

@@ -35,3 +35,6 @@ class LoggerProcessor(BaseProcessor):
                 return self._("<custom JSON message>")
         else:
             raise NotImplementedError
+
+    def usernames(self, msg, **config):
+        return set([msg['username']])

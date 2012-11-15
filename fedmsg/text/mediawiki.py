@@ -27,6 +27,7 @@ class WikiProcessor(BaseProcessor):
     __link__ = "https://fedoraproject.org/wiki"
     __docs__ = "https://fedoraproject.org/wiki"
     __obj__ = "Wiki Edits"
+    __icon__ = "https://fedoraproject.org/w/skins/common/images/mediawiki.png"
 
     def subtitle(self, msg, **config):
         if 'wiki.article.edit' in msg['topic']:
@@ -48,9 +49,10 @@ class WikiProcessor(BaseProcessor):
         if 'wiki.article.edit' in msg['topic']:
             return msg['msg']['url']
 
-    def icon(self, msg, **config):
-        return "https://fedoraproject.org/w/skins/common/images/mediawiki.png"
-
     def secondary_icon(self, msg, **config):
         user = msg['msg'].get('user', msg['msg'].get('user_text', ''))
         return gravatar_url(user.lower())
+
+    def usernames(self, msg, **config):
+        user = msg['msg'].get('user', msg['msg'].get('user_text', ''))
+        return set([user.lower()])

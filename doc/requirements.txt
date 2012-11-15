@@ -1,1 +1,2 @@
 cloud_sptheme
+pyzmq-static

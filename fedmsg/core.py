@@ -17,6 +17,8 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
+
+import getpass
 import inspect
 import socket
 import threading
@@ -231,7 +233,7 @@ class FedMsgContext(object):
         You could also use the ``fedmsg-logger`` from a shell script like so::
 
             $ echo "Hello, world." | fedmsg-logger --topic testing
-            $ echo "\"{'foo': 'bar'}\"" | fedmsg-logger --json-input
+            $ echo '{"foo": "bar"}' | fedmsg-logger --json-input
 
         """
 
@@ -258,7 +260,13 @@ class FedMsgContext(object):
             topic = to_bytes(topic, encoding='utf8', nonstring="passthru")
 
         self._i += 1
-        msg = dict(topic=topic, msg=msg, timestamp=time.time(), i=self._i)
+        msg = dict(
+            topic=topic,
+            msg=msg,
+            timestamp=time.time(),
+            i=self._i,
+            username=getpass.getuser(),
+        )
 
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)
@@ -268,12 +276,16 @@ class FedMsgContext(object):
             flags=zmq.NOBLOCK,
         )
 
-    def tail_messages(self, endpoints, topic="", passive=False, **kw):
+    def tail_messages(self, topic="", passive=False, **kw):
         """ Tail messages on the bus.
 
         Generator that yields tuples of the form:
         ``(name, endpoint, topic, message)``
         """
+
+        # TODO -- do the zmq_strict logic dance with "topic" here.
+        # It is buried in moksha.hub, but we need it to work the same way
+        # here.
 
         # TODO -- the 'passive' here and the 'active' are ambiguous.  They
         # don't actually mean the same thing.  This should be resolved.
@@ -281,7 +293,7 @@ class FedMsgContext(object):
 
         failed_hostnames = []
         subs = {}
-        for _name, endpoint_list in endpoints.iteritems():
+        for _name, endpoint_list in self.c['endpoints'].iteritems():
             for endpoint in endpoint_list:
                 # First, some sanity checking.  zeromq will potentially
                 # segfault if we don't do this check.
@@ -301,25 +313,35 @@ class FedMsgContext(object):
                 subscriber = self.context.socket(zmq.SUB)
                 subscriber.setsockopt(zmq.SUBSCRIBE, topic)
                 getattr(subscriber, method)(endpoint)
-                subs[endpoint] = subscriber
+                subs[subscriber] = (_name, endpoint)
 
-        timeout = kw['timeout']
-        tic = time.time()
+        # Register the sockets we just built with a zmq Poller.
+        poller = zmq.Poller()
+        for subscriber in subs:
+            poller.register(subscriber, zmq.POLLIN)
+
+        # TODO -- what if the user wants to pass in validate_signatures in **kw?
+        validate = self.c.get('validate_signatures', False)
+
+        # Poll that poller.  This is much more efficient than it used to be.
         try:
             while True:
-                for _name, endpoint_list in endpoints.iteritems():
-                    for e in endpoint_list:
-                        if e not in subs:
-                            continue
-                        try:
-                            _topic, message = \
-                                    subs[e].recv_multipart(zmq.NOBLOCK)
-                            tic = time.time()
-                            encoded = fedmsg.encoding.loads(message)
-                            yield _name, e, _topic, encoded
-                        except zmq.ZMQError:
-                            if timeout and (time.time() - tic) > timeout:
-                                return
+                sockets = dict(poller.poll())
+                for s in sockets:
+                    _name, ep = subs[s]
+                    _topic, message = s.recv_multipart()
+                    msg = fedmsg.encoding.loads(message)
+                    if not validate:
+                        yield _name, ep, _topic, msg
+                    elif fedmsg.crypto.validate(msg, **self.c):
+                        yield _name, ep, _topic, msg
+                    else:
+                        # Else.. we are supposed to be validating, but the
+                        # message failed validation.
+
+                        # Warn, but don't throw an exception.  Keep tailing.
+                        warnings.warn("!! invalid message received: %r" % msg)
+
         finally:
-            for endpoint, subscriber in subs.items():
+            for subscriber in subs:
                 subscriber.close()

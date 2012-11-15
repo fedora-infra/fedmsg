@@ -81,10 +81,14 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         # This call "completes" registration of this consumer with the hub.
         super(FedmsgConsumer, self).__init__(hub)
 
-        self.validate_signatures = self.hub.config.get('validate_signaturs')
+        self.validate_signatures = self.hub.config['validate_signatures']
 
     def validate(self, message):
         """ This needs to raise an exception, caught by moksha. """
+
+        # We assume these match inside fedmsg.crypto, so we should enforce it.
+        if not message['topic'] == message['body']['topic']:
+            raise RuntimeWarning("Topic envelope mismatch.")
 
         # If we're not validating, then everything is valid.
         # If this is turned on globally, our child class can override it.

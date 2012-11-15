@@ -28,9 +28,7 @@ class BodhiProcessor(BaseProcessor):
     __link__ = "https://admin.fedoraproject.org/updates"
     __docs__ = "http://fedoraproject.org/wiki/Bodhi"
     __obj__ = "Package Updates"
-
-    def icon(self, msg, **config):
-        return "https://admin.fedoraproject.org/updates" + \
+    __icon__ = "https://admin.fedoraproject.org/updates" + \
                "/static/images/bodhi-icon-48.png"
 
     def secondary_icon(self, msg, **config):
@@ -117,3 +115,38 @@ class BodhiProcessor(BaseProcessor):
             return tmpl.format(title=msg['msg']['update']['title'])
         elif 'bodhi.update.request' in msg['topic']:
             return tmpl.format(title=msg['msg']['update']['title'])
+
+    def packages(self, msg, **config):
+
+        def _u2p(update):
+            """ Take an update, and return the package name """
+            # TODO -- make this unnecessary by having bodhi emit the
+            # package name (and not just the update name) to begin with.
+            return update.rsplit('-', 2)[0]
+
+        if 'bodhi.update.comment' in msg['topic']:
+            return set([_u2p(msg['msg']['comment']['update_title'])])
+        elif 'bodhi.update.complete' in msg['topic']:
+            return set([_u2p(msg['msg']['update']['title'])])
+        elif 'bodhi.update.request' in msg['topic']:
+            return set([_u2p(msg['msg']['update']['title'])])
+        elif 'bodhi.buildroot_override.' in msg['topic']:
+            return set([_u2p(msg['msg']['override']['build'])])
+
+        return set()
+
+    def usernames(self, msg, **config):
+        users = []
+
+        for obj in ['update', 'override']:
+            try:
+                users.append(msg['msg'][obj]['submitter'])
+            except KeyError:
+                pass
+
+        try:
+            users.append(msg['msg']['comment']['author'])
+        except KeyError:
+            pass
+
+        return set(users)

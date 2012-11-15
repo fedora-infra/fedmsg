@@ -43,7 +43,7 @@ There is no information here about *receiving* messages, only sending.
 +---------------+-----------+------------+----------+-----------+
 | pkgdb         |           |            |          |           |
 +---------------+-----------+------------+----------+-----------+
-| planet        |           |            |          |           |
+| planet        | DONE?     |  N/A       |          |           |
 +---------------+-----------+------------+----------+-----------+
 | scm           | DONE      |  DONE      | DONE     | DONE      |
 +---------------+-----------+------------+----------+-----------+
@@ -60,3 +60,17 @@ There is no information here about *receiving* messages, only sending.
 .. _1: https://github.com/abadger/fedora-elections-flask/pull/1
 .. _2: http://github.com/rossdylan/fuss
 .. _3: https://fedorahosted.org/fedora-infrastructure/ticket/3438
+
+Other projects
+--------------
+
+There are a number of external tools being built against fedmsg:
+
+ - Luke Macken's `fedmsg-notify <https://github.com/lmacken/fedmsg-notify>`_ is
+   a dbus daemon that connects the fedmsg bus to users' desktops.
+ - Bill Peck's `fedmsg-download <https://github.com/p3ck/fedmsg-download/>`_
+   listens to the bus and begins download rawhide and branched composes once
+   they are complete for efficient mirroring.
+ - Ralph Bean's `datanommer <https://github.com/ralphbean/datanommer>`_ is a
+   storage consumer for fedmsg.  It stores every message it receives in a SQL
+   database.

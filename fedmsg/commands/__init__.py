@@ -20,6 +20,7 @@
 import fedmsg
 import fedmsg.config
 import warnings
+import logging
 
 
 class command(object):
@@ -83,6 +84,7 @@ class command(object):
             if self.daemonizable and config['daemon'] is True:
                 return self._daemonize(func, config)
             else:
+                logging.basicConfig()
                 try:
                     return func(**config)
                 except KeyboardInterrupt:

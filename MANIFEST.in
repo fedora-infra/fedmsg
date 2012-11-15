@@ -1,9 +1,12 @@
 include LICENSE
 include README.rst
 include dev_certs
+include logrotate
 recursive-include dev_certs *
 recursive-include fedmsg/tests/test_certs *
 recursive-include extras *
 recursive-include doc *
 recursive-include fedmsg.d *.py
 recursive-include init.d *
+
+graft scripts

@@ -38,4 +38,22 @@ config = dict(
         # Unfortunately, we can't use socket.getfqdn()
         #"app01.stg": "app01.stg.phx2.fedoraproject.org",
     },
+
+    # A mapping of fully qualified topics to a list of cert names for which
+    # a valid signature is to be considered authorized.  Messages on topics not
+    # listed here are considered automatically authorized.
+    routing_policy={
+        # Only allow announcements from production if they're signed by a
+        # certain certificate.
+        "org.fedoraproject.prod.announce.announcement": [
+            "announce-lockbox.phx2.fedoraproject.org",
+        ],
+    },
+
+    # Set this to True if you want messages to be dropped that aren't explicitly
+    # whitelisted in the routing_policy.
+    # When this is False, only messages that have a topic in the routing_policy
+    # but whose cert names aren't in the associated list are dropped; messages
+    # whose topics do not appear in the routing_policy are not dropped.
+    routing_nitpicky=False,
 )

@@ -78,7 +78,18 @@ processor_classes = (BodhiProcessor, SCMProcessor, TaggerProcessor,
 
 
 def make_processors(**config):
-    """ Initialize all of the text processors """
+    """ Initialize all of the text processors.
+
+    You'll need to call this once before using any of the other functions in
+    this module.
+
+        >>> import fedmsg.config
+        >>> import fedmsg.text
+        >>> config = fedmsg.config.load_config([], None)
+        >>> fedmsg.text.make_processors(**config)
+        >>> text = fedmsg.text.msgrepr(some_message_dict, **config)
+
+    """
     global processors
     processors = []
     for processor in processor_classes:
@@ -86,17 +97,21 @@ def make_processors(**config):
 
 
 def msg2processor(msg, **config):
-    """ For a given message return the text processor that can handle it """
+    """ For a given message return the text processor that can handle it
+
+    This will raise a ``ProcessorsNotInitialized`` exception if
+    :function:`make_processors` hasn't been called yet.
+    """
     for processor in processors:
         if processor.handle_msg(msg, **config):
             return processor
     else:
         return processors[-1]  # DefaultProcessor
 
-
 def msg2repr(msg, **config):
     """ Return a human-readable or "natural language" representation of a
-    dict-like fedmsg message.
+    dict-like fedmsg message.  Think of this as the 'top-most level' function
+    in this module.
 
     """
     processor = msg2processor(msg, **config)
@@ -108,6 +123,7 @@ def msg2repr(msg, **config):
 
 
 def msg2title(msg, processor=None, **config):
+    """ Return a 'title' or primary text associated with a message. """
     if not processor:
         processor = msg2processor(msg, **config)
     title = processor.title(msg, **config)
@@ -118,30 +134,49 @@ def msg2title(msg, processor=None, **config):
 
 
 def msg2subtitle(msg, processor=None, **config):
+    """ Return a 'subtitle' or secondary text associated with a message. """
     if not processor:
         processor = msg2processor(msg, **config)
     return processor.subtitle(msg, **config)
 
 
 def msg2link(msg, processor=None, **config):
+    """ Return a URL associated with a message. """
     if not processor:
         processor = msg2processor(msg, **config)
     return processor.link(msg, **config)
 
 
 def msg2icon(msg, processor=None, **config):
+    """ Return a primary icon associated with a message. """
     if not processor:
         processor = msg2processor(msg, **config)
     return processor.icon(msg, **config)
 
 
 def msg2secondary_icon(msg, processor=None, **config):
+    """ Return a secondary icon associated with a message. """
     if not processor:
         processor = msg2processor(msg, **config)
     return processor.secondary_icon(msg, **config)
 
 
+def msg2usernames(msg, processor=None, **config):
+    """ Return a set of FAS usernames associated with a message. """
+    if not processor:
+        processor = msg2processor(msg, **config)
+    return processor.usernames(msg, **config)
+
+
+def msg2packages(msg, processor=None, **config):
+    """ Return a set of package names associated with a message. """
+    if not processor:
+        processor = msg2processor(msg, **config)
+    return processor.packages(msg, **config)
+
+
 def _msg2suffix(msg, **config):
+    """ Generates the suffix for msg2title """
     if 'signature' not in msg:
         return _("(unsigned)")
     elif config.get('validate_signatures'):

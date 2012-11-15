@@ -30,9 +30,7 @@ class SCMProcessor(BaseProcessor):
     __link__ = "http://pkgs.fedoraproject.org/cgit"
     __docs__ = "https://fedoraproject.org/wiki/Using_Fedora_GIT"
     __obj__ = "Package Commits"
-
-    def icon(self, msg, **config):
-        return "http://git-scm.com/images/logo.png"
+    __icon__ = "http://git-scm.com/images/logo.png"
 
     def secondary_icon(self, msg, **config):
         if '.git.receive.' in msg['topic']:
@@ -48,8 +46,13 @@ class SCMProcessor(BaseProcessor):
     def subtitle(self, msg, **config):
         if '.git.receive.' in msg['topic']:
             repo = '.'.join(msg['topic'].split('.')[5:-1])
-            user = msg['msg']['commit']['name']
+            user = msg['msg']['commit']['username']
+
             summ = msg['msg']['commit']['summary']
+            whole = msg['msg']['commit']['message']
+            if summ.strip() != whole.strip():
+                summ += " (..more)"
+
             branch = msg['msg']['commit']['branch']
             tmpl = self._('{user} pushed to {repo} ({branch}).  "{summary}"')
             return tmpl.format(user=user, repo=repo,
@@ -117,3 +120,20 @@ class SCMProcessor(BaseProcessor):
             tmpl = "{prefix}/{name}/{filename}/{md5sum}/{filename}"
             return tmpl.format(prefix=prefix, name=name,
                                md5sum=md5sum, filename=filename)
+
+    def usernames(self, msg, **config):
+        if 'agent' in msg['msg']:
+            return set([msg['msg']['agent']])
+        else:
+            return set([msg['msg']['commit']['username']])
+
+    def packages(self, msg, **config):
+        if 'git.receive.' in msg['topic'] or 'git.branch.' in msg['topic']:
+            return set(['.'.join(msg['topic'].split('.')[5:-1])])
+        elif '.git.pkgdb2branch.complete' in msg['topic']:
+            return set(msg['msg']['unbranchedPackages'] +
+                       msg['msg']['branchedPackages'])
+        elif '.git.lookaside.' in msg['topic']:
+            return set([msg['msg']['name']])
+
+        return set()

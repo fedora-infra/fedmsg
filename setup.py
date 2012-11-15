@@ -70,7 +70,7 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
 
 setup(
     name='fedmsg',
-    version='0.5.6',
+    version='0.6.0',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -90,6 +90,22 @@ setup(
     ],
     include_package_data=True,
     zip_safe=False,
+    scripts = [
+        # This is separate from the other console scripts just for efficiency's
+        # sake.  It gets called over and over and over again by our mediawiki
+        # plugin/mod_php.  By making it *not* a setuptools console_script it
+        # does a lot less IO work to stand up.
+
+        # Before:
+        #   $ strace fedmsg-config 2>&1 | wc -l
+        #   34843
+
+        # After:
+        #   $ strace fedmsg-config 2>&1 | wc -l
+        #   13288
+
+        'scripts/fedmsg-config',
+    ],
     entry_points={
         'console_scripts': [
             "fedmsg-logger=fedmsg.commands.logger:logger",
@@ -97,9 +113,11 @@ setup(
             "fedmsg-hub=fedmsg.commands.hub:hub",
             "fedmsg-relay=fedmsg.commands.relay:relay",
             "fedmsg-gateway=fedmsg.commands.gateway:gateway",
-            "fedmsg-config=fedmsg.commands.config:config",
+            #"fedmsg-config=fedmsg.commands.config:config",
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot",
             "fedmsg-collectd=fedmsg.commands.collectd:collectd",
+            "fedmsg-tweet=fedmsg.commands.tweet:tweet",
+            "fedmsg-announce=fedmsg.commands.announce:announce",
         ],
         'moksha.consumer': [
             "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",

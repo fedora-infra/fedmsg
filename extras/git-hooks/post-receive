@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import getpass
 import git
 import os
 import sys
@@ -14,6 +15,8 @@ lines = [line.split() for line in sys.stdin.readlines()]
 abspath = os.path.abspath(os.environ['GIT_DIR'])
 repo_name = '.'.join(abspath.split(os.path.sep)[-1].split('.')[:-1])
 
+username = getpass.getuser()
+
 repo = git.repo.Repo(abspath)
 def _build_commit(rev):
     old, rev, branch = rev
@@ -27,6 +30,7 @@ def _build_commit(rev):
     return dict(
         name=commit.author.name,
         email=commit.author.email,
+        username=username,
         summary=commit.summary,
         message=commit.message,
         stats=dict(
