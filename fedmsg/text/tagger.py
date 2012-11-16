@@ -31,7 +31,10 @@ class TaggerProcessor(BaseProcessor):
     def link(self, msg, **config):
         vote = msg.get('msg', {}).get('vote', {})
         pack = vote.get('tag', {}).get('package', {})
-        return "https://apps.fedoraproject.org/tagger/" + pack.keys()[0]
+        if pack:
+            return "https://apps.fedoraproject.org/tagger/" + pack.keys()[0]
+        else:
+            return ""
 
     def subtitle(self, msg, **config):
         if 'fedoratagger.tag.update' in msg['topic']:
