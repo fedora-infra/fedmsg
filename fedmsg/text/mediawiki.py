@@ -59,7 +59,7 @@ class WikiProcessor(BaseProcessor):
 
     def objects(self, msg, **config):
         if 'wiki.article.edit' in msg['topic']:
-            return set([msg['msg']['title']])
+            return set([msg['msg']['title'].strip('/') + '-page'])
         elif 'wiki.upload.complete' in msg['topic']:
             return set([msg['msg']['url'][1:]])
 
