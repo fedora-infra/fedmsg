@@ -119,6 +119,9 @@ def legacy_condition(cls):
                     return cls()
                 else:
                     raise
+
+        __wrapper.__doc__ = f.__doc__
+        __wrapper.__name__ = f.__name__
         return __wrapper
     return _wrapper
 
@@ -130,6 +133,9 @@ def with_processor():
                 processor = msg2processor(msg, **config)
 
             return f(msg, processor, **config)
+
+        __wrapper.__doc__ = f.__doc__
+        __wrapper.__name__ = f.__name__
         return __wrapper
     return _wrapper
 
