@@ -132,7 +132,7 @@ def with_processor():
             if not processor:
                 processor = msg2processor(msg, **config)
 
-            return f(msg, processor, **config)
+            return f(msg, processor=processor, **config)
 
         __wrapper.__doc__ = f.__doc__
         __wrapper.__name__ = f.__name__
