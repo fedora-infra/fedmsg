@@ -56,3 +56,13 @@ class WikiProcessor(BaseProcessor):
     def usernames(self, msg, **config):
         user = msg['msg'].get('user', msg['msg'].get('user_text', ''))
         return set([user.lower()])
+
+    def objects(self, msg, **config):
+        if 'wiki.article.edit' in msg['topic']:
+            return set([msg['msg']['title']])
+        elif 'wiki.upload.complete' in msg['topic']:
+            return set([msg['msg']['url'][1:]])
+
+        return set()
+
+

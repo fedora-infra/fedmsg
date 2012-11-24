@@ -213,6 +213,21 @@ def msg2packages(msg, processor, **config):
     return processor.packages(msg, **config)
 
 
+@legacy_condition(set)
+@with_processor()
+def msg2objects(msg, processor, **config):
+    """ Return a set of objects associated with a message.
+
+    "objects" here is the "objects" from english grammar.. meaning, the thing
+    in the message upon which action is being done.  The "subject" is the
+    user and the "object" is the packages, or the wiki articles, or the blog
+    posts.
+
+    Where possible, use slash-delimited names for objects (as in wiki URLs).
+    """
+    return processor.objects(msg, **config)
+
+
 def _msg2suffix(msg, **config):
     """ Generates the suffix for msg2title """
     if 'signature' not in msg:

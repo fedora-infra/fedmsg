@@ -52,3 +52,16 @@ class SupybotProcessor(BaseProcessor):
 
     def usernames(self, msg, **config):
         return set(msg['msg']['attendees'].keys())
+
+    def objects(self, msg, **config):
+        objs = set([
+            'attendees/' + person
+            for person in msg['msg']['attendees']
+        ] + [
+            'channels/' + msg['msg']['channel']
+        ])
+
+        if msg['msg']['meeting_topic']:
+            objs.add('titles/' + msg['msg']['meeting_topic'])
+
+        return objs

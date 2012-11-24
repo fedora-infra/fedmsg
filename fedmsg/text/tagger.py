@@ -85,3 +85,10 @@ class TaggerProcessor(BaseProcessor):
             ])
 
         return set()
+
+    def objects(self, msg, **config):
+        packages = self.packages(msg, **config)
+        objs = set(['packages/' + p for p in packages])
+        if 'vote' in msg['msg']:
+            objs.add('labels/' + msg['msg']['vote']['tag']['tag'])
+        return objs

@@ -137,3 +137,24 @@ class SCMProcessor(BaseProcessor):
             return set([msg['msg']['name']])
 
         return set()
+
+    def objects(self, msg, **config):
+        if 'git.receive.' in msg['topic']:
+            repo = '.'.join(msg['topic'].split('.')[5:-1])
+            return set([
+                repo + '/' + filename for filename in
+                msg['msg']['commit']['stats']['files']
+            ])
+        elif '.git.branch.' in msg['topic']:
+            repo = '.'.join(msg['topic'].split('.')[5:-1])
+            return set([repo + '/__git__'])
+        elif '.git.pkgdb2branch.complete' in msg['topic']:
+            return set([
+                p + '/__git__' for p in
+                msg['msg']['unbranchedPackages'] +
+                msg['msg']['branchedPackages']
+            ])
+        elif '.git.lookaside.' in msg['topic']:
+            return set([msg['msg']['name'] + '/' + msg['msg']['filename']])
+
+        return set()
