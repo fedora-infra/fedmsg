@@ -108,6 +108,34 @@ def msg2processor(msg, **config):
     else:
         return processors[-1]  # DefaultProcessor
 
+
+def legacy_condition(cls):
+    def _wrapper(f):
+        def __wrapper(msg, legacy=False, **config):
+            try:
+                return f(msg, **config)
+            except KeyError:
+                if legacy:
+                    return cls()
+                else:
+                    raise
+        return __wrapper
+    return _wrapper
+
+
+def with_processor():
+    def _wrapper(f):
+        def __wrapper(msg, processor=None, **config):
+            if not processor:
+                processor = msg2processor(msg, **config)
+
+            return f(msg, processor, **config)
+        return __wrapper
+    return _wrapper
+
+
+@legacy_condition(unicode)
+@with_processor()
 def msg2repr(msg, **config):
     """ Return a human-readable or "natural language" representation of a
     dict-like fedmsg message.  Think of this as the 'top-most level' function
@@ -122,10 +150,10 @@ def msg2repr(msg, **config):
     return fmt.format(**locals())
 
 
-def msg2title(msg, processor=None, **config):
+@legacy_condition(unicode)
+@with_processor()
+def msg2title(msg, processor, **config):
     """ Return a 'title' or primary text associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     title = processor.title(msg, **config)
     suffix = _msg2suffix(msg, **config)
     if suffix:
@@ -133,45 +161,49 @@ def msg2title(msg, processor=None, **config):
     return title
 
 
-def msg2subtitle(msg, processor=None, **config):
+@legacy_condition(unicode)
+@with_processor()
+def msg2subtitle(msg, processor, **config):
     """ Return a 'subtitle' or secondary text associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.subtitle(msg, **config)
 
 
-def msg2link(msg, processor=None, **config):
+@legacy_condition(unicode)
+@with_processor()
+def msg2link(msg, processor, **config):
     """ Return a URL associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.link(msg, **config)
 
 
-def msg2icon(msg, processor=None, **config):
+@legacy_condition(unicode)
+@with_processor()
+def msg2icon(msg, processor, **config):
     """ Return a primary icon associated with a message. """
     if not processor:
         processor = msg2processor(msg, **config)
     return processor.icon(msg, **config)
 
 
-def msg2secondary_icon(msg, processor=None, **config):
+@legacy_condition(unicode)
+@with_processor()
+def msg2secondary_icon(msg, processor, **config):
     """ Return a secondary icon associated with a message. """
     if not processor:
         processor = msg2processor(msg, **config)
     return processor.secondary_icon(msg, **config)
 
 
-def msg2usernames(msg, processor=None, **config):
+@legacy_condition(set)
+@with_processor()
+def msg2usernames(msg, processor=None, legacy=False, **config):
     """ Return a set of FAS usernames associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.usernames(msg, **config)
 
 
-def msg2packages(msg, processor=None, **config):
+@legacy_condition(set)
+@with_processor()
+def msg2packages(msg, processor, **config):
     """ Return a set of package names associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.packages(msg, **config)
 
 
