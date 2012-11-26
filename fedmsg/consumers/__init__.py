@@ -81,7 +81,8 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         # This call "completes" registration of this consumer with the hub.
         super(FedmsgConsumer, self).__init__(hub)
 
-        self.validate_signatures = self.hub.config['validate_signatures']
+        if self.validate_signatures:
+            self.validate_signatures = self.hub.config['validate_signatures']
 
     def validate(self, message):
         """ This needs to raise an exception, caught by moksha. """
