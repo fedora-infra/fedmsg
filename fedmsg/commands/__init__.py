@@ -98,4 +98,7 @@ class command(object):
         )
         wrapper.__doc__ = parser.format_help()
 
+        # This is for testing purposes
+        wrapper.__wrapped_func__ = func
+
         return wrapper
