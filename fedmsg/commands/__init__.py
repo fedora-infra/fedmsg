@@ -22,7 +22,6 @@ import fedmsg.config
 import warnings
 import logging
 
-
 class command(object):
     """ Convenience decorator for wrapping fedmsg console script commands.
 
@@ -97,5 +96,8 @@ class command(object):
             prog=self.name,
         )
         wrapper.__doc__ = parser.format_help()
+
+        # This is for testing purposes
+        wrapper.__wrapped_func__ = func
 
         return wrapper
