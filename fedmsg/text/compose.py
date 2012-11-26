@@ -66,3 +66,6 @@ class ComposeProcessor(BaseProcessor):
             # here -- if we can help it -- so that we don't have to update this
             # code every time we do a new mass branch.
             return base
+
+    def objects(self, msg, **config):
+        return set([msg['topic'].split('.')[4]])

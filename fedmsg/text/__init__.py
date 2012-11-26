@@ -132,7 +132,7 @@ def with_processor():
             if not processor:
                 processor = msg2processor(msg, **config)
 
-            return f(msg, processor, **config)
+            return f(msg, processor=processor, **config)
 
         __wrapper.__doc__ = f.__doc__
         __wrapper.__name__ = f.__name__
@@ -211,6 +211,21 @@ def msg2usernames(msg, processor=None, legacy=False, **config):
 def msg2packages(msg, processor, **config):
     """ Return a set of package names associated with a message. """
     return processor.packages(msg, **config)
+
+
+@legacy_condition(set)
+@with_processor()
+def msg2objects(msg, processor, **config):
+    """ Return a set of objects associated with a message.
+
+    "objects" here is the "objects" from english grammar.. meaning, the thing
+    in the message upon which action is being done.  The "subject" is the
+    user and the "object" is the packages, or the wiki articles, or the blog
+    posts.
+
+    Where possible, use slash-delimited names for objects (as in wiki URLs).
+    """
+    return processor.objects(msg, **config)
 
 
 def _msg2suffix(msg, **config):

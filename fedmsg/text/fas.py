@@ -113,3 +113,14 @@ class FASProcessor(BaseProcessor):
             pass
 
         return set(users)
+
+    def objects(self, msg, **config):
+        objs = set()
+
+        if 'user' in msg['msg']:
+            objs.add('users/' + msg['msg']['user']['username'])
+
+        if 'group' in msg['msg']:
+            objs.add('groups/' + msg['msg']['group']['name'])
+
+        return objs

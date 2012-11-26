@@ -28,9 +28,15 @@ from common import load_config
 
 
 class Base(unittest.TestCase):
-    msg, expected_title, expected_subti, expected_link, expected_icon, \
-        expected_secondary_icon, expected_usernames, expected_packages = \
-        None, None, None, None, None, None, set(), set()
+    msg = None
+    expected_title = None
+    expected_subti = None
+    expected_link = None
+    expected_icon = None
+    expected_secondary_icon = None
+    expected_usernames = set()
+    expected_packages = set()
+    expected_objects = set()
 
     def setUp(self):
         self.config = fedmsg.config.load_config(None, None,
@@ -86,6 +92,13 @@ class Base(unittest.TestCase):
         actual_packages = fedmsg.text.msg2packages(self.msg, **self.config)
         eq_(actual_packages, self.expected_packages)
 
+    def test_objects(self):
+        """ Does fedmsg.text produce the expected list of objects? """
+        if self.msg is None:
+            return
+        actual_objects = fedmsg.text.msg2objects(self.msg, **self.config)
+        eq_(actual_objects, self.expected_objects)
+
 
 class TestUnhandled(Base):
     expected_title = "unhandled_service.some_event (unsigned)"
@@ -104,6 +117,7 @@ class TestFASUserCreate(Base):
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['ralph'])
+    expected_objects = set(['users/ralph'])
     msg = {
         u'i': 1,
         u'timestamp': 1344432054.8098609,
@@ -129,6 +143,7 @@ class TestFASEditProfile(Base):
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['ralph'])
+    expected_objects = set(['users/ralph'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.user.update',
         u'msg': {
@@ -149,6 +164,7 @@ class TestFASEditGroup(Base):
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['ralph'])
+    expected_objects = set(['groups/ambassadors'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.update',
         u'msg': {
@@ -168,6 +184,7 @@ class TestFASGroupCreate(Base):
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['ralph'])
+    expected_objects = set(['groups/ambassadors'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.create',
         u'msg': {
@@ -186,6 +203,7 @@ class TestFASRoleUpdate(Base):
         "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['ralph', 'toshio'])
+    expected_objects = set(['users/ralph', 'groups/ambassadors'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.role.update',
         u'msg': {
@@ -205,6 +223,7 @@ class TestFASGroupRemove(Base):
         "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['ralph', 'toshio'])
+    expected_objects = set(['users/ralph', 'groups/ambassadors'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.remove',
         u'msg': {
@@ -225,6 +244,7 @@ class TestFASGroupSponsor(Base):
         "8128b4c81d09ada7f95ac9dbf888fbea?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['ralph', 'toshio'])
+    expected_objects = set(['users/ralph', 'groups/ambassadors'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.sponsor',
         u'msg': {
@@ -245,6 +265,7 @@ class TestFASGroupApply(Base):
         "2f933f4364baaabd2d3ab8f0664faef2?s=64&d=http%3A%2F%2F" + \
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['ralph'])
+    expected_objects = set(['users/ralph', 'groups/ambassadors'])
     msg = {
         u'topic': u'org.fedoraproject.stg.fas.group.member.apply',
         u'msg': {
@@ -260,6 +281,7 @@ class TestComposeBranchedComplete(Base):
     expected_subti = "branched compose completed"
     expected_link = \
         "http://alt.fedoraproject.org/pub/fedora/linux/development"
+    expected_objects = set(['branched'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -270,6 +292,7 @@ class TestComposeBranchedComplete(Base):
 class TestComposeBranchedStart(Base):
     expected_title = "compose.branched.start (unsigned)"
     expected_subti = "branched compose started"
+    expected_objects = set(['branched'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -280,6 +303,7 @@ class TestComposeBranchedStart(Base):
 class TestComposeBranchedMashStart(Base):
     expected_title = "compose.branched.mash.start (unsigned)"
     expected_subti = "branched compose started mashing"
+    expected_objects = set(['branched'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -290,6 +314,7 @@ class TestComposeBranchedMashStart(Base):
 class TestComposeBranchedMashComplete(Base):
     expected_title = "compose.branched.mash.complete (unsigned)"
     expected_subti = "branched compose finished mashing"
+    expected_objects = set(['branched'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -300,6 +325,7 @@ class TestComposeBranchedMashComplete(Base):
 class TestComposeBranchedPungifyStart(Base):
     expected_title = "compose.branched.pungify.start (unsigned)"
     expected_subti = "started building boot.iso for branched"
+    expected_objects = set(['branched'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -310,6 +336,7 @@ class TestComposeBranchedPungifyStart(Base):
 class TestComposeBranchedPungifyComplete(Base):
     expected_title = "compose.branched.pungify.complete (unsigned)"
     expected_subti = "finished building boot.iso for branched"
+    expected_objects = set(['branched'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -320,6 +347,7 @@ class TestComposeBranchedPungifyComplete(Base):
 class TestComposeBranchedRsyncStart(Base):
     expected_title = "compose.branched.rsync.start (unsigned)"
     expected_subti = "started rsyncing branched compose for public consumption"
+    expected_objects = set(['branched'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -333,6 +361,7 @@ class TestComposeBranchedRsyncComplete(Base):
         "finished rsync of branched compose for public consumption"
     expected_link = \
         "http://alt.fedoraproject.org/pub/fedora/linux/development"
+    expected_objects = set(['branched'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -345,6 +374,7 @@ class TestComposeRawhideComplete(Base):
     expected_subti = "rawhide compose completed"
     expected_link = \
         "http://alt.fedoraproject.org/pub/fedora/linux/development/rawhide"
+    expected_objects = set(['rawhide'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -355,6 +385,7 @@ class TestComposeRawhideComplete(Base):
 class TestComposeRawhideStart(Base):
     expected_title = "compose.rawhide.start (unsigned)"
     expected_subti = "rawhide compose started"
+    expected_objects = set(['rawhide'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -365,6 +396,7 @@ class TestComposeRawhideStart(Base):
 class TestComposeRawhideMashStart(Base):
     expected_title = "compose.rawhide.mash.start (unsigned)"
     expected_subti = "rawhide compose started mashing"
+    expected_objects = set(['rawhide'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -375,6 +407,7 @@ class TestComposeRawhideMashStart(Base):
 class TestComposeRawhideMashComplete(Base):
     expected_title = "compose.rawhide.mash.complete (unsigned)"
     expected_subti = "rawhide compose finished mashing"
+    expected_objects = set(['rawhide'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -385,6 +418,7 @@ class TestComposeRawhideMashComplete(Base):
 class TestComposeRawhideRsyncStart(Base):
     expected_title = "compose.rawhide.rsync.start (unsigned)"
     expected_subti = "started rsyncing rawhide compose for public consumption"
+    expected_objects = set(['rawhide'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -397,6 +431,7 @@ class TestComposeRawhideRsyncComplete(Base):
     expected_subti = "finished rsync of rawhide compose for public consumption"
     expected_link = \
         "http://alt.fedoraproject.org/pub/fedora/linux/development/rawhide"
+    expected_objects = set(['rawhide'])
     msg = {
         "i": 1,
         "timestamp": 1344447839.891876,
@@ -417,6 +452,7 @@ class TestBodhiUpdateComplete(Base):
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['ralph'])
     expected_packages = set(['fedmsg'])
+    expected_objects = set(['packages/fedmsg'])
 
     msg = {
         "i": 88,
@@ -489,12 +525,125 @@ class TestBodhiUpdateComplete(Base):
     }
 
 
+class TestBodhiRequestMultiplePackagesPerUpdate(Base):
+    expected_title = "bodhi.update.request.testing (unsigned)"
+    expected_subti = "hadess submitted " + \
+        "gnome-settings-daemon-3.6.1-1.fc18,control-center-3.6.1-1.fc18" + \
+        " to testing"
+    expected_link = "https://admin.fedoraproject.org/updates/" + \
+        "gnome-settings-daemon-3.6.1-1.fc18,control-center-3.6.1-1.fc18"
+    expected_icon = "https://admin.fedoraproject.org/updates" + \
+        "/static/images/bodhi-icon-48.png"
+    expected_secondary_icon = "http://www.gravatar.com/avatar/" + \
+        "9d953fa825bd80dfa6e45660b03adc2d?s=64&d=http%3A%2F%2F" + \
+        "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
+    expected_usernames = set(['hadess'])
+    expected_packages = set(['gnome-settings-daemon', 'control-center'])
+    expected_objects = set([
+        'packages/gnome-settings-daemon',
+        'packages/control-center',
+    ])
+
+    msg = {
+        "topic": "org.fedoraproject.prod.bodhi.update.request.testing",
+        "msg": {
+            "update": {
+                "status": "pending",
+                "critpath": False,
+                "stable_karma": 3,
+                "date_pushed": None,
+                "title": "gnome-settings-daemon-3.6.1-1.fc18," +
+                "control-center-3.6.1-1.fc18",
+                "nagged": None,
+                "comments": [
+                {
+                    "group": None,
+                    "author": "bodhi",
+                    "text": "This update has been submitted for "
+                    "testing by hadess. ",
+                    "karma": 0,
+                    "anonymous": False,
+                    "timestamp": 1349718539.0,
+                    "update_title": "gnome-settings-daemon-3.6.1-1.fc18," +
+                    "control-center-3.6.1-1.fc18"
+                }
+                ],
+                "updateid": None,
+                "type": "bugfix",
+                "close_bugs": True,
+                "date_submitted": 1349718534.0,
+                "unstable_karma": -3,
+                "release": {
+                    "dist_tag": "f18",
+                    "locked": True,
+                    "long_name": "Fedora 18",
+                    "name": "F18",
+                    "id_prefix": "FEDORA"
+                },
+                "approved": None,
+                "builds": [
+                {
+                    "nvr": "gnome-settings-daemon-3.6.1-1.fc18",
+                    "package": {
+                        "suggest_reboot": False,
+                        "committers": [
+                            "hadess",
+                            "ofourdan",
+                            "mkasik",
+                            "cosimoc"
+                        ],
+                        "name": "gnome-settings-daemon"
+                    }
+                }, {
+                    "nvr": "control-center-3.6.1-1.fc18",
+                    "package": {
+                        "suggest_reboot": False,
+                        "committers": [
+                            "ctrl-center-team",
+                            "ofourdan",
+                            "ssp",
+                            "ajax",
+                            "alexl",
+                            "jrb",
+                            "mbarnes",
+                            "caolanm",
+                            "davidz",
+                            "mclasen",
+                            "rhughes",
+                            "hadess",
+                            "johnp",
+                            "caillon",
+                            "whot",
+                            "rstrode"
+                        ],
+                        "name": "control-center"
+                    }
+                }
+                ],
+                "date_modified": None,
+                "notes": "This update fixes numerous bugs in the new Input " +
+                "Sources support, the Network panel and adds a help " +
+                "screen accessible via Wacom tablets's buttons.",
+                "request": "testing",
+                "bugs": [],
+                "critpath_approved": False,
+                "karma": 0,
+                "submitter": "hadess"
+            }
+        },
+        "i": 2,
+        "timestamp": 1349718539.0,
+    }
+
+
 class TestBodhiMashTaskMashing(Base):
     expected_title = "bodhi.mashtask.mashing (unsigned)"
     expected_subti = "bodhi masher is mashing test_repo"
     expected_icon = "https://admin.fedoraproject.org/updates" + \
         "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = ''
+    expected_objects = set(['repos/test_repo'])
+
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.mashing",
         'msg': {
@@ -545,6 +694,7 @@ class TestBodhiMashTaskSyncWait(Base):
     expected_icon = "https://admin.fedoraproject.org/updates" + \
         "/static/images/bodhi-icon-48.png"
     expected_secondary_icon = ''
+
     msg = {
         'topic': "org.fedoraproject.prod.bodhi.mashtask.sync.done",
         'msg': {}
@@ -562,6 +712,8 @@ class TestBodhiRequestUnpush(Base):
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['lmacken'])
     expected_packages = set(['foo'])
+    expected_objects = set(['packages/foo'])
+
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.unpush",
         'msg': {
@@ -584,6 +736,8 @@ class TestBodhiRequestObsolete(Base):
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['lmacken'])
     expected_packages = set(['foo'])
+    expected_objects = set(['packages/foo'])
+
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.obsolete",
         'msg': {
@@ -606,6 +760,8 @@ class TestBodhiRequestStable(Base):
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['lmacken'])
     expected_packages = set(['foo'])
+    expected_objects = set(['packages/foo'])
+
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.stable",
         'msg': {
@@ -628,6 +784,8 @@ class TestBodhiRequestRevoke(Base):
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['lmacken'])
     expected_packages = set(['foo'])
+    expected_objects = set(['packages/foo'])
+
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.revoke",
         'msg': {
@@ -650,6 +808,8 @@ class TestBodhiRequestTesting(Base):
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['lmacken'])
     expected_packages = set(['foo'])
+    expected_objects = set(['packages/foo'])
+
     msg = {
         'topic': "org.fedoraproject.dev.bodhi.update.request.testing",
         'msg': {
@@ -672,6 +832,8 @@ class TestBodhiComment(Base):
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['ralph'])
     expected_packages = set(['fedmsg'])
+    expected_objects = set(['packages/fedmsg'])
+
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -700,6 +862,8 @@ class TestBodhiOverrideTagged(Base):
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['lmacken'])
     expected_packages = set(['fedmsg'])
+    expected_objects = set(['packages/fedmsg'])
+
     msg = {
         "i": 1,
         "timestamp": 1344344053.2337201,
@@ -723,6 +887,8 @@ class TestBodhiOverrideUntagged(Base):
         "fedoraproject.org%2Fstatic%2Fimages%2Ffedora_infinity_64x64.png"
     expected_usernames = set(['lmacken'])
     expected_packages = set(['fedmsg'])
+    expected_objects = set(['packages/fedmsg'])
+
     msg = {
         "i": 1,
         "timestamp": 1344964395.207541,
@@ -740,6 +906,12 @@ class TestSupybotStartMeetingNoName(Base):
     expected_title = "meetbot.meeting.start (unsigned)"
     expected_subti = 'threebean started a meeting in #channel'
     expected_usernames = set(['threebean', 'fedmsg-test-bot'])
+    expected_objects = set([
+        'attendees/fedmsg-test-bot',
+        'attendees/threebean',
+        'channels/#channel',
+    ])
+
     msg = {
         "i": 16,
         "msg": {
@@ -762,6 +934,13 @@ class TestSupybotStartMeeting(Base):
     expected_title = "meetbot.meeting.start (unsigned)"
     expected_subti = 'threebean started meeting "title" in #channel'
     expected_usernames = set(['threebean', 'fedmsg-test-bot'])
+    expected_objects = set([
+        'attendees/fedmsg-test-bot',
+        'attendees/threebean',
+        'channels/#channel',
+        'titles/title',
+    ])
+
     msg = {
         "i": 16,
         "msg": {
@@ -785,6 +964,13 @@ class TestSupybotEndMeeting(Base):
     expected_subti = 'threebean ended meeting "title" in #channel'
     expected_link = 'http://logs.com/awesome.html'
     expected_usernames = set(['threebean', 'fedmsg-test-bot'])
+    expected_objects = set([
+        'attendees/fedmsg-test-bot',
+        'attendees/threebean',
+        'channels/#channel',
+        'titles/title',
+    ])
+
     msg = {
         "i": 16,
         "msg": {
@@ -808,6 +994,12 @@ class TestSupybotEndMeetingNoTitle(Base):
     expected_subti = 'threebean ended a meeting in #channel'
     expected_link = 'http://logs.com/awesome.html'
     expected_usernames = set(['threebean', 'fedmsg-test-bot'])
+    expected_objects = set([
+        'attendees/fedmsg-test-bot',
+        'attendees/threebean',
+        'channels/#channel',
+    ])
+
     msg = {
         "i": 16,
         "msg": {
@@ -832,6 +1024,8 @@ class TestTaggerVoteAnonymous(Base):
     expected_link = 'https://apps.fedoraproject.org/tagger/perl-Test-Fatal'
     expected_usernames = set([])
     expected_packages = set(['perl-Test-Fatal'])
+    expected_objects = set(['packages/perl-Test-Fatal', 'labels/unittest'])
+
     msg = {
         "i": 1,
         "timestamp": 1345220838.2775879,
@@ -893,6 +1087,8 @@ class TestTaggerCreate(Base):
     expected_link = 'https://apps.fedoraproject.org/tagger/perl-Test-Fatal'
     expected_usernames = set(['ralph'])
     expected_packages = set(['perl-Test-Fatal'])
+    expected_objects = set(['packages/perl-Test-Fatal', 'labels/unittest'])
+
     msg = {
         "i": 1,
         "timestamp": 1345220073.4948981,
@@ -954,6 +1150,7 @@ class TestMediaWikiEdit(Base):
     expected_icon = "https://fedoraproject.org/w/skins/common/" + \
         "images/mediawiki.png"
     expected_usernames = set(['ralph'])
+    expected_objects = set(['Messaging SIG'])
 
     msg = {
         "topic": "org.fedoraproject.stg.wiki.article.edit",
@@ -980,6 +1177,8 @@ class TestMediaWikiUpload(Base):
     expected_icon = "https://fedoraproject.org/w/skins/common/" + \
         "images/mediawiki.png"
     expected_usernames = set(['ralph'])
+    expected_objects = set(['w/uploads/d/d1/Cat.jpg'])
+
     msg = {
         "topic": "org.fedoraproject.stg.wiki.upload.complete",
         "msg": {
@@ -1031,6 +1230,7 @@ class TestLoggerNormal(Base):
     expected_title = "logger.log (unsigned)"
     expected_subti = 'hello, world.'
     expected_usernames = set(['ralph'])
+
     msg = {
         "i": 1,
         "timestamp": 1344352873.714926,
@@ -1046,6 +1246,7 @@ class TestLoggerJSON(Base):
     expected_title = "logger.log (unsigned)"
     expected_subti = '<custom JSON message>'
     expected_usernames = set(['root'])
+
     msg = {
         "i": 1,
         "timestamp": 1344352929.415939,
@@ -1061,6 +1262,7 @@ class TestPkgdb2BrMassStart(Base):
     expected_title = "git.mass_branch.start (unsigned)"
     expected_subti = "dgilmore started a mass branch"
     expected_usernames = set(['dgilmore'])
+
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1075,6 +1277,7 @@ class TestPkgdb2BrMassComplete(Base):
     expected_title = "git.mass_branch.complete (unsigned)"
     expected_subti = "mass branch started by dgilmore completed"
     expected_usernames = set(['dgilmore'])
+
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1089,6 +1292,7 @@ class TestPkgdb2BrRunStart(Base):
     expected_title = "git.pkgdb2branch.start (unsigned)"
     expected_subti = "limburgher started a run of pkgdb2branch"
     expected_usernames = set(['limburgher'])
+
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1104,6 +1308,8 @@ class TestPkgdb2BrRunComplete(Base):
     expected_subti = "run of pkgdb2branch started by limburgher completed"
     expected_usernames = set(['limburgher'])
     expected_packages = set(['nethack'])
+    expected_objects = set(['nethack/__git__'])
+
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1122,6 +1328,8 @@ class TestPkgdb2BrRunCompleteWithError(Base):
         " with 1 error"
     expected_usernames = set(['limburgher'])
     expected_packages = set(['foo'])
+    expected_objects = set(['foo/__git__'])
+
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1140,6 +1348,8 @@ class TestPkgdb2BrRunCompleteWithErrors(Base):
         " with 2 errors"
     expected_usernames = set(['limburgher'])
     expected_packages = set(['foo', 'bar'])
+    expected_objects = set(['foo/__git__', 'bar/__git__'])
+
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1160,6 +1370,8 @@ class TestPkgdb2BrCreate(Base):
         "http://pkgs.fedoraproject.org/cgit/valgrind.git/log/?h=master"
     expected_usernames = set(['limburgher'])
     expected_packages = set(['valgrind'])
+    expected_objects = set(['valgrind/__git__'])
+
     msg = {
         "i": 1,
         "timestamp": 1344350850.8867381,
@@ -1179,6 +1391,8 @@ class TestLookaside(Base):
         'pst-diffraction.doc.tar.xz'
     expected_usernames = set(['jnovy'])
     expected_packages = set(['texlive'])
+    expected_objects = set(['texlive/pst-diffraction.doc.tar.xz'])
+
     msg = {
         "i": 1,
         "timestamp": 1349197866.215465,
@@ -1205,6 +1419,7 @@ class TestSCM(Base):
         "d=http%3A%2F%2Fgit-scm.com%2Fimages%2Flogo.png"
     expected_usernames = set(['mjw'])
     expected_packages = set(['valgrind'])
+    expected_objects = set(['valgrind/valgrind.spec'])
 
     msg = {
         "i": 1,
@@ -1253,6 +1468,7 @@ class TestSCMSingleLine(Base):
         "d=http%3A%2F%2Fgit-scm.com%2Fimages%2Flogo.png"
     expected_usernames = set(['spot'])
     expected_packages = set(['ember'])
+    expected_objects = set(['ember/ember-0.6.3-gcc47.patch'])
 
     msg = {
         "i": 1,

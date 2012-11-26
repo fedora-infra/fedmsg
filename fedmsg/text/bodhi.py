@@ -21,6 +21,12 @@
 from fedmsg.text.base import BaseProcessor
 from fedmsg.text.fasshim import gravatar_url
 
+def _u2p(update):
+    """ Take an update, and return the package name """
+    # TODO -- make this unnecessary by having bodhi emit the
+    # package name (and not just the update name) to begin with.
+    return [build.rsplit('-', 2)[0] for build in update.split(',')]
+
 
 class BodhiProcessor(BaseProcessor):
     __name__ = "Bodhi"
@@ -117,23 +123,17 @@ class BodhiProcessor(BaseProcessor):
             return tmpl.format(title=msg['msg']['update']['title'])
 
     def packages(self, msg, **config):
-
-        def _u2p(update):
-            """ Take an update, and return the package name """
-            # TODO -- make this unnecessary by having bodhi emit the
-            # package name (and not just the update name) to begin with.
-            return update.rsplit('-', 2)[0]
-
         if 'bodhi.update.comment' in msg['topic']:
-            return set([_u2p(msg['msg']['comment']['update_title'])])
+            return set(_u2p(msg['msg']['comment']['update_title']))
         elif 'bodhi.update.complete' in msg['topic']:
-            return set([_u2p(msg['msg']['update']['title'])])
+            return set(_u2p(msg['msg']['update']['title']))
         elif 'bodhi.update.request' in msg['topic']:
-            return set([_u2p(msg['msg']['update']['title'])])
+            return set(_u2p(msg['msg']['update']['title']))
         elif 'bodhi.buildroot_override.' in msg['topic']:
-            return set([_u2p(msg['msg']['override']['build'])])
+            return set(_u2p(msg['msg']['override']['build']))
 
         return set()
+
 
     def usernames(self, msg, **config):
         users = []
@@ -150,3 +150,29 @@ class BodhiProcessor(BaseProcessor):
             pass
 
         return set(users)
+
+    def objects(self, msg, **config):
+        if 'bodhi.mashtask.mashing' in msg['topic']:
+            return set(['repos/' + msg['msg']['repo']])
+        elif 'bodhi.update.comment' in msg['topic']:
+            return set([
+                'packages/' + p for p in
+                _u2p(msg['msg']['comment']['update_title'])
+            ])
+        elif 'bodhi.update.complete' in msg['topic']:
+            return set([
+                'packages/' + p for p in
+                _u2p(msg['msg']['update']['title'])
+            ])
+        elif 'bodhi.update.request' in msg['topic']:
+            return set([
+                'packages/' + p for p in
+                _u2p(msg['msg']['update']['title'])
+            ])
+        elif 'bodhi.buildroot_override.' in msg['topic']:
+            return set([
+                'packages/' + p for p in
+                _u2p(msg['msg']['override']['build'])
+            ])
+
+        return set()
