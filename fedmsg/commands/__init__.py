@@ -22,6 +22,7 @@ import fedmsg.config
 import warnings
 import logging
 
+
 class command(object):
     """ Convenience decorator for wrapping fedmsg console script commands.
 
