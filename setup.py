@@ -127,5 +127,9 @@ setup(
         ],
         'moksha.producer': [
         ],
+        # fedmsg core only provides one metadata provider.
+        'fedmsg.meta': [
+            "logger=fedmsg.text.logger:LoggerProcessor",
+        ],
     }
 )

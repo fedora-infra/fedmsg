@@ -51,15 +51,11 @@ _ = t.ugettext
 
 import fedmsg.crypto
 
-from fedmsg.text.bodhi import BodhiProcessor
-from fedmsg.text.scm import SCMProcessor
-from fedmsg.text.tagger import TaggerProcessor
-from fedmsg.text.supybot import SupybotProcessor
-from fedmsg.text.mediawiki import WikiProcessor
-from fedmsg.text.fas import FASProcessor
-from fedmsg.text.compose import ComposeProcessor
-from fedmsg.text.logger import LoggerProcessor
 from fedmsg.text.default import DefaultProcessor
+
+import pkg_resources
+import logging
+log = logging.getLogger("fedmsg")
 
 
 class ProcessorsNotInitialized(Exception):
@@ -69,12 +65,6 @@ class ProcessorsNotInitialized(Exception):
 
 processors = ProcessorsNotInitialized("You must first call "
                                       "fedmsg.text.make_processors(**config)")
-
-processor_classes = (BodhiProcessor, SCMProcessor, TaggerProcessor,
-                     SupybotProcessor, WikiProcessor, FASProcessor,
-                     ComposeProcessor, LoggerProcessor,
-                     # This should always be last
-                     DefaultProcessor)
 
 
 def make_processors(**config):
@@ -92,8 +82,15 @@ def make_processors(**config):
     """
     global processors
     processors = []
-    for processor in processor_classes:
-        processors.append(processor(_, **config))
+    for processor in pkg_resources.iter_entry_points('fedmsg.meta'):
+        try:
+            processors.append(processor.load()(_, **config))
+        except Exception as e:
+            log.warn("Failed to load %r processor." % processor.name)
+            log.warn(str(e))
+
+    # This should always be last
+    processors.append(DefaultProcessor(_, **config))
 
 
 def msg2processor(msg, **config):
