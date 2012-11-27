@@ -1150,7 +1150,7 @@ class TestMediaWikiEdit(Base):
     expected_icon = "https://fedoraproject.org/w/skins/common/" + \
         "images/mediawiki.png"
     expected_usernames = set(['ralph'])
-    expected_objects = set(['Messaging SIG'])
+    expected_objects = set(['Messaging SIG-page'])
 
     msg = {
         "topic": "org.fedoraproject.stg.wiki.article.edit",
