@@ -42,21 +42,21 @@ class RelayCommand(BaseCommand):
     daemonizable = True
     name = 'fedmsg-relay'
 
-    def run(self, **kw):
+    def run(self):
         # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
         # with moksha's expected configuration.
         moksha_options = dict(
-            zmq_publish_endpoints=",".join(kw['endpoints']["relay_outbound"]),
-            zmq_subscribe_endpoints=",".join(list(iterate(kw['relay_inbound']))),
+            zmq_publish_endpoints=",".join(self.config['endpoints']["relay_outbound"]),
+            zmq_subscribe_endpoints=",".join(list(iterate(self.config['relay_inbound']))),
             zmq_subscribe_method="bind",
         )
-        kw.update(moksha_options)
+        self.config.update(moksha_options)
 
         # Flip the special bit that allows the RelayConsumer to run
-        kw[RelayConsumer.config_key] = True
+        self.config[RelayConsumer.config_key] = True
 
         from moksha.hub import main
-        main(options=kw, consumers=[RelayConsumer])
+        main(options=self.config, consumers=[RelayConsumer])
 
 def main():
     command = RelayCommand()
