@@ -51,8 +51,12 @@ class BaseCommand(object):
 
         # TODO: Allow the log levels to be configured
         self.logger.setLevel(logging.DEBUG)
+        #formatter = logging.Formatter("%(asctime)s - %(name)s - %(lineno)s - \
+        #%(levelname)s - %(message)s")
+        formatter = logging.Formatter("%(message)s")
         console_log = logging.StreamHandler()
         console_log.setLevel(logging.DEBUG)
+        console_log.setFormatter(formatter)
 
         self.logger.addHandler(console_log)
 
@@ -97,7 +101,6 @@ class BaseCommand(object):
         if self.daemonizable and self.config['daemon'] is True:
             return self._daemonize()
         else:
-            logging.basicConfig()
             try:
                 return self.run()
             except KeyboardInterrupt:
