@@ -20,17 +20,12 @@
 """
 """
 
-import fedmsg
-from fedmsg.commands import command
+from fedmsg.commands import BaseCommand
 from fedmsg.consumers.relay import RelayConsumer
 
 from kitchen.iterutils import iterate
 
-extra_args = []
-
-
-@command(name="fedmsg-relay", extra_args=extra_args, daemonizable=True)
-def relay(**kw):
+class RelayCommand(BaseCommand):
     """ Relay connections from active loggers to the bus.
 
     ``fedmsg-relay`` is a service which binds to two ports, listens for
@@ -44,18 +39,25 @@ def relay(**kw):
     mile-high view.  More specifically, ``fedmsg-relay`` is a
     SUB.bind()->PUB.bind() relay.
     """
+    daemonizable = True
+    name = 'fedmsg-relay'
 
-    # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
-    # with moksha's expected configuration.
-    moksha_options = dict(
-        zmq_publish_endpoints=",".join(kw['endpoints']["relay_outbound"]),
-        zmq_subscribe_endpoints=",".join(list(iterate(kw['relay_inbound']))),
-        zmq_subscribe_method="bind",
-    )
-    kw.update(moksha_options)
+    def run(self, **kw):
+        # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
+        # with moksha's expected configuration.
+        moksha_options = dict(
+            zmq_publish_endpoints=",".join(kw['endpoints']["relay_outbound"]),
+            zmq_subscribe_endpoints=",".join(list(iterate(kw['relay_inbound']))),
+            zmq_subscribe_method="bind",
+        )
+        kw.update(moksha_options)
 
-    # Flip the special bit that allows the RelayConsumer to run
-    kw[RelayConsumer.config_key] = True
+        # Flip the special bit that allows the RelayConsumer to run
+        kw[RelayConsumer.config_key] = True
 
-    from moksha.hub import main
-    main(options=kw, consumers=[RelayConsumer])
+        from moksha.hub import main
+        main(options=kw, consumers=[RelayConsumer])
+
+def main():
+    command = RelayCommand()
+    return command.execute()
