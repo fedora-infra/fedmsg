@@ -41,6 +41,12 @@ class BaseCommand(object):
                 })
             )
 
+        self.config = fedmsg.config.load_config(
+            self.extra_args,
+            self.usage,
+            fedmsg_command=True,
+        )
+
     def _handle_signal(self, signum, stackframe):
         from moksha.hub.reactor import reactor
         from moksha.hub import hub
@@ -54,7 +60,7 @@ class BaseCommand(object):
         except ReactorNotRunning, e:
             warnings.warn(str(e))
 
-    def _daemonize(self, config):
+    def _daemonize(self):
         from daemon import DaemonContext
         try:
             from daemon.pidfile import TimeoutPIDLockFile as PIDLockFile
@@ -67,7 +73,7 @@ class BaseCommand(object):
         daemon.terminate = self._handle_signal
 
         with daemon:
-            return self.run(**config)
+            return self.run()
 
     @property
     def usage(self):
@@ -79,18 +85,12 @@ class BaseCommand(object):
         return parser.format_help()
 
     def execute(self):
-        config = fedmsg.config.load_config(
-            self.extra_args,
-            self.usage,
-            fedmsg_command=True,
-        )
-
-        if self.daemonizable and config['daemon'] is True:
-            return self._daemonize(config)
+        if self.daemonizable and self.config['daemon'] is True:
+            return self._daemonize()
         else:
             logging.basicConfig()
             try:
-                return self.run(**config)
+                return self.run()
             except KeyboardInterrupt:
                 print
 

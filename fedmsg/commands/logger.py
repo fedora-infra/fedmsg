@@ -50,6 +50,36 @@ class LoggerCommand(BaseCommand):
 
     """
     name = 'fedmsg-logger'
+    extra_args = [
+        (['--message'], {
+            'dest': 'logger_message',
+            'help': "The message to send.",
+        }),
+        (['--json-input'], {
+            'dest': 'json_input',
+            'action': 'store_true',
+            'default': False,
+            'help': "Take each line of input as JSON.",
+        }),
+        (['--topic'], {
+            'dest': 'topic',
+            'metavar': "TOPIC",
+            'default': "log",
+            'help': "Think org.fedoraproject.logger.TOPIC",
+        }),
+        (['--modname'], {
+            'dest': 'modname',
+            'metavar': "MODNAME",
+            'default': "logger",
+            'help': "More control over the topic.  Think org.fp.MODNAME.TOPIC.",
+        }),
+        (['--cert-prefix'], {
+            'dest': 'cert_prefix',
+            'metavar': "CERT_PREFIX",
+            'default': "shell",
+            'help': "Specify a different cert from /etc/pki/fedmsg",
+        }),
+    ]
 
     def _log_message(self, kw, message):
         if kw['json_input']:
@@ -66,50 +96,17 @@ class LoggerCommand(BaseCommand):
     def __init__(self):
         super(LoggerCommand, self).__init__()
 
-        extra_args = [
-            (['--message'], {
-                'dest': 'logger_message',
-                'help': "The message to send.",
-            }),
-            (['--json-input'], {
-                'dest': 'json_input',
-                'action': 'store_true',
-                'default': False,
-                'help': "Take each line of input as JSON.",
-            }),
-            (['--topic'], {
-                'dest': 'topic',
-                'metavar': "TOPIC",
-                'default': "log",
-                'help': "Think org.fedoraproject.logger.TOPIC",
-            }),
-            (['--modname'], {
-                'dest': 'modname',
-                'metavar': "MODNAME",
-                'default': "logger",
-                'help': "More control over the topic.  Think org.fp.MODNAME.TOPIC.",
-            }),
-            (['--cert-prefix'], {
-                'dest': 'cert_prefix',
-                'metavar': "CERT_PREFIX",
-                'default': "shell",
-                'help': "Specify a different cert from /etc/pki/fedmsg",
-            }),
-        ]
 
-        for arg in extra_args:
-            self.extra_args.append(arg)
+    def run(self):
+        self.config['active'] = True
+        fedmsg.init(name='relay_inbound', **self.config)
 
-    def run(self, **kwargs):
-        kwargs['active'] = True
-        fedmsg.init(name='relay_inbound', **kwargs)
-
-        if kwargs.get('logger_message'):
-            self._log_message(kwargs, kwargs.get('logger_message'))
+        if self.config.get('logger_message'):
+            self._log_message(self.config, self.config.get('logger_message'))
         else:
             line = sys.stdin.readline()
             while line:
-                self._log_message(kwargs, line.strip())
+                self._log_message(self.config, line.strip())
                 line = sys.stdin.readline()
 
 def main():
