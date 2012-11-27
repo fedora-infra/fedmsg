@@ -27,7 +27,7 @@ import pygments.formatters
 
 import fedmsg
 import fedmsg.encoding
-import fedmsg.text
+import fedmsg.meta
 from fedmsg.commands import BaseCommand
 
 
@@ -87,7 +87,7 @@ class TailCommand(BaseCommand):
         self.config['mute'] = True
 
         fedmsg.init(**self.config)
-        fedmsg.text.make_processors(**self.config)
+        fedmsg.meta.make_processors(**self.config)
 
         # Build a message formatter
         formatter = lambda d: d
@@ -108,7 +108,7 @@ class TailCommand(BaseCommand):
                 return "\n" + fancy
 
         if self.config['terse']:
-            formatter = lambda d: "\n" + fedmsg.text.msg2repr(d, **self.config)
+            formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)
 
         exclusive_regexp = re.compile(self.config['exclusive_regexp'])
         inclusive_regexp = re.compile(self.config['inclusive_regexp'])

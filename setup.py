@@ -85,13 +85,15 @@ setup(
         'fedmsg.encoding',
         'fedmsg.commands',
         'fedmsg.consumers',
-        'fedmsg.text',  # This is deprecated in favor of fedmsg.meta
+        # fedmsg.text is deprecated in favor of fedmsg.meta, but we'll leave it
+        # around for backwards compatibility.  It's a symlink, for now.
+        'fedmsg.text',
         'fedmsg.meta',
         'fedmsg.tests',
     ],
     include_package_data=True,
     zip_safe=False,
-    scripts = [
+    scripts=[
         # This is separate from the other console scripts just for efficiency's
         # sake.  It gets called over and over and over again by our mediawiki
         # plugin/mod_php.  By making it *not* a setuptools console_script it

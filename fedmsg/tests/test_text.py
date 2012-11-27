@@ -17,12 +17,12 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-""" Tests for fedmsg.text """
+""" Tests for fedmsg.meta """
 
 import unittest
 from nose.tools import eq_
 
-import fedmsg.text
+import fedmsg.meta
 
 from common import load_config
 
@@ -41,62 +41,62 @@ class Base(unittest.TestCase):
     def setUp(self):
         self.config = fedmsg.config.load_config(None, None,
                                                 invalidate_cache=True)
-        fedmsg.text.make_processors(**self.config)
+        fedmsg.meta.make_processors(**self.config)
 
     def test_title(self):
-        """ Does fedmsg.text produce the expected title? """
+        """ Does fedmsg.meta produce the expected title? """
         if None in (self.msg, self.expected_title):
             return
-        actual_title = fedmsg.text.msg2title(self.msg, **self.config)
+        actual_title = fedmsg.meta.msg2title(self.msg, **self.config)
         eq_(actual_title, self.expected_title)
 
     def test_subtitle(self):
-        """ Does fedmsg.text produce the expected subtitle? """
+        """ Does fedmsg.meta produce the expected subtitle? """
         if None in (self.msg, self.expected_subti):
             return
-        actual_subti = fedmsg.text.msg2subtitle(self.msg, **self.config)
+        actual_subti = fedmsg.meta.msg2subtitle(self.msg, **self.config)
         eq_(actual_subti, self.expected_subti)
 
     def test_link(self):
-        """ Does fedmsg.text produce the expected link? """
+        """ Does fedmsg.meta produce the expected link? """
         if None in (self.msg, self.expected_link):
             return
-        actual_link = fedmsg.text.msg2link(self.msg, **self.config)
+        actual_link = fedmsg.meta.msg2link(self.msg, **self.config)
         eq_(actual_link, self.expected_link)
 
     def test_icon(self):
-        """ Does fedmsg.text produce the expected icon? """
+        """ Does fedmsg.meta produce the expected icon? """
         if None in (self.msg, self.expected_icon):
             return
-        actual_icon = fedmsg.text.msg2icon(self.msg, **self.config)
+        actual_icon = fedmsg.meta.msg2icon(self.msg, **self.config)
         eq_(actual_icon, self.expected_icon)
 
     def test_secondary_icon(self):
-        """ Does fedmsg.text produce the expected secondary icon? """
+        """ Does fedmsg.meta produce the expected secondary icon? """
         if None in (self.msg, self.expected_secondary_icon):
             return
-        actual_icon = fedmsg.text.msg2secondary_icon(self.msg, **self.config)
+        actual_icon = fedmsg.meta.msg2secondary_icon(self.msg, **self.config)
         eq_(actual_icon, self.expected_secondary_icon)
 
     def test_usernames(self):
-        """ Does fedmsg.text produce the expected list of usernames? """
+        """ Does fedmsg.meta produce the expected list of usernames? """
         if self.msg is None:
             return
-        actual_usernames = fedmsg.text.msg2usernames(self.msg, **self.config)
+        actual_usernames = fedmsg.meta.msg2usernames(self.msg, **self.config)
         eq_(actual_usernames, self.expected_usernames)
 
     def test_packages(self):
-        """ Does fedmsg.text produce the expected list of packages? """
+        """ Does fedmsg.meta produce the expected list of packages? """
         if self.msg is None:
             return
-        actual_packages = fedmsg.text.msg2packages(self.msg, **self.config)
+        actual_packages = fedmsg.meta.msg2packages(self.msg, **self.config)
         eq_(actual_packages, self.expected_packages)
 
     def test_objects(self):
-        """ Does fedmsg.text produce the expected list of objects? """
+        """ Does fedmsg.meta produce the expected list of objects? """
         if self.msg is None:
             return
-        actual_objects = fedmsg.text.msg2objects(self.msg, **self.config)
+        actual_objects = fedmsg.meta.msg2objects(self.msg, **self.config)
         eq_(actual_objects, self.expected_objects)
 
 

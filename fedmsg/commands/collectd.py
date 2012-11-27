@@ -29,7 +29,7 @@ import pygments.formatters
 
 import fedmsg
 import fedmsg.encoding
-import fedmsg.text
+import fedmsg.meta
 
 from fedmsg.commands import command
 from fedmsg.consumers import FedmsgConsumer
@@ -54,7 +54,7 @@ class CollectdConsumer(FedmsgConsumer):
     def __init__(self, hub):
         super(CollectdConsumer, self).__init__(hub)
         self._dict = dict([
-            (p.__name__.lower(), 0) for p in fedmsg.text.processors
+            (p.__name__.lower(), 0) for p in fedmsg.meta.processors
         ])
         self.host = socket.gethostname()
 
@@ -95,7 +95,7 @@ def collectd(**kw):
     """ Print machine-readable information for collectd to monitor the bus. """
 
     # Initialize the processors before CollectdConsumer is instantiated.
-    fedmsg.text.make_processors(**kw)
+    fedmsg.meta.make_processors(**kw)
 
     # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
     # with moksha's expected configuration.
