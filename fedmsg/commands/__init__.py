@@ -23,6 +23,78 @@ import warnings
 import logging
 
 
+class BaseCommand(object):
+    daemonizable = False
+    extra_args = None
+
+    def __init__(self):
+        if not self.extra_args:
+            self.extra_args = []
+
+        if self.daemonizable:
+            self.extra_args.append(
+                (['--daemon'], {
+                    'dest': 'daemon',
+                    'help': 'Run in the background as a daemon.',
+                    'action': 'store_true',
+                    'default': False,
+                })
+            )
+
+    def _handle_signal(self, signum, stackframe):
+        from moksha.hub.reactor import reactor
+        from moksha.hub import hub
+        from twisted.internet.error import ReactorNotRunning
+
+        if hub._hub:
+            hub._hub.stop()
+
+        try:
+            reactor.stop()
+        except ReactorNotRunning, e:
+            warnings.warn(str(e))
+
+    def _daemonize(self, config):
+        from daemon import DaemonContext
+        try:
+            from daemon.pidfile import TimeoutPIDLockFile as PIDLockFile
+        except:
+            from daemon.pidlockfile import PIDLockFile
+
+        pidlock = PIDLockFile('/var/run/fedmsg/%s.pid' % self.name)
+        output = file('/var/log/fedmsg/%s.log' % self.name, 'a')
+        daemon = DaemonContext(pidfile=pidlock, stdout=output, stderr=output)
+        daemon.terminate = self._handle_signal
+
+        with daemon:
+            return self.run(**config)
+
+    @property
+    def usage(self):
+        parser = fedmsg.config.build_parser(
+            self.extra_args,
+            self.__doc__,
+            prog=self.name,
+        )
+        return parser.format_help()
+
+    def execute(self):
+        config = fedmsg.config.load_config(
+            self.extra_args,
+            self.usage,
+            fedmsg_command=True,
+        )
+
+        if self.daemonizable and config['daemon'] is True:
+            return self._daemonize(config)
+        else:
+            logging.basicConfig()
+            try:
+                return self.run(**config)
+            except KeyboardInterrupt:
+                print
+
+
 class command(object):
     """ Convenience decorator for wrapping fedmsg console script commands.
 
