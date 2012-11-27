@@ -41,11 +41,7 @@ class BaseCommand(object):
                 })
             )
 
-        self.config = fedmsg.config.load_config(
-            self.extra_args,
-            self.usage,
-            fedmsg_command=True,
-        )
+        self.config = self.get_config()
 
         self.logger = logging.getLogger('fedmsg')
 
@@ -61,6 +57,13 @@ class BaseCommand(object):
         console_log.setFormatter(formatter)
 
         self.logger.addHandler(console_log)
+
+    def get_config(self):
+        return fedmsg.config.load_config(
+            self.extra_args,
+            self.usage,
+            fedmsg_command=True,
+        )
 
     def _handle_signal(self, signum, stackframe):
         from moksha.hub.reactor import reactor
