@@ -109,6 +109,6 @@ class LoggerCommand(BaseCommand):
                 self._log_message(self.config, line.strip())
                 line = sys.stdin.readline()
 
-def main():
+def logger():
     command = LoggerCommand()
     return command.execute()
