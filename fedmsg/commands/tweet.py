@@ -24,7 +24,7 @@ import twitter as twitter_api
 import bitlyapi
 
 import fedmsg
-import fedmsg.text
+import fedmsg.meta
 from fedmsg.commands import command
 
 
@@ -56,7 +56,7 @@ def tweet(**kw):
 
     # Set up fedmsg
     fedmsg.init(**kw)
-    fedmsg.text.make_processors(**kw)
+    fedmsg.meta.make_processors(**kw)
 
     # Set up twitter and statusnet.. multiple accounts if configured
     settings = kw.get('tweet_endpoints', [])
@@ -93,12 +93,12 @@ def tweet(**kw):
                 raise
 
     for name, ep, topic, msg in fedmsg.tail_messages(**kw):
-        message = fedmsg.text.msg2subtitle(msg, **kw)
-        link = fedmsg.text.msg2link(msg, **kw)
+        message = fedmsg.meta.msg2subtitle(msg, **kw)
+        link = fedmsg.meta.msg2link(msg, **kw)
 
         if link:
             link = bitly.shorten(longUrl=link)['url']
-            message = (message[:138] + " ")[:139 - len(link)] + link
+            message = message[:138 - len(link)] + " " + link
         else:
             message = message[:140]
 

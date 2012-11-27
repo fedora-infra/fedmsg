@@ -86,7 +86,7 @@ Rough Outline of Stages of development/deployment
    consuming
    encoding
    crypto
-   text
+   meta
    config
 
 ----

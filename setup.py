@@ -70,7 +70,7 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
 
 setup(
     name='fedmsg',
-    version='0.6.0',
+    version='0.6.1',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -85,12 +85,15 @@ setup(
         'fedmsg.encoding',
         'fedmsg.commands',
         'fedmsg.consumers',
+        # fedmsg.text is deprecated in favor of fedmsg.meta, but we'll leave it
+        # around for backwards compatibility.  It's a symlink, for now.
         'fedmsg.text',
+        'fedmsg.meta',
         'fedmsg.tests',
     ],
     include_package_data=True,
     zip_safe=False,
-    scripts = [
+    scripts=[
         # This is separate from the other console scripts just for efficiency's
         # sake.  It gets called over and over and over again by our mediawiki
         # plugin/mod_php.  By making it *not* a setuptools console_script it
@@ -126,6 +129,10 @@ setup(
             "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer",
         ],
         'moksha.producer': [
+        ],
+        # fedmsg core only provides one metadata provider.
+        'fedmsg.meta': [
+            "logger=fedmsg.meta.logger:LoggerProcessor",
         ],
     }
 )

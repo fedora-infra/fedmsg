@@ -18,7 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #           Luke Macken <lmacken@redhat.com>
 #
-""" :mod:`fedmsg.text` handles the conversion of fedmsg messages
+""" :mod:`fedmsg.meta` handles the conversion of fedmsg messages
 (dict-like json objects) into internationalized human-readable
 strings:  strings like ``"nirik voted on a tag in tagger"`` and
 ``"lmacken commented on a bodhi update."``
@@ -26,19 +26,19 @@ strings:  strings like ``"nirik voted on a tag in tagger"`` and
 The intent is to use the module 1) in the ``fedmsg-irc`` bot and 2) in the
 gnome-shell desktop notification widget.  The sky is the limit, though.
 
-The primary entry point is :func:`fedmsg.text.msg2repr` which takes a dict and
+The primary entry point is :func:`fedmsg.meta.msg2repr` which takes a dict and
 returns the string representation.  Portions of that string are in turn
-produced by :func:`fedmsg.text.msg2title`, :func:`fedmsg.text.msg2subtitle`,
-and :func:`fedmsg.text.msg2link`.
+produced by :func:`fedmsg.meta.msg2title`, :func:`fedmsg.meta.msg2subtitle`,
+and :func:`fedmsg.meta.msg2link`.
 
 Message processing is handled by a list of MessageProcessors (instances of
-:class:`fedmsg.text.base.BaseProcessor`) which defined in
+:class:`fedmsg.meta.base.BaseProcessor`) which defined in
 submodules of this module.  Messages for which no MessageProcessor exists are
 handled gracefully.
 
 If you'd like to add a new processor, you'll need to extend
-:class:`fedmsg.text.base.BaseProcessor` and override the appropriate methods.
-Your new class will need to be added to the :data:`fedmsg.text.processors` list
+:class:`fedmsg.meta.base.BaseProcessor` and override the appropriate methods.
+Your new class will need to be added to the :data:`fedmsg.meta.processors` list
 to be used.
 
 """
@@ -51,15 +51,11 @@ _ = t.ugettext
 
 import fedmsg.crypto
 
-from fedmsg.text.bodhi import BodhiProcessor
-from fedmsg.text.scm import SCMProcessor
-from fedmsg.text.tagger import TaggerProcessor
-from fedmsg.text.supybot import SupybotProcessor
-from fedmsg.text.mediawiki import WikiProcessor
-from fedmsg.text.fas import FASProcessor
-from fedmsg.text.compose import ComposeProcessor
-from fedmsg.text.logger import LoggerProcessor
-from fedmsg.text.default import DefaultProcessor
+from fedmsg.meta.default import DefaultProcessor
+
+import pkg_resources
+import logging
+log = logging.getLogger("fedmsg")
 
 
 class ProcessorsNotInitialized(Exception):
@@ -68,13 +64,7 @@ class ProcessorsNotInitialized(Exception):
     __len__ = __iter__
 
 processors = ProcessorsNotInitialized("You must first call "
-                                      "fedmsg.text.make_processors(**config)")
-
-processor_classes = (BodhiProcessor, SCMProcessor, TaggerProcessor,
-                     SupybotProcessor, WikiProcessor, FASProcessor,
-                     ComposeProcessor, LoggerProcessor,
-                     # This should always be last
-                     DefaultProcessor)
+                                      "fedmsg.meta.make_processors(**config)")
 
 
 def make_processors(**config):
@@ -84,16 +74,23 @@ def make_processors(**config):
     this module.
 
         >>> import fedmsg.config
-        >>> import fedmsg.text
+        >>> import fedmsg.meta
         >>> config = fedmsg.config.load_config([], None)
-        >>> fedmsg.text.make_processors(**config)
-        >>> text = fedmsg.text.msgrepr(some_message_dict, **config)
+        >>> fedmsg.meta.make_processors(**config)
+        >>> text = fedmsg.meta.msgrepr(some_message_dict, **config)
 
     """
     global processors
     processors = []
-    for processor in processor_classes:
-        processors.append(processor(_, **config))
+    for processor in pkg_resources.iter_entry_points('fedmsg.meta'):
+        try:
+            processors.append(processor.load()(_, **config))
+        except Exception as e:
+            log.warn("Failed to load %r processor." % processor.name)
+            log.warn(str(e))
+
+    # This should always be last
+    processors.append(DefaultProcessor(_, **config))
 
 
 def msg2processor(msg, **config):
@@ -108,6 +105,40 @@ def msg2processor(msg, **config):
     else:
         return processors[-1]  # DefaultProcessor
 
+
+def legacy_condition(cls):
+    def _wrapper(f):
+        def __wrapper(msg, legacy=False, **config):
+            try:
+                return f(msg, **config)
+            except KeyError:
+                if legacy:
+                    return cls()
+                else:
+                    raise
+
+        __wrapper.__doc__ = f.__doc__
+        __wrapper.__name__ = f.__name__
+        return __wrapper
+    return _wrapper
+
+
+def with_processor():
+    def _wrapper(f):
+        def __wrapper(msg, processor=None, **config):
+            if not processor:
+                processor = msg2processor(msg, **config)
+
+            return f(msg, processor=processor, **config)
+
+        __wrapper.__doc__ = f.__doc__
+        __wrapper.__name__ = f.__name__
+        return __wrapper
+    return _wrapper
+
+
+@legacy_condition(unicode)
+@with_processor()
 def msg2repr(msg, **config):
     """ Return a human-readable or "natural language" representation of a
     dict-like fedmsg message.  Think of this as the 'top-most level' function
@@ -122,10 +153,10 @@ def msg2repr(msg, **config):
     return fmt.format(**locals())
 
 
-def msg2title(msg, processor=None, **config):
+@legacy_condition(unicode)
+@with_processor()
+def msg2title(msg, processor, **config):
     """ Return a 'title' or primary text associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     title = processor.title(msg, **config)
     suffix = _msg2suffix(msg, **config)
     if suffix:
@@ -133,46 +164,65 @@ def msg2title(msg, processor=None, **config):
     return title
 
 
-def msg2subtitle(msg, processor=None, **config):
+@legacy_condition(unicode)
+@with_processor()
+def msg2subtitle(msg, processor, **config):
     """ Return a 'subtitle' or secondary text associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.subtitle(msg, **config)
 
 
-def msg2link(msg, processor=None, **config):
+@legacy_condition(unicode)
+@with_processor()
+def msg2link(msg, processor, **config):
     """ Return a URL associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.link(msg, **config)
 
 
-def msg2icon(msg, processor=None, **config):
+@legacy_condition(unicode)
+@with_processor()
+def msg2icon(msg, processor, **config):
     """ Return a primary icon associated with a message. """
     if not processor:
         processor = msg2processor(msg, **config)
     return processor.icon(msg, **config)
 
 
-def msg2secondary_icon(msg, processor=None, **config):
+@legacy_condition(unicode)
+@with_processor()
+def msg2secondary_icon(msg, processor, **config):
     """ Return a secondary icon associated with a message. """
     if not processor:
         processor = msg2processor(msg, **config)
     return processor.secondary_icon(msg, **config)
 
 
-def msg2usernames(msg, processor=None, **config):
+@legacy_condition(set)
+@with_processor()
+def msg2usernames(msg, processor=None, legacy=False, **config):
     """ Return a set of FAS usernames associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.usernames(msg, **config)
 
 
-def msg2packages(msg, processor=None, **config):
+@legacy_condition(set)
+@with_processor()
+def msg2packages(msg, processor, **config):
     """ Return a set of package names associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.packages(msg, **config)
+
+
+@legacy_condition(set)
+@with_processor()
+def msg2objects(msg, processor, **config):
+    """ Return a set of objects associated with a message.
+
+    "objects" here is the "objects" from english grammar.. meaning, the thing
+    in the message upon which action is being done.  The "subject" is the
+    user and the "object" is the packages, or the wiki articles, or the blog
+    posts.
+
+    Where possible, use slash-delimited names for objects (as in wiki URLs).
+    """
+    return processor.objects(msg, **config)
 
 
 def _msg2suffix(msg, **config):

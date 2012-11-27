@@ -17,12 +17,24 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-from fedmsg.text.base import BaseProcessor
+from fedmsg.meta.base import BaseProcessor
 
 
-class DefaultProcessor(BaseProcessor):
-    __name__ = "unhandled"
-    __description__ = "fedmsg doesn't know how to handle this message"
-    __link__ = "http://github.com/ralphbean/fedmsg"
-    __docs__ = "http://fedmsg.rtfd.org"
-    __obj__ = "Everything Else"
+class LoggerProcessor(BaseProcessor):
+    __name__ = "logger"
+    __description__ = "miscellaneous Fedora Infrastructure shell scripts"
+    __link__ = "http://fedoraproject.org/wiki/Infrastructure"
+    __docs__ = "http://fedoraproject.org/wiki/Infrastructure"
+    __obj__ = "System Logs"
+
+    def subtitle(self, msg, **config):
+        if 'logger.log' in msg['topic']:
+            if 'log' in msg['msg']:
+                return msg['msg']['log']
+            else:
+                return self._("<custom JSON message>")
+        else:
+            raise NotImplementedError
+
+    def usernames(self, msg, **config):
+        return set([msg['username']])

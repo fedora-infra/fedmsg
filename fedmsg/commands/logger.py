@@ -21,55 +21,10 @@ import sys
 
 import fedmsg
 import fedmsg.encoding
-from fedmsg.commands import command
+from fedmsg.commands import BaseCommand
 
 
-def _log_message(kw, message):
-    if kw['json_input']:
-        msg = fedmsg.encoding.loads(message)
-    else:
-        msg = {'log': message}
-
-    fedmsg.publish(
-        topic=kw['topic'],
-        msg=msg,
-        modname=kw['modname'],
-    )
-
-extra_args = [
-    (['--message'], {
-        'dest': 'logger_message',
-        'help': "The message to send.",
-    }),
-    (['--json-input'], {
-        'dest': 'json_input',
-        'action': 'store_true',
-        'default': False,
-        'help': "Take each line of input as JSON.",
-    }),
-    (['--topic'], {
-        'dest': 'topic',
-        'metavar': "TOPIC",
-        'default': "log",
-        'help': "Think org.fedoraproject.logger.TOPIC",
-    }),
-    (['--modname'], {
-        'dest': 'modname',
-        'metavar': "MODNAME",
-        'default': "logger",
-        'help': "More control over the topic.  Think org.fp.MODNAME.TOPIC.",
-    }),
-    (['--cert-prefix'], {
-        'dest': 'cert_prefix',
-        'metavar': "CERT_PREFIX",
-        'default': "shell",
-        'help': "Specify a different cert from /etc/pki/fedmsg",
-    }),
-]
-
-
-@command(name="fedmsg-logger", extra_args=extra_args)
-def logger(**kwargs):
+class LoggerCommand(BaseCommand):
     """
     Emit log messages to the FI bus.
 
@@ -94,14 +49,66 @@ def logger(**kwargs):
         "{'a': 1}" is bad.
 
     """
+    name = 'fedmsg-logger'
+    extra_args = [
+        (['--message'], {
+            'dest': 'logger_message',
+            'help': "The message to send.",
+        }),
+        (['--json-input'], {
+            'dest': 'json_input',
+            'action': 'store_true',
+            'default': False,
+            'help': "Take each line of input as JSON.",
+        }),
+        (['--topic'], {
+            'dest': 'topic',
+            'metavar': "TOPIC",
+            'default': "log",
+            'help': "Think org.fedoraproject.logger.TOPIC",
+        }),
+        (['--modname'], {
+            'dest': 'modname',
+            'metavar': "MODNAME",
+            'default': "logger",
+            'help': "More control over the topic.  Think org.fp.MODNAME.TOPIC.",
+        }),
+        (['--cert-prefix'], {
+            'dest': 'cert_prefix',
+            'metavar': "CERT_PREFIX",
+            'default': "shell",
+            'help': "Specify a different cert from /etc/pki/fedmsg",
+        }),
+    ]
 
-    kwargs['active'] = True
-    fedmsg.init(name='relay_inbound', **kwargs)
+    def _log_message(self, kw, message):
+        if kw['json_input']:
+            msg = fedmsg.encoding.loads(message)
+        else:
+            msg = {'log': message}
 
-    if kwargs.get('logger_message'):
-        _log_message(kwargs, kwargs.get('logger_message'))
-    else:
-        line = sys.stdin.readline()
-        while line:
-            _log_message(kwargs, line.strip())
+        fedmsg.publish(
+            topic=kw['topic'],
+            msg=msg,
+            modname=kw['modname'],
+        )
+
+    def __init__(self):
+        super(LoggerCommand, self).__init__()
+
+
+    def run(self):
+        self.config['active'] = True
+        fedmsg.init(name='relay_inbound', **self.config)
+
+        if self.config.get('logger_message'):
+            self._log_message(self.config, self.config.get('logger_message'))
+        else:
             line = sys.stdin.readline()
+            while line:
+                self._log_message(self.config, line.strip())
+                line = sys.stdin.readline()
+
+def logger():
+    command = LoggerCommand()
+    return command.execute()

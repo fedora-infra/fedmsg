@@ -93,3 +93,7 @@ class BaseProcessor(object):
     def packages(self, msg, **config):
         """ Return a set of package names associated with a message. """
         return set()
+
+    def objects(self, msg, **config):
+        """ Return a set of objects associated with a message. """
+        return set()

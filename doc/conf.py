@@ -46,7 +46,7 @@ html_theme_options = {
     # Style it like Fedora..
     "bodyfont":         "Cantarell",
 
-    "highlightcolor":   "#79db32", # First Green
+    "highlightcolor":   "#060", # First Green
 
     "sidebarbgcolor":   "#FEFEFE",
     "sidebartrimcolor": "#FEFEFE",
@@ -61,14 +61,14 @@ html_theme_options = {
 
     "bgcolor":          "#FEFEFE",
     "textcolor":        "#444444",
-    "linkcolor":        "#79db32", # First Green
+    "linkcolor":        "#060", # First Green
 
     "headtextcolor":    "#444444",
     "headlinkcolor":    "#444444",
 
     #"codebgcolor"
     #"codetextcolor"
-    "codetrimcolor":    "#79db32", # First Green
+    "codetrimcolor":    "#060", # First Green
 
     "footerbgcolor":    "#FEFEFE",
 

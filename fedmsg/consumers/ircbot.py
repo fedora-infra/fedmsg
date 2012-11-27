@@ -24,7 +24,7 @@
 # regexes in specified IRC channels
 import fedmsg
 import fedmsg.encoding
-import fedmsg.text
+import fedmsg.meta
 
 import copy
 import re
@@ -171,7 +171,7 @@ class IRCBotConsumer(FedmsgConsumer):
         self.irc_clients = []
 
         super(IRCBotConsumer, self).__init__(hub)
-        fedmsg.text.make_processors(**hub.config)
+        fedmsg.meta.make_processors(**hub.config)
 
         if not getattr(self, '_initialized', False):
             return
@@ -238,12 +238,12 @@ class IRCBotConsumer(FedmsgConsumer):
         if terse:
             if pretty:
                 return ircprettify(
-                    title=fedmsg.text.msg2title(msg, **self.hub.config),
-                    subtitle=fedmsg.text.msg2subtitle(msg, **self.hub.config),
-                    link=fedmsg.text.msg2link(msg, **self.hub.config),
+                    title=fedmsg.meta.msg2title(msg, **self.hub.config),
+                    subtitle=fedmsg.meta.msg2subtitle(msg, **self.hub.config),
+                    link=fedmsg.meta.msg2link(msg, **self.hub.config),
                 )
             else:
-                return fedmsg.text.msg2repr(msg, **self.hub.config)
+                return fedmsg.meta.msg2repr(msg, **self.hub.config)
 
         msg = copy.deepcopy(msg)
 
