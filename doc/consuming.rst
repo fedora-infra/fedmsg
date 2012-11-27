@@ -176,4 +176,4 @@ starting point for whatever you want to build::
         listen_and_print()
 
 Just bear in mind that you don't reap any of the benefits of
-:mod:`fedmsg.crypto` or :mod:`fedmsg.text`.
+:mod:`fedmsg.crypto` or :mod:`fedmsg.meta`.

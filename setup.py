@@ -85,7 +85,8 @@ setup(
         'fedmsg.encoding',
         'fedmsg.commands',
         'fedmsg.consumers',
-        'fedmsg.text',
+        'fedmsg.text',  # This is deprecated in favor of fedmsg.meta
+        'fedmsg.meta',
         'fedmsg.tests',
     ],
     include_package_data=True,
@@ -129,7 +130,7 @@ setup(
         ],
         # fedmsg core only provides one metadata provider.
         'fedmsg.meta': [
-            "logger=fedmsg.text.logger:LoggerProcessor",
+            "logger=fedmsg.meta.logger:LoggerProcessor",
         ],
     }
 )

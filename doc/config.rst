@@ -139,7 +139,7 @@ Glossary of Configuration Values
         :func:`fedmsg.crypto.validate` to validate messages before handing
         them off to the particular consumer for which the message is bound.
 
-        This is also used by :mod:`fedmsg.text` to denote trustworthiness
+        This is also used by :mod:`fedmsg.meta` to denote trustworthiness
         in the natural language representations produced by that module.
 
     ssldir
@@ -270,7 +270,7 @@ Glossary of Configuration Values
         ``make_pretty`` specifies that colors should be used, if possible.
 
         ``make_terse`` specifies that the "natural language" representations
-        produced by :mod:`fedmsg.text` should be echoed into the channel instead
+        produced by :mod:`fedmsg.meta` should be echoed into the channel instead
         of raw or dumb representations.
 
         The ``filters`` dict is not very smart.  In the above case, any message

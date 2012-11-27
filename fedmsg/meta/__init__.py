@@ -18,7 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #           Luke Macken <lmacken@redhat.com>
 #
-""" :mod:`fedmsg.text` handles the conversion of fedmsg messages
+""" :mod:`fedmsg.meta` handles the conversion of fedmsg messages
 (dict-like json objects) into internationalized human-readable
 strings:  strings like ``"nirik voted on a tag in tagger"`` and
 ``"lmacken commented on a bodhi update."``
@@ -26,19 +26,19 @@ strings:  strings like ``"nirik voted on a tag in tagger"`` and
 The intent is to use the module 1) in the ``fedmsg-irc`` bot and 2) in the
 gnome-shell desktop notification widget.  The sky is the limit, though.
 
-The primary entry point is :func:`fedmsg.text.msg2repr` which takes a dict and
+The primary entry point is :func:`fedmsg.meta.msg2repr` which takes a dict and
 returns the string representation.  Portions of that string are in turn
-produced by :func:`fedmsg.text.msg2title`, :func:`fedmsg.text.msg2subtitle`,
-and :func:`fedmsg.text.msg2link`.
+produced by :func:`fedmsg.meta.msg2title`, :func:`fedmsg.meta.msg2subtitle`,
+and :func:`fedmsg.meta.msg2link`.
 
 Message processing is handled by a list of MessageProcessors (instances of
-:class:`fedmsg.text.base.BaseProcessor`) which defined in
+:class:`fedmsg.meta.base.BaseProcessor`) which defined in
 submodules of this module.  Messages for which no MessageProcessor exists are
 handled gracefully.
 
 If you'd like to add a new processor, you'll need to extend
-:class:`fedmsg.text.base.BaseProcessor` and override the appropriate methods.
-Your new class will need to be added to the :data:`fedmsg.text.processors` list
+:class:`fedmsg.meta.base.BaseProcessor` and override the appropriate methods.
+Your new class will need to be added to the :data:`fedmsg.meta.processors` list
 to be used.
 
 """
@@ -51,7 +51,7 @@ _ = t.ugettext
 
 import fedmsg.crypto
 
-from fedmsg.text.default import DefaultProcessor
+from fedmsg.meta.default import DefaultProcessor
 
 import pkg_resources
 import logging
@@ -64,7 +64,7 @@ class ProcessorsNotInitialized(Exception):
     __len__ = __iter__
 
 processors = ProcessorsNotInitialized("You must first call "
-                                      "fedmsg.text.make_processors(**config)")
+                                      "fedmsg.meta.make_processors(**config)")
 
 
 def make_processors(**config):
@@ -74,10 +74,10 @@ def make_processors(**config):
     this module.
 
         >>> import fedmsg.config
-        >>> import fedmsg.text
+        >>> import fedmsg.meta
         >>> config = fedmsg.config.load_config([], None)
-        >>> fedmsg.text.make_processors(**config)
-        >>> text = fedmsg.text.msgrepr(some_message_dict, **config)
+        >>> fedmsg.meta.make_processors(**config)
+        >>> text = fedmsg.meta.msgrepr(some_message_dict, **config)
 
     """
     global processors

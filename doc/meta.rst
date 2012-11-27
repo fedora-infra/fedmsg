@@ -1,14 +1,14 @@
 "Natural Language" Representation of Messages
 =============================================
 
-.. automodule:: fedmsg.text
+.. automodule:: fedmsg.meta
     :members:
     :undoc-members:
     :show-inheritance:
 
 .. autodata:: processors
 
-.. automodule:: fedmsg.text.base
+.. automodule:: fedmsg.meta.base
     :members:
     :undoc-members:
     :show-inheritance:
