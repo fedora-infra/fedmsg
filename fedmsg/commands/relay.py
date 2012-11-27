@@ -58,6 +58,6 @@ class RelayCommand(BaseCommand):
         from moksha.hub import main
         main(options=self.config, consumers=[RelayConsumer])
 
-def main():
+def relay():
     command = RelayCommand()
     return command.execute()

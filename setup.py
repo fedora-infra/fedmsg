@@ -108,10 +108,10 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            "fedmsg-logger=fedmsg.commands.logger:main",
+            "fedmsg-logger=fedmsg.commands.logger:logger",
             "fedmsg-tail=fedmsg.commands.tail:tail",
             "fedmsg-hub=fedmsg.commands.hub:hub",
-            "fedmsg-relay=fedmsg.commands.relay:main",
+            "fedmsg-relay=fedmsg.commands.relay:relay",
             "fedmsg-gateway=fedmsg.commands.gateway:gateway",
             #"fedmsg-config=fedmsg.commands.config:config",
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot",
