@@ -47,6 +47,15 @@ class BaseCommand(object):
             fedmsg_command=True,
         )
 
+        self.logger = logging.getLogger('fedmsg')
+
+        # TODO: Allow the log levels to be configured
+        self.logger.setLevel(logging.DEBUG)
+        console_log = logging.StreamHandler()
+        console_log.setLevel(logging.DEBUG)
+
+        self.logger.addHandler(console_log)
+
     def _handle_signal(self, signum, stackframe):
         from moksha.hub.reactor import reactor
         from moksha.hub import hub
