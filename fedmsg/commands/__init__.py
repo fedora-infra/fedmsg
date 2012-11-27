@@ -21,7 +21,7 @@ import fedmsg
 import fedmsg.config
 import warnings
 import logging
-
+import sys
 
 class BaseCommand(object):
     daemonizable = False
@@ -54,7 +54,9 @@ class BaseCommand(object):
         #formatter = logging.Formatter("%(asctime)s - %(name)s - %(lineno)s - \
         #%(levelname)s - %(message)s")
         formatter = logging.Formatter("%(message)s")
-        console_log = logging.StreamHandler()
+        console_log = logging.StreamHandler(
+            stream = sys.stdout
+        )
         console_log.setLevel(logging.DEBUG)
         console_log.setFormatter(formatter)
 
