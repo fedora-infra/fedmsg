@@ -21,6 +21,7 @@ import datetime
 import logging
 import socket
 import time
+import sys
 
 import pygments
 import pygments.lexers
@@ -40,7 +41,7 @@ extra_args = [
         'dest': 'collectd_interval',
         'type': int,
         'help': 'Number of seconds to sleep between collectd updates.',
-        'default': 20,
+        'default': 5,
     }),
 ]
 
@@ -48,6 +49,7 @@ extra_args = [
 class CollectdConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
     config_key = "fedmsg.commands.collectd.enabled"
+    validate_messages = False
 
     def __init__(self, hub):
         super(CollectdConsumer, self).__init__(hub)
@@ -62,21 +64,23 @@ class CollectdConsumer(FedmsgConsumer):
 
     def dump(self):
         """ Called by CollectdProducer every `n` seconds. """
-        for k, v in self._dict.items():
-            # Print each entry to stdout
-            print self.formatter(k, v)
-            # Reset each entry to zero
+
+        # Print out the collectd feedback.
+        print self.formatter([v for k, v in sorted(self._dict.items())])
+
+        # Reset each entry to zero
+        for k, v in sorted(self._dict.items()):
             self._dict[k] = 0
 
-    def formatter(self, modname, value):
+    def formatter(self, values):
         """ Format messages for collectd to consume. """
-        template = "PUTVAL {host}/fedmsg/{modname} {timestamp}:{value}"
+        template = "PUTVAL {host}/fedmsg/fedmsg_scoreboard interval={interval} {timestamp}:{values}"
         timestamp = int(time.time())
         return template.format(
             host=self.host,
-            modname=modname,
             timestamp=timestamp,
-            value=value,
+            values=":".join(map(str, values)),
+            interval=self.hub.config['collectd_interval'],
         )
 
 
@@ -96,9 +100,10 @@ def collectd(**kw):
     # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
     # with moksha's expected configuration.
     moksha_options = dict(
-        zmq_publish_endpoints=",".join(kw['endpoints']["relay_outbound"]),
-        zmq_subscribe_endpoints=",".join(list(iterate(kw['relay_inbound']))),
-        zmq_subscribe_method="bind",
+        mute=True,  # Disable some warnings.
+        zmq_subscribe_endpoints=','.join(
+            ','.join(bunch) for bunch in kw['endpoints'].values()
+        ),
     )
     kw.update(moksha_options)
     kw[CollectdConsumer.config_key] = True
@@ -109,6 +114,7 @@ def collectd(**kw):
 
     # Turn off moksha logging.
     logging.disable(logging.INFO)
+    logging.disable(logging.WARN)
 
     from moksha.hub import main
     main(kw, [CollectdConsumer], [CollectdProducer])
