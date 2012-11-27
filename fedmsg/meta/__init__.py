@@ -32,14 +32,21 @@ produced by :func:`fedmsg.meta.msg2title`, :func:`fedmsg.meta.msg2subtitle`,
 and :func:`fedmsg.meta.msg2link`.
 
 Message processing is handled by a list of MessageProcessors (instances of
-:class:`fedmsg.meta.base.BaseProcessor`) which defined in
-submodules of this module.  Messages for which no MessageProcessor exists are
+:class:`fedmsg.meta.base.BaseProcessor`) which are discovered on a setuptools
+**entry-point**.  Messages for which no MessageProcessor exists are
 handled gracefully.
 
-If you'd like to add a new processor, you'll need to extend
-:class:`fedmsg.meta.base.BaseProcessor` and override the appropriate methods.
-Your new class will need to be added to the :data:`fedmsg.meta.processors` list
-to be used.
+The original deployment of fedmsg in `Fedora Infrastructure` uses metadata
+providers/message processors from a plugin called
+`fedmsg_meta_fedora_infrastructure
+<https://github.com/ralphbean/fedmsg_meta_fedora_infrastructure>`_.
+If you'd like to add your own processors for your own deployment, you'll need
+to extend :class:`fedmsg.meta.base.BaseProcessor` and override the appropriate
+methods.  If you package up your processor and expose it on the ``fedmsg.meta``
+entry-point, your new class will need to be added to the
+:data:`fedmsg.meta.processors` list at runtime.
+
+End users can have multiple plugin sets installed simultaneously.
 
 """
 
