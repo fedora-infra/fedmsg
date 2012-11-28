@@ -41,7 +41,7 @@ extra_args = [
         'dest': 'collectd_interval',
         'type': int,
         'help': 'Number of seconds to sleep between collectd updates.',
-        'default': 5,
+        'default': 10,
     }),
 ]
 
@@ -74,13 +74,14 @@ class CollectdConsumer(FedmsgConsumer):
 
     def formatter(self, values):
         """ Format messages for collectd to consume. """
-        template = "PUTVAL {host}/fedmsg/fedmsg_scoreboard interval={interval} {timestamp}:{values}"
+        template = "PUTVAL {host}/fedmsg/fedmsg_wallboard interval={interval} {timestamp}:{values}"
         timestamp = int(time.time())
+        interval=self.hub.config['collectd_interval']
         return template.format(
             host=self.host,
             timestamp=timestamp,
-            values=":".join(map(str, values)),
-            interval=self.hub.config['collectd_interval'],
+            values=":".join([str(value) for value in values]),
+            interval=interval,
         )
 
 
