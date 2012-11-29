@@ -93,7 +93,14 @@ class FedMsgContext(object):
             self.publisher = self.context.socket(zmq.PUB)
 
             if config['high_water_mark']:
-                self.publisher.setsockopt(zmq.HWM, config['high_water_mark'])
+                if hasattr(zmq, 'HWM'):
+                    self.publisher.setsockopt(
+                        zmq.HWM, config['high_water_mark'])
+                else:
+                    self.publisher.setsockopt(
+                        zmq.SNDHWM, config['high_water_mark'])
+                    self.publisher.setsockopt(
+                        zmq.RCVHWM, config['high_water_mark'])
 
             if method == 'connect':
                 self.publisher.setsockopt(zmq.LINGER, config['zmq_linger'])
