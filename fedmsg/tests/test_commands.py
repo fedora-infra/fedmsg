@@ -2,6 +2,7 @@ import unittest
 from mock import Mock
 from mock import patch
 from datetime import datetime
+import time
 import json
 import os
 
@@ -9,7 +10,10 @@ import fedmsg
 import fedmsg.core
 import fedmsg.config
 import fedmsg.commands
+
 from fedmsg.commands.logger import LoggerCommand
+from fedmsg.commands.tail import TailCommand
+
 from nose.tools import eq_
 
 import threading
@@ -46,7 +50,7 @@ class TestCommands(unittest.TestCase):
             with patch("fedmsg.config.__cache", config):
                 with patch("fedmsg.core.FedMsgContext.publish", mock_publish):
                     with patch("sys.stdin", new_callable=stdin):
-                        command = fedmsg.commands.logger.LoggerCommand()
+                        command = LoggerCommand()
                         command.execute()
 
         eq_(msgs, [{'log': test_input}])
@@ -73,7 +77,76 @@ class TestCommands(unittest.TestCase):
             with patch("fedmsg.config.__cache", config):
                 with patch("fedmsg.core.FedMsgContext.publish", mock_publish):
                     with patch("sys.stdin", new_callable=stdin):
-                        command = fedmsg.commands.logger.LoggerCommand()
+                        command = LoggerCommand()
                         command.execute()
 
         eq_(msgs, [test_input_dict])
+
+    @patch("sys.argv", new_callable=lambda: ["fedmsg-tail"])
+    @patch("sys.stdout", new_callable=six.StringIO)
+    def test_tail_basic(self, stdout, argv):
+        def mock_tail(self, topic="", passive=False, **kw):
+            yield ("name", "endpoint", "topic", "message")
+
+        config = {}
+        with patch("fedmsg.__local", self.local):
+            with patch("fedmsg.config.__cache", config):
+                with patch("fedmsg.core.FedMsgContext.tail_messages",
+                           mock_tail):
+                    command = fedmsg.commands.tail.TailCommand()
+                    command.execute()
+
+        output = stdout.getvalue()
+        eq_(output, "name, endpoint, topic, message\n")
+
+    @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--pretty"])
+    @patch("sys.stdout", new_callable=six.StringIO)
+    def test_tail_pretty(self, stdout, argv):
+        msgs = []
+
+        def mock_tail(self, topic="", passive=False, **kw):
+            msg = dict(
+                msg=dict(hello="world"),
+                timestamp=1354563717.472648,  # Once upon a time...
+            )
+
+            yield ("name", "endpoint", "topic", msg)
+
+        config = {}
+        with patch("fedmsg.__local", self.local):
+            with patch("fedmsg.config.__cache", config):
+                with patch("fedmsg.core.FedMsgContext.tail_messages",
+                           mock_tail):
+                    command = fedmsg.commands.tail.TailCommand()
+                    command.execute()
+
+        output = stdout.getvalue()
+        expected = """name, endpoint, topic, 
+{'msg': {'hello': 'world'}, 'timestamp': 'Mon Dec  3 14:41:57 2012'}
+"""
+        eq_(output, expected)
+
+    @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--really-pretty"])
+    @patch("sys.stdout", new_callable=six.StringIO)
+    def test_tail_really_pretty(self, stdout, argv):
+        msgs = []
+
+        def mock_tail(self, topic="", passive=False, **kw):
+            msg = dict(
+                msg=dict(hello="world"),
+                timestamp=1354563717.472648,  # Once upon a time...
+            )
+
+            yield ("name", "endpoint", "topic", msg)
+
+        config = {}
+        with patch("fedmsg.__local", self.local):
+            with patch("fedmsg.config.__cache", config):
+                with patch("fedmsg.core.FedMsgContext.tail_messages",
+                           mock_tail):
+                    command = fedmsg.commands.tail.TailCommand()
+                    command.execute()
+
+        output = stdout.getvalue()
+        expected = 'name, endpoint, topic, \n{\x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"msg"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m{\x1b[39;49;00m\n    \x1b[39;49;00m\x1b[33m"hello"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[33m"world"\x1b[39;49;00m\n  \x1b[39;49;00m}\x1b[39;49;00m,\x1b[39;49;00m \x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"timestamp"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[34m1354563717.472648\x1b[39;49;00m\n}\x1b[39;49;00m\n'
+        eq_(output, expected)
