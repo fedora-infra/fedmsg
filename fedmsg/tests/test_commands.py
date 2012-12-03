@@ -13,6 +13,8 @@ import fedmsg.commands
 
 from fedmsg.commands.logger import LoggerCommand
 from fedmsg.commands.tail import TailCommand
+from fedmsg.commands.relay import RelayCommand
+import fedmsg.consumers.relay
 
 from nose.tools import eq_
 
@@ -150,3 +152,25 @@ class TestCommands(unittest.TestCase):
         output = stdout.getvalue()
         expected = 'name, endpoint, topic, \n{\x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"msg"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m{\x1b[39;49;00m\n    \x1b[39;49;00m\x1b[33m"hello"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[33m"world"\x1b[39;49;00m\n  \x1b[39;49;00m}\x1b[39;49;00m,\x1b[39;49;00m \x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"timestamp"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[34m1354563717.472648\x1b[39;49;00m\n}\x1b[39;49;00m\n'
         eq_(output, expected)
+
+    @patch("sys.argv", new_callable=lambda: ["fedmsg-relay"])
+    def test_relay(self, argv):
+        actual_options = []
+
+        def mock_main(options, consumers):
+            actual_options.append(options)
+
+        config = {}
+        with patch("fedmsg.__local", self.local):
+            with patch("fedmsg.config.__cache", config):
+                with patch("moksha.hub.main", mock_main):
+                    command = fedmsg.commands.relay.RelayCommand()
+                    command.execute()
+
+        actual_options = actual_options[0]
+        assert(
+            fedmsg.consumers.relay.RelayConsumer.config_key in actual_options
+        )
+        assert(
+            actual_options[fedmsg.consumers.relay.RelayConsumer.config_key]
+        )
