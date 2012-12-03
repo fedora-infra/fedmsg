@@ -99,7 +99,8 @@ class LoggerCommand(BaseCommand):
 
     def run(self):
         self.config['active'] = True
-        fedmsg.init(name='relay_inbound', **self.config)
+        self.config['name'] = 'relay_inbound'
+        fedmsg.init(**self.config)
 
         if self.config.get('logger_message'):
             self._log_message(self.config, self.config.get('logger_message'))
