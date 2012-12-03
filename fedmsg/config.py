@@ -66,8 +66,8 @@ defaults = dict(
 __cache = {}
 
 
-def load_config(extra_args,
-                doc,
+def load_config(extra_args=None,
+                doc=None,
                 filenames=None,
                 invalidate_cache=False,
                 fedmsg_command=False):
@@ -89,6 +89,10 @@ def load_config(extra_args,
 
     if __cache:
         return __cache
+
+    # Coerce defaults if arguments are not supplied.
+    extra_args = extra_args or []
+    doc = doc or ""
 
     config = copy.deepcopy(defaults)
     config.update(_process_config_file(filenames=filenames))

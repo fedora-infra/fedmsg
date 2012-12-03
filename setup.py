@@ -56,6 +56,8 @@ install_requires = [
 ]
 tests_require = [
     'nose',
+    'mock',
+    'six',  # In the future, we'll use this across fedmsg proper for py3.
 ]
 
 if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
