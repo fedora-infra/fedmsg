@@ -116,6 +116,8 @@ class command(object):
     """ Convenience decorator for wrapping fedmsg console script commands.
 
     Accepts a list of extra args.  See fedmsg.commands.logger for an example.
+
+    ** This is deprecated in favor of using the BaseCommand class above.
     """
 
     def __init__(self, name, extra_args=None, daemonizable=False):
