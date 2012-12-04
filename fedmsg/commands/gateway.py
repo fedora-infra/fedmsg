@@ -21,14 +21,11 @@
 """
 
 import fedmsg
-from fedmsg.commands import command
+from fedmsg.commands import BaseCommand
 from fedmsg.consumers.gateway import GatewayConsumer
 
-extra_args = []
 
-
-@command(name="fedmsg-gateway", extra_args=extra_args, daemonizable=True)
-def gateway(**kw):
+class GatewayCommand(BaseCommand):
     """ Rebroadcast messages to a special zmq endpoint.
 
     A repeater that rebroadcasts all messages received to a special zmq
@@ -42,19 +39,28 @@ def gateway(**kw):
     This service is what makes using ":doc:`consuming`" outside the
     VPN/firewalled bus environment possible.
     """
+    name = 'fedmsg-gateway'
+    daemonizable = True
+    extra_args = []
 
-    # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
-    # with moksha's expected configuration.
-    moksha_options = dict(
-        zmq_subscribe_endpoints=','.join(
-            ','.join(bunch) for bunch in
-            kw['endpoints'].values()
-        ),
-    )
-    kw.update(moksha_options)
+    def run(self):
+        # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py
+        # to work with moksha's expected configuration.
+        moksha_options = dict(
+            zmq_subscribe_endpoints=','.join(
+                ','.join(bunch) for bunch in
+                self.config['endpoints'].values()
+            ),
+        )
+        self.config.update(moksha_options)
 
-    # Flip the special bit that allows the GatewayConsumer to run
-    kw[GatewayConsumer.config_key] = True
+        # Flip the special bit that allows the GatewayConsumer to run
+        self.config[GatewayConsumer.config_key] = True
 
-    from moksha.hub import main
-    main(options=kw, consumers=[GatewayConsumer])
+        from moksha.hub import main
+        main(options=self.config, consumers=[GatewayConsumer])
+
+
+def gateway():
+    command = GatewayCommand()
+    command.execute()
