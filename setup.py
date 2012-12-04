@@ -135,6 +135,7 @@ setup(
         # fedmsg core only provides one metadata provider.
         'fedmsg.meta': [
             "logger=fedmsg.meta.logger:LoggerProcessor",
+            "announce=fedmsg.meta.announce:AnnounceProcessor",
         ],
     }
 )
