@@ -41,6 +41,7 @@ from twisted.internet import reactor
 from twisted.internet import defer
 
 import logging
+log = logging.getLogger("moksha.hub")
 
 
 mirc_colors = {
@@ -92,7 +93,6 @@ class FedMsngr(irc.IRCClient):
     sourceURL = "http://github.com/ralphbean/fedmsg"
 
     def __init__(self, *args, **kw):
-        self.log = logging.getLogger("moksha.hub")
         super(FedMsgnr, self).__init__(*args, **kw)
 
     def _get_nickname(self):
@@ -104,16 +104,16 @@ class FedMsngr(irc.IRCClient):
 
     def signedOn(self):
         self.join(self.factory.channel)
-        self.log.info("Signed on as %s." % (self.nickname,))
+        log.info("Signed on as %s." % (self.nickname,))
 
     def joined(self, channel):
-        self.log.info("Joined %s." % (channel,))
+        log.info("Joined %s." % (channel,))
         self.factory.parent_consumer.add_irc_client(self)
 
         def got_modes(modelist):
             modes = ''.join(modelist)
             if 'c' in modes:
-                self.log.info("%s has +c is on. No prettiness" % channel)
+                log.info("%s has +c is on. No prettiness" % channel)
                 self.factory.pretty = False
         self.modes(channel).addCallback(got_modes)
 
