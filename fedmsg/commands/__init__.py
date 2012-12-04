@@ -20,17 +20,13 @@
 import fedmsg
 import fedmsg.config
 import warnings
-import logging
+import logging.config
 import sys
+
 
 class BaseCommand(object):
     daemonizable = False
     extra_args = None
-
-    # TODO, move this to /etc/fedmsg.d/
-    # Specifically, use dictConfig()
-    log_level = logging.DEBUG
-    log_format = "%(message)s"
 
     def __init__(self):
         if not self.extra_args:
@@ -47,14 +43,8 @@ class BaseCommand(object):
             )
 
         self.config = self.get_config()
-
-        self.logger = logging.getLogger('fedmsg')
-        self.logger.setLevel(self.log_level)
-        formatter = logging.Formatter(self.log_format)
-        console_log = logging.StreamHandler(sys.stdout)
-        console_log.setLevel(self.log_level)
-        console_log.setFormatter(formatter)
-        self.logger.addHandler(console_log)
+        logging.config.dictConfig(self.config.get('logging', {}))
+        self.log = logging.getLogger("fedmsg")
 
     def get_config(self):
         return fedmsg.config.load_config(
@@ -173,7 +163,7 @@ class command(object):
             if self.daemonizable and config['daemon'] is True:
                 return self._daemonize(func, config)
             else:
-                logging.basicConfig()
+                logging.config.dictConfig(config.get('logging', {}))
                 try:
                     return func(**config)
                 except KeyboardInterrupt:

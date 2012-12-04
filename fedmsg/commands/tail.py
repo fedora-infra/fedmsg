@@ -125,7 +125,7 @@ class TailCommand(BaseCommand):
             if not inclusive_regexp.search(topic):
                 continue
 
-            self.logger.info("%s, %s, %s, %s" % (name, ep, topic, formatter(message)))
+            self.log.info("%s, %s, %s, %s" % (name, ep, topic, formatter(message)))
 
 def tail():
     command = TailCommand()

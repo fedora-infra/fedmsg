@@ -83,7 +83,7 @@ class TweetCommand(BaseCommand):
             except Exception as e:
                 if 'Too many notices too fast;' in str(e):
                     # Cool our heels then try again.
-                    self.logger.info("Sleeping for %i", hibernate_duration)
+                    self.log.info("Sleeping for %i", hibernate_duration)
                     time.sleep(hibernate_duration)
                     _post_to_api(api, message)
                 elif 'json decoding' in str(e):
@@ -106,10 +106,10 @@ class TweetCommand(BaseCommand):
                 message = message[:140]
 
             if not message:
-                self.logger.info("Not tweeting blank message.")
+                self.log.info("Not tweeting blank message.")
                 continue
 
-            self.logger.info("Tweeting %r" % message)
+            self.log.info("Tweeting %r" % message)
             for api in apis:
                 _post_to_api(api, message)
 
