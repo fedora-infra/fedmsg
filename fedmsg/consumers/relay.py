@@ -21,9 +21,6 @@ import fedmsg
 
 from fedmsg.consumers import FedmsgConsumer
 
-import logging
-log = logging.getLogger("moksha.hub")
-
 
 class RelayConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"

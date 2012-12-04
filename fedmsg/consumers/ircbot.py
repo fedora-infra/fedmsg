@@ -41,7 +41,6 @@ from twisted.internet import reactor
 from twisted.internet import defer
 
 import logging
-log = logging.getLogger("moksha.hub")
 
 
 mirc_colors = {
@@ -92,6 +91,10 @@ class FedMsngr(irc.IRCClient):
     lineRate = 0.6
     sourceURL = "http://github.com/ralphbean/fedmsg"
 
+    def __init__(self, *args, **kw):
+        self.log = logging.getLogger("moksha.hub")
+        super(FedMsgnr, self).__init__(*args, **kw)
+
     def _get_nickname(self):
         return self.factory.nickname
     nickname = property(_get_nickname)
@@ -101,16 +104,16 @@ class FedMsngr(irc.IRCClient):
 
     def signedOn(self):
         self.join(self.factory.channel)
-        log.info("Signed on as %s." % (self.nickname,))
+        self.log.info("Signed on as %s." % (self.nickname,))
 
     def joined(self, channel):
-        log.info("Joined %s." % (channel,))
+        self.log.info("Joined %s." % (channel,))
         self.factory.parent_consumer.add_irc_client(self)
 
         def got_modes(modelist):
             modes = ''.join(modelist)
             if 'c' in modes:
-                log.info("%s has +c is on. No prettiness" % channel)
+                self.log.info("%s has +c is on. No prettiness" % channel)
                 self.factory.pretty = False
         self.modes(channel).addCallback(got_modes)
 
@@ -150,14 +153,15 @@ class FedMsngrFactory(protocol.ClientFactory):
         self.pretty = pretty
         self.terse = terse
         self.parent_consumer = parent_consumer
+        self.log = logging.getLogger("moksha.hub")
 
     def clientConnectionLost(self, connector, reason):
-        log.warning("Lost connection (%s), reconnecting." % (reason,))
+        self.log.warning("Lost connection (%s), reconnecting." % (reason,))
         self.parent_consumer.del_irc_clients(factory=self)
         connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
-        log.error("Could not connect: %s" % (reason,))
+        self.log.error("Could not connect: %s" % (reason,))
 
 
 class IRCBotConsumer(FedmsgConsumer):
@@ -182,7 +186,7 @@ class IRCBotConsumer(FedmsgConsumer):
             port = settings.get('port', 6667)
             channel = settings.get('channel', None)
             if not channel:
-                log.error("No channel specified.  Ignoring entry.")
+                self.log.error("No channel specified.  Ignoring entry.")
                 continue
 
             if not channel.startswith("#"):

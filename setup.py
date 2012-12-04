@@ -45,7 +45,7 @@ install_requires = [
     'pyzmq',
     'fabulous',
     'kitchen',
-    'moksha.hub',
+    'moksha.hub>=1.0.9',
     'requests',
     'pygments',
     #'daemon',

@@ -27,6 +27,11 @@ class BaseCommand(object):
     daemonizable = False
     extra_args = None
 
+    # TODO, move this to /etc/fedmsg.d/
+    # Specifically, use dictConfig()
+    log_level = logging.DEBUG
+    log_format = "%(message)s"
+
     def __init__(self):
         if not self.extra_args:
             self.extra_args = []
@@ -44,16 +49,11 @@ class BaseCommand(object):
         self.config = self.get_config()
 
         self.logger = logging.getLogger('fedmsg')
-
-        # TODO: Allow the log levels to be configured
-        self.logger.setLevel(logging.DEBUG)
-        #formatter = logging.Formatter("%(asctime)s - %(name)s - %(lineno)s - \
-        #%(levelname)s - %(message)s")
-        formatter = logging.Formatter("%(message)s")
+        self.logger.setLevel(self.log_level)
+        formatter = logging.Formatter(self.log_format)
         console_log = logging.StreamHandler(sys.stdout)
-        console_log.setLevel(logging.DEBUG)
+        console_log.setLevel(self.log_level)
         console_log.setFormatter(formatter)
-
         self.logger.addHandler(console_log)
 
     def get_config(self):

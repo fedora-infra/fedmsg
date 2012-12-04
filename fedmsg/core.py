@@ -34,7 +34,6 @@ import fedmsg.encoding
 import fedmsg.crypto
 
 import logging
-log = logging.getLogger("fedmsg")
 
 
 class FedMsgContext(object):
@@ -313,6 +312,7 @@ class FedMsgContext(object):
                         socket.gethostbyname_ex(hostname)
                     except:
                         failed_hostnames.append(hostname)
+                        log = logging.getLogger("fedmsg")
                         log.warn("Couldn't resolve %r" % hostname)
                         continue
 

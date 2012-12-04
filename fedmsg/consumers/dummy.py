@@ -22,7 +22,6 @@ import fedmsg
 from fedmsg.consumers import FedmsgConsumer
 
 import logging
-log = logging.getLogger("moksha.hub")
 
 
 class DummyConsumer(FedmsgConsumer):
@@ -37,4 +36,5 @@ class DummyConsumer(FedmsgConsumer):
 
     def consume(self, msg):
         # Do nothing.
+        log = logging.getLogger("moksha.hub")
         log.debug("Duhhhh... got: %r" % msg)
