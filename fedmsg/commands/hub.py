@@ -18,27 +18,17 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 import fedmsg
-from fedmsg.commands import command
-
-extra_args = [
-    (['--websocket-server-port'], {
-        'dest': 'moksha.livesocket.websocket.port',
-        'type': int,
-        'help': 'Port on which to host the websocket server.',
-        'default': None,
-    }),
-]
+from fedmsg.commands import BaseCommand
 
 
-@command(name="fedmsg-hub", extra_args=extra_args, daemonizable=True)
-def hub(**kw):
+class HubCommand(BaseCommand):
     """ Run the fedmsg hub.
 
     ``fedmsg-hub`` is the all-purpose daemon.  This should be run on every host
     that has services which declare their own consumers.  ``fedmsg-hub`` will
     listen to every endpoint discovered by :mod:`fedmsg.config` and forward
-    messages in-process to the locally-declared consumers.  It is a thin wrapper
-    over a moksha-hub.
+    messages in-process to the locally-declared consumers.  It is a thin
+    wrapper over a moksha-hub.
 
     Other commands like ``fedmsg-irc`` are just specialized, restricted
     versions of ``fedmsg-hub``.  ``fedmsg-hub`` is the most general/abstract.
@@ -46,20 +36,36 @@ def hub(**kw):
     ``fedmsg-hub`` also houses the functions to run a websocket server.
 
     """
+    name = 'fedmsg-hub'
+    daemonizable = True
+    extra_args = [
+        (['--websocket-server-port'], {
+            'dest': 'moksha.livesocket.websocket.port',
+            'type': int,
+            'help': 'Port on which to host the websocket server.',
+            'default': None,
+        }),
+    ]
 
-    # Check if the user wants the websocket server to run
-    if kw['moksha.livesocket.websocket.port']:
-        kw['moksha.livesocket.backend'] = 'websocket'
+    def run(self):
+        # Check if the user wants the websocket server to run
+        if self.config['moksha.livesocket.websocket.port']:
+            self.config['moksha.livesocket.backend'] = 'websocket'
 
-    # Rephrase the fedmsg-config.py config as moksha *.ini format.
-    # Note that the hub we kick off here cannot send any message.  You should
-    # use fedmsg.publish(...) still for that.
-    moksha_options = dict(
-        zmq_subscribe_endpoints=','.join(
-            ','.join(bunch) for bunch in kw['endpoints'].values()
-        ),
-    )
-    kw.update(moksha_options)
+        # Rephrase the fedmsg-config.py config as moksha *.ini format.
+        # Note that the hub we kick off here cannot send any message.  You
+        # should use fedmsg.publish(...) still for that.
+        moksha_options = dict(
+            zmq_subscribe_endpoints=','.join(
+                ','.join(bunch) for bunch in self.config['endpoints'].values()
+            ),
+        )
+        self.config.update(moksha_options)
 
-    from moksha.hub import main
-    main(options=kw)
+        from moksha.hub import main
+        main(options=self.config)
+
+
+def hub():
+    command = HubCommand()
+    command.execute()
