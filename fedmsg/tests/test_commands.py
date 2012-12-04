@@ -27,6 +27,10 @@ class TestCommands(unittest.TestCase):
     def setUp(self):
         self.local = threading.local()
 
+        # Crazy.  I'm sorry.
+        os.environ['TZ'] = 'US/Central'
+        time.tzset()
+
     def tearDown(self):
         del self.local
         self.local = None
@@ -124,7 +128,7 @@ class TestCommands(unittest.TestCase):
 
         output = stdout.getvalue()
         expected = """name, endpoint, topic, 
-{'msg': {'hello': 'world'}, 'timestamp': 'Mon Dec  3 14:41:57 2012'}
+{'msg': {'hello': 'world'}, 'timestamp': 'Mon Dec  3 13:41:57 2012'}
 """
         eq_(output, expected)
 
