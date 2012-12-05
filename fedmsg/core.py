@@ -42,6 +42,7 @@ class FedMsgContext(object):
 
     def __init__(self, **config):
         super(FedMsgContext, self).__init__()
+        self.log = logging.getLogger("fedmsg")
 
         self.c = config
         self.hostname = socket.gethostname().split('.', 1)[0]
@@ -322,8 +323,7 @@ class FedMsgContext(object):
                         socket.gethostbyname_ex(hostname)
                     except:
                         failed_hostnames.append(hostname)
-                        log = logging.getLogger("fedmsg")
-                        log.warn("Couldn't resolve %r" % hostname)
+                        self.log.warn("Couldn't resolve %r" % hostname)
                         continue
 
                 # OK, sanity checks pass.  Create the subscriber and connect.
