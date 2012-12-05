@@ -20,8 +20,15 @@
 import fedmsg
 import fedmsg.config
 import warnings
-import logging.config
 import sys
+
+import logging
+try:
+    # Python2.7 and later
+    from logging.config import dictConfig
+except ImportError:
+    # For Python2.6, we rely on a third party module.
+    from logutils.dictconfig import dictConfig
 
 
 class BaseCommand(object):
@@ -43,7 +50,7 @@ class BaseCommand(object):
             )
 
         self.config = self.get_config()
-        logging.config.dictConfig(self.config.get('logging', {}))
+        dictConfig(self.config.get('logging', {}))
         self.log = logging.getLogger("fedmsg")
 
     def get_config(self):
