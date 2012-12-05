@@ -39,4 +39,12 @@ config = dict(
 
     # Number of seconds to sleep after initializing waiting for sockets to sync.
     post_init_sleep=0.2,
+
+    # See the following
+    #   - http://tldp.org/HOWTO/TCP-Keepalive-HOWTO/overview.html
+    #   - http://api.zeromq.org/3-2:zmq-setsockopt
+    zmq_tcp_keepalive=1,
+    zmq_tcp_keepalive_cnt=3,
+    zmq_tcp_keepalive_idle=60,
+    zmq_tcp_keepalive_intvl=5,
 )

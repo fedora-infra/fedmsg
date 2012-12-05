@@ -93,20 +93,12 @@ class FedMsgContext(object):
             # Construct it.
             self.publisher = self.context.socket(zmq.PUB)
 
-            # Set a high water mark on the zmq socket.  Do so in a way that is
-            # cross-compatible with zeromq2 and zeromq3.
-            if config['high_water_mark']:
-                if hasattr(zmq, 'HWM'):
-                    # zeromq2
-                    self.publisher.setsockopt(
-                        zmq.HWM, config['high_water_mark'])
-                else:
-                    # zeromq3
-                    self.publisher.setsockopt(
-                        zmq.SNDHWM, config['high_water_mark'])
-                    self.publisher.setsockopt(
-                        zmq.RCVHWM, config['high_water_mark'])
+            self._set_high_water_mark(self.publisher)
+            self._set_tcp_keepalive(self.publisher)
 
+            # Set a zmq_linger, thus doing a little bit more to ensure that our
+            # message gets to the fedmsg-relay (*if* we're talking to the relay
+            # which is the case when method == 'connect').
             if method == 'connect':
                 self.publisher.setsockopt(zmq.LINGER, config['zmq_linger'])
 
@@ -159,6 +151,54 @@ class FedMsgContext(object):
         # Sleep just to make sure that the socket gets set up before anyone
         # tries anything.  This is a documented zmq 'feature'.
         time.sleep(config['post_init_sleep'])
+
+    def _set_tcp_keepalive(self, socket):
+        """ Set a series of TCP keepalive options on the socket if
+        and only if
+          1) they are specified explicitly in the config and
+          2) the version of pyzmq has been compiled with support
+
+        We ran into a problem in FedoraInfrastructure where long-standing
+        connections between some hosts would suddenly drop off the
+        map silently.  Because PUB/SUB sockets don't communicate
+        regularly, nothing in the TCP stack would automatically try and
+        fix the connection.  With TCP_KEEPALIVE options (introduced in
+        libzmq 3.2 and pyzmq 2.2.0.1) hopefully that will be fixed.
+
+        See the following
+          - http://tldp.org/HOWTO/TCP-Keepalive-HOWTO/overview.html
+          - http://api.zeromq.org/3-2:zmq-setsockopt
+        """
+
+        keepalive_options = {
+            # Map fedmsg config keys to zeromq socket constants
+            'zmq_tcp_keepalive': 'TCP_KEEPALIVE',
+            'zmq_tcp_keepalive_cnt': 'TCP_KEEPALIVE_CNT',
+            'zmq_tcp_keepalive_idle': 'TCP_KEEPALIVE_IDLE',
+            'zmq_tcp_keepalive_intvl': 'TCP_KEEPALIVE_INTVL',
+        }
+        for key, const in keepalive_options.items():
+            if key in self.c:
+                attr = getattr(zmq, const, None)
+                if not attr:
+                    self.log.warn("zmq.%s not available" % const)
+                else:
+                    self.log.debug("Setting %r %r" % (const, self.c[key]))
+                    socket.setsockopt(attr, self.c[key])
+
+    def _set_high_water_mark(self, socket):
+        """ Set a high water mark on the zmq socket.  Do so in a way that is
+        cross-compatible with zeromq2 and zeromq3.
+        """
+
+        if self.c['high_water_mark']:
+            if hasattr(zmq, 'HWM'):
+                # zeromq2
+                socket.setsockopt(zmq.HWM, self.c['high_water_mark'])
+            else:
+                # zeromq3
+                socket.setsockopt(zmq.SNDHWM, self.c['high_water_mark'])
+                socket.setsockopt(zmq.RCVHWM, self.c['high_water_mark'])
 
     def destroy(self):
         """ Destroy a fedmsg context """
@@ -329,6 +369,10 @@ class FedMsgContext(object):
                 # OK, sanity checks pass.  Create the subscriber and connect.
                 subscriber = self.context.socket(zmq.SUB)
                 subscriber.setsockopt(zmq.SUBSCRIBE, topic)
+
+                self._set_high_water_mark(subscriber)
+                self._set_tcp_keepalive(subscriber)
+
                 getattr(subscriber, method)(endpoint)
                 subs[subscriber] = (_name, endpoint)
 
