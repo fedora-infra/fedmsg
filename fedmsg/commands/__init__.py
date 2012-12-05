@@ -20,8 +20,9 @@
 import fedmsg
 import fedmsg.config
 import warnings
-import logging
+import logging.config
 import sys
+
 
 class BaseCommand(object):
     daemonizable = False
@@ -42,21 +43,8 @@ class BaseCommand(object):
             )
 
         self.config = self.get_config()
-
-        self.logger = logging.getLogger('fedmsg')
-
-        # TODO: Allow the log levels to be configured
-        self.logger.setLevel(logging.DEBUG)
-        #formatter = logging.Formatter("%(asctime)s - %(name)s - %(lineno)s - \
-        #%(levelname)s - %(message)s")
-        formatter = logging.Formatter("%(message)s")
-        console_log = logging.StreamHandler(
-            stream = sys.stdout
-        )
-        console_log.setLevel(logging.DEBUG)
-        console_log.setFormatter(formatter)
-
-        self.logger.addHandler(console_log)
+        logging.config.dictConfig(self.config.get('logging', {}))
+        self.log = logging.getLogger("fedmsg")
 
     def get_config(self):
         return fedmsg.config.load_config(
@@ -110,84 +98,3 @@ class BaseCommand(object):
                 return self.run()
             except KeyboardInterrupt:
                 print
-
-
-class command(object):
-    """ Convenience decorator for wrapping fedmsg console script commands.
-
-    Accepts a list of extra args.  See fedmsg.commands.logger for an example.
-    """
-
-    def __init__(self, name, extra_args=None, daemonizable=False):
-        if daemonizable:
-            extra_args.append(
-                (['--daemon'], {
-                    'dest': 'daemon',
-                    'help': 'Run in the background as a daemon.',
-                    'action': 'store_true',
-                    'default': False,
-                })
-            )
-
-        self.name = name
-        self.extra_args = extra_args or []
-        self.daemonizable = daemonizable
-
-    def _handle_signal(self, signum, stackframe):
-        from moksha.hub.reactor import reactor
-        from moksha.hub import hub
-        from twisted.internet.error import ReactorNotRunning
-
-        if hub._hub:
-            hub._hub.stop()
-
-        try:
-            reactor.stop()
-        except ReactorNotRunning, e:
-            warnings.warn(str(e))
-
-    def _daemonize(self, func, config):
-        from daemon import DaemonContext
-        try:
-            from daemon.pidfile import TimeoutPIDLockFile as PIDLockFile
-        except:
-            from daemon.pidlockfile import PIDLockFile
-
-        pidlock = PIDLockFile('/var/run/fedmsg/%s.pid' % self.name)
-        output = file('/var/log/fedmsg/%s.log' % self.name, 'a')
-        daemon = DaemonContext(pidfile=pidlock, stdout=output, stderr=output)
-        daemon.terminate = self._handle_signal
-
-        with daemon:
-            return func(**config)
-
-    def __call__(self, func):
-
-        def wrapper():
-            config = fedmsg.config.load_config(
-                self.extra_args,
-                func.__doc__,
-                fedmsg_command=True,
-            )
-
-            if self.daemonizable and config['daemon'] is True:
-                return self._daemonize(func, config)
-            else:
-                logging.basicConfig()
-                try:
-                    return func(**config)
-                except KeyboardInterrupt:
-                    print
-
-        # Attach the --help message as the doc string.
-        parser = fedmsg.config.build_parser(
-            self.extra_args,
-            func.__doc__,
-            prog=self.name,
-        )
-        wrapper.__doc__ = parser.format_help()
-
-        # This is for testing purposes
-        wrapper.__wrapped_func__ = func
-
-        return wrapper

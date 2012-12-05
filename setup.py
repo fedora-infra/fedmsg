@@ -45,7 +45,7 @@ install_requires = [
     'pyzmq',
     'fabulous',
     'kitchen',
-    'moksha.hub',
+    'moksha.hub>=1.0.9',
     'requests',
     'pygments',
     #'daemon',
@@ -56,6 +56,8 @@ install_requires = [
 ]
 tests_require = [
     'nose',
+    'mock',
+    'six',  # In the future, we'll use this across fedmsg proper for py3.
 ]
 
 if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
@@ -70,7 +72,7 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
 
 setup(
     name='fedmsg',
-    version='0.6.1',
+    version='0.6.2',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -133,6 +135,7 @@ setup(
         # fedmsg core only provides one metadata provider.
         'fedmsg.meta': [
             "logger=fedmsg.meta.logger:LoggerProcessor",
+            "announce=fedmsg.meta.announce:AnnounceProcessor",
         ],
     }
 )

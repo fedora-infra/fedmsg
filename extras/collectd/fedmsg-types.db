@@ -1,0 +1,1 @@
+fedmsg_wallboard   bodhi:ABSOLUTE:0:65535, compose:ABSOLUTE:0:65535, fas:ABSOLUTE:0:65535, fedoratagger:ABSOLUTE:0:65535, git:ABSOLUTE:0:65535, logger:ABSOLUTE:0:65535, meetbot:ABSOLUTE:0:65535, unhandled:ABSOLUTE:0:65535, wiki:ABSOLUTE:0:65535

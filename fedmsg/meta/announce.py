@@ -17,24 +17,21 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import fedmsg
-
-from fedmsg.consumers import FedmsgConsumer
-
-import logging
+from fedmsg.meta.base import BaseProcessor
 
 
-class DummyConsumer(FedmsgConsumer):
-    topic = "org.fedoraproject.*"
-    config_key = 'fedmsg.consumers.dummy.enabled'
+class AnnounceProcessor(BaseProcessor):
+    __name__ = "announce"
+    __description__ = "Official Fedora Announcements"
+    __link__ = "http://fedoraproject.org/"
+    __docs__ = "http://fedoraproject.org/"
+    __obj__ = "Announcements"
 
-    def __init__(self, hub):
-        self.hub = hub
-        self.DBSession = None
+    def subtitle(self, msg, **config):
+        return msg['msg']['message']
 
-        return super(DummyConsumer, self).__init__(hub)
+    def link(self, msg, **config):
+        return msg['msg']['link']
 
-    def consume(self, msg):
-        # Do nothing.
-        log = logging.getLogger("moksha.hub")
-        log.debug("Duhhhh... got: %r" % msg)
+    def usernames(self, msg, **config):
+        return set([msg['username']])

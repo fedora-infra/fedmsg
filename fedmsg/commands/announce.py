@@ -20,21 +20,10 @@
 import sys
 
 import fedmsg
-from fedmsg.commands import command
+from fedmsg.commands import BaseCommand
 
 
-extra_args = [
-    (['--link'], {
-        'dest': 'link',
-        'metavar': "URL",
-        'default': None,
-        'help': "Specify a link to go along with the announcement.",
-    }),
-]
-
-
-@command(name="fedmsg-announce", extra_args=extra_args)
-def announce(**kwargs):
+class AnnounceCommand(BaseCommand):
     """
     Emit an announcement message to the FI bus.
 
@@ -50,21 +39,38 @@ def announce(**kwargs):
     This command expects its message to come from stdin.
     """
 
-    # This specifies that a special certificate should be used to sign this
-    # message.  At the sysadmin level, you are responsible for taking care of
-    # two things:
-    #   1) That the announce cert is readable only by appropriate persons.
-    #   2) That the routing_policy is setup so that "announce.announcement"
-    #      messages are valid only if signed by such a certificate.
-    kwargs['cert_prefix'] = "announce"
+    name = "fedmsg-announce"
+    extra_args = [
+        (['--link'], {
+            'dest': 'link',
+            'metavar': "URL",
+            'default': None,
+            'help': "Specify a link to go along with the announcement.",
+        }),
+    ]
 
-    # This just specifies that we should be talking to the fedmsg-relay.
-    kwargs['active'] = True
-    fedmsg.init(name='relay_inbound', **kwargs)
+    def run(self):
+        # This specifies that a special certificate should be used to sign this
+        # message.  At the sysadmin level, you are responsible for taking care
+        # of two things:
+        #   1) That the announce cert is readable only by appropriate persons.
+        #   2) That the routing_policy is setup so that "announce.announcement"
+        #      messages are valid only if signed by such a certificate.
+        self.config['cert_prefix'] = "announce"
 
-    # Read in and setup our message.  Include the --link, even if it is None.
-    message = "\n".join(map(str.strip, sys.stdin.readlines()))
-    msg = dict(message=message, link=kwargs['link'])
+        # This just specifies that we should be talking to the fedmsg-relay.
+        self.config['active'] = True
+        self.config['name'] = 'relay_inbound'
+        fedmsg.init(**self.config)
 
-    # Fire!
-    fedmsg.publish(modname="announce", topic="announcement", msg=msg)
+        # Read in and setup our message.  Include --link, even if it is None.
+        message = "\n".join(map(str.strip, sys.stdin.readlines()))
+        msg = dict(message=message, link=self.config['link'])
+
+        # Fire!
+        fedmsg.publish(modname="announce", topic="announcement", msg=msg)
+
+
+def announce():
+    command = AnnounceCommand()
+    command.execute()

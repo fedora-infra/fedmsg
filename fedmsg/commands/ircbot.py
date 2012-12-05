@@ -16,35 +16,44 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
+#           Ryan Brown
 #
 # -*- coding; utf-8 -*-
-# Author: Ryan Brown
-# Description: A bot that takes a config and puts messages matching given
-# regexes in specified IRC channels.  See fedmsg-config.py for options.
-from fedmsg.commands import command
+"""
+Description: A bot that takes a config and puts messages matching given
+regexes in specified IRC channels.  See :term:`irc` for options.
+"""
 
+from fedmsg.commands import BaseCommand
 from fedmsg.consumers.ircbot import IRCBotConsumer
 
-extra_args = []
 
-
-@command(name="fedmsg-irc", extra_args=extra_args, daemonizable=True)
-def ircbot(**kw):
+class IRCCommand(BaseCommand):
     """ Relay messages from the bus to any number of IRC channels.
 
     This is highly configurable by way of the :term:`irc` config value.
     """
 
-    # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
-    # with moksha's expected configuration.
-    moksha_options = dict(
-        zmq_subscribe_endpoints=','.join(
-            ','.join(bunch) for bunch in kw['endpoints'].values()
-        ),
-    )
-    kw.update(moksha_options)
+    name = "fedmsg-irc"
+    extra_args = []
+    daemonizable = True
 
-    kw[IRCBotConsumer.config_key] = True
+    def run(self):
+        # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to
+        # work with moksha's expected configuration.
+        moksha_options = dict(
+            zmq_subscribe_endpoints=','.join(
+                ','.join(bunch) for bunch in self.config['endpoints'].values()
+            ),
+        )
+        self.config.update(moksha_options)
 
-    from moksha.hub import main
-    main(options=kw, consumers=[IRCBotConsumer])
+        self.config[IRCBotConsumer.config_key] = True
+
+        from moksha.hub import main
+        main(options=self.config, consumers=[IRCBotConsumer])
+
+
+def ircbot():
+    command = IRCCommand()
+    command.execute()

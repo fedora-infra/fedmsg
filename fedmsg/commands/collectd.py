@@ -31,19 +31,11 @@ import fedmsg
 import fedmsg.encoding
 import fedmsg.meta
 
-from fedmsg.commands import command
+from fedmsg.commands import BaseCommand
 from fedmsg.consumers import FedmsgConsumer
 from moksha.hub.api import PollingProducer
 from kitchen.iterutils import iterate
 
-extra_args = [
-    (['--collectd-interval'], {
-        'dest': 'collectd_interval',
-        'type': int,
-        'help': 'Number of seconds to sleep between collectd updates.',
-        'default': 5,
-    }),
-]
 
 
 class CollectdConsumer(FedmsgConsumer):
@@ -66,7 +58,8 @@ class CollectdConsumer(FedmsgConsumer):
         """ Called by CollectdProducer every `n` seconds. """
 
         # Print out the collectd feedback.
-        print self.formatter([v for k, v in sorted(self._dict.items())])
+        # This is sent to stdout while other log messages are sent to stderr.
+        self.log.info(self.formatter([v for k, v in sorted(self._dict.items())]))
 
         # Reset each entry to zero
         for k, v in sorted(self._dict.items()):
@@ -74,13 +67,15 @@ class CollectdConsumer(FedmsgConsumer):
 
     def formatter(self, values):
         """ Format messages for collectd to consume. """
-        template = "PUTVAL {host}/fedmsg/fedmsg_scoreboard interval={interval} {timestamp}:{values}"
+        template = "PUTVAL {host}/fedmsg/fedmsg_wallboard " +\
+            "interval={interval} {timestamp}:{values}"
         timestamp = int(time.time())
+        interval = self.hub.config['collectd_interval']
         return template.format(
             host=self.host,
             timestamp=timestamp,
-            values=":".join(map(str, values)),
-            interval=self.hub.config['collectd_interval'],
+            values=":".join([str(value) for value in values]),
+            interval=interval,
         )
 
 
@@ -90,31 +85,41 @@ class CollectdProducer(PollingProducer):
         self.hub.consumers[0].dump()
 
 
-@command(name="fedmsg-collectd", extra_args=extra_args)
-def collectd(**kw):
+class CollectdCommand(BaseCommand):
     """ Print machine-readable information for collectd to monitor the bus. """
+    name = "fedmsg-collectd"
+    extra_args = [
+        (['--collectd-interval'], {
+            'dest': 'collectd_interval',
+            'type': int,
+            'help': 'Number of seconds to sleep between collectd updates.',
+            'default': 2,
+        }),
+    ]
 
-    # Initialize the processors before CollectdConsumer is instantiated.
-    fedmsg.meta.make_processors(**kw)
+    def run(self):
+        # Initialize the processors before CollectdConsumer is instantiated.
+        fedmsg.meta.make_processors(**self.config)
 
-    # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
-    # with moksha's expected configuration.
-    moksha_options = dict(
-        mute=True,  # Disable some warnings.
-        zmq_subscribe_endpoints=','.join(
-            ','.join(bunch) for bunch in kw['endpoints'].values()
-        ),
-    )
-    kw.update(moksha_options)
-    kw[CollectdConsumer.config_key] = True
+        # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py
+        # to work with moksha's expected configuration.
+        moksha_options = dict(
+            mute=True,  # Disable some warnings.
+            zmq_subscribe_endpoints=','.join(
+                ','.join(bunch) for bunch in self.config['endpoints'].values()
+            ),
+        )
+        self.config.update(moksha_options)
+        self.config[CollectdConsumer.config_key] = True
 
-    CollectdProducer.frequency = datetime.timedelta(
-        seconds=kw['collectd_interval']
-    )
+        CollectdProducer.frequency = datetime.timedelta(
+            seconds=self.config['collectd_interval']
+        )
 
-    # Turn off moksha logging.
-    logging.disable(logging.INFO)
-    logging.disable(logging.WARN)
+        from moksha.hub import main
+        main(self.config, [CollectdConsumer], [CollectdProducer],
+             framework=False)
 
-    from moksha.hub import main
-    main(kw, [CollectdConsumer], [CollectdProducer])
+def collectd():
+    command = CollectdCommand()
+    command.execute()

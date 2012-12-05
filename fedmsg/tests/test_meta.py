@@ -108,6 +108,24 @@ class TestUnhandled(Base):
     }
 
 
+class TestAnnouncement(Base):
+    expected_title = "announce.announcement (unsigned)"
+    expected_subti = 'hello, world.'
+    expected_link = 'foo'
+    expected_usernames = set(['ralph'])
+
+    msg = {
+        "i": 1,
+        "timestamp": 1344352873.714926,
+        "topic": "org.fedoraproject.dev.announce.announcement",
+        "msg": {
+            "message": "hello, world.",
+            "link": "foo",
+        },
+        'username': 'ralph',
+    }
+
+
 class TestLoggerNormal(Base):
     expected_title = "logger.log (unsigned)"
     expected_subti = 'hello, world.'

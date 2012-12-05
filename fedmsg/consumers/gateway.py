@@ -24,10 +24,6 @@ import zmq
 
 from fedmsg.consumers import FedmsgConsumer
 
-import logging
-log = logging.getLogger("moksha.hub")
-
-
 class GatewayConsumer(FedmsgConsumer):
     topic = "org.fedoraproject.*"
     config_key = 'fedmsg.consumers.gateway.enabled'
@@ -50,7 +46,7 @@ class GatewayConsumer(FedmsgConsumer):
         weakref.ref(threading.current_thread(), self.destroy)
 
     def _setup_special_gateway_socket(self):
-        log.info("Setting up special gateway socket on port %r" % self.port)
+        self.log.info("Setting up special gateway socket on port %r" % self.port)
         self._context = zmq.Context(1)
         self.gateway_socket = self._context.socket(zmq.PUB)
 
@@ -58,13 +54,20 @@ class GatewayConsumer(FedmsgConsumer):
         # we can serve.  To be effective, also increase nofile for fedmsg in
         # /etc/security/limits.conf to near fs.file-limit.  Try 160000.
         hwm = self.hub.config['fedmsg.consumers.gateway.high_water_mark']
-        self.gateway_socket.setsockopt(zmq.HWM, hwm)
+        if hasattr(zmq, 'HWM'):
+            # zeromq2
+            self.gateway_socket.setsockopt(zmq.HWM, hwm)
+        else:
+            # zeromq3
+            self.gateway_socket.setsockopt(zmq.SNDHWM, hwm)
+            self.gateway_socket.setsockopt(zmq.RCVHWM, hwm)
+
 
         self.gateway_socket.bind("tcp://*:{port}".format(port=self.port))
-        log.info("Gateway socket established.")
+        self.log.info("Gateway socket established.")
 
     def destroy(self):
-        log.info("Destroying GatewayConsumer")
+        self.log.info("Destroying GatewayConsumer")
         if getattr(self, 'gateway_socket', None):
             self.gateway_socket.close()
             self.gateway_socket = None
@@ -74,5 +77,5 @@ class GatewayConsumer(FedmsgConsumer):
             self._context = None
 
     def consume(self, msg):
-        log.debug("Gateway: %r" % msg.topic)
+        self.log.debug("Gateway: %r" % msg.topic)
         self.gateway_socket.send_multipart([msg.topic, msg.body])

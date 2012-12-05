@@ -22,7 +22,6 @@ import fedmsg.crypto
 import moksha.hub.api.consumer
 
 import logging
-log = logging.getLogger("moksha.hub")
 
 
 class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
@@ -63,23 +62,27 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
     def __init__(self, hub):
         module = inspect.getmodule(self).__name__
         name = self.__class__.__name__
+        self.log = logging.getLogger("fedmsg")
 
         if not self.config_key:
             raise ValueError("%s:%s must declare a 'config_key'" % (
                 module, name))
 
-        log.debug("%s is %r" % (
+        self.log.debug("%s is %r" % (
             self.config_key, hub.config.get(self.config_key)
         ))
 
         if not hub.config.get(self.config_key, False):
-            log.info('* disabled by config - %s:%s' % (module, name))
+            self.log.info('* disabled by config - %s:%s' % (module, name))
             return
 
-        log.info('  enabled by config  - %s:%s' % (module, name))
+        self.log.info('  enabled by config  - %s:%s' % (module, name))
 
         # This call "completes" registration of this consumer with the hub.
         super(FedmsgConsumer, self).__init__(hub)
+
+        # Now, re-get our logger to override the one moksha assigns us.
+        self.log = logging.getLogger("fedmsg")
 
         if self.validate_signatures:
             self.validate_signatures = self.hub.config['validate_signatures']

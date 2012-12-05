@@ -141,7 +141,6 @@ import time
 import fedmsg.encoding
 
 import logging
-log = logging.getLogger('fedmsg')
 
 try:
     import M2Crypto
@@ -149,6 +148,8 @@ try:
     # https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
     import m2ext
 except ImportError, e:
+    logging.basicConfig()
+    log = logging.getLogger('fedmsg')
     log.warn("Crypto disabled %r" % e)
 
 
@@ -195,6 +196,7 @@ def validate(message, ssldir, **config):
     """
 
     def fail(reason):
+        log = logging.getLogger('fedmsg')
         log.warn("Failed validation.  %s" % reason)
         return False
 
@@ -329,6 +331,7 @@ def _load_crl(crl_location="https://fedoraproject.org/fedmsg/crl.pem",
             with open(crl_cache, 'w') as f:
                 f.write(response.content)
         except requests.exceptions.ConnectionError:
+            log = logging.getLogger('fedmsg')
             log.warn("Could not access %r" % crl_location)
 
     return M2Crypto.X509.load_crl(crl_cache)
