@@ -89,13 +89,18 @@ class FedMsgContext(object):
             config.get("endpoints", None) and
             config['endpoints'].get(config['name'])
         ):
+            # Construct it.
             self.publisher = self.context.socket(zmq.PUB)
 
+            # Set a high water mark on the zmq socket.  Do so in a way that is
+            # cross-compatible with zeromq2 and zeromq3.
             if config['high_water_mark']:
                 if hasattr(zmq, 'HWM'):
+                    # zeromq2
                     self.publisher.setsockopt(
                         zmq.HWM, config['high_water_mark'])
                 else:
+                    # zeromq3
                     self.publisher.setsockopt(
                         zmq.SNDHWM, config['high_water_mark'])
                     self.publisher.setsockopt(
@@ -104,9 +109,14 @@ class FedMsgContext(object):
             if method == 'connect':
                 self.publisher.setsockopt(zmq.LINGER, config['zmq_linger'])
 
+            # "Listify" our endpoints.  If we're given a list, good.  If we're
+            # given a single item, turn it into a list of length 1.
             config['endpoints'][config['name']] = list(iterate(
                 config['endpoints'][config['name']]))
 
+            # Try endpoint after endpoint in the list of endpoints.  If we
+            # succeed in establishing one, then stop.  *That* is our publishing
+            # endpoint.
             _established = False
             for endpoint in config['endpoints'][config['name']]:
 
