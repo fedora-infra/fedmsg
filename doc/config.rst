@@ -351,3 +351,31 @@ Glossary of Configuration Values
         This is an argument to `moksha <http://mokshaproject.net>`_ and arose
         there to help abstract away differences between the "topics" of zeromq
         and the "routing_keys" of AMQP.
+
+    zmq_tcp_keepalive
+        ``int`` - Interpreted as a boolean.  If non-zero, then keepalive options
+        will be set.
+        See upstream `zmq options
+        <http://api.zeromq.org/3-2:zmq-setsockopt>`_ and general `overview
+        <http://tldp.org/HOWTO/TCP-Keepalive-HOWTO/overview.html>`_.
+
+    zmq_tcp_keepalive_cnt
+        ``int`` - Number of keepalive packets to send before considering the
+        connection dead.
+        See upstream `zmq options
+        <http://api.zeromq.org/3-2:zmq-setsockopt>`_ and general `overview
+        <http://tldp.org/HOWTO/TCP-Keepalive-HOWTO/overview.html>`_.
+
+    zmq_tcp_keepalive_idle
+        ``int`` - Number of seconds to wait after last data packet before
+        sending the first keepalive packet.
+        See upstream `zmq options
+        <http://api.zeromq.org/3-2:zmq-setsockopt>`_ and general `overview
+        <http://tldp.org/HOWTO/TCP-Keepalive-HOWTO/overview.html>`_.
+
+    zmq_tcp_keepalive_intvl
+        ``int`` - Number of seconds to wait inbetween sending subsequent
+        keepalive packets.
+        See upstream `zmq options
+        <http://api.zeromq.org/3-2:zmq-setsockopt>`_ and general `overview
+        <http://tldp.org/HOWTO/TCP-Keepalive-HOWTO/overview.html>`_.
