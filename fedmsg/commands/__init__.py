@@ -22,6 +22,7 @@ import fedmsg.config
 import warnings
 import sys
 
+import logging
 try:
     # Python2.7 and later
     from logging.config import dictConfig
