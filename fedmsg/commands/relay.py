@@ -25,6 +25,7 @@ from fedmsg.consumers.relay import RelayConsumer
 
 from kitchen.iterutils import iterate
 
+
 class RelayCommand(BaseCommand):
     """ Relay connections from active loggers to the bus.
 
@@ -43,11 +44,12 @@ class RelayCommand(BaseCommand):
     name = 'fedmsg-relay'
 
     def run(self):
-        # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to work
+        # Do just like in fedmsg.commands.hub and mangle fedmsg.d/ to work
         # with moksha's expected configuration.
         moksha_options = dict(
-            zmq_publish_endpoints=",".join(self.config['endpoints']["relay_outbound"]),
-            zmq_subscribe_endpoints=",".join(list(iterate(self.config['relay_inbound']))),
+            zmq_subscribe_endpoints=",".join(list(iterate(
+                self.config['relay_inbound']
+            ))),
             zmq_subscribe_method="bind",
         )
         self.config.update(moksha_options)
@@ -56,7 +58,15 @@ class RelayCommand(BaseCommand):
         self.config[RelayConsumer.config_key] = True
 
         from moksha.hub import main
-        main(options=self.config, consumers=[RelayConsumer])
+        for publish_endpoint in self.config['endpoints']['relay_outbound']:
+            self.config['zmq_publish_endpoints'] = publish_endpoint
+            try:
+                return main(options=self.config, consumers=[RelayConsumer])
+            except zmq.core.error.ZMQError:
+                self.log.debug("Failed to bind to %r" % publish_endpoint)
+
+        raise IOError("Failed to bind to any outbound endpoints.")
+
 
 def relay():
     command = RelayCommand()
