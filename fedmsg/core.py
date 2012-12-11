@@ -180,9 +180,7 @@ class FedMsgContext(object):
         for key, const in keepalive_options.items():
             if key in self.c:
                 attr = getattr(zmq, const, None)
-                if not attr:
-                    self.log.warn("zmq.%s not available" % const)
-                else:
+                if attr:
                     self.log.debug("Setting %r %r" % (const, self.c[key]))
                     socket.setsockopt(attr, self.c[key])
 
