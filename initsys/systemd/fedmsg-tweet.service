@@ -1,0 +1,13 @@
+[Unit]
+Description=Twitter/Identi.ca bot for fedmsg
+After=sockets.target
+Documentation=http://fedmsg.readthedocs.org/en/latest/commands/
+
+[Service]
+ExecStart=/usr/bin/fedmsg-tweet
+Type=simple
+User=fedmsg
+Group=fedmsg
+
+[Install]
+WantedBy=multi-user.target
