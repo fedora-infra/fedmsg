@@ -49,8 +49,8 @@ Certificates
 
 To accomplish message signing, fedmsg must be able to read certificates and a
 private key on disk.  For message validation, it only need be able to read the
-certificate.  Exactly *which* certificates are used are determined by looking up
-the ``certname`` in the :term:`certnames` config dict.
+certificate.  Exactly *which* certificates are used are determined by looking
+up the ``certname`` in the :term:`certnames` config dict.
 
 We use a large number of certs for the deployment of fedmsg.  We have one cert
 per `service-host`.  For example, if we have 3 fedmsg-enabled services and each
@@ -63,8 +63,8 @@ access to the same certificate used for signing high-security service messages.
 Furthermore, attempts are made at the sysadmin-level to ensure that
 fedmsg-enabled services run as users that have exclusive read access to their
 own keys.  See the `Fedora Infrastructure SOP
-<http://infrastructure.fedoraproject.org/infra/docs/fedmsg-certs.txt>`_ for more
-information (including how to generate new certs/bring up new services).
+<http://infrastructure.fedoraproject.org/infra/docs/fedmsg-certs.txt>`_ for
+more information (including how to generate new certs/bring up new services).
 
 Routing Policy
 --------------
@@ -84,9 +84,10 @@ publishers or the message is marked invalid.
 If the topic of a message does *not* appear in the :term:`routing_policy`, two
 different courses of action are possible:
 
-    - If :term:`routing_nitpicky` is set to ``False``, then the message is given
-      the green light.  Our routing policy doesn't have anything specific to say
-      about messages of this topic and so who are we to deny it passage, right?
+    - If :term:`routing_nitpicky` is set to ``False``, then the message is
+      given the green light.  Our routing policy doesn't have anything
+      specific to say about messages of this topic and so who are we to deny
+      it passage, right?
     - If :term:`routing_nitpicky` is set to ``True``, then we deny the message
       and mark it as invalid.
 
@@ -269,8 +270,8 @@ def validate(message, ssldir, **config):
     if message['topic'] in routing_policy:
         # If so.. is the signer one of those permitted senders?
         if signer in routing_policy[message['topic']]:
-            # We are good.  The signer of this message is explicitly whitelisted
-            # to send on this topic in our config policy.
+            # We are good.  The signer of this message is explicitly
+            # whitelisted to send on this topic in our config policy.
             pass
         else:
             # We have a policy for this topic and $homeboy isn't on the list.
