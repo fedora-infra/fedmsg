@@ -39,8 +39,5 @@ config = dict(
         "bodhi.%s" % hostname: ["tcp://127.0.0.1:3001"],
         "fas.%s" % hostname: ["tcp://127.0.0.1:3002"],
         "fedoratagger.%s" % hostname: ["tcp://127.0.0.1:3003"],
-        "mediawiki.%s" % hostname: ["tcp://127.0.0.1:3004"],
-        "pkgdb.%s" % hostname: ["tcp://127.0.0.1:3005"],
-        "busmon.%s" % hostname: ["tcp://127.0.0.1:3006"],
     },
 )
