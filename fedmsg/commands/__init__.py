@@ -50,7 +50,7 @@ class BaseCommand(object):
             )
 
         self.config = self.get_config()
-        dictConfig(self.config.get('logging', {}))
+        dictConfig(self.config.get('logging', {'version': 1}))
         self.log = logging.getLogger("fedmsg")
 
     def get_config(self):
