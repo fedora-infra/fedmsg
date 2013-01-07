@@ -2,85 +2,64 @@
 # Copyright (c) 2009-2012 Red Hat, Inc.
 #
 # Authors:
-#     Mike Bonnet <mikeb@redhat.com>
 #     Ralph Bean <rbean@redhat.com>
+#     Mike Bonnet <mikeb@redhat.com>
 
-from koji.plugin import callbacks, callback, ignore_error
+from koji.plugin import callbacks
+from koji.plugin import callback
+from koji.plugin import ignore_error
+
+import fedmsg
+import kojihub
+import re
+
+# Talk to the fedmsg-relay
+fedmsg.init(name='relay_inbound', cert_prefix='koji', active=True)
 
 MAX_KEY_LENGTH = 255
 
 
-def _token_append(tokenlist, val):
-    # Replace any periods with underscores so we have a
-    # deterministic number of tokens
-    val = val.replace('.', '_')
-    tokenlist.append(val)
+def camel_to_dots(name):
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1.\2', name)
+    return re.sub('([a-z0-9])([A-Z])', r'\1.\2', s1).lower()
 
 
-def get_message_subject(msgtype, *args, **kws):
-    key = [msgtype]
+def get_message_body(topic, *args, **kws):
+    msg = {}
 
-    if msgtype == 'PackageListChange':
-        _token_append(key, kws['tag']['name'])
-        _token_append(key, kws['package']['name'])
-    elif msgtype == 'TaskStateChange':
-        _token_append(key, kws['info']['method'])
-        _token_append(key, kws['attribute'])
-    elif msgtype == 'BuildStateChange':
+    if topic == 'package.list.change':
+        msg['tag'] = kws['tag']['name']
+        msg['package'] = kws['package']['name']
+    elif topic == 'task.state.change':
+        msg['method'] = kws['info']['method']
+        msg['attribute'] = kws['attribute']
+        msg['old'] = kws['old']
+        msg['new'] = kws['new']
+        msg['owner'] = kojihub.get_user(kws['info']['owner'])['name']
+        msg['id'] = kws['info']['id']
+    elif topic == 'build.state.change':
         info = kws['info']
-        _token_append(key, kws['attribute'])
-        _token_append(key, info['name'])
-    elif msgtype == 'Import':
-        _token_append(key, kws['type'])
-    elif msgtype in ('Tag', 'Untag'):
-        _token_append(key, kws['tag']['name'])
+        msg['name'] = info['name']
+        msg['version'] = info['version']
+        msg['release'] = info['release']
+        msg['attribute'] = kws['attribute']
+        msg['old'] = kws['old']
+        msg['new'] = kws['new']
+    elif topic == 'import':
+        msg['type'] = kws['type']
+    elif topic in ('tag', 'untag'):
+        msg['tag'] = kws['tag']['name']
         build = kws['build']
-        _token_append(key, build['name'])
-        _token_append(key, kws['user']['name'])
-    elif msgtype == 'RepoInit':
-        _token_append(key, kws['tag']['name'])
-    elif msgtype == 'RepoDone':
-        _token_append(key, kws['repo']['tag_name'])
+        msg['name'] = build['name']
+        msg['version'] = build['version']
+        msg['release'] = build['release']
+        msg['user'] = kws['user']['name']
+    elif topic == 'repo.init':
+        msg['tag'] = kws['tag']['name']
+    elif topic == 'repo.done':
+        msg['tag'] = kws['repo']['tag_name']
 
-    key = '.'.join(key)
-    key = key[:MAX_KEY_LENGTH]
-    return key
-
-
-def get_message_headers(msgtype, *args, **kws):
-    headers = {'type': msgtype}
-
-    if msgtype == 'PackageListChange':
-        headers['tag'] = kws['tag']['name']
-        headers['package'] = kws['package']['name']
-    elif msgtype == 'TaskStateChange':
-        headers['method'] = kws['info']['method']
-        headers['attribute'] = kws['attribute']
-        headers['old'] = kws['old']
-        headers['new'] = kws['new']
-    elif msgtype == 'BuildStateChange':
-        info = kws['info']
-        headers['name'] = info['name']
-        headers['version'] = info['version']
-        headers['release'] = info['release']
-        headers['attribute'] = kws['attribute']
-        headers['old'] = kws['old']
-        headers['new'] = kws['new']
-    elif msgtype == 'Import':
-        headers['importType'] = kws['type']
-    elif msgtype in ('Tag', 'Untag'):
-        headers['tag'] = kws['tag']['name']
-        build = kws['build']
-        headers['name'] = build['name']
-        headers['version'] = build['version']
-        headers['release'] = build['release']
-        headers['user'] = kws['user']['name']
-    elif msgtype == 'RepoInit':
-        headers['tag'] = kws['tag']['name']
-    elif msgtype == 'RepoDone':
-        headers['tag'] = kws['repo']['tag_name']
-
-    return headers
+    return msg
 
 
 # This callback gets run for every koji event that starts with "post"
@@ -92,12 +71,7 @@ def send_message(cbtype, *args, **kws):
     else:
         msgtype = cbtype[3:]
 
-    data = kws.copy()
-    if args:
-        data['args'] = list(args)
+    topic = camel_to_dots(msgtype)
+    body = get_message_body(topic, *args, **kws)
 
-    fedmsg.publish(
-        topic=get_message_subject(msgtype, *args, **kws),
-        msg=data,
-        modname='koji',
-    )
+    fedmsg.publish(topic=topic, msg=body, modname='koji')
