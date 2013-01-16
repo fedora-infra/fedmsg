@@ -22,6 +22,11 @@ config = dict(
                 "propagate": False,
                 "handlers": ["console"],
             },
+            moksha={
+                "level": "INFO",
+                "propagate": False,
+                "handlers": ["console"],
+            },
         ),
     ),
 )
