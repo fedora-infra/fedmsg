@@ -333,6 +333,15 @@ def _load_crl(crl_location="https://fedoraproject.org/fedmsg/crl.pem",
         except requests.exceptions.ConnectionError:
             log.warn("Could not access %r" % crl_location)
         except IOError as e:
-            log.warn("Could not write %r.  %r" % (crl_cache, e))
+            # If we couldn't write to the specified crl_cache location, try a
+            # similar place but inside our home directory instead.
+            crl_cache = os.path.expanduser("~/.local" + crl_cache)
+            usr_crl_dir = '/'.join(crl_cache.split('/')[:-1])
+
+            if not os.path.isdir(usr_crl_dir):
+                os.makedirs(usr_crl_dir)
+
+            with open(crl_cache, 'w') as f:
+                f.write(response.content)
 
     return M2Crypto.X509.load_crl(crl_cache)
