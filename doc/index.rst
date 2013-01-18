@@ -57,26 +57,26 @@ Testimonials
 Rough Outline of Stages of development/deployment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- 1) Start writing ``fedmsg`` core.
- 2) Use ``fedmsg`` to send messages from existing services (koji, bodhi,
-    pkgdb, fas, etc...).  The status of this is kept in :doc:`status` and
-    :doc:`topology`.
- 3) Consume messages for statistics, i.e. an independent statistics webapp.
-    This will some day be the responsibility of `datanommer
-    <http://github.com/ralphbean/datanommer>`_.  See :doc:`status` for its
-    status in our infrastructure.
- 4) Consume messages for user experience, i.e. any or all of rss, email,
-    gnome-shell notifications, javascript notifications in FI webapps.  One
-    example of this is `lmacken's <http://lewk.org>`_ dbus-based `fedmsg-notify
-    <https://github.com/lmacken/fedmsg-notify>`_.
- 5) Consume messages for service interoperability: for example, have koji
-    invalidate it's cache when it sees pkgdb messages go by on the bus.  Or,
-    have the mirrors starts to sync once a new compose of branched or rawhide is
-    complete.
+1) Start writing ``fedmsg`` core.
+2) Use ``fedmsg`` to send messages from existing services (koji, bodhi,
+   pkgdb, fas, etc...).  The status of this is kept in :doc:`status` and
+   :doc:`topology`.
+3) Consume messages for statistics, i.e. an independent statistics webapp.
+   This will some day be the responsibility of `datanommer
+   <http://github.com/ralphbean/datanommer>`_.  See :doc:`status` for its
+   status in our infrastructure.
+4) Consume messages for user experience, i.e. any or all of rss, email,
+   gnome-shell notifications, javascript notifications in FI webapps.  One
+   example of this is `lmacken's <http://lewk.org>`_ dbus-based `fedmsg-notify
+   <https://github.com/lmacken/fedmsg-notify>`_.
+5) Consume messages for service interoperability: for example, have koji
+   invalidate it's cache when it sees pkgdb messages go by on the bus.  Or,
+   have the mirrors starts to sync once a new compose of branched or rawhide is
+   complete.
 
-    This comes last because we want to make sure that message-sending works
-    and is reliable before we start making existing services depend on it
-    for their functioning.
+   This comes last because we want to make sure that message-sending works
+   and is reliable before we start making existing services depend on it
+   for their functioning.
 
 .. toctree::
    :maxdepth: 0
