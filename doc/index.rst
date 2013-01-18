@@ -11,7 +11,8 @@ See :doc:`overview` for a thorough introduction.
 
 The quickest way to see what the bus is all about is to jump into
 ``#fedora-fedmsg`` on the freenode network.  There's a firehose bot there
-echoing messages to channel.
+echoing messages to channel.  It has a sister bot `running on identi.ca
+<http://identi.ca/fedmsgbot>`_.
 
 Publishing Messages with Python
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
