@@ -49,6 +49,10 @@ There is also a `mailing list
 <https://admin.fedoraproject.org/mailman/listinfo/messaging-sig>`_ that
 doesn't have much traffic.
 
+Testimonials
+------------
+
+- `Jordan Sissel <http://www.semicomplete.com>`_ -- "Cool idea, gives new meaning to open infrastructure."
 
 Rough Outline of Stages of development/deployment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
