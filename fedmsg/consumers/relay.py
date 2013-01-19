@@ -18,8 +18,11 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 import fedmsg
+import logging
 
 from fedmsg.consumers import FedmsgConsumer
+
+log = logging.getLogger(__name__)
 
 
 class RelayConsumer(FedmsgConsumer):
@@ -48,4 +51,5 @@ class RelayConsumer(FedmsgConsumer):
         # consumers to use the nice fedmsg.send_message interface we use
         # everywhere else.
 
+        log.debug("Got message %r" % msg)
         self.hub.send_message(topic=msg['topic'], message=msg['body'])
