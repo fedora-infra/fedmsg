@@ -20,6 +20,7 @@
 import inspect
 import fedmsg.crypto
 import moksha.hub.api.consumer
+import json
 
 import logging
 
@@ -89,6 +90,11 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
     def validate(self, message):
         """ This needs to raise an exception, caught by moksha. """
+
+        if hasattr(message, '__json__'):
+            message = message.__json__()
+            if isinstance(message['body'], basestring):
+                message['body'] = json.loads(message['body'])
 
         # We assume these match inside fedmsg.crypto, so we should enforce it.
         if not message['topic'] == message['body']['topic']:
