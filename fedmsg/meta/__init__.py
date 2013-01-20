@@ -83,7 +83,7 @@ def make_processors(**config):
         >>> import fedmsg.meta
         >>> config = fedmsg.config.load_config([], None)
         >>> fedmsg.meta.make_processors(**config)
-        >>> text = fedmsg.meta.msgrepr(some_message_dict, **config)
+        >>> text = fedmsg.meta.msg2repr(some_message_dict, **config)
 
     """
     global processors
