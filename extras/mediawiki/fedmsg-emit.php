@@ -100,6 +100,10 @@ $wgHooks['UploadComplete'][] = 'upload_complete';
 function sign_message($message_obj) {
   global $config;
 
+  # This is required so that the string we sign is identical in python and in
+  # php.  Ordereddict is used there; ksort here.
+  ksort($message_obj);
+
   $message = json_encode($message_obj);
 
   # Step 0) - Find our cert.
