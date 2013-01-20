@@ -106,9 +106,9 @@ class TweetCommand(BaseCommand):
                     self.log.warn("Bad URI for bitly %r" %link)
                     link = ""
 
-                message = message[:138 - len(link)] + " " + link
+                message = message[:137 - len(link)] + " " + link
             else:
-                message = message[:140]
+                message = message[:139]
 
             if not message:
                 self.log.info("Not tweeting blank message.")
