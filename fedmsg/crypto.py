@@ -142,7 +142,7 @@ import time
 import fedmsg.encoding
 
 import logging
-log = logging.getLogger('fedmsg')
+log = logging.getLogger(__name__)
 
 try:
     import M2Crypto
