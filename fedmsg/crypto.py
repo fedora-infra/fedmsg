@@ -204,6 +204,8 @@ def validate(message, ssldir, **config):
     for field in ['signature', 'certificate']:
         if not field in message:
             return fail("No %r field found." % field)
+        if not isistance(message[field], basestring):
+            return fail("msg[%r] is not a string" % field)
 
     # Peal off the auth datums
     decode = lambda obj: obj.decode('base64')
