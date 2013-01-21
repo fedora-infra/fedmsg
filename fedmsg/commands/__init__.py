@@ -50,13 +50,13 @@ class BaseCommand(object):
             )
 
         self.config = self.get_config()
-        dictConfig(self.config.get('logging', {}))
+        dictConfig(self.config.get('logging', {'version': 1}))
         self.log = logging.getLogger("fedmsg")
 
     def get_config(self):
         return fedmsg.config.load_config(
             self.extra_args,
-            self.usage,
+            self.__doc__,
             fedmsg_command=True,
         )
 
@@ -87,15 +87,6 @@ class BaseCommand(object):
 
         with daemon:
             return self.run()
-
-    @property
-    def usage(self):
-        parser = fedmsg.config.build_parser(
-            self.extra_args,
-            self.__doc__,
-            prog=self.name,
-        )
-        return parser.format_help()
 
     def execute(self):
         if self.daemonizable and self.config['daemon'] is True:

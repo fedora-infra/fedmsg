@@ -1,0 +1,17 @@
+@import url("cloud.css");
+@import url("http://fonts.googleapis.com/css?family=Comfortaa");
+
+.fedmsg-logo span {
+    background: url("fedmsg.png") no-repeat scroll 0 0 transparent;
+    background-size: 100% 100%;
+    display: block;
+    width: 134px;
+    height: 44px;
+    margin-bottom:1px;
+  }
+
+h1.fedmsg-logo {
+    font-family: 'Comfortaa', sans-serif;
+    margin-top: -10px;
+    margin-bottom: 12px;
+}

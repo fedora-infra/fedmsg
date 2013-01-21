@@ -1,0 +1,13 @@
+[Unit]
+Description=Outbound fedmsg gateway
+After=sockets.target
+Documentation=http://fedmsg.readthedocs.org/en/latest/commands/
+
+[Service]
+ExecStart=/usr/bin/fedmsg-gateway
+Type=simple
+User=fedmsg
+Group=fedmsg
+
+[Install]
+WantedBy=multi-user.target

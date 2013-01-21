@@ -1,0 +1,13 @@
+[Unit]
+Description=Generic fedmsg processing hub
+After=sockets.target
+Documentation=http://fedmsg.readthedocs.org/en/latest/commands/
+
+[Service]
+ExecStart=/usr/bin/fedmsg-hub
+Type=simple
+User=fedmsg
+Group=fedmsg
+
+[Install]
+WantedBy=multi-user.target

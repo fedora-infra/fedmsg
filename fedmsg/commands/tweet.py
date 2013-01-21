@@ -100,10 +100,15 @@ class TweetCommand(BaseCommand):
             link = fedmsg.meta.msg2link(msg, **self.config)
 
             if link:
-                link = bitly.shorten(longUrl=link)['url']
-                message = message[:138 - len(link)] + " " + link
+                try:
+                    link = bitly.shorten(longUrl=link)['url']
+                except Exception:
+                    self.log.warn("Bad URI for bitly %r" %link)
+                    link = ""
+
+                message = message[:137 - len(link)] + " " + link
             else:
-                message = message[:140]
+                message = message[:139]
 
             if not message:
                 self.log.info("Not tweeting blank message.")

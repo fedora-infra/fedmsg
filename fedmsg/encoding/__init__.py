@@ -81,7 +81,7 @@ class FedMsgEncoder(json.encoder.JSONEncoder):
 
 # Ensure that the keys are ordered so that messages can be signed
 # consistently.  See https://github.com/ralphbean/fedmsg/issues/42
-encoder = FedMsgEncoder(sort_keys=True)
+encoder = FedMsgEncoder(sort_keys=True, separators=(',',':'))
 dumps = encoder.encode
 
 pretty_encoder = FedMsgEncoder(indent=2)

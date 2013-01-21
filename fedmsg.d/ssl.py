@@ -30,7 +30,7 @@ config = dict(
     ssldir="/etc/pki/fedmsg",
 
     crl_location="https://fedoraproject.org/fedmsg/crl.pem",
-    crl_cache="/tmp/crl.pem",
+    crl_cache="/var/run/fedmsg/crl.pem",
     crl_cache_expiry=10,
 
     certnames={

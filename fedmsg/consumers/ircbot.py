@@ -41,7 +41,7 @@ from twisted.internet import reactor
 from twisted.internet import defer
 
 import logging
-log = logging.getLogger("moksha.hub")
+log = logging.getLogger(__name__)
 
 
 mirc_colors = {
@@ -268,6 +268,7 @@ class IRCBotConsumer(FedmsgConsumer):
 
     def consume(self, msg):
         """ Forward on messages from the bus to all IRC connections. """
+        log.debug("Got message %r" % msg)
         topic, body = msg.get('topic'), msg.get('body')
 
         for client in self.irc_clients:
