@@ -73,7 +73,7 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
 
 setup(
     name='fedmsg',
-    version='0.6.4',
+    version='0.6.5',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
