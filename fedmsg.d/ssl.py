@@ -33,6 +33,10 @@ config = dict(
     crl_cache="/var/run/fedmsg/crl.pem",
     crl_cache_expiry=10,
 
+    ca_cert_location="https://fedoraproject.org/fedmsg/ca.crt",
+    ca_cert_cache="/var/run/fedmsg/ca.crt",
+    ca_cert_cache_expiry=0,  # Never expires
+
     certnames={
         # In prod/stg, map hostname to the name of the cert in ssldir.
         # Unfortunately, we can't use socket.getfqdn()
@@ -50,8 +54,8 @@ config = dict(
         ],
     },
 
-    # Set this to True if you want messages to be dropped that aren't explicitly
-    # whitelisted in the routing_policy.
+    # Set this to True if you want messages to be dropped that aren't
+    # explicitly whitelisted in the routing_policy.
     # When this is False, only messages that have a topic in the routing_policy
     # but whose cert names aren't in the associated list are dropped; messages
     # whose topics do not appear in the routing_policy are not dropped.

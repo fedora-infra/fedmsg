@@ -161,6 +161,20 @@ Glossary of Configuration Values
         ``int`` - Number of seconds to keep the CRL cached before checking
         :term:`crl_location` for a new one.
 
+    ca_cert_location
+        ``str`` - This should be a URL where the certificate authority cert can
+        be found.  This is checked by :func:`fedmsg.crypto.validate` and
+        cached on disk.
+
+    ca_cert_cache
+        ``str`` - This should be the path to a filename on the filesystem where
+        the CA cert downloaded from :term:`ca_cert_location` can be saved.  The
+        python process should have write access there.
+
+    ca_cert_cache_expiry
+        ``int`` - Number of seconds to keep the CA cert cached before checking
+        :term:`ca_cert_location` for a new one.
+
     certnames
         ``dict`` - This should be a mapping of certnames to cert prefixes.
 

@@ -219,13 +219,25 @@ def validate(message, ssldir, **config):
     # Validate the cert.  Make sure it is signed by our CA.
     #   validate_certificate will one day be a part of M2Crypto.SSL.Context
     #   https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
+
+    cafile = _load_remote_cert(
+        config.get('ca_cert_location', 'https://fedoraproject.org/fedmsg/ca.crt'),
+        config.get('ca_cert_cache', '/etc/pki/fedmsg/ca.crt'),
+        config.get('ca_cert_cache_expiry', 0),
+        **config)
+
     ctx = m2ext.SSL.Context()
-    ctx.load_verify_locations(cafile="%s/ca.crt" % ssldir)
+    ctx.load_verify_locations(cafile=cafile)
     if not ctx.validate_certificate(cert):
         return fail("X509 certificate is not valid.")
 
     # Load and check against the CRL
-    crl = _load_crl(**config)
+    crl = _load_remote_cert(
+        config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem'),
+        config.get('crl_cache', '/var/cache/fedmsg/crl.pem'),
+        config.get('crl_cache_expiry', 1800),
+        **config)
+    crl = M2Crypto.X509.load_crl(crl)
 
     # FIXME -- We need to check that the CRL is signed by our own CA.
     # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
@@ -312,38 +324,38 @@ def strip_credentials(message):
     return message
 
 
-def _load_crl(crl_location="https://fedoraproject.org/fedmsg/crl.pem",
-              crl_cache="/var/cache/fedmsg/crl.pem",
-              crl_cache_expiry=1800,
-              **config):
-    """ Load the CRL from disk.
+def _load_remote_cert(location, cache, cache_expiry, **config):
+    """ Get a fresh copy from fp.o/fedmsg/crl.pem if ours is getting stale.
 
-    Get a fresh copy from fp.o/fedmsg/crl.pem if ours is getting stale.
+    Return the local filename.
     """
 
     try:
-        modtime = os.stat(crl_cache).st_mtime
+        modtime = os.stat(cache).st_mtime
     except OSError:
         # File does not exist yet.
         modtime = 0
 
-    if time.time() - modtime > crl_cache_expiry:
+    if (
+        (not modtime and not cache_expiry) or
+        (cache_expiry and time.time() - modtime > cache_expiry)
+    ):
         try:
-            response = requests.get(crl_location)
-            with open(crl_cache, 'w') as f:
+            response = requests.get(location)
+            with open(cache, 'w') as f:
                 f.write(response.content)
         except requests.exceptions.ConnectionError:
-            log.warn("Could not access %r" % crl_location)
+            log.warn("Could not access %r" % location)
         except IOError as e:
-            # If we couldn't write to the specified crl_cache location, try a
+            # If we couldn't write to the specified cache location, try a
             # similar place but inside our home directory instead.
-            crl_cache = os.path.expanduser("~/.local" + crl_cache)
-            usr_crl_dir = '/'.join(crl_cache.split('/')[:-1])
+            cache = os.path.expanduser("~/.local" + cache)
+            usr_dir = '/'.join(cache.split('/')[:-1])
 
-            if not os.path.isdir(usr_crl_dir):
-                os.makedirs(usr_crl_dir)
+            if not os.path.isdir(usr_dir):
+                os.makedirs(usr_dir)
 
-            with open(crl_cache, 'w') as f:
+            with open(cache, 'w') as f:
                 f.write(response.content)
 
-    return M2Crypto.X509.load_crl(crl_cache)
+    return cache
