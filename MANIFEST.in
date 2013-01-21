@@ -8,6 +8,6 @@ recursive-include extras *
 recursive-include doc *
 recursive-include fedmsg.d *.py
 exclude fedmsg.d/_tweet-real.py
-recursive-include init.d *
+recursive-include initsys *
 
 graft scripts
