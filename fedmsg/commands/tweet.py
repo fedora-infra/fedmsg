@@ -19,6 +19,7 @@
 #
 
 import time
+import traceback
 
 import twitter as twitter_api
 import bitlyapi
@@ -74,7 +75,8 @@ class TweetCommand(BaseCommand):
 
         # How long to sleep if we spew too fast.
         hibernate_duration = self.config['tweet_hibernate_duration']
-        # Sleep a second or two inbetween messages to try and avoid the hibernate
+        # Sleep a second or two inbetween messages to try and avoid
+        # the hibernate
         intermessage_pause = self.config['tweet_intermessage_pause']
 
         def _post_to_api(api, message):
@@ -96,29 +98,33 @@ class TweetCommand(BaseCommand):
                     raise
 
         for name, ep, topic, msg in fedmsg.tail_messages(**self.config):
-            message = fedmsg.meta.msg2subtitle(msg, **self.config)
-            link = fedmsg.meta.msg2link(msg, **self.config)
+            try:
+                message = fedmsg.meta.msg2subtitle(msg, **self.config)
+                link = fedmsg.meta.msg2link(msg, **self.config)
 
-            if link:
-                try:
-                    link = bitly.shorten(longUrl=link)['url']
-                except Exception:
-                    self.log.warn("Bad URI for bitly %r" %link)
-                    link = ""
+                if link:
+                    try:
+                        link = bitly.shorten(longUrl=link)['url']
+                    except Exception:
+                        self.log.warn("Bad URI for bitly %r" % link)
+                        link = ""
 
-                message = message[:137 - len(link)] + " " + link
-            else:
-                message = message[:139]
+                    message = message[:137 - len(link)] + " " + link
+                else:
+                    message = message[:139]
 
-            if not message:
-                self.log.info("Not tweeting blank message.")
-                continue
+                if not message:
+                    self.log.info("Not tweeting blank message.")
+                    continue
 
-            self.log.info("Tweeting %r" % message)
-            for api in apis:
-                _post_to_api(api, message)
+                self.log.info("Tweeting %r" % message)
+                for api in apis:
+                    _post_to_api(api, message)
 
-            time.sleep(intermessage_pause)
+                time.sleep(intermessage_pause)
+            except Exception as e:
+                self.log.error(traceback.format_exc())
+
 
 def tweet():
     command = TweetCommand()
