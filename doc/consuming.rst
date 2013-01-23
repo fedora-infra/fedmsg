@@ -71,7 +71,7 @@ To consume messages and do with them what you'd like, you need to:
 
 An Example From "busmon"
 ~~~~~~~~~~~~~~~~~~~~~~~~
-In the `busmon <https://github.com/ralphbean/busmon>`_ app, all messages from
+In the `busmon <https://github.com/fedora-infra/busmon>`_ app, all messages from
 the hub are processed to be formatted and displayed on a client's browser.  We
 mark them up with a pretty-print format and use pygments to colorize them.
 
@@ -82,7 +82,7 @@ The ``config_key = 'busmon.consumers.enabled'`` line means that a
 ``'busmon.consumers.enabled': True`` entry must appear in the
 fedmsg config for the consumer to be enabled.
 
-Here's the full example from `busmon <https://github.com/ralphbean/busmon>`_, it
+Here's the full example from `busmon <https://github.com/fedora-infra/busmon>`_, it
 consumes messages from every topic, formats them in pretty colored HTML and then
 re-sends them out on a new topic::
 

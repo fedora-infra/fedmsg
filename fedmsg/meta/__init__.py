@@ -39,7 +39,7 @@ handled gracefully.
 The original deployment of fedmsg in `Fedora Infrastructure` uses metadata
 providers/message processors from a plugin called
 `fedmsg_meta_fedora_infrastructure
-<https://github.com/ralphbean/fedmsg_meta_fedora_infrastructure>`_.
+<https://github.com/fedora-infra/fedmsg_meta_fedora_infrastructure>`_.
 If you'd like to add your own processors for your own deployment, you'll need
 to extend :class:`fedmsg.meta.base.BaseProcessor` and override the appropriate
 methods.  If you package up your processor and expose it on the ``fedmsg.meta``

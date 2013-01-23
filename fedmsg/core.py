@@ -258,7 +258,7 @@ class FedMsgContext(object):
         **An example from Fedora Tagger -- SQLAlchemy encoding**
 
         Here's an example from
-        `fedora-tagger <http://github.com/ralphbean/fedora-tagger>`_ that
+        `fedora-tagger <http://github.com/fedora-infra/fedora-tagger>`_ that
         sends the information about a new tag over
         ``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``::
 

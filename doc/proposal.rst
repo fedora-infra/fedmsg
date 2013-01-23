@@ -15,7 +15,7 @@ For discussion, check
 https://admin.fedoraproject.org/mailman/listinfo/messaging-sig
 
 Get (or modify) the source for this document:
-http://github.com/ralphbean/fedmsg
+http://github.com/fedora-infra/fedmsg
 
 Authors:
  - Ralph Bean (threebean)
@@ -154,7 +154,7 @@ The following is recreated from J5's Publish/Subscribe Messaging Proposal
 as an example of how Fedora Infrastructure could be reorganized with AMQP
 and a set of federated AMQP brokers (qpid).
 
-.. image:: https://github.com/ralphbean/fedmsg/raw/develop/doc/_static/reorganize-amqp-j5.png
+.. image:: https://github.com/fedora-infra/fedmsg/raw/develop/doc/_static/reorganize-amqp-j5.png
 
 The gist is that each service in the Fedora Infrastructure would have the
 address of a central message broker on hand.  On startup, each service would
@@ -185,7 +185,7 @@ The following depicts an overview of a subset of Fedora Infrastructure
 organized with a decentralized 0mq bus parallel to the spirit of J5's
 recreated diagram in the AMQP section above.
 
-.. image:: https://github.com/ralphbean/fedmsg/raw/develop/doc/_static/reorganize-0mq-overview.png
+.. image:: https://github.com/fedora-infra/fedmsg/raw/develop/doc/_static/reorganize-0mq-overview.png
 
 No broker.  The gist is that each service will open a port and begin
 publishing messages ("bind to" in zmq-language).  Each other service will
@@ -379,7 +379,7 @@ Code Examples - 0mq and ``fedmsg``
 ==================================
 
 This package (the `package containing the docs you are reading right now
-<http://github.com/ralphbean/fedmsg>`_) is ``fedmsg``.  It aims to be a wrapper
+<http://github.com/fedora-infra/fedmsg>`_) is ``fedmsg``.  It aims to be a wrapper
 around calls to the `moksha hub <http://moksha.fedorahosted.org>`_ API that:
 
  - Handles Fedora-Infra authn/authz
@@ -405,7 +405,7 @@ that to produce an intelligent topic.
 Specifying ``modname`` argues that ``fedmsg`` not be `too smart`.
 
 Here's an example from
-`fedora-tagger <http://github.com/ralphbean/fedora-tagger>`_ that sends the
+`fedora-tagger <http://github.com/fedora-infra/fedora-tagger>`_ that sends the
 information about a new tag over
 ``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``::
 
@@ -436,7 +436,7 @@ Examples of consuming events
 ----------------------------
 
 Consuming events is accomplished by way of the fedmsg-hub.  For example,
-in the `busmon <https://github.com/ralphbean/busmon>`_ app, all messages from
+in the `busmon <https://github.com/fedora-infra/busmon>`_ app, all messages from
 the hub are processed to be formatted and displayed on a client's browser.  We
 mark them up with a pretty-print format and use pygments to colorize them.
 
@@ -449,7 +449,7 @@ to get all of the messages from koji in the staging environment.  In the example
 below, the ``MessageColorizer`` consumer simply subscribes to '*'; it will
 receive every message that hits it's local fedmsg-hub.
 
-Here's the full example from `busmon <https://github.com/ralphbean/busmon>`_, it
+Here's the full example from `busmon <https://github.com/fedora-infra/busmon>`_, it
 consumes messages from every topic, formats them in pretty colored HTML and then
 re-sends them out on a new topic::
 

@@ -90,7 +90,7 @@ class FedMsngr(irc.IRCClient):
     # The 0.6 seconds here is empircally guessed so we don't get dropped by
     # freenode.  FIXME - this should be pulled from the config.
     lineRate = 0.6
-    sourceURL = "http://github.com/ralphbean/fedmsg"
+    sourceURL = "http://github.com/fedora-infra/fedmsg"
 
     def __init__(self, *args, **kw):
         super(FedMsgnr, self).__init__(*args, **kw)

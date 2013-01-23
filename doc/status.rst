@@ -73,6 +73,6 @@ There are a number of external tools being built against fedmsg:
  - Bill Peck's `fedmsg-download <https://github.com/p3ck/fedmsg-download/>`_
    listens to the bus and begins download rawhide and branched composes once
    they are complete for efficient mirroring.
- - Ralph Bean's `datanommer <https://github.com/ralphbean/datanommer>`_ is a
+ - Ralph Bean's `datanommer <https://github.com/fedora-infra/datanommer>`_ is a
    storage consumer for fedmsg.  It stores every message it receives in a SQL
    database.

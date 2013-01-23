@@ -33,7 +33,7 @@ Cloning Upstream the Git Repo
 
 The source code is on github.  For read-only access, simply::
 
-    $ git clone git://github.com/ralphbean/fedmsg.git
+    $ git clone git://github.com/fedora-infra/fedmsg.git
 
 Of course, you may want to do the usual `fork and then clone
 <https://help.github.com/articles/fork-a-repo>`_ pattern if you intend to
