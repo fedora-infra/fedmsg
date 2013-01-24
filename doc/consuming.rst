@@ -3,6 +3,17 @@ Python API:  Consuming Messages
 
 The other side of the :doc:`publishing` document is consuming messages.
 
+.. note:: Messages that you consume come with a topic and a body (dict).  The content
+   of a message can be useful!  For instance, messages from FAS that come when a
+   user edits their profile can tell you who made the change and what fields
+   were changed.  fedmsg was designed with security and message validation in
+   mind, but its still so new that you shouldn't trust it.  When building
+   consumers, you should *always* verify information with existing webapps
+   before acting on messages.
+
+   There currently does not exist a comprehensive list of all messages, their
+   topics, and typical content.  See :doc:`FAQ` for more information.
+
 "Naive" Consuming
 -----------------
 
