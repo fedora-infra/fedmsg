@@ -11,6 +11,9 @@ The other side of the :doc:`publishing` document is consuming messages.
    consumers, you should *always* verify information with existing webapps
    before acting on messages.
 
+   - **nirik>** trust, but verify. or... don't trust, and verify. ;)
+
+.. note::
    There currently does not exist a comprehensive list of all messages, their
    topics, and typical content.  See :doc:`FAQ` for more information.
 
