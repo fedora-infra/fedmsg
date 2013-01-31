@@ -23,3 +23,8 @@ I didn't sign up for this!
 
 Don't worry.  If you have a contribution but the above guidelines are too
 much to handle, just stop by ``#fedora-apps`` on freenode and let us know.
+
+Also
+----
+
+See https://fedoraproject.org/wiki/Infrastructure/AppBestPractices
