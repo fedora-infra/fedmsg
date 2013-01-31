@@ -292,13 +292,8 @@ class FedMsgContext(object):
 
         """
 
-        if not topic:
-            warnings.warn("Attempted to send message with no topic.  Bailing.")
-            return
-
-        if not msg:
-            warnings.warn("Attempted to send message with no msg.  Bailing.")
-            return
+        topic = topic or 'unspecified'
+        msg = msg or dict()
 
         # If no modname is supplied, then guess it from the call stack.
         modname = modname or self.guess_calling_module(default="fedmsg")
