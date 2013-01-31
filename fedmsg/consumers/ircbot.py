@@ -64,21 +64,16 @@ mirc_colors = {
 }
 
 
-def ircprettify(title, subtitle, link=""):
+def ircprettify(title, subtitle, link="", config=None):
     def markup(s, color):
         return "\x03%i%s\x03" % (mirc_colors[color], s)
+
+    config = config or {}
 
     if link:
         link = markup(link, "teal")
 
-    color_lookup = {
-        "fas": "light blue",
-        "bodhi": "green",
-        "git": "red",
-        "tagger": "brown",
-        "wiki": "purple",
-        "logger": "orange",
-    }
+    color_lookup = config.get('irc_color_lookup', {})
     title_color = color_lookup.get(title.split('.')[0], "light grey")
     title = markup(title, title_color)
 
@@ -90,7 +85,7 @@ class FedMsngr(irc.IRCClient):
     # The 0.6 seconds here is empircally guessed so we don't get dropped by
     # freenode.  FIXME - this should be pulled from the config.
     lineRate = 0.6
-    sourceURL = "http://github.com/ralphbean/fedmsg"
+    sourceURL = "http://github.com/fedora-infra/fedmsg"
 
     def __init__(self, *args, **kw):
         super(FedMsgnr, self).__init__(*args, **kw)
@@ -245,6 +240,7 @@ class IRCBotConsumer(FedmsgConsumer):
                     title=fedmsg.meta.msg2title(msg, **self.hub.config),
                     subtitle=fedmsg.meta.msg2subtitle(msg, **self.hub.config),
                     link=fedmsg.meta.msg2link(msg, **self.hub.config),
+                    config=self.hub.config,
                 )
             else:
                 return fedmsg.meta.msg2repr(msg, **self.hub.config)

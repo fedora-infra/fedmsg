@@ -3,6 +3,20 @@ Python API:  Consuming Messages
 
 The other side of the :doc:`publishing` document is consuming messages.
 
+.. note:: Messages that you consume come with a topic and a body (dict).  The content
+   of a message can be useful!  For instance, messages from FAS that come when a
+   user edits their profile can tell you who made the change and what fields
+   were changed.  fedmsg was designed with security and message validation in
+   mind, but its still so new that you shouldn't trust it.  When building
+   consumers, you should *always* verify information with existing webapps
+   before acting on messages.
+
+   - **nirik>** trust, but verify. or... don't trust, and verify. ;)
+
+.. note::
+   There currently does not exist a comprehensive list of all messages, their
+   topics, and typical content.  See :doc:`FAQ` for more information.
+
 "Naive" Consuming
 -----------------
 
@@ -71,7 +85,7 @@ To consume messages and do with them what you'd like, you need to:
 
 An Example From "busmon"
 ~~~~~~~~~~~~~~~~~~~~~~~~
-In the `busmon <https://github.com/ralphbean/busmon>`_ app, all messages from
+In the `busmon <https://github.com/fedora-infra/busmon>`_ app, all messages from
 the hub are processed to be formatted and displayed on a client's browser.  We
 mark them up with a pretty-print format and use pygments to colorize them.
 
@@ -82,7 +96,7 @@ The ``config_key = 'busmon.consumers.enabled'`` line means that a
 ``'busmon.consumers.enabled': True`` entry must appear in the
 fedmsg config for the consumer to be enabled.
 
-Here's the full example from `busmon <https://github.com/ralphbean/busmon>`_, it
+Here's the full example from `busmon <https://github.com/fedora-infra/busmon>`_, it
 consumes messages from every topic, formats them in pretty colored HTML and then
 re-sends them out on a new topic::
 

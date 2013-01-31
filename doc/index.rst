@@ -41,8 +41,8 @@ Community
 ~~~~~~~~~
 
 The source for this document can be found `on github
-<http://github.com/ralphbean/fedmsg>`_.  The issue tracker can be `found
-there. <http://github.com/ralphbean/fedmsg/issues>`_.
+<http://github.com/fedora-infra/fedmsg>`_.  The issue tracker can be `found
+there <http://github.com/fedora-infra/fedmsg/issues>`_, too.
 
 Almost all discussion happens in ``#fedora-apps`` on the freenode network.
 There is also a `mailing list
@@ -63,7 +63,7 @@ Rough Outline of Stages of development/deployment
    :doc:`topology`.
 3) Consume messages for statistics, i.e. an independent statistics webapp.
    This will some day be the responsibility of `datanommer
-   <http://github.com/ralphbean/datanommer>`_.  See :doc:`status` for its
+   <http://github.com/fedora-infra/datanommer>`_.  See :doc:`status` for its
    status in our infrastructure.
 4) Consume messages for user experience, i.e. any or all of rss, email,
    gnome-shell notifications, javascript notifications in FI webapps.  One
@@ -84,6 +84,7 @@ Rough Outline of Stages of development/deployment
    overview
    topology
    status
+   FAQ
    development
    deployment
    commands

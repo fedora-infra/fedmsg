@@ -36,7 +36,7 @@
  * Version:   0.2.0
  * License:   LGPLv2+
  * Author:    Ralph Bean
- * Source:    http://github.com/ralphbean/fedmsg
+ * Source:    http://github.com/fedora-infra/fedmsg
  */
 
 if (!defined('MEDIAWIKI')) {echo("Cannot be run outside MediaWiki"); die(1);}
