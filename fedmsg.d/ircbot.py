@@ -44,5 +44,5 @@ config = dict(
         "pkgdb": "teal",
         "buildsys": "yellow",
         "planet": "light green",
-    }
+    },
 )
