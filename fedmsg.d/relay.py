@@ -22,9 +22,9 @@ config = dict(
     endpoints={
         # This is the output side of the relay to which all other
         # services can listen.
-        "relay_outbound": [
-            "tcp://127.0.0.1:4001",
-        ],
+        #"relay_outbound": [
+        #    "tcp://127.0.0.1:4001",
+        #],
     },
 
     # This is the address of an active->passive relay.  It is used for the
@@ -33,7 +33,7 @@ config = dict(
     # It is also used by the git-hook, for the same reason.
     # It is also used by the mediawiki php plugin which, due to the oddities of
     # php, can't maintain a single passive-bind endpoint of it's own.
-    relay_inbound=[
-        "tcp://127.0.0.1:2003",
-    ],
+    #relay_inbound=[
+    #    "tcp://127.0.0.1:2003",
+    #],
 )
