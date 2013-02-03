@@ -38,7 +38,7 @@ fedmsg-irc
 .. autofunction:: fedmsg.commands.ircbot.ircbot
 
 fedmsg-tweet
-~~~~~~~~~~
+~~~~~~~~~~~~
 .. autofunction:: fedmsg.commands.tweet.tweet
 
 fedmsg-gateway
