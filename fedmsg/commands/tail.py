@@ -20,6 +20,7 @@
 import pprint
 import re
 import time
+import itertools
 
 import pygments
 import pygments.lexers
@@ -49,6 +50,13 @@ class TailCommand(BaseCommand):
         (['--really-pretty'], {
             'dest': 'really_pretty',
             'help': 'Extra-pretty print the JSON messages.',
+            'default': False,
+            'action': 'store_true',
+        }),
+        (['--gource'], {
+            'dest': 'gource',
+            'help': 'Print a live "git log" of the bus suitable for '
+            'piping into the "gource" tool.',
             'default': False,
             'action': 'store_true',
         }),
@@ -110,6 +118,23 @@ class TailCommand(BaseCommand):
         if self.config['terse']:
             formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)
 
+        if self.config['gource']:
+            def formatter(message):
+                """ Use this like::
+
+                  $ fedmsg-tail --gource | gource --log-format custom -
+                """
+                users = fedmsg.meta.msg2usernames(message, **self.config)
+                objs = fedmsg.meta.msg2objects(message, **self.config)
+                lines = []
+                for user, obj in itertools.product(users, objs):
+                    lines.append("%i|%s|A|%s|00FF00" % (
+                        message['timestamp'],
+                        user,
+                        obj,
+                    ))
+                return "\n".join(lines)
+
         exclusive_regexp = re.compile(self.config['exclusive_regexp'])
         inclusive_regexp = re.compile(self.config['inclusive_regexp'])
 
@@ -125,7 +150,9 @@ class TailCommand(BaseCommand):
             if not inclusive_regexp.search(topic):
                 continue
 
-            self.log.info("%s, %s, %s, %s" % (name, ep, topic, formatter(message)))
+            # TODO -- think about how to keep the endpoint stuff later..
+            #self.log.info("%s, %s, %s, %s" % (name, ep, topic, formatter(message)))
+            self.log.info(formatter(message))
 
 def tail():
     command = TailCommand()
