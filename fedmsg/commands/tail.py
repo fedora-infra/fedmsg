@@ -16,11 +16,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
-#
+
+import itertools
+import hashlib
+import os
 import pprint
 import re
+import urllib
 import time
-import itertools
 
 import pygments
 import pygments.lexers
@@ -30,6 +33,30 @@ import fedmsg
 import fedmsg.encoding
 import fedmsg.meta
 from fedmsg.commands import BaseCommand
+
+
+def _grab_and_cache_avatar(username):
+    """ Utility to grab gravatars from outerspace for the --gource option. """
+    directory = os.path.expanduser("~/.cache/gravatar/")
+    if os.path.isdir(directory):
+        # We've been here before... that's good.
+        pass
+    else:
+        os.makedirs(directory)
+
+    fname = os.path.join(directory, "%s.jpg" % username)
+    if os.path.exists(fname):
+        # We already have it cached.  Just chill.
+        pass
+    else:
+        email = "%s@fedoraproject.org" % username
+        hsh = hashlib.md5(email).hexdigest()
+        base_url = "http://www.gravatar.com/avatar/"
+        # TODO -- fancy stuff, like use the fedora project logo when
+        # the gravatar doesn't exist.
+        url = base_url + hsh
+        # Grab it from the net and write to local cache on disk.
+        urllib.urlretrieve(url, fname)
 
 
 class TailCommand(BaseCommand):
@@ -122,12 +149,16 @@ class TailCommand(BaseCommand):
             def formatter(message):
                 """ Use this like::
 
-                  $ fedmsg-tail --gource | gource --log-format custom -
+                  $ fedmsg-tail --gource | gource \
+                          -i 0 \
+                          --user-image-dir ~/.cache/gravatar/ \
+                          --log-format custom -
                 """
                 users = fedmsg.meta.msg2usernames(message, **self.config)
                 objs = fedmsg.meta.msg2objects(message, **self.config)
                 lines = []
                 for user, obj in itertools.product(users, objs):
+                    _grab_and_cache_avatar(user)
                     lines.append("%i|%s|A|%s|00FF00" % (
                         message['timestamp'],
                         user,
