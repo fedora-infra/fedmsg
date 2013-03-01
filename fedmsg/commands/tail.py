@@ -206,8 +206,6 @@ class TailCommand(BaseCommand):
             if not inclusive_regexp.search(topic):
                 continue
 
-            # TODO -- think about how to keep the endpoint stuff later..
-            #self.log.info("%s, %s, %s, %s" % (name, ep, topic, formatter(message)))
             self.log.info(formatter(message))
 
 
