@@ -146,6 +146,23 @@ class TailCommand(BaseCommand):
             formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)
 
         if self.config['gource']:
+            list_of_colors = [
+                "00588F",
+                "008F37",
+                "FF680A",
+                "CC4E00",
+                "8F0011",
+                "8F0058",
+                "8F3700",
+                "8F7E00",
+                "37008F",
+                "7E008F",
+            ]
+            color_lookup = dict(zip(
+                [proc.__name__.lower() for proc in fedmsg.meta.processors],
+                list_of_colors * 2,
+            ))
+
             def formatter(message):
                 """ Use this like::
 
@@ -154,15 +171,19 @@ class TailCommand(BaseCommand):
                           --user-image-dir ~/.cache/gravatar/ \
                           --log-format custom -
                 """
+                proc = fedmsg.meta.msg2processor(message, **self.config)
                 users = fedmsg.meta.msg2usernames(message, **self.config)
                 objs = fedmsg.meta.msg2objects(message, **self.config)
+
+
                 lines = []
                 for user, obj in itertools.product(users, objs):
                     _grab_and_cache_avatar(user)
-                    lines.append("%i|%s|A|%s|00FF00" % (
+                    lines.append("%i|%s|A|%s|%s" % (
                         message['timestamp'],
                         user,
                         obj,
+                        color_lookup[proc.__name__.lower()],
                     ))
                 return "\n".join(lines)
 
