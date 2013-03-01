@@ -24,6 +24,7 @@ import pprint
 import re
 import urllib
 import time
+import math
 
 import pygments
 import pygments.lexers
@@ -148,21 +149,21 @@ class TailCommand(BaseCommand):
             formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)
 
         if self.config['gource']:
-            list_of_colors = [
-                "FFFFFF",
-                "008F37",
-                "FF680A",
-                "CC4E00",
-                "8F0058",
-                "8F7E00",
-                "37008F",
-                "7E008F",
-            ]
-            color_lookup = dict(zip(
-                [proc.__name__.lower() for proc in fedmsg.meta.processors],
-                list_of_colors * 2,
-            ))
+            # Output strings suitable for consumption by the "gource" tool.
 
+            # We have 8 colors here and an unknown number of message types.
+            # (There were 14 message types at the time this code was written).
+            # Here we build a dict that maps message type names (a.k.a modnames
+            # or services) to hex colors for usage in the gource graph.  We
+            # wrap-around that dict if there are more message types than
+            # there are colors (which there almost certainly are).
+            procs = [proc.__name__.lower() for proc in fedmsg.meta.processors]
+            colors = ["FFFFFF", "008F37", "FF680A", "CC4E00",
+                      "8F0058", "8F7E00", "37008F", "7E008F"]
+            colors = colors * (1 + math.ceil(len(colors) / float(len(procs))))
+            color_lookup = dict(zip(colors, procs))
+
+            # After all that color trickiness, here is our formatter we'll use.
             def formatter(message):
                 """ Use this like::
 
