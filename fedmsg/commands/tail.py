@@ -37,9 +37,8 @@ import fedmsg.meta
 from fedmsg.commands import BaseCommand
 
 
-def _grab_and_cache_avatar(username):
+def _grab_and_cache_avatar(username, directory):
     """ Utility to grab gravatars from outerspace for the --gource option. """
-    directory = os.path.expanduser("~/.cache/gravatar/")
 
     fname = os.path.join(directory, "%s.jpg" % username)
     if os.path.exists(fname):
@@ -88,6 +87,11 @@ class TailCommand(BaseCommand):
             'piping into the "gource" tool.',
             'default': False,
             'action': 'store_true',
+        }),
+        (['--gource-user-image-dir'], {
+            'dest': 'gource_user_image_dir',
+            'help': 'Directory to store user avatar images for --gource',
+            'default': os.path.expanduser("~/.cache/gravatar"),
         }),
         (['--terse'], {
             'dest': 'terse',
@@ -164,6 +168,8 @@ class TailCommand(BaseCommand):
             colors = colors * n_wraps
             color_lookup = dict(zip(procs, colors))
 
+            cache_directory = self.config['gource_user_image_dir']
+
             # After all that color trickiness, here is our formatter we'll use.
             def formatter(message):
                 """ Use this like::
@@ -183,7 +189,7 @@ class TailCommand(BaseCommand):
 
                 lines = []
                 for user, obj in itertools.product(users, objs):
-                    _grab_and_cache_avatar(user)
+                    _grab_and_cache_avatar(user, cache_directory)
                     lines.append("%i|%s|A|%s|%s" % (
                         message['timestamp'],
                         user,
