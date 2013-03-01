@@ -179,7 +179,7 @@ class TailCommand(BaseCommand):
                 name = proc.__name__.lower()
 
                 if not users:
-                    users = ["admin"]
+                    users = [name]
 
                 lines = []
                 for user, obj in itertools.product(users, objs):
