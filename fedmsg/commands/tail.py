@@ -175,6 +175,8 @@ class TailCommand(BaseCommand):
                 users = fedmsg.meta.msg2usernames(message, **self.config)
                 objs = fedmsg.meta.msg2objects(message, **self.config)
 
+                if not users:
+                    users = ["admin"]
 
                 lines = []
                 for user, obj in itertools.product(users, objs):
