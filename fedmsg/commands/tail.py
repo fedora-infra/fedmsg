@@ -149,13 +149,11 @@ class TailCommand(BaseCommand):
 
         if self.config['gource']:
             list_of_colors = [
-                "00588F",
+                "FFFFFF",
                 "008F37",
                 "FF680A",
                 "CC4E00",
-                "8F0011",
                 "8F0058",
-                "8F3700",
                 "8F7E00",
                 "37008F",
                 "7E008F",
