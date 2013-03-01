@@ -18,13 +18,14 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 
 import itertools
-import hashlib
 import os
 import pprint
 import re
 import urllib
 import time
 import math
+
+import fedora.client
 
 import pygments
 import pygments.lexers
@@ -50,12 +51,8 @@ def _grab_and_cache_avatar(username):
         # We already have it cached.  Just chill.
         pass
     else:
-        email = "%s@fedoraproject.org" % username
-        hsh = hashlib.md5(email).hexdigest()
-        base_url = "http://www.gravatar.com/avatar/"
-        # TODO -- fancy stuff, like use the fedora project logo when
-        # the gravatar doesn't exist.
-        url = base_url + hsh
+        system = fedora.client.AccountSystem()
+        url = gravatar_url(username, lookup_email=False)
         # Grab it from the net and write to local cache on disk.
         urllib.urlretrieve(url, fname)
 
