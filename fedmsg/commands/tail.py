@@ -61,7 +61,8 @@ def _grab_and_cache_avatar(username):
 
 class TailCommand(BaseCommand):
     """ Watch all endpoints on the bus and print each message to stdout. """
-    name="fedmsg-tail"
+
+    name = "fedmsg-tail"
     extra_args = [
         (['--topic'], {
             'dest': 'topic',
@@ -106,6 +107,7 @@ class TailCommand(BaseCommand):
             'default': '^((?!_heartbeat).)*$',
         }),
     ]
+
     def run(self):
         # Disable sending
         self.config['publish_endpoint'] = None
@@ -113,12 +115,12 @@ class TailCommand(BaseCommand):
         # Disable timeouts.  We want to tail forever!
         self.config['timeout'] = 0
 
-        # Even though fedmsg-tail won't be sending any messages, give it a name to
-        # conform with the other commands.
+        # Even though fedmsg-tail won't be sending any messages, give it a
+        # name to conform with the other commands.
         self.config['name'] = 'relay_inbound'
 
-        # Tail is never going to send any messages, so we suppress warnings about
-        # having no publishing sockets established.
+        # Tail is never going to send any messages, so we suppress warnings
+        # about having no publishing sockets established.
         self.config['mute'] = True
 
         fedmsg.init(**self.config)
@@ -192,11 +194,11 @@ class TailCommand(BaseCommand):
         exclusive_regexp = re.compile(self.config['exclusive_regexp'])
         inclusive_regexp = re.compile(self.config['inclusive_regexp'])
 
-        # The "proper" fedmsg way to do this would be to spin up or connect to an
-        # existing Moksha Hub and register a consumer on the "*" topic that simply
-        # prints out each message it consumes.  That seems like overkill, so we're
-        # just going to directly access the endpoints ourself.
-
+        # The "proper" fedmsg way to do this would be to spin up or connect to
+        # an existing Moksha Hub and register a consumer on the "*" topic that
+        # simply prints out each message it consumes.  That seems like
+        # overkill, so we're just going to directly access the endpoints
+        # ourself.
         for name, ep, topic, message in fedmsg.tail_messages(**self.config):
             if exclusive_regexp.search(topic):
                 continue
@@ -207,6 +209,7 @@ class TailCommand(BaseCommand):
             # TODO -- think about how to keep the endpoint stuff later..
             #self.log.info("%s, %s, %s, %s" % (name, ep, topic, formatter(message)))
             self.log.info(formatter(message))
+
 
 def tail():
     command = TailCommand()
