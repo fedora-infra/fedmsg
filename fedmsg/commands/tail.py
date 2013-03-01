@@ -157,7 +157,8 @@ class TailCommand(BaseCommand):
             procs = [proc.__name__.lower() for proc in fedmsg.meta.processors]
             colors = ["FFFFFF", "008F37", "FF680A", "CC4E00",
                       "8F0058", "8F7E00", "37008F", "7E008F"]
-            colors = colors * (1 + math.ceil(len(colors) / float(len(procs))))
+            n_wraps = 1 + int(math.ceil(len(colors) / float(len(procs))))
+            colors = colors * n_wraps
             color_lookup = dict(zip(colors, procs))
 
             # After all that color trickiness, here is our formatter we'll use.
