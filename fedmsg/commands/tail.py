@@ -176,6 +176,7 @@ class TailCommand(BaseCommand):
                 proc = fedmsg.meta.msg2processor(message, **self.config)
                 users = fedmsg.meta.msg2usernames(message, **self.config)
                 objs = fedmsg.meta.msg2objects(message, **self.config)
+                name = proc.__name__.lower()
 
                 if not users:
                     users = ["admin"]
@@ -186,8 +187,8 @@ class TailCommand(BaseCommand):
                     lines.append("%i|%s|A|%s|%s" % (
                         message['timestamp'],
                         user,
-                        obj,
-                        color_lookup[proc.__name__.lower()],
+                        name + "/" + obj,
+                        color_lookup[name],
                     ))
                 return "\n".join(lines)
 
