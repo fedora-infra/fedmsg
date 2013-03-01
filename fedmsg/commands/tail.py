@@ -40,11 +40,6 @@ from fedmsg.commands import BaseCommand
 def _grab_and_cache_avatar(username):
     """ Utility to grab gravatars from outerspace for the --gource option. """
     directory = os.path.expanduser("~/.cache/gravatar/")
-    if os.path.isdir(directory):
-        # We've been here before... that's good.
-        pass
-    else:
-        os.makedirs(directory)
 
     fname = os.path.join(directory, "%s.jpg" % username)
     if os.path.exists(fname):
@@ -53,6 +48,14 @@ def _grab_and_cache_avatar(username):
     else:
         system = fedora.client.AccountSystem()
         url = gravatar_url(username, lookup_email=False)
+
+        # Make sure we have a place to write it
+        if os.path.isdir(directory):
+            # We've been here before... that's good.
+            pass
+        else:
+            os.makedirs(directory)
+
         # Grab it from the net and write to local cache on disk.
         urllib.urlretrieve(url, fname)
 
