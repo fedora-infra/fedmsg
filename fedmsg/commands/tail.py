@@ -162,7 +162,7 @@ class TailCommand(BaseCommand):
                       "8F0058", "8F7E00", "37008F", "7E008F"]
             n_wraps = 1 + int(math.ceil(len(colors) / float(len(procs))))
             colors = colors * n_wraps
-            color_lookup = dict(zip(colors, procs))
+            color_lookup = dict(zip(procs, colors))
 
             # After all that color trickiness, here is our formatter we'll use.
             def formatter(message):
