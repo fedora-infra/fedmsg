@@ -47,7 +47,7 @@ def _grab_and_cache_avatar(username):
         pass
     else:
         system = fedora.client.AccountSystem()
-        url = gravatar_url(username, lookup_email=False)
+        url = system.gravatar_url(username, lookup_email=False)
 
         # Make sure we have a place to write it
         if os.path.isdir(directory):
