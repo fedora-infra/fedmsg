@@ -34,7 +34,7 @@ config = dict(
             ),
         ),
     ],
-    irc_color_lookup = {
+    irc_color_lookup={
         "fas": "light blue",
         "bodhi": "green",
         "git": "red",

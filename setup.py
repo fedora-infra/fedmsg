@@ -131,6 +131,7 @@ setup(
             "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer",
             "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer",
             "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer",
+            "fedmsg-tweet=fedmsg.consumers.tweet:TweetBotConsumer",
         ],
         'moksha.producer': [
         ],

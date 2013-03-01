@@ -32,12 +32,12 @@ config = dict(
     # opposed to amqp or stomp.
     zmq_enabled=True,
 
-    # When subscribing to messages, we want to allow splats ('*') so we tell the
-    # hub to not be strict when comparing messages topics to subscription
+    # When subscribing to messages, we want to allow splats ('*') so we tell
+    # the hub to not be strict when comparing messages topics to subscription
     # topics.
     zmq_strict=False,
 
-    # Number of seconds to sleep after initializing waiting for sockets to sync.
+    # Number of seconds to sleep after initializing waiting for sockets to sync
     post_init_sleep=0.2,
 
     # See the following

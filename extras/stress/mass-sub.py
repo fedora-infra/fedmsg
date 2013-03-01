@@ -26,13 +26,14 @@ ctx = zmq.Context()
 
 start = time.time()
 
+
 class ThreadedJob(threading.Thread):
     def run(self):
         self.ctx = ctx
         self.s = self.ctx.socket(zmq.SUB)
         connect_to = "tcp://hub.fedoraproject.org:9940"
         self.s.connect(connect_to)
-        self.s.setsockopt(zmq.SUBSCRIBE,'')
+        self.s.setsockopt(zmq.SUBSCRIBE, '')
         topic, msg = self.s.recv_multipart()
         sys.stdout.flush()
 
