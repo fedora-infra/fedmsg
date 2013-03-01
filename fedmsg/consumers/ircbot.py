@@ -212,10 +212,7 @@ class IRCBotConsumer(FedmsgConsumer):
             self.irc_clients.remove(client)
 
     def compile_filters(self, filters):
-        compiled_filters = dict(
-                topic=[],
-                body=[]
-                )
+        compiled_filters = dict(topic=[], body=[])
 
         for tag, flist in filters.items():
             for f in flist:
