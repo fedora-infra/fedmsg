@@ -292,6 +292,22 @@ Glossary of Configuration Values
         body will be discarded and not echoed into ``#fedora-fedmsg``.  This is
         an area that could use some improvement.
 
+    irc_color_lookup
+        ``dict`` - A mapping of ``modname`` values to `MIRC irc color names
+        <http://www.mirc.com/colors.html>`_.  For example:
+
+          >>> irc_color_lookup = {
+          ...     "fas": "light blue",
+          ...     "bodhi": "green",
+          ...     "git": "red",
+          ...     "tagger": "brown",
+          ...     "wiki": "purple",
+          ...     "logger": "orange",
+          ...     "pkgdb": "teal",
+          ...     "buildsys": "yellow",
+          ...     "planet": "light green",
+          ... }
+
     tweet_endpoints
         ``list`` - A list of twitter/statusnet configuration dicts.  This is the
         primary way of configuring the ``fedmsg-tweet`` bot implemented in

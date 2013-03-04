@@ -23,7 +23,7 @@ config = dict(
             network='irc.freenode.net',
             port=6667,
             nickname='fedmsg-dev',
-            channel='fedora-fedmsg',
+            channel='my-fedmsg-channel',
             timeout=120,
             make_pretty=True,
             make_terse=True,
@@ -34,7 +34,7 @@ config = dict(
             ),
         ),
     ],
-    irc_color_lookup = {
+    irc_color_lookup={
         "fas": "light blue",
         "bodhi": "green",
         "git": "red",

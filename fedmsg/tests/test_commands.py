@@ -103,7 +103,7 @@ class TestCommands(unittest.TestCase):
                     command.execute()
 
         output = stdout.getvalue()
-        eq_(output, "name, endpoint, topic, message\n")
+        eq_(output, "message\n")
 
     @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--pretty"])
     @patch("sys.stdout", new_callable=six.StringIO)
@@ -127,9 +127,7 @@ class TestCommands(unittest.TestCase):
                     command.execute()
 
         output = stdout.getvalue()
-        expected = """name, endpoint, topic, 
-{'msg': {'hello': 'world'}, 'timestamp': 'Mon Dec  3 13:41:57 2012'}
-"""
+        expected = "\n{'msg': {'hello': 'world'}, 'timestamp': 'Mon Dec  3 13:41:57 2012'}\n"
         eq_(output, expected)
 
     @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--really-pretty"])
@@ -154,7 +152,7 @@ class TestCommands(unittest.TestCase):
                     command.execute()
 
         output = stdout.getvalue()
-        expected = 'name, endpoint, topic, \n{\x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"msg"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m{\x1b[39;49;00m\n    \x1b[39;49;00m\x1b[33m"hello"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[33m"world"\x1b[39;49;00m\n  \x1b[39;49;00m}\x1b[39;49;00m,\x1b[39;49;00m \x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"timestamp"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[34m1354563717'
+        expected = '\n{\x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"msg"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m{\x1b[39;49;00m\n    \x1b[39;49;00m\x1b[33m"hello"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[33m"world"\x1b[39;49;00m\n  \x1b[39;49;00m}\x1b[39;49;00m,\x1b[39;49;00m \x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"timestamp"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[34m1354563717'
         assert(output.startswith(expected))
 
     @patch("sys.argv", new_callable=lambda: ["fedmsg-relay"])
