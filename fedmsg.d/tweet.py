@@ -26,4 +26,3 @@ config = dict(
         api_key="http://bit.ly/"
     ),
 )
-
