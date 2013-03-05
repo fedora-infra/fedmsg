@@ -38,7 +38,11 @@ config = dict(
     zmq_strict=False,
 
     # Number of seconds to sleep after initializing waiting for sockets to sync
-    post_init_sleep=0.2,
+    post_init_sleep=0.5,
+
+    # Wait a whole second to kill all the last io threads for messages to
+    # exit our outgoing queue (if we have any)
+    zmq_linger=1,
 
     # See the following
     #   - http://tldp.org/HOWTO/TCP-Keepalive-HOWTO/overview.html
