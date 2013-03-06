@@ -41,8 +41,8 @@ config = dict(
     post_init_sleep=0.5,
 
     # Wait a whole second to kill all the last io threads for messages to
-    # exit our outgoing queue (if we have any)
-    zmq_linger=1,
+    # exit our outgoing queue (if we have any).  This is in milliseconds.
+    zmq_linger=1000,
 
     # See the following
     #   - http://tldp.org/HOWTO/TCP-Keepalive-HOWTO/overview.html
