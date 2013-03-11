@@ -27,9 +27,9 @@ There is no information here about *receiving* messages, only sending.
 +---------------+-----------+------------+----------+-----------+
 | compose       | DONE      |   N/A      | DONE     | DONE      |
 +---------------+-----------+------------+----------+-----------+
-| comp 2nd arch |           |            |          |           |
+| comp 2nd arch | DONE      |   N/A      | DONE     | DONE*[4_] |
 +---------------+-----------+------------+----------+-----------+
-| coprs         |           |            |          |           |
+| coprs         | DONE      |            |          |           |
 +---------------+-----------+------------+----------+-----------+
 | elections     | DONE [1_] |            |          |           |
 +---------------+-----------+------------+----------+-----------+
@@ -49,7 +49,7 @@ There is no information here about *receiving* messages, only sending.
 +---------------+-----------+------------+----------+-----------+
 | netapp        |           |            |          |           |
 +---------------+-----------+------------+----------+-----------+
-| nagios        |           |            |          |           |
+| nagios        | DONE      |            |          |           |
 +---------------+-----------+------------+----------+-----------+
 | pkgdb         | DONE      | DONE       | DONE     | DONE      |
 +---------------+-----------+------------+----------+-----------+
@@ -72,6 +72,7 @@ There is no information here about *receiving* messages, only sending.
 .. _1: https://github.com/abadger/fedora-elections-flask/pull/1
 .. _2: http://github.com/rossdylan/fuss
 .. _3: https://fedorahosted.org/fedora-infrastructure/ticket/3438
+.. _4: https://fedorahosted.org/fedora-infrastructure/ticket/3700
 
 Other projects
 --------------
