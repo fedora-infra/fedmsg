@@ -288,7 +288,8 @@ def validate(message, ssldir, **config):
             pass
         else:
             # We have a policy for this topic and $homeboy isn't on the list.
-            return fail("Authorization/routing_policy error.")
+            return fail("Authorization/routing_policy error.  "
+                        "Topic %r.  Signer %r." % (message['topic'], signer))
     else:
         # We don't have a policy for this topic.  How we react next for an
         # underspecified routing_policy is based on a configuration option.
