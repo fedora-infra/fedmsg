@@ -25,6 +25,16 @@ class BaseProcessor(object):
     """ Base Processor.  Without being extended, this doesn't actually handle
     any messages.
 
+    Processors require that an ``internationalization_callable`` be passed to
+    them at instantiation.  Internationalization is often done at import time,
+    but we handle it at runtime so that a single process may translate fedmsg
+    messages into multiple languages.  Think: an IRC bot that runs
+    #fedora-fedmsg, #fedora-fedmsg-es, #fedora-fedmsg-it.  Or: a twitter bot
+    that posts to multiple language-specific accounts.
+
+    That feature is currently unused, but fedmsg.meta supports future
+    internationalization (there may be bugs to work out).
+
     """
 
     # These six properties must be overridden by child-classes.
