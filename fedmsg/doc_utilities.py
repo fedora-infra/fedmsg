@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+""" Code to generate doc/topics.rst during 'sphinx-build'.
+
+This code:
+
+- Uses :mod:`nose` to find all the fedmsg.meta unittests.
+- Extracts all the metadata and docstrings from those tests.
+- Uses all that to generate a giant .rst document of all the fedmsg
+  topics and what they are about with example messages.
+
+"""
 
 import os
 import nose
@@ -33,7 +43,7 @@ as well as descriptions and sample output from ``fedmsg.meta``.
 
 """
 
-meta_template = """
+metadata_template = """
 The example message above, when passed to various routines in the
 :mod:`fedmsg.meta` module, will produce the following outputs:
 
@@ -155,7 +165,7 @@ def make_topics_doc(output_dir):
             write(fname, '\n    ' + pprint.pformat(cls.context.msg, indent=2)
                    .replace('\n', '\n    '))
             write(fname)
-            write(fname, meta_template.format(
+            write(fname, metadata_template.format(
                 link=cls.context.expected_link,
                 title=cls.context.expected_title,
                 subtitle=cls.context.expected_subti,
