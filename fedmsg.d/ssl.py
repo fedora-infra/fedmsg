@@ -26,7 +26,7 @@ hostname = socket.gethostname()
 
 config = dict(
     sign_messages=False,
-    validate_signatures=False,
+    validate_signatures=True,
     ssldir="/etc/pki/fedmsg",
 
     crl_location="https://fedoraproject.org/fedmsg/crl.pem",
