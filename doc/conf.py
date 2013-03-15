@@ -26,6 +26,10 @@ import sys, os
 # import Cloud
 import cloud_sptheme as csp
 
+from fedmsg.doc_utilities import make_topics_doc
+here = os.path.dirname(os.path.abspath(__file__))
+make_topics_doc(here)
+
 # ... some contents omitted ...
 
 # set the html theme
