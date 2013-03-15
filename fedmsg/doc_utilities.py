@@ -83,6 +83,7 @@ The example message above, when passed to various routines in the
 
 outfile = None
 
+
 def write(fname, s=''):
     global outfile
     if not outfile:
@@ -163,7 +164,7 @@ def make_topics_doc(output_dir):
 
             write(fname, ".. code-block:: python")
             write(fname, '\n    ' + pprint.pformat(cls.context.msg, indent=2)
-                   .replace('\n', '\n    '))
+                  .replace('\n', '\n    '))
             write(fname)
             write(fname, metadata_template.format(
                 link=cls.context.expected_link,
