@@ -104,13 +104,13 @@ def make_topics_doc(output_dir):
     global outfile
     import fedmsg_meta_fedora_infrastructure
     filename = fedmsg_meta_fedora_infrastructure.__file__
-    folder = '/'.join(filename.split('/')[:-1])
+    folder = os.path.sep + os.path.join(*filename.split('/')[:-1])
     test_classes = load_classes(folder)
 
     # TODO -- get the logger and announce messages
     #import fedmsg
     #filename = fedmsg.__file__
-    #folder = '/'.join(filename.split('/')[:-1])
+    #folder = os.path.sep + os.path.join(*filename.split('/')[:-1])
     #test_classes = load_classes(folder)
 
     write(fname, header)
