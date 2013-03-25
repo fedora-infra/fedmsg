@@ -3,14 +3,11 @@ Frequently Asked Questions
 
 - Is there a list of all messages?
 
-  - No, not yet.  The best lists are the unit tests of the Fedora Infrastructure
-    `fedmsg.meta plugin
-    <https://github.com/fedora-infra/fedmsg_meta_fedora_infrastructure>`_.  You
-    should check `this file <https://github.com/fedora-infra/fedmsg_meta_fedora_infrastructure/blob/develop/fedmsg_meta_fedora_infrastructure/tests/__init__.py>`_ and `this file <https://github.com/fedora-infra/fedmsg_meta_fedora_infrastructure/blob/develop/fedmsg_meta_fedora_infrastructure/tests/pkgdb.py>`_.  We do need a document listing them, explaining them briefly, and providing an example of message content.  If you'd like to help start that project, it would be an excellent place to contribute (please report any progress `here <https://github.com/fedora-infra/fedmsg/issues/117>`_).
+  - Yes!  See :doc:`topics`.
 
 - When will we be getting koji messages?
 
-  - We got them in late January, 2013!  Look for
+  - We have them now (we got them in late January, 2013)!  Look for
     ``org.fedoraproject.prod.buildsys...``
 
 - When will we be getting bugzilla messages?
