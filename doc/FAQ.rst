@@ -20,3 +20,24 @@ Frequently Asked Questions
   - Yes.  It was designed so that all the Fedora-isms could be separated out
     into plugins.  Get in touch with ``#fedora-apps`` or create a ticket if
     you'd like to try this out.
+
+- ``fedmsg-tail`` isn't showing the same output as the bot in the
+  ``#fedora-fedmsg`` IRC channel.  What's up?
+
+  - Is the formatting just different?  Try the following to get those "nice"
+    messages::
+
+        $ sudo yum install python-fedmsg-meta-fedora-infrastructure
+        $ fedmsg-tail --terse
+
+  - What you were seeing before was the raw JSON content of the messages.
+    That is interesting to see if you want to develop tools that consume
+    fedmsg messages.  You can make those JSON blobs a little more
+    readable with::
+
+        $ fedmsg-tail --really-pretty
+
+  - If you *really are* seeing different messages between fedmsg-bot and
+    fedmsg-tail, please report it in the ``#fedora-apps`` IRC channel or
+    as a `ticket on github
+    <http://github.com/fedora-infra/fedmsg/issues/new>`_.
