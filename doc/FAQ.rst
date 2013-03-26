@@ -41,3 +41,11 @@ Frequently Asked Questions
     fedmsg-tail, please report it in the ``#fedora-apps`` IRC channel or
     as a `ticket on github
     <http://github.com/fedora-infra/fedmsg/issues/new>`_.
+
+- How do I make that realtime movie of the bus?
+
+  - Like this::
+
+        $ sudo yum install gource
+        $ sudo yum install python-fedmsg-meta-fedora-infrastructure
+        $ fedmsg-tail --gource | gource -i 0 --user-image-dir ~/.cache/gravatar --log-format custom -
