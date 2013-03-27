@@ -42,7 +42,7 @@ except Exception:
 
 
 install_requires = [
-    'pyzmq',
+    'pyzmq < 13.0.0',
     'fabulous',
     'kitchen',
     'python-fedora',
