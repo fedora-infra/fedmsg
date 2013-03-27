@@ -42,11 +42,11 @@ except Exception:
 
 
 install_requires = [
-    'pyzmq < 13.0.0',
+    'pyzmq',
     'fabulous',
     'kitchen',
     'python-fedora',
-    'moksha.hub>=1.0.9',
+    'moksha.hub>=1.2.0',
     'requests',
     'pygments',
     #'daemon',
