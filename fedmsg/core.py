@@ -235,7 +235,7 @@ class FedMsgContext(object):
           ... })
 
         The above snippet will send the message ``'{test: "Hello World"}'``
-        over the ``org.fedoraproject.dev.test.testing`` topic.
+        over the ``<topic_prefix>.dev.test.testing`` topic.
 
         This function (and other API functions) do a little bit more
         heavy lifting than they let on.  If the "zeromq context" is not yet

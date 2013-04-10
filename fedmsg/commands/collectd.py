@@ -39,11 +39,16 @@ from kitchen.iterutils import iterate
 
 
 class CollectdConsumer(FedmsgConsumer):
-    topic = "org.fedoraproject.*"
     config_key = "fedmsg.commands.collectd.enabled"
     validate_messages = False
 
     def __init__(self, hub):
+
+        # The consumer should pick up *all* messages.
+        self.topic = self.hub.config.get('topic_prefix', 'org.fedoraproject')
+        if not self.topic.endswith('*'):
+            self.topic += '*'
+
         super(CollectdConsumer, self).__init__(hub)
         self._dict = dict([
             (p.__name__.lower(), 0) for p in fedmsg.meta.processors

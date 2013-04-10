@@ -160,7 +160,6 @@ class FedMsngrFactory(protocol.ClientFactory):
 
 
 class IRCBotConsumer(FedmsgConsumer):
-    topic = "org.fedoraproject.*"
     validate_signatures = False
     config_key = 'fedmsg.consumers.ircbot.enabled'
 
@@ -168,6 +167,11 @@ class IRCBotConsumer(FedmsgConsumer):
         self.hub = hub
         self.DBSession = None
         self.irc_clients = []
+
+        # The consumer should pick up *all* messages.
+        self.topic = self.hub.config.get('topic_prefix', 'org.fedoraproject')
+        if not self.topic.endswith('*'):
+            self.topic += '*'
 
         super(IRCBotConsumer, self).__init__(hub)
         fedmsg.meta.make_processors(**hub.config)

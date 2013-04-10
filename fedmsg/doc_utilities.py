@@ -28,10 +28,10 @@ This document lists all the topics coming out the Fedora
 Infrastructure fedmsg bus.  Example messages are included
 as well as descriptions and sample output from ``fedmsg.meta``.
 
-.. note:: All topics are prefixed with ``org.fedoraproject.prod.``, but the
-   prefix is omitted here for brevity.  For instance, the item listed as
-   ``git.branch`` will actually be broadcast as
-   ``org.fedoraproject.prod.git.branch``.
+.. note:: All topics from Fedora Infrastructure are prefixed with
+   ``org.fedoraproject.prod.``, but the :term:`topic_prefix` is omitted here
+   for brevity.  For instance, the item listed as ``git.branch`` will
+   actually be broadcast as ``org.fedoraproject.prod.git.branch``.
 
 .. note:: Message bodies can contain some useful information, but be wary.
    We have done as good a job as we can *securing* fedmsg, but it is still
