@@ -108,7 +108,7 @@ class TestUnhandled(Base):
     expected_title = "unhandled_service.some_event (unsigned)"
     expected_subti = ""
     msg = {
-        "topic": "org.fedoraproject.stg.unhandled_service.some_event"
+        "topic": "com.test_prefix.stg.unhandled_service.some_event"
     }
 
 
@@ -121,7 +121,7 @@ class TestAnnouncement(Base):
     msg = {
         "i": 1,
         "timestamp": 1344352873.714926,
-        "topic": "org.fedoraproject.dev.announce.announcement",
+        "topic": "com.test_prefix.dev.announce.announcement",
         "msg": {
             "message": "hello, world.",
             "link": "foo",
@@ -138,7 +138,7 @@ class TestLoggerNormal(Base):
     msg = {
         "i": 1,
         "timestamp": 1344352873.714926,
-        "topic": "org.fedoraproject.dev.logger.log",
+        "topic": "com.test_prefix.dev.logger.log",
         "msg": {
             "log": "hello, world."
         },
@@ -154,7 +154,7 @@ class TestLoggerJSON(Base):
     msg = {
         "i": 1,
         "timestamp": 1344352929.415939,
-        "topic": "org.fedoraproject.dev.logger.log",
+        "topic": "com.test_prefix.dev.logger.log",
         "msg": {
             "foo": "bar"
         },
