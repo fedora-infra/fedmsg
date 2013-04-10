@@ -73,7 +73,7 @@ class TestHub(unittest.TestCase):
         self.hub = CentralMokshaHub(config=config)
 
         # fully qualified
-        self.fq_topic = "org.fedoraproject.dev.unittest.foo"
+        self.fq_topic = "com.test_prefix.dev.unittest.foo"
         # short version
         self.topic = "foo"
 
