@@ -191,3 +191,17 @@ starting point for whatever you want to build::
 
 Just bear in mind that you don't reap any of the benefits of
 :mod:`fedmsg.crypto` or :mod:`fedmsg.meta`.
+
+.. note:: In the example above, the topic is just
+   ``'org.fedoraproject.prod.'`` and *not* ``'org.fedoraproject.prod.*'``.
+   The ``*`` that you see elsewhere is a Moksha convention and it is actually
+   just stripped from the topic.
+
+   Why? The ``*`` has meaning in AMQP, but not zeromq. The Moksha project
+   (which underlies fedmsg) aims to be an abstraction layer over zeromq,
+   AMQP, and STOMP and contains some code that allows use of the ``*`` for
+   zeromq, in order to make it look more like AMQP or STOMP (superficially).
+   fedmsg (being built on Moksha) inherits this behavior even though it
+   only uses the zeromq backend.  See `these comments
+   <http://threebean.org/blog/zeromq-and-fedmsg-diy/#disqus_thread>`_ for
+   some discussion.
