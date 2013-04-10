@@ -14,8 +14,8 @@ The other side of the :doc:`publishing` document is consuming messages.
    - **nirik>** trust, but verify. or... don't trust, and verify. ;)
 
 .. note::
-   There currently does not exist a comprehensive list of all messages, their
-   topics, and typical content.  See :doc:`FAQ` for more information.
+   This document is on *how* to consume messages.  But if you want to know
+   *what* messages there are, you might check out :doc:`topics`.
 
 "Naive" Consuming
 -----------------
