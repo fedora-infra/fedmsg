@@ -19,6 +19,7 @@
 #
 """ Tests for fedmsg.meta """
 
+import os
 import unittest
 from nose.tools import eq_
 
@@ -39,8 +40,11 @@ class Base(unittest.TestCase):
     expected_objects = set()
 
     def setUp(self):
-        self.config = fedmsg.config.load_config(None, None,
-                                                invalidate_cache=True)
+        dirname = os.path.abspath(os.path.dirname(__file__))
+        self.config = fedmsg.config.load_config(
+            filenames=[os.path.join(dirname, "fedmsg-test-config.py")],
+            invalidate_cache=True,
+        )
         fedmsg.meta.make_processors(**self.config)
 
     def test_title(self):
