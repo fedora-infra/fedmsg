@@ -37,6 +37,7 @@ except ImportError:
 port = random.randint(4000, 20000)
 
 config = dict(
+    topic_prefix="com.test_prefix",
     endpoints={
         "unittest.%s" % hostname: [
             "tcp://*:%i" % (port + 1),

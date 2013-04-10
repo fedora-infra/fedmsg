@@ -65,7 +65,7 @@ class LoggerCommand(BaseCommand):
             'dest': 'topic',
             'metavar': "TOPIC",
             'default': "log",
-            'help': "Think org.fedoraproject.logger.TOPIC",
+            'help': "Think org.fedoraproject.dev.logger.TOPIC",
         }),
         (['--modname'], {
             'dest': 'modname',

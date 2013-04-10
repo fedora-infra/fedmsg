@@ -51,8 +51,6 @@ VALID_ENVIRONMENTS = ['dev', 'stg', 'prod']
 
 defaults = dict(
     topic_prefix="org.fedoraproject",
-    topic_prefix_re = r'org\.fedoraproject\.(%s)' % (
-        '|'.join(VALID_ENVIRONMENTS)),
     environment="dev",
     io_threads=1,
     post_init_sleep=0.5,
@@ -122,6 +120,11 @@ def load_config(extra_args=None,
 
     if 'endpoints' not in config:
         raise ValueError("No config value 'endpoints' found.")
+
+    if 'topic_prefix_re' not in config:
+        # Turn "org.fedoraproject" into "org\.fedoraproject\.(dev|stg|prod)"
+        config['topic_prefix_re'] = config['topic_prefix'].replace('.', '\.')\
+                + '\.(%s)' % '|'.join(VALID_ENVIRONMENTS)
 
     __cache = config
     return config

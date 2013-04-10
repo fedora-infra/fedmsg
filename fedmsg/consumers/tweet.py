@@ -26,13 +26,18 @@ from fedmsg.consumers import FedmsgConsumer
 
 
 class TweetBotConsumer(FedmsgConsumer):
-    topic = "org.fedoraproject.*"
     validate_signatures = False
     config_key = 'fedmsg.consumers.tweetbot.enabled'
 
     def __init__(self, hub):
         self.hub = hub
         self.DBSession = None
+
+        # The consumer should pick up *all* messages.
+        self.topic = self.hub.config.get('topic_prefix', 'org.fedoraproject')
+        if not self.topic.endswith('*'):
+            self.topic += '*'
+
         super(TweetBotConsumer, self).__init__(hub)
         self.config = hub.config
 
