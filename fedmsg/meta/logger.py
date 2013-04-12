@@ -37,4 +37,8 @@ class LoggerProcessor(BaseProcessor):
             raise NotImplementedError
 
     def usernames(self, msg, **config):
-        return set([msg['username']])
+        if 'username' in msg:
+            return set([msg['username']])
+        else:
+            # *OLD* messages in datanommer's db don't have a username.
+            return set()
