@@ -43,6 +43,7 @@ class CollectdConsumer(FedmsgConsumer):
     validate_messages = False
 
     def __init__(self, hub):
+        self.hub = hub
 
         # The consumer should pick up *all* messages.
         self.topic = self.hub.config.get('topic_prefix', 'org.fedoraproject')
