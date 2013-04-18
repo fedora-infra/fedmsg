@@ -37,7 +37,6 @@ from moksha.hub.api import PollingProducer
 from kitchen.iterutils import iterate
 
 
-
 class CollectdConsumer(FedmsgConsumer):
     config_key = "fedmsg.commands.collectd.enabled"
     validate_messages = False
@@ -65,23 +64,25 @@ class CollectdConsumer(FedmsgConsumer):
 
         # Print out the collectd feedback.
         # This is sent to stdout while other log messages are sent to stderr.
-        self.log.info(self.formatter([v for k, v in sorted(self._dict.items())]))
+        for k, v in sorted(self._dict.items()):
+            print self.formatter(k, v)
 
         # Reset each entry to zero
         for k, v in sorted(self._dict.items()):
             self._dict[k] = 0
 
-    def formatter(self, values):
+    def formatter(self, key, value):
         """ Format messages for collectd to consume. """
-        template = "PUTVAL {host}/fedmsg/fedmsg_wallboard " +\
-            "interval={interval} {timestamp}:{values}"
+        template = "PUTVAL {host}/fedmsg/fedmsg_wallboard-{key} " +\
+            "interval={interval} {timestamp}:{value}"
         timestamp = int(time.time())
         interval = self.hub.config['collectd_interval']
         return template.format(
             host=self.host,
             timestamp=timestamp,
-            values=":".join([str(value) for value in values]),
+            value=value,
             interval=interval,
+            key=key,
         )
 
 
