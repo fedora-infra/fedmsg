@@ -146,13 +146,12 @@ def with_processor():
 
 @legacy_condition(unicode)
 @with_processor()
-def msg2repr(msg, **config):
+def msg2repr(msg, processor, **config):
     """ Return a human-readable or "natural language" representation of a
     dict-like fedmsg message.  Think of this as the 'top-most level' function
     in this module.
 
     """
-    processor = msg2processor(msg, **config)
     fmt = u"{title} -- {subtitle} {link}"
     title = msg2title(msg, **config)
     subtitle = processor.subtitle(msg, **config)
@@ -189,8 +188,6 @@ def msg2link(msg, processor, **config):
 @with_processor()
 def msg2icon(msg, processor, **config):
     """ Return a primary icon associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.icon(msg, **config)
 
 
@@ -198,8 +195,6 @@ def msg2icon(msg, processor, **config):
 @with_processor()
 def msg2secondary_icon(msg, processor, **config):
     """ Return a secondary icon associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.secondary_icon(msg, **config)
 
 
