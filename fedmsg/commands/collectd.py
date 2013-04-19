@@ -56,7 +56,8 @@ class CollectdConsumer(FedmsgConsumer):
         self.host = socket.gethostname()
 
     def consume(self, msg):
-        modname = msg['topic'].split('.')[3]
+        processor = fedmsg.meta.msg2processor(msg, **self.hub.config)
+        modname = processor.__name__.lower()
         self._dict[modname] += 1
 
     def dump(self):
