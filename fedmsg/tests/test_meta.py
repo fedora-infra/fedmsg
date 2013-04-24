@@ -45,6 +45,8 @@ class Base(unittest.TestCase):
             filenames=[os.path.join(dirname, "fedmsg-test-config.py")],
             invalidate_cache=True,
         )
+        self.config['topic_prefix'] = 'org.fedoraproject'
+        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
         fedmsg.meta.make_processors(**self.config)
 
     def test_title(self):
