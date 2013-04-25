@@ -21,6 +21,8 @@
 import bitlyapi
 import twitter as twitter_api
 
+import time
+
 import fedmsg.meta
 from fedmsg.consumers import FedmsgConsumer
 
