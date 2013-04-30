@@ -38,7 +38,7 @@ from fedmsg.commands import BaseCommand
 
 
 def _grab_and_cache_avatar(username, directory):
-    """ Utility to grab gravatars from outerspace for the --gource option. """
+    """ Utility to grab avatars from outerspace for the --gource option. """
 
     fname = os.path.join(directory, "%s.jpg" % username)
     if os.path.exists(fname):
@@ -46,7 +46,7 @@ def _grab_and_cache_avatar(username, directory):
         pass
     else:
         system = fedora.client.AccountSystem()
-        url = system.gravatar_url(username, lookup_email=False)
+        url = system.avatar_url(username, lookup_email=False)
 
         # Make sure we have a place to write it
         if os.path.isdir(directory):
@@ -91,7 +91,7 @@ class TailCommand(BaseCommand):
         (['--gource-user-image-dir'], {
             'dest': 'gource_user_image_dir',
             'help': 'Directory to store user avatar images for --gource',
-            'default': os.path.expanduser("~/.cache/gravatar"),
+            'default': os.path.expanduser("~/.cache/avatar"),
         }),
         (['--terse'], {
             'dest': 'terse',
@@ -176,7 +176,7 @@ class TailCommand(BaseCommand):
 
                   $ fedmsg-tail --gource | gource \
                           -i 0 \
-                          --user-image-dir ~/.cache/gravatar/ \
+                          --user-image-dir ~/.cache/avatar/ \
                           --log-format custom -
                 """
                 proc = fedmsg.meta.msg2processor(message, **self.config)
