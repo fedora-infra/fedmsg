@@ -25,8 +25,6 @@ import urllib
 import time
 import math
 
-import fedora.client
-
 import pygments
 import pygments.lexers
 import pygments.formatters
@@ -37,7 +35,7 @@ import fedmsg.meta
 from fedmsg.commands import BaseCommand
 
 
-def _grab_and_cache_avatar(username, directory):
+def _cache_avatar(username, url, directory):
     """ Utility to grab avatars from outerspace for the --gource option. """
 
     fname = os.path.join(directory, "%s.jpg" % username)
@@ -45,9 +43,6 @@ def _grab_and_cache_avatar(username, directory):
         # We already have it cached.  Just chill.
         pass
     else:
-        system = fedora.client.AccountSystem()
-        url = system.avatar_url(username, lookup_email=False)
-
         # Make sure we have a place to write it
         if os.path.isdir(directory):
             # We've been here before... that's good.
@@ -180,16 +175,13 @@ class TailCommand(BaseCommand):
                           --log-format custom -
                 """
                 proc = fedmsg.meta.msg2processor(message, **self.config)
-                users = fedmsg.meta.msg2usernames(message, **self.config)
+                avatars = fedmsg.meta.msg2avatars(message, **self.config)
                 objs = fedmsg.meta.msg2objects(message, **self.config)
                 name = proc.__name__.lower()
 
-                if not users:
-                    users = [name]
-
                 lines = []
-                for user, obj in itertools.product(users, objs):
-                    _grab_and_cache_avatar(user, cache_directory)
+                for user, obj in itertools.product(users.keys(), objs):
+                    _cache_avatar(user, avatars[user], cache_directory)
                     lines.append("%i|%s|A|%s|%s" % (
                         message['timestamp'],
                         user,
