@@ -56,6 +56,8 @@ class Base(unittest.TestCase):
     expected_usernames = None
     expected_packages = None
     expected_objects = None
+    expected_emails = None
+    expected_avatars = None
 
     def setUp(self):
         dirname = os.path.abspath(os.path.dirname(__file__))
@@ -114,6 +116,18 @@ class Base(unittest.TestCase):
         """ Does fedmsg.meta produce the expected list of objects? """
         actual_objects = fedmsg.meta.msg2objects(self.msg, **self.config)
         eq_(actual_objects, self.expected_objects)
+
+    @skip_on(['msg', 'expected_emails'])
+    def test_emails(self):
+        """ Does fedmsg.meta produce the expected list of emails? """
+        actual_emails = fedmsg.meta.msg2emails(self.msg, **self.config)
+        eq_(actual_emails, self.expected_emails)
+
+    @skip_on(['msg', 'expected_avatars'])
+    def test_avatars(self):
+        """ Does fedmsg.meta produce the expected list of avatars? """
+        actual_avatars = fedmsg.meta.msg2avatars(self.msg, **self.config)
+        eq_(actual_avatars, self.expected_avatars)
 
 
 class TestUnhandled(Base):
