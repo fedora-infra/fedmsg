@@ -107,3 +107,11 @@ class BaseProcessor(object):
     def objects(self, msg, **config):
         """ Return a set of objects associated with a message. """
         return set()
+
+    def emails(self, msg, **config):
+        """ Return a dict of emails associated with a message. """
+        return dict()
+
+    def avatars(self, msg, **config):
+        """ Return a dict of avatar URLs associated with a message. """
+        return dict()

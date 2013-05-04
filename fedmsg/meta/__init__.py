@@ -227,6 +227,20 @@ def msg2objects(msg, processor, **config):
     return processor.objects(msg, **config)
 
 
+@legacy_condition(dict)
+@with_processor()
+def msg2emails(msg, processor, **config):
+    """ Return a dict mapping of usernames to email addresses. """
+    return processor.emails(msg, **config)
+
+
+@legacy_condition(dict)
+@with_processor()
+def msg2avatars(msg, processor, **config):
+    """ Return a dict mapping of usernames to avatar URLs. """
+    return processor.avatars(msg, **config)
+
+
 def _msg2suffix(msg, **config):
     """ Generates the suffix for msg2title """
     if 'signature' not in msg:
