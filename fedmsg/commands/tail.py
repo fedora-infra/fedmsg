@@ -56,7 +56,11 @@ def _grab_and_cache_avatar(username, directory):
             os.makedirs(directory)
 
         # Grab it from the net and write to local cache on disk.
-        urllib.urlretrieve(url, fname)
+        try:
+            urllib.urlretrieve(url, fname)
+        except IOError:
+            # If we can't talk to gravatar.com, try not to crash.
+            pass
 
 
 class TailCommand(BaseCommand):
