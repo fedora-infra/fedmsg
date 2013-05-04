@@ -180,7 +180,7 @@ class TailCommand(BaseCommand):
                 name = proc.__name__.lower()
 
                 lines = []
-                for user, obj in itertools.product(users.keys(), objs):
+                for user, obj in itertools.product(avatars.keys(), objs):
                     _cache_avatar(user, avatars[user], cache_directory)
                     lines.append("%i|%s|A|%s|%s" % (
                         message['timestamp'],
