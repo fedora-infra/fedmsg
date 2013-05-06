@@ -25,8 +25,6 @@ import urllib
 import time
 import math
 
-import fedora.client
-
 import pygments
 import pygments.lexers
 import pygments.formatters
@@ -37,17 +35,14 @@ import fedmsg.meta
 from fedmsg.commands import BaseCommand
 
 
-def _grab_and_cache_avatar(username, directory):
-    """ Utility to grab gravatars from outerspace for the --gource option. """
+def _cache_avatar(username, url, directory):
+    """ Utility to grab avatars from outerspace for the --gource option. """
 
     fname = os.path.join(directory, "%s.jpg" % username)
     if os.path.exists(fname):
         # We already have it cached.  Just chill.
         pass
     else:
-        system = fedora.client.AccountSystem()
-        url = system.gravatar_url(username, lookup_email=False)
-
         # Make sure we have a place to write it
         if os.path.isdir(directory):
             # We've been here before... that's good.
@@ -95,7 +90,7 @@ class TailCommand(BaseCommand):
         (['--gource-user-image-dir'], {
             'dest': 'gource_user_image_dir',
             'help': 'Directory to store user avatar images for --gource',
-            'default': os.path.expanduser("~/.cache/gravatar"),
+            'default': os.path.expanduser("~/.cache/avatar"),
         }),
         (['--terse'], {
             'dest': 'terse',
@@ -180,20 +175,17 @@ class TailCommand(BaseCommand):
 
                   $ fedmsg-tail --gource | gource \
                           -i 0 \
-                          --user-image-dir ~/.cache/gravatar/ \
+                          --user-image-dir ~/.cache/avatar/ \
                           --log-format custom -
                 """
                 proc = fedmsg.meta.msg2processor(message, **self.config)
-                users = fedmsg.meta.msg2usernames(message, **self.config)
+                avatars = fedmsg.meta.msg2avatars(message, **self.config)
                 objs = fedmsg.meta.msg2objects(message, **self.config)
                 name = proc.__name__.lower()
 
-                if not users:
-                    users = [name]
-
                 lines = []
-                for user, obj in itertools.product(users, objs):
-                    _grab_and_cache_avatar(user, cache_directory)
+                for user, obj in itertools.product(avatars.keys(), objs):
+                    _cache_avatar(user, avatars[user], cache_directory)
                     lines.append("%i|%s|A|%s|%s" % (
                         message['timestamp'],
                         user,

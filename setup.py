@@ -45,7 +45,6 @@ install_requires = [
     'pyzmq',
     'fabulous',
     'kitchen',
-    'python-fedora',
     'moksha.hub>=1.2.0',
     'requests',
     'pygments',
