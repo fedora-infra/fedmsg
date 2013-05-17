@@ -69,6 +69,8 @@ class FedMsgEncoder(json.encoder.JSONEncoder):
             return time.mktime(obj.timetuple())
         if isinstance(obj, time.struct_time):
             return time.mktime(obj)
+        if isinstance(obj, set):
+            return list(obj)
         if sqlalchemy:
             # As a last ditch, try using our sqlalchemy json encoder.
             sqla_type = sqlalchemy.ext.declarative.DeclarativeMeta
