@@ -344,6 +344,8 @@ class FedMsgContext(object):
         failed_hostnames = []
         subs = {}
         for _name, endpoint_list in self.c['endpoints'].iteritems():
+            # Listify endpoint_list in case it is a single string
+            endpoint_list = iterate(endpoint_list)
             for endpoint in endpoint_list:
                 # First, some sanity checking.  zeromq will potentially
                 # segfault if we don't do this check.
