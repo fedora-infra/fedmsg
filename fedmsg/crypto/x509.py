@@ -35,9 +35,11 @@ try:
     # FIXME - m2ext will be unnecessary once the following bug is closed.
     # https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
     import m2ext
+    disabled = False
 except ImportError, e:
     logging.basicConfig()
     log.warn("Crypto disabled %r" % e)
+    disabled = True
 
 
 def sign(message, ssldir, certname, **config):
@@ -48,6 +50,9 @@ def sign(message, ssldir, certname, **config):
         - 'signature' - the computed RSA message digest of the JSON repr.
         - 'certificate' - the base64 X509 certificate of the sending host.
     """
+
+    if disabled:
+        return message
 
     certificate = M2Crypto.X509.load_cert(
         "%s/%s.crt" % (ssldir, certname)).as_pem()
@@ -85,6 +90,9 @@ def validate(message, ssldir, **config):
     def fail(reason):
         log.warn("Failed validation.  %s" % reason)
         return False
+
+    if disabled:
+        fail("M2Crypto and/or m2ext missing!")
 
     # Some sanity checking
     for field in ['signature', 'certificate']:
