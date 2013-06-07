@@ -93,6 +93,7 @@ setup(
         'fedmsg.text',
         'fedmsg.meta',
         'fedmsg.tests',
+        'fedmsg.crypto'
     ],
     include_package_data=True,
     zip_safe=False,
