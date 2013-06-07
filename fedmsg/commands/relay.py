@@ -64,7 +64,7 @@ class RelayCommand(BaseCommand):
             self.config['zmq_publish_endpoints'] = publish_endpoint
             try:
                 return main(options=self.config, consumers=[RelayConsumer])
-            except zmq.core.error.ZMQError:
+            except zmq.ZMQError:
                 self.log.debug("Failed to bind to %r" % publish_endpoint)
 
         raise IOError("Failed to bind to any outbound endpoints.")
