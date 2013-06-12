@@ -138,7 +138,7 @@ class FedMsgContext(object):
             if not _established:
                 raise IOError(
                     "Couldn't find an available endpoint "
-                    "for name %r" % config.get("name", None)))
+                    "for name %r" % config.get("name", None))
 
         elif config.get('mute', False):
             # Our caller doesn't intend to send any messages.  Pass silently.
