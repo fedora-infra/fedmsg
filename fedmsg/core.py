@@ -136,14 +136,18 @@ class FedMsgContext(object):
             # connection, then there are not enough endpoints listed in the
             # config for the number of processes attempting to use fedmsg.
             if not _established:
-                raise IOError("Couldn't find an available endpoint.")
+                raise IOError(
+                    "Couldn't find an available endpoint "
+                    "for name %r" % config.get("name", None)))
 
         elif config.get('mute', False):
             # Our caller doesn't intend to send any messages.  Pass silently.
             pass
         else:
             # Something is wrong.
-            warnings.warn("fedmsg is not configured to send any messages")
+            warnings.warn(
+                "fedmsg is not configured to send any messages "
+                "for name %r" % config.get("name", None))
 
         # Cleanup.  See http://bit.ly/SaGeOr for discussion.
         weakref.ref(threading.current_thread(), self.destroy)
