@@ -83,6 +83,13 @@ To consume messages and do with them what you'd like, you need to:
 
  * Register your class on the ``moksha.consumer`` python entry-point.
 
+A simple example
+~~~~~~~~~~~~~~~~
+
+`Luke Macken <http://lewk.org>`_ wrote a simple example of a `koji consumer
+<https://github.com/lmacken/fedmsg-koji-consumer>`_.  It's a good place to
+start if you're writing your own consumer.
+
 An Example From "busmon"
 ~~~~~~~~~~~~~~~~~~~~~~~~
 In the `busmon <https://github.com/fedora-infra/busmon>`_ app, all messages from
