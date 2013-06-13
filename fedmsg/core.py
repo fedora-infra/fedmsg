@@ -49,7 +49,6 @@ class FedMsgContext(object):
 
         # Prepare our context and publisher
         self.context = zmq.Context(config['io_threads'])
-        method = config.get('active', False) or 'bind' and 'connect'
         method = ['bind', 'connect'][config['active']]
 
         # If no name is provided, use the calling module's __name__ to decide
