@@ -101,10 +101,10 @@ def make_processors(**config):
 
 
 def msg2processor(msg, **config):
-    """ For a given message return the text processor that can handle it
+    """ For a given message return the text processor that can handle it.
 
-    This will raise a ``ProcessorsNotInitialized`` exception if
-    :function:`make_processors` hasn't been called yet.
+    This will raise a :class:`fedmsg.text.ProcessorsNotInitialized` exception if
+    :func:`fedmsg.text.make_processors` hasn't been called yet.
     """
     for processor in processors:
         if processor.handle_msg(msg, **config):
