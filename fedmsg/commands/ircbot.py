@@ -22,6 +22,8 @@
 """
 Description: A bot that takes a config and puts messages matching given
 regexes in specified IRC channels.  See :term:`irc` for options.
+
+Think of it like a one-way firehose that spews fedmsg messages to IRC.
 """
 
 from fedmsg.commands import BaseCommand
