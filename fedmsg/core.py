@@ -23,6 +23,7 @@ import inspect
 import socket
 import threading
 import time
+import uuid
 import warnings
 import weakref
 import zmq
@@ -317,6 +318,7 @@ class FedMsgContext(object):
             topic=topic,
             msg=msg,
             timestamp=time.time(),
+            msg_id=str(uuid.uuid4()),
             i=self._i,
             username=getpass.getuser(),
         )

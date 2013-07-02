@@ -113,6 +113,7 @@ class TestCommands(unittest.TestCase):
         def mock_tail(self, topic="", passive=False, **kw):
             msg = dict(
                 msg=dict(hello="world"),
+                msg_id='2ad5aaf8-68af-4a6d-9196-2a8b43a73238',
                 timestamp=1354563717.472648,  # Once upon a time...
             )
 
@@ -127,7 +128,7 @@ class TestCommands(unittest.TestCase):
                     command.execute()
 
         output = stdout.getvalue()
-        expected = "\n{'msg': {'hello': 'world'}, 'timestamp': 'Mon Dec  3 13:41:57 2012'}\n"
+        expected = "\n{'msg': {'hello': 'world'},\n 'msg_id': '2ad5aaf8-68af-4a6d-9196-2a8b43a73238',\n 'timestamp': 'Mon Dec  3 13:41:57 2012'}\n"
         eq_(output, expected)
 
     @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--really-pretty"])
@@ -138,6 +139,7 @@ class TestCommands(unittest.TestCase):
         def mock_tail(self, topic="", passive=False, **kw):
             msg = dict(
                 msg=dict(hello="world"),
+                msg_id='2ad5aaf8-68af-4a6d-9196-2a8b43a73238',
                 timestamp=1354563717.472648,  # Once upon a time...
             )
 
