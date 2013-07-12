@@ -83,6 +83,10 @@ class FedMsgContext(object):
             name = config.get("name", "relay_inbound")
             config['endpoints'][name] = config[name]
 
+        # Add the endpoints fetched via SRV records to the list of endpoints
+        srv_endpoints = iterate(config.get('srv_endpoints', []))
+        config['endpoints'].update(self._get_endpoints_from_dns(srv_endpoints))
+
         # Actually set up our publisher
         if (
             not config.get("mute", False) and
@@ -223,6 +227,22 @@ class FedMsgContext(object):
 
         # Otherwise, give up and just return the default.
         return default
+
+    @staticmethod
+    def _get_endpoints_from_dns(endpoints):
+        from dns.resolver import query, NXDOMAIN, Timeout, NoNameservers
+        return_dict = {}
+        for e in endpoints:
+            urls = []
+            records = query('_fedmsg._tcp.{}'.format(e), 'SRV')
+
+            for rec in records:
+                urls.append('tcp://{hostname}:{port}'.format(
+                    hostname=rec.target.to_text(),
+                    port = rec.port
+                ))
+            return_dict[e] = urls
+        return return_dict
 
     def send_message(self, topic=None, msg=None, modname=None):
         warnings.warn(".send_message is deprecated.",
