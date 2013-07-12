@@ -230,11 +230,24 @@ class FedMsgContext(object):
 
     @staticmethod
     def _get_endpoints_from_dns(endpoints):
-        from dns.resolver import query, NXDOMAIN, Timeout, NoNameservers
+        try:
+            from dns.resolver import query, NXDOMAIN, Timeout, NoNameservers
+        except ImportError:
+            warnings.warn("DNS-based service discovery unavailable. Please install the dns package")
         return_dict = {}
         for e in endpoints:
             urls = []
-            records = query('_fedmsg._tcp.{}'.format(e), 'SRV')
+            try:
+                records = query('_fedmsg._tcp.{}'.format(e), 'SRV')
+            except NXDOMAIN:
+                warnings.warn("There is no appropriate SRV records for {}".format(e))
+                continue
+            except Timeout:
+                warnings.warn("The DNS query for the SRV records of {} timed out.".format(e))
+                continue
+            except NoNameservers:
+                warnings.warn("No name server is available, please check the configuration")
+                break
 
             for rec in records:
                 urls.append('tcp://{hostname}:{port}'.format(
