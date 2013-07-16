@@ -53,7 +53,7 @@ class CollectdConsumer(FedmsgConsumer):
         self._dict = dict([
             (p.__name__.lower(), 0) for p in fedmsg.meta.processors
         ])
-        self.host = socket.gethostname()
+        self.host = socket.gethostname().split('.')[0]
 
     def consume(self, msg):
         processor = fedmsg.meta.msg2processor(msg, **self.hub.config)
