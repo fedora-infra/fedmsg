@@ -280,7 +280,7 @@ class IRCBotConsumer(FedmsgConsumer):
                     terse=client.factory.terse,
                 )
                 raw_msg = raw_msg.encode('utf-8')
-                client.msg(
+                client.notice(
                     client.factory.channel,
                     raw_msg,
                 )
