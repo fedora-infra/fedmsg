@@ -308,6 +308,10 @@ Glossary of Configuration Values
           ...     "planet": "light green",
           ... }
 
+    irc_method
+        ``str`` — the name of the method used to publish the messages on IRC.
+        Valid values are 'msg' and 'notice', the latter being the default.
+
     tweet_endpoints
         ``list`` - A list of twitter/statusnet configuration dicts.  This is the
         primary way of configuring the ``fedmsg-tweet`` bot implemented in
