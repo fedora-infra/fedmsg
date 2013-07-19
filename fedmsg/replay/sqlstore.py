@@ -28,7 +28,9 @@ from datetime import datetime
 import json
 
 class SqlMessage(Base):
+    # This should probably be customizeable?
     __tablename__ = "fedmsg_messages"
+
     seq_id = Column(Integer, primary_key=True)
     uuid = Column(String(36)),
     topic = Column(String)

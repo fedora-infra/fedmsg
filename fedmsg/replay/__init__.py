@@ -28,18 +28,21 @@ import zmq
 class ReplayContext(object):
     def __init__(self, **config):
         '''
-        The socket must be of zmq.REP type, and be already bound to an endpoint.
-        It is assumed it will not be shared, the socket closing will occur in
-        this thread.
+        This will initiate a Context that just waits for clients to connect
+        and proxies their queries to the store and back.
+        To start the listening, use the listen() method.
         '''
         self.config = config
 
+        # No point of a replay context without message store
         if not config.get('persistent_store', None):
             raise ValueError("No valid persistent_store config value found.")
         self.store = config['persistent_store']
 
         self.hostname = socket.gethostname().split('.', 1)[0]
         if not config.get("name", None):
+            # Try to guess an appropriate name
+            # It is however probably better if the name is explicitly defined.
             module_name = fedmsg.utils.guess_calling_module(default="fedmsg")
             config["name"] = module_name + '.' + self.hostname
 
