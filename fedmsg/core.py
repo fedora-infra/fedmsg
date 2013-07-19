@@ -271,6 +271,11 @@ class FedMsgContext(object):
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)
 
+        store = self.c.get('persistent_store', None)
+        if store:
+            # Add the seq_id field
+            msg = store.add(msg)
+
         self.publisher.send_multipart(
             [topic, fedmsg.encoding.dumps(msg)],
             flags=zmq.NOBLOCK,
