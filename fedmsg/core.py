@@ -225,8 +225,7 @@ class FedMsgContext(object):
         return default
 
     def send_message(self, topic=None, msg=None, modname=None):
-        warnings.warn(".send_message is deprecated.",
-                      warnings.DeprecationWarning)
+        warnings.warn(".send_message is deprecated.", DeprecationWarning)
 
         return self.publish(topic, msg, modname)
 
