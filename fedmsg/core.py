@@ -281,6 +281,21 @@ class FedMsgContext(object):
             flags=zmq.NOBLOCK,
         )
 
+    def get_replay(self, name, query):
+        endpoint = self.c.get('replay_endpoints', {}).get(name, None)
+        if not endpoint:
+            raise IOError("No appropriate replay endpoint found for {}".format(name))
+        socket = self.context.socket(zmq.REQ)
+        try:
+            socket.connect(endpoint)
+        except zmq.ZMQError:
+            raise IOError("Error when connecting to the replay endpoint: '{}'".format(str(v)))
+        socket.send(fedmsg.encoding.dumps(query))
+        msgs = socket.recv_multipart()
+        socket.close()
+        for m in msgs:
+            yield fedmsg.encoding.loads(m)
+
     def tail_messages(self, topic="", passive=False, **kw):
         """ Tail messages on the bus.
 
