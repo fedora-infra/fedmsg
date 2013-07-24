@@ -60,6 +60,10 @@ config = dict(
         ],
     },
     relay_inbound=["tcp://127.0.0.1:%i" % (port - 1)],
+    replay_endpoints={
+        'unittest.{}'.format(hostname): "tcp://127.0.0.1:%i" % (port + 1),
+    },
+    persistent_store=None,
     environment="dev",
     high_water_mark=0,
     io_threads=1,
