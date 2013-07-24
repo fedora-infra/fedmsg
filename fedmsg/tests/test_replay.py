@@ -44,13 +44,13 @@ local_name = 'unittest.{}'.format(hostname)
 def test_init_missing_endpoint():
     """ Try to initialize the context with a nonexistant service name. """
     config = load_config()
+    config['persistent_store'] = Mock()
     config['name'] = "failboat"
     context = ReplayContext(**config)
 
 @raises(ValueError)
 def test_init_missing_store():
     config = load_config()
-    config.pop("persistent_store")
     context = ReplayContext(**config)
 
 @raises(IOError)
@@ -58,6 +58,7 @@ def test_init_invalid_endpoint():
     try:
         config = load_config()
         config['name'] = local_name
+        config['persistent_store'] = Mock()
         tmp = zmq.Context()
         placeholder = tmp.socket(zmq.REP)
         placeholder.bind('tcp://*:{}'.format(
@@ -71,6 +72,7 @@ class TestReplayContext(unittest.TestCase):
     def setUp(self):
         self.config = load_config()
         self.config['name'] = local_name
+        self.config['persistent_store'] = Mock()
         self.replay_context = ReplayContext(**self.config)
         self.request_context = zmq.Context()
         self.request_socket = self.request_context.socket(zmq.REQ)
