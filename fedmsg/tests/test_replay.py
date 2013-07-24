@@ -179,3 +179,38 @@ class TestSqlStore(unittest.TestCase):
     @raises(ValueError)
     def test_get_illformed_time(self):
         first, second = self.store.get({"time": [0, 15, 3]})
+
+class TestReplayClient(unittest.TestCase):
+    def setUp(self):
+        self.config = load_config()
+        self.config['name'] = local_name
+        self.config['mute'] = True
+        self.config['persistent_store'] = Mock()
+        self.replay_context = ReplayContext(**self.config)
+        self.client_context = FedMsgContect(**self.config)
+
+    @raises(IOError)
+    def test_no_available_endpoint(self):
+        self.client_context.get_replay("phony", {"seq_ids":[1, 2]})
+
+    @raises(ValueError)
+    def test_wrong_query(self):
+        # We don't actually test with a wrong query, we just throw back an error from the store.
+        self.config['persistent_store'].get = Mock(side_effects = [ValueError("this is an error")])
+        self.client_context.get_replay(local_name, {"seq_ids":[1, 2]})
+
+    def test_normal_behaviour(self):
+        # As before, the correctness of the query doesn't matter much
+        # since it is taken care of on the server side.
+        orig_msg = {
+            "i":2,
+            "seq_id":3,
+            "topic": "org.foo.bar",
+            "msg_id": "33333333-3333-3333-3333-333333333333",
+            "timestamp": 20,
+            "msg": {"foo":"foo"}
+        }
+        self.config['persistent_store'].get = Mock(side_effects = [[orig_msg]])
+        msgs = list(self.client_context.get_replay(local_name, {"seq_id": 3}))
+        assert len(msgs) == 1
+        assert_dict_equal(msgs[0], orig_msg)
