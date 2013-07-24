@@ -285,16 +285,26 @@ class FedMsgContext(object):
         endpoint = self.c.get('replay_endpoints', {}).get(name, None)
         if not endpoint:
             raise IOError("No appropriate replay endpoint found for {}".format(name))
+
+        # A replay endpoint isn't PUB/SUB but REQ/REP, as it allows
+        # for bidirectional communication
         socket = self.context.socket(zmq.REQ)
         try:
             socket.connect(endpoint)
         except zmq.ZMQError:
             raise IOError("Error when connecting to the replay endpoint: '{}'".format(str(v)))
+
+        # REQ/REP dance
         socket.send(fedmsg.encoding.dumps(query))
         msgs = socket.recv_multipart()
         socket.close()
+
         for m in msgs:
-            yield fedmsg.encoding.loads(m)
+            try:
+                yield fedmsg.encoding.loads(m)
+            except ValueError:
+                # We assume that if it isn't JSON then it's an error message
+                raise ValueError(m)
 
     def tail_messages(self, topic="", passive=False, **kw):
         """ Tail messages on the bus.
