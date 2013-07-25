@@ -305,6 +305,22 @@ class FedMsgContext(object):
             except ValueError:
                 # We assume that if it isn't JSON then it's an error message
                 raise ValueError(m)
+    def _get_msgs_to_process(self, name, names_to_seq_id, msg):
+        prev_seq_id = names_to_seq_id.get(name, None)
+        cur_seq_id = msg.get("seq_id", None)
+        if prev_seq_id is None or cur_seq_id is None:
+            return [msg]
+        if cur_seq_id <= prev_seq_id:
+            # Might have been delayed by network lag or something, in which case
+            # we assume the replay has already been asked for and we dismiss it
+            return []
+        if cur_seq_id == prev_seq_id+1 or prev_seq_id < 0:
+            ret = [msg]
+        else:
+            ret = list(self.get_replay(name, {"seq_id_range": (prev_seq_id, cur_seq_id)}))
+            ret.append(msg)
+        names_to_seq_id[name] = cur_seq_id
+        return ret
 
     def tail_messages(self, topic="", passive=False, **kw):
         """ Tail messages on the bus.
@@ -323,6 +339,7 @@ class FedMsgContext(object):
 
         failed_hostnames = []
         subs = {}
+        watched_names = {}
         for _name, endpoint_list in self.c['endpoints'].iteritems():
             # Listify endpoint_list in case it is a single string
             endpoint_list = iterate(endpoint_list)
@@ -350,6 +367,8 @@ class FedMsgContext(object):
 
                 getattr(subscriber, method)(endpoint)
                 subs[subscriber] = (_name, endpoint)
+            if _name in self.c.get("replay_endpoints", {}):
+                watched_names[_name] = -1 # At first we don't know where the sequence is at.
 
         # Register the sockets we just built with a zmq Poller.
         poller = zmq.Poller()
@@ -367,10 +386,9 @@ class FedMsgContext(object):
                     _name, ep = subs[s]
                     _topic, message = s.recv_multipart()
                     msg = fedmsg.encoding.loads(message)
-                    if not validate:
-                        yield _name, ep, _topic, msg
-                    elif fedmsg.crypto.validate(msg, **self.c):
-                        yield _name, ep, _topic, msg
+                    if not validate or fedmsg.crypto.validate(msg, **self.c):
+                        for m in self._get_msgs_to_process(_name, watched_names
+                            yield _name, ep, m['topic'], m
                     else:
                         # Else.. we are supposed to be validating, but the
                         # message failed validation.
