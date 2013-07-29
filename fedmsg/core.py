@@ -34,6 +34,8 @@ from kitchen.text.converters import to_bytes
 import fedmsg.encoding
 import fedmsg.crypto
 
+from fedmsg.utils import set_high_water_mark, guess_calling_module, set_tcp_keepalive
+
 import logging
 
 
@@ -55,7 +57,7 @@ class FedMsgContext(object):
         # If no name is provided, use the calling module's __name__ to decide
         # which publishing endpoint to use.
         if not config.get("name", None):
-            module_name = self.guess_calling_module(default="fedmsg")
+            module_name = guess_calling_module(default="fedmsg")
             config["name"] = module_name + '.' + self.hostname
 
             if any(map(config["name"].startswith, ['fedmsg'])):
@@ -93,8 +95,8 @@ class FedMsgContext(object):
             # Construct it.
             self.publisher = self.context.socket(zmq.PUB)
 
-            self._set_high_water_mark(self.publisher)
-            self._set_tcp_keepalive(self.publisher)
+            set_high_water_mark(self.publisher, config)
+            set_tcp_keepalive(self.publisher, config)
 
             # Set a zmq_linger, thus doing a little bit more to ensure that our
             # message gets to the fedmsg-relay (*if* we're talking to the relay
@@ -156,52 +158,6 @@ class FedMsgContext(object):
         # tries anything.  This is a documented zmq 'feature'.
         time.sleep(config['post_init_sleep'])
 
-    def _set_tcp_keepalive(self, socket):
-        """ Set a series of TCP keepalive options on the socket if
-        and only if
-          1) they are specified explicitly in the config and
-          2) the version of pyzmq has been compiled with support
-
-        We ran into a problem in FedoraInfrastructure where long-standing
-        connections between some hosts would suddenly drop off the
-        map silently.  Because PUB/SUB sockets don't communicate
-        regularly, nothing in the TCP stack would automatically try and
-        fix the connection.  With TCP_KEEPALIVE options (introduced in
-        libzmq 3.2 and pyzmq 2.2.0.1) hopefully that will be fixed.
-
-        See the following
-          - http://tldp.org/HOWTO/TCP-Keepalive-HOWTO/overview.html
-          - http://api.zeromq.org/3-2:zmq-setsockopt
-        """
-
-        keepalive_options = {
-            # Map fedmsg config keys to zeromq socket constants
-            'zmq_tcp_keepalive': 'TCP_KEEPALIVE',
-            'zmq_tcp_keepalive_cnt': 'TCP_KEEPALIVE_CNT',
-            'zmq_tcp_keepalive_idle': 'TCP_KEEPALIVE_IDLE',
-            'zmq_tcp_keepalive_intvl': 'TCP_KEEPALIVE_INTVL',
-        }
-        for key, const in keepalive_options.items():
-            if key in self.c:
-                attr = getattr(zmq, const, None)
-                if attr:
-                    self.log.debug("Setting %r %r" % (const, self.c[key]))
-                    socket.setsockopt(attr, self.c[key])
-
-    def _set_high_water_mark(self, socket):
-        """ Set a high water mark on the zmq socket.  Do so in a way that is
-        cross-compatible with zeromq2 and zeromq3.
-        """
-
-        if self.c['high_water_mark']:
-            if hasattr(zmq, 'HWM'):
-                # zeromq2
-                socket.setsockopt(zmq.HWM, self.c['high_water_mark'])
-            else:
-                # zeromq3
-                socket.setsockopt(zmq.SNDHWM, self.c['high_water_mark'])
-                socket.setsockopt(zmq.RCVHWM, self.c['high_water_mark'])
-
     def destroy(self):
         """ Destroy a fedmsg context """
 
@@ -212,17 +168,6 @@ class FedMsgContext(object):
         if getattr(self, 'context', None):
             self.context.term()
             self.context = None
-
-    # TODO -- this should be in kitchen, not fedmsg
-    def guess_calling_module(self, default=None):
-        # Iterate up the call-stack and return the first new top-level module
-        for frame in (f[0] for f in inspect.stack()):
-            modname = frame.f_globals['__name__'].split('.')[0]
-            if modname != "fedmsg":
-                return modname
-
-        # Otherwise, give up and just return the default.
-        return default
 
     def send_message(self, topic=None, msg=None, modname=None):
         warnings.warn(".send_message is deprecated.", DeprecationWarning)
@@ -299,7 +244,7 @@ class FedMsgContext(object):
         msg = msg or dict()
 
         # If no modname is supplied, then guess it from the call stack.
-        modname = modname or self.guess_calling_module(default="fedmsg")
+        modname = modname or guess_calling_module(default="fedmsg")
         topic = '.'.join([modname, topic])
 
         if topic[:len(self.c['topic_prefix'])] != self.c['topic_prefix']:
@@ -324,6 +269,11 @@ class FedMsgContext(object):
 
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)
+
+        store = self.c.get('persistent_store', None)
+        if store:
+            # Add the seq_id field
+            msg = store.add(msg)
 
         self.publisher.send_multipart(
             [topic, fedmsg.encoding.dumps(msg)],
@@ -369,8 +319,8 @@ class FedMsgContext(object):
                 subscriber = self.context.socket(zmq.SUB)
                 subscriber.setsockopt(zmq.SUBSCRIBE, topic)
 
-                self._set_high_water_mark(subscriber)
-                self._set_tcp_keepalive(subscriber)
+                set_high_water_mark(subscriber, self.c)
+                set_tcp_keepalive(subscriber, self.c)
 
                 getattr(subscriber, method)(endpoint)
                 subs[subscriber] = (_name, endpoint)
