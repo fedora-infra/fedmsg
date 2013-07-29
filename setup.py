@@ -92,6 +92,7 @@ setup(
         # around for backwards compatibility.  It's a symlink, for now.
         'fedmsg.text',
         'fedmsg.meta',
+        'fedmsg.replay',
         'fedmsg.tests',
         'fedmsg.crypto'
     ],

@@ -59,6 +59,7 @@ defaults = dict(
     high_water_mark=0,  # zero means no limit
     zmq_linger=1000,    # Wait one second before timing out on fedmsg-relay
     active=False,       # generally only true for fedmsg-logger
+    persistent_store=None,  # an object.  See the fedmsg.replay module.
 )
 
 __cache = {}
