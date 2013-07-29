@@ -101,9 +101,7 @@ class TriggerCommand(BaseCommand):
 
             result = self.run_command(self.config['command'], message)
 
-            if result == 0:
-                self.log.info("OK")
-            else:
+            if result != 0:
                 self.log.info("Command returned error code %r" % result)
 
 
