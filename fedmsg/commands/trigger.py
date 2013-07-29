@@ -18,6 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 
 import re
+import subprocess
 import sys
 
 import fedmsg
