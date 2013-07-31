@@ -62,7 +62,7 @@ class ReplayContext(object):
 
     # Put this in a separate method to ease testing.
     def _req_rep_cycle(self):
-        res = self.publisher.poll()
+        res = self.publisher.poll(1000)
         if res > 0:
             query = fedmsg.encoding.loads(self.publisher.recv())
             try:
