@@ -36,6 +36,8 @@ import fedmsg.crypto
 
 from fedmsg.utils import set_high_water_mark, guess_calling_module, set_tcp_keepalive
 
+from fedmsg.replay import check_for_replay
+
 import logging
 
 
@@ -281,47 +283,6 @@ class FedMsgContext(object):
             flags=zmq.NOBLOCK,
         )
 
-    def get_replay(self, name, query):
-        endpoint = self.c.get('replay_endpoints', {}).get(name, None)
-        if not endpoint:
-            raise IOError("No appropriate replay endpoint found for {}".format(name))
-
-        # A replay endpoint isn't PUB/SUB but REQ/REP, as it allows
-        # for bidirectional communication
-        socket = self.context.socket(zmq.REQ)
-        try:
-            socket.connect(endpoint)
-        except zmq.ZMQError:
-            raise IOError("Error when connecting to the replay endpoint: '{}'".format(str(v)))
-
-        # REQ/REP dance
-        socket.send(fedmsg.encoding.dumps(query))
-        msgs = socket.recv_multipart()
-        socket.close()
-
-        for m in msgs:
-            try:
-                yield fedmsg.encoding.loads(m)
-            except ValueError:
-                # We assume that if it isn't JSON then it's an error message
-                raise ValueError(m)
-    def _get_msgs_to_process(self, name, names_to_seq_id, msg):
-        prev_seq_id = names_to_seq_id.get(name, None)
-        cur_seq_id = msg.get("seq_id", None)
-        if prev_seq_id is None or cur_seq_id is None:
-            return [msg]
-        if cur_seq_id <= prev_seq_id:
-            # Might have been delayed by network lag or something, in which case
-            # we assume the replay has already been asked for and we dismiss it
-            return []
-        if cur_seq_id == prev_seq_id+1 or prev_seq_id < 0:
-            ret = [msg]
-        else:
-            ret = list(self.get_replay(name, {"seq_id_range": (prev_seq_id, cur_seq_id)}))
-            ret.append(msg)
-        names_to_seq_id[name] = cur_seq_id
-        return ret
-
     def tail_messages(self, topic="", passive=False, **kw):
         """ Tail messages on the bus.
 
@@ -387,7 +348,7 @@ class FedMsgContext(object):
                     _topic, message = s.recv_multipart()
                     msg = fedmsg.encoding.loads(message)
                     if not validate or fedmsg.crypto.validate(msg, **self.c):
-                        for m in self._get_msgs_to_process(_name, watched_names
+                        for m in check_for_replay(_name, watched_names, msg, self.c, self.context):
                             yield _name, ep, m['topic'], m
                     else:
                         # Else.. we are supposed to be validating, but the

@@ -79,3 +79,49 @@ class ReplayContext(object):
         finally:
             self.publisher.close()
 
+
+def get_replay(name, query, config, context=None):
+    endpoint = config.get('replay_endpoints', {}).get(name, None)
+    if not endpoint:
+        raise IOError("No appropriate replay endpoint found for {}".format(name))
+
+    if not context:
+        context = zmq.Context(config['io_threads'])
+
+    # A replay endpoint isn't PUB/SUB but REQ/REP, as it allows
+    # for bidirectional communication
+    socket = context.socket(zmq.REQ)
+    try:
+        socket.connect(endpoint)
+    except zmq.ZMQError:
+        raise IOError("Error when connecting to the replay endpoint: '{}'".format(str(v)))
+
+    # REQ/REP dance
+    socket.send(fedmsg.encoding.dumps(query))
+    msgs = socket.recv_multipart()
+    socket.close()
+
+    for m in msgs:
+        try:
+            yield fedmsg.encoding.loads(m)
+        except ValueError:
+            # We assume that if it isn't JSON then it's an error message
+            raise ValueError(m)
+
+def check_for_replay(name, names_to_seq_id, msg, config, context=None):
+    prev_seq_id = names_to_seq_id.get(name, None)
+    cur_seq_id = msg.get("seq_id", None)
+    if prev_seq_id is None or cur_seq_id is None:
+        return [msg]
+    if cur_seq_id <= prev_seq_id:
+        # Might have been delayed by network lag or something, in which case
+        # we assume the replay has already been asked for and we dismiss it
+        return []
+    if cur_seq_id == prev_seq_id+1 or prev_seq_id < 0:
+        ret = [msg]
+    else:
+        ret = list(get_replay(name, {"seq_id_range": (prev_seq_id, cur_seq_id)}, config, context))
+        ret.append(msg)
+    names_to_seq_id[name] = cur_seq_id
+    return ret
+
