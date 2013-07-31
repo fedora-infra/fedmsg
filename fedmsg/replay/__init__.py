@@ -121,7 +121,8 @@ def check_for_replay(name, names_to_seq_id, msg, config, context=None):
         ret = [msg]
     else:
         ret = list(get_replay(name, {"seq_id_range": (prev_seq_id, cur_seq_id)}, config, context))
-        ret.append(msg)
+        if len(ret) == 0 or ret[-1]['seq_id'] < msg['seq_id']:
+            ret.append(msg)
     names_to_seq_id[name] = cur_seq_id
     return ret
 
