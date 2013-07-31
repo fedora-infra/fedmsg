@@ -24,6 +24,8 @@ import json
 
 import logging
 
+from fedmsg.replay import check_for_replay
+
 
 class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
     """ Base class for fedmsg consumers.
@@ -51,6 +53,11 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
         * Provide a mechanism for automatically validating fedmsg messages
           with :mod:`fedmsg.crypto`.
+
+        * Provide a mechanism to play back messages that haven't been received
+          by the hub even though emitted. To make use of this feature, you have
+          to set ``replay_name`` to some string corresponding to an endpoint in
+          the ``replay_endpoints`` dict in the configuration.
 
           You must set ``config_key`` to some string.  A config value by
           that name must be True in the config parsed by :mod:`fedmsg.config`
@@ -87,6 +94,10 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
         if self.validate_signatures:
             self.validate_signatures = self.hub.config['validate_signatures']
+        if hasattr(self, replay_name):
+            self.name_to_seq_id = {}
+            if self.replay_name in self.hub.config.get("replay_endpoints", {}):
+                self.name_to_seq_id[self.replay_name] = -1
 
     def validate(self, message):
         """ This needs to raise an exception, caught by moksha. """
@@ -107,3 +118,19 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
         if not fedmsg.crypto.validate(message['body'], **self.hub.config):
             raise RuntimeWarning("Failed to authn message.")
+
+    def _consume(self, message):
+        try:
+            self.validate(message)
+        except RuntimeWarning as e:
+            log.warn("Received invalid message {}".format(e))
+            return
+        if hasattr(self, replay_name):
+            for m in check_for_replay(self.replay_name, self.name_to_seq_id, message, self.hub.config):
+                try:
+                    self.validate(m)
+                    self.consume(m)
+                except RuntimeWarning as e:
+                    log.warn("Received invalid message {}".format(e))
+        else:
+            self.consume(message)
