@@ -107,7 +107,7 @@ def msg2processor(msg, **config):
     :func:`fedmsg.meta.make_processors` hasn't been called yet.
     """
     for processor in processors:
-        if processor.handle_msg(msg, **config):
+        if processor.handle_msg(msg, **config) is not None:
             return processor
     else:
         return processors[-1]  # DefaultProcessor
