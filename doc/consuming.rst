@@ -80,6 +80,9 @@ To consume messages and do with them what you'd like, you need to:
      be set to ``True`` for your consumer to be activated by the fedmsg-hub.
    * ``consume`` -- A method that accepts a dict (the message) and contains code
      that "does what you would like to do".
+   * ``replay_name`` -- (optional) The name of the replay endpoint where the system should
+     query playback in case of missing messages. It must match a service key in
+     :term:`replay_endpoints`.
 
  * Register your class on the ``moksha.consumer`` python entry-point.
 
