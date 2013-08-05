@@ -114,6 +114,19 @@ Glossary of Configuration Values
            Some work could be done to clarify the language used for "name" and
            "service key".  It is not always consistent in :mod:`fedmsg.core`.
 
+    srv_endpoints
+        ``list`` - A list of domain names for which to query SRV records
+        to get the associated endpoints.
+
+        When using fedmsg.config.load_config(), the DNS lookup is done and the
+        resulting endpoints are added to config['endpoint'][$DOMAINNAME]
+
+        For example, the following would query the endpoints for foo.example.com.
+
+          >>> config = dict(
+          ...     srv_endpoints=[foo.example.com]
+          ...)
+
     relay_inbound
         ``str`` - A list of special zeromq endpoints where the inbound,
         passive zmq SUB sockets for for instances of ``fedmsg-relay`` are
