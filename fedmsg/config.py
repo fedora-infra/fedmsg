@@ -120,6 +120,31 @@ def load_config(extra_args=None,
 
     if 'endpoints' not in config:
         raise ValueError("No config value 'endpoints' found.")
+    if not isinstance(config['endpoints'], dict):
+        raise ValueError("The 'endpoint' config value must be a dict.")
+
+    if 'srv_endpoints' in config and len(config['srv_endpoints']) > 0:
+        from dns.resolver import query, NXDOMAIN, Timeout, NoNameservers
+        for e in config['srv_endpoints']:
+            urls = []
+            try:
+                records = query('_fedmsg._tcp.{}'.format(e), 'SRV')
+            except NXDOMAIN:
+                warnings.warn("There is no appropriate SRV records for {}".format(e))
+                continue
+            except Timeout:
+                warnings.warn("The DNS query for the SRV records of {} timed out.".format(e))
+                continue
+            except NoNameservers:
+                warnings.warn("No name server is available, please check the configuration")
+                break
+
+            for rec in records:
+                urls.append('tcp://{hostname}:{port}'.format(
+                    hostname=rec.target.to_text(),
+                    port = rec.port
+                ))
+            config['endpoints'][e] = urls
 
     if 'topic_prefix_re' not in config:
         # Turn "org.fedoraproject" into "org\.fedoraproject\.(dev|stg|prod)"
