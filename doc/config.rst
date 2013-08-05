@@ -127,6 +127,17 @@ Glossary of Configuration Values
           ...     srv_endpoints=[foo.example.com]
           ...)
 
+    replay_endpoints
+        ``dict`` - A mapping of service keys, the same as for :term:`endpoints`
+        to replay endpoints, each key having only one. The replay endpoints are
+        special ZMQ endpoints using a specific protocol to allow the client to
+        request a playback of messages in case some have been dropped, for
+        instance due to network failures.
+
+        If the service has a replay endpoint specified, fedmsg will automatically
+        try to detect such failures and properly query the endpoint to get the
+        playback if needed.
+
     relay_inbound
         ``str`` - A list of special zeromq endpoints where the inbound,
         passive zmq SUB sockets for for instances of ``fedmsg-relay`` are
