@@ -347,12 +347,16 @@ class FedMsgContext(object):
                     _topic, message = s.recv_multipart()
                     msg = fedmsg.encoding.loads(message)
                     if not validate or fedmsg.crypto.validate(msg, **self.c):
-                        for m in check_for_replay(_name, watched_names, msg, self.c, self.context):
-                            # Revalidate all the replayed messages.
-                            if not validate or fedmsg.crypto.validate(m, **self.c):
-                                yield _name, ep, m['topic'], m
-                            else:
-                                warnings.warn("!! invalid message received: %r" % msg)
+                        # If there is even a slight change of replay, use check_for_replay
+                        if len(self.c.get('replay_endpoints', {}) > 0):
+                            for m in check_for_replay(_name, watched_names, msg, self.c, self.context):
+                                # Revalidate all the replayed messages.
+                                if not validate or fedmsg.crypto.validate(m, **self.c):
+                                    yield _name, ep, m['topic'], m
+                                else:
+                                    warnings.warn("!! invalid message received: %r" % msg)
+                        else:
+                            yield _name, ep, _topic, msg
                     else:
                         # Else.. we are supposed to be validating, but the
                         # message failed validation.
