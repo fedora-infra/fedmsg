@@ -44,7 +44,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
 hostname = socket.gethostname()
-local_name = 'unittest.{}'.format(hostname)
+local_name = 'unittest.{0}'.format(hostname)
 
 @raises(KeyError)
 def test_init_missing_endpoint():
@@ -67,7 +67,7 @@ def test_init_invalid_endpoint():
         config['persistent_store'] = Mock()
         tmp = zmq.Context()
         placeholder = tmp.socket(zmq.REP)
-        placeholder.bind('tcp://*:{}'.format(
+        placeholder.bind('tcp://*:{0}'.format(
             config["replay_endpoints"][local_name].rsplit(':')[-1]
         ))
         context = ReplayContext(**config)
