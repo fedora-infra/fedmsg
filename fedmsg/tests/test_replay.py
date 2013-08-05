@@ -19,8 +19,14 @@
 #
 ''' Tests for fedmsg.replay '''
 
-import unittest
-from nose.tools import assert_dict_equal, raises
+import sys
+
+if sys.version_info[0] == 2 and sys.version_info[1] < 7:
+    import unittest2 as unittest
+else:
+    import unittest
+
+from nose.tools import raises
 from mock import Mock, call
 
 import json
@@ -97,7 +103,7 @@ class TestReplayContext(unittest.TestCase):
 
         assert len(answer) == len(rep)
         for r, a in zip(rep, answer):
-            assert_dict_equal(json.loads(r), a)
+            self.assertDictEqual(json.loads(r), a)
 
     def test_get_error(self):
         # Setup the store to return what we ask.
@@ -158,11 +164,11 @@ class TestSqlStore(unittest.TestCase):
         ret = self.store.add(dict(orig_msg))
 
         orig_msg['seq_id'] = 3
-        assert_dict_equal(ret, orig_msg)
+        self.assertDictEqual(ret, orig_msg)
 
         session = self.store.session_class()
         sql_msg = session.query(SqlMessage).filter(SqlMessage.seq_id == 3).one()
-        assert_dict_equal(json.loads(sql_msg.msg), orig_msg)
+        self.assertDictEqual(json.loads(sql_msg.msg), orig_msg)
 
     def test_get_seq_id(self):
         first = self.store.get({"seq_id":1})
