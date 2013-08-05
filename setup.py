@@ -57,6 +57,7 @@ install_requires = [
 tests_require = [
     'nose',
     'mock',
+    'sqlalchemy',  # For the persistent-store test(s).
     'six',  # In the future, we'll use this across fedmsg proper for py3.
 ]
 
