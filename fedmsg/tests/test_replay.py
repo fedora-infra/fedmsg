@@ -239,4 +239,4 @@ class TestGetReplay(unittest.TestCase):
         self.replay_thread.start()
         msgs = list(get_replay(local_name, {"seq_id": 3}, self.config, self.context))
         assert len(msgs) == 1
-        assert_dict_equal(msgs[0], orig_msg)
+        self.assertDictEqual(msgs[0], orig_msg)

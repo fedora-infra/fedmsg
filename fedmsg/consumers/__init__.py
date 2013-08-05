@@ -94,7 +94,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
         if self.validate_signatures:
             self.validate_signatures = self.hub.config['validate_signatures']
-        if hasattr(self, replay_name):
+        if hasattr(self, "replay_name"):
             self.name_to_seq_id = {}
             if self.replay_name in self.hub.config.get("replay_endpoints", {}):
                 self.name_to_seq_id[self.replay_name] = -1
@@ -125,7 +125,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         except RuntimeWarning as e:
             log.warn("Received invalid message {}".format(e))
             return
-        if hasattr(self, replay_name):
+        if hasattr(self, "replay_name"):
             for m in check_for_replay(self.replay_name, self.name_to_seq_id, message, self.hub.config):
                 try:
                     self.validate(m)
