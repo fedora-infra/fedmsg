@@ -34,10 +34,11 @@ import time
 from datetime import datetime
 import zmq
 import socket
+from threading import Thread, Event
 
 from common import load_config
 
-from fedmsg.replay import ReplayContext
+from fedmsg.replay import ReplayContext, get_replay
 
 from fedmsg.replay.sqlstore import SqlStore, SqlMessage
 from sqlalchemy.orm import sessionmaker
@@ -185,3 +186,57 @@ class TestSqlStore(unittest.TestCase):
     @raises(ValueError)
     def test_get_illformed_time(self):
         first, second = self.store.get({"time": [0, 15, 3]})
+
+class ReplayThread(Thread):
+    def __init__(self, context):
+        self.stop = Event()
+        self.context = context
+        super(ReplayThread, self).__init__()
+    def run(self):
+        try:
+            while not self.stop.is_set():
+                self.context._req_rep_cycle()
+        finally:
+            self.context.publisher.close()
+    
+class TestGetReplay(unittest.TestCase):
+    def setUp(self):
+        self.config = load_config()
+        self.config['name'] = local_name
+        self.config['mute'] = True
+        self.config['persistent_store'] = Mock()
+        self.replay_context = ReplayContext(**self.config)
+        self.replay_thread = ReplayThread(self.replay_context)
+        self.context = zmq.Context()
+
+    def tearDown(self):
+        self.replay_thread.stop.set()
+
+    @raises(IOError)
+    def test_get_replay_no_available_endpoint(self):
+        #self.replay_thread.start()
+        msgs = list(get_replay("phony", {"seq_ids":[1, 2]}, self.config, self.context))
+
+    @raises(ValueError)
+    def test_get_replay_wrong_query(self):
+        # We don't actually test with a wrong query, we just throw back an error from the store.
+        self.config['persistent_store'].get = Mock(side_effect = [ValueError("this is an error")])
+        self.replay_thread.start()
+        msgs = list(get_replay(local_name, {"seq_ids":[1, 2]}, self.config, self.context))
+
+    def test_get_replay(self):
+        # As before, the correctness of the query doesn't matter much
+        # since it is taken care of on the server side.
+        orig_msg = {
+            "i":2,
+            "seq_id":3,
+            "topic": "org.foo.bar",
+            "msg_id": "33333333-3333-3333-3333-333333333333",
+            "timestamp": 20,
+            "msg": {"foo":"foo"}
+        }
+        self.config['persistent_store'].get = Mock(side_effect = [[orig_msg]])
+        self.replay_thread.start()
+        msgs = list(get_replay(local_name, {"seq_id": 3}, self.config, self.context))
+        assert len(msgs) == 1
+        self.assertDictEqual(msgs[0], orig_msg)
