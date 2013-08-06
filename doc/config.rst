@@ -114,6 +114,30 @@ Glossary of Configuration Values
            Some work could be done to clarify the language used for "name" and
            "service key".  It is not always consistent in :mod:`fedmsg.core`.
 
+    srv_endpoints
+        ``list`` - A list of domain names for which to query SRV records
+        to get the associated endpoints.
+
+        When using fedmsg.config.load_config(), the DNS lookup is done and the
+        resulting endpoints are added to config['endpoint'][$DOMAINNAME]
+
+        For example, the following would query the endpoints for foo.example.com.
+
+          >>> config = dict(
+          ...     srv_endpoints=[foo.example.com]
+          ...)
+
+    replay_endpoints
+        ``dict`` - A mapping of service keys, the same as for :term:`endpoints`
+        to replay endpoints, each key having only one. The replay endpoints are
+        special ZMQ endpoints using a specific protocol to allow the client to
+        request a playback of messages in case some have been dropped, for
+        instance due to network failures.
+
+        If the service has a replay endpoint specified, fedmsg will automatically
+        try to detect such failures and properly query the endpoint to get the
+        playback if needed.
+
     relay_inbound
         ``str`` - A list of special zeromq endpoints where the inbound,
         passive zmq SUB sockets for for instances of ``fedmsg-relay`` are

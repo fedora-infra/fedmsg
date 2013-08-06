@@ -32,7 +32,7 @@ class SqlMessage(Base):
     __tablename__ = "fedmsg_messages"
 
     seq_id = Column(Integer, primary_key=True)
-    uuid = Column(String(36)),
+    uuid = Column(String(36))
     topic = Column(String)
     timestamp = Column(DateTime)
     msg = Column(Text) # The raw message, including the metadata (signature, topic, etc)

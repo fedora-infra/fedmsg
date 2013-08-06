@@ -36,6 +36,8 @@ import fedmsg.crypto
 
 from fedmsg.utils import set_high_water_mark, guess_calling_module, set_tcp_keepalive
 
+from fedmsg.replay import check_for_replay
+
 import logging
 
 
@@ -297,6 +299,7 @@ class FedMsgContext(object):
 
         failed_hostnames = []
         subs = {}
+        watched_names = {}
         for _name, endpoint_list in self.c['endpoints'].iteritems():
             # Listify endpoint_list in case it is a single string
             endpoint_list = iterate(endpoint_list)
@@ -324,6 +327,8 @@ class FedMsgContext(object):
 
                 getattr(subscriber, method)(endpoint)
                 subs[subscriber] = (_name, endpoint)
+            if _name in self.c.get("replay_endpoints", {}):
+                watched_names[_name] = -1 # At first we don't know where the sequence is at.
 
         # Register the sockets we just built with a zmq Poller.
         poller = zmq.Poller()
@@ -341,10 +346,17 @@ class FedMsgContext(object):
                     _name, ep = subs[s]
                     _topic, message = s.recv_multipart()
                     msg = fedmsg.encoding.loads(message)
-                    if not validate:
-                        yield _name, ep, _topic, msg
-                    elif fedmsg.crypto.validate(msg, **self.c):
-                        yield _name, ep, _topic, msg
+                    if not validate or fedmsg.crypto.validate(msg, **self.c):
+                        # If there is even a slight change of replay, use check_for_replay
+                        if len(self.c.get('replay_endpoints', {}) > 0):
+                            for m in check_for_replay(_name, watched_names, msg, self.c, self.context):
+                                # Revalidate all the replayed messages.
+                                if not validate or fedmsg.crypto.validate(m, **self.c):
+                                    yield _name, ep, m['topic'], m
+                                else:
+                                    warnings.warn("!! invalid message received: %r" % msg)
+                        else:
+                            yield _name, ep, _topic, msg
                     else:
                         # Else.. we are supposed to be validating, but the
                         # message failed validation.
