@@ -39,13 +39,13 @@ class TriggerCommand(BaseCommand):
             'help': 'The topic pattern to listen for.  Everything by default.',
             'default': '',
         }),
-        (['--filter'], {
+        (['--exclude'], {
             'dest': 'exclusive_regexp',
             'metavar': 'REGEXP',
             'help': 'Only show topics that do not match the supplied regexp.',
             'default': '_heartbeat',
         }),
-        (['--regexp'], {
+        (['--include'], {
             'dest': 'inclusive_regexp',
             'metavar': 'REGEXP',
             'help': 'Only show topics that match the supplied regexp.',
