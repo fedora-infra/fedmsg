@@ -127,6 +127,7 @@ setup(
             "fedmsg-collectd=fedmsg.commands.collectd:collectd",
             "fedmsg-tweet=fedmsg.commands.tweet:tweet",
             "fedmsg-announce=fedmsg.commands.announce:announce",
+            "fedmsg-trigger=fedmsg.commands.trigger:trigger",
         ],
         'moksha.consumer': [
             "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",
