@@ -128,7 +128,9 @@ class TestCommands(unittest.TestCase):
                     command.execute()
 
         output = stdout.getvalue()
-        expected = "\n{'msg': {'hello': 'world'},\n 'msg_id': '2ad5aaf8-68af-4a6d-9196-2a8b43a73238',\n 'timestamp': 'Mon Dec  3 13:41:57 2012'}\n"
+        expected = "\n{'msg': {'hello': 'world'},\n 'msg_id': '2ad5aaf8-" +\
+            "68af-4a6d-9196-2a8b43a73238',\n 'timestamp': 'Mon Dec  " +\
+            "3 13:41:57 2012'}\n"
         eq_(output, expected)
 
     @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--really-pretty"])
@@ -154,7 +156,13 @@ class TestCommands(unittest.TestCase):
                     command.execute()
 
         output = stdout.getvalue()
-        expected = '\n{\x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"msg"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m{\x1b[39;49;00m\n    \x1b[39;49;00m\x1b[33m"hello"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[33m"world"\x1b[39;49;00m\n  \x1b[39;49;00m}\x1b[39;49;00m,\x1b[39;49;00m \x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"timestamp"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[34m1354563717'
+        expected = '\n{\x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"' +\
+            'msg"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m{\x1b[' + \
+            '39;49;00m\n    \x1b[39;49;00m\x1b[33m"hello"\x1b[39;49' + \
+            ';00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[33m"world"\x1b[' + \
+            '39;49;00m\n  \x1b[39;49;00m}\x1b[39;49;00m,\x1b[39;49;' + \
+            '00m \x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"timestamp' + \
+            '"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[34m1354563717'
         assert(output.startswith(expected))
 
     @patch("sys.argv", new_callable=lambda: ["fedmsg-relay"])

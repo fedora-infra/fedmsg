@@ -24,6 +24,7 @@ import inspect
 
 _log = logging.getLogger('fedmsg')
 
+
 def set_high_water_mark(socket, config):
     """ Set a high water mark on the zmq socket.  Do so in a way that is
     cross-compatible with zeromq2 and zeromq3.
@@ -38,6 +39,7 @@ def set_high_water_mark(socket, config):
             socket.setsockopt(zmq.SNDHWM, config['high_water_mark'])
             socket.setsockopt(zmq.RCVHWM, config['high_water_mark'])
 
+
 # TODO -- this should be in kitchen, not fedmsg
 def guess_calling_module(default=None):
     # Iterate up the call-stack and return the first new top-level module
@@ -48,6 +50,7 @@ def guess_calling_module(default=None):
 
     # Otherwise, give up and just return the default.
     return default
+
 
 def set_tcp_keepalive(socket, config):
     """ Set a series of TCP keepalive options on the socket if
@@ -80,5 +83,3 @@ def set_tcp_keepalive(socket, config):
             if attr:
                 _log.debug("Setting %r %r" % (const, config[key]))
                 socket.setsockopt(attr, config[key])
-
-

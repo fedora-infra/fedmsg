@@ -103,8 +103,8 @@ def make_processors(**config):
 def msg2processor(msg, **config):
     """ For a given message return the text processor that can handle it.
 
-    This will raise a :class:`fedmsg.meta.ProcessorsNotInitialized` exception if
-    :func:`fedmsg.meta.make_processors` hasn't been called yet.
+    This will raise a :class:`fedmsg.meta.ProcessorsNotInitialized` exception
+    if :func:`fedmsg.meta.make_processors` hasn't been called yet.
     """
     for processor in processors:
         if processor.handle_msg(msg, **config) is not None:

@@ -34,7 +34,11 @@ from kitchen.text.converters import to_bytes
 import fedmsg.encoding
 import fedmsg.crypto
 
-from fedmsg.utils import set_high_water_mark, guess_calling_module, set_tcp_keepalive
+from fedmsg.utils import (
+    set_high_water_mark,
+    guess_calling_module,
+    set_tcp_keepalive,
+)
 
 from fedmsg.replay import check_for_replay
 
@@ -328,7 +332,8 @@ class FedMsgContext(object):
                 getattr(subscriber, method)(endpoint)
                 subs[subscriber] = (_name, endpoint)
             if _name in self.c.get("replay_endpoints", {}):
-                watched_names[_name] = -1 # At first we don't know where the sequence is at.
+                # At first we don't know where the sequence is at.
+                watched_names[_name] = -1
 
         # Register the sockets we just built with a zmq Poller.
         poller = zmq.Poller()
@@ -347,14 +352,20 @@ class FedMsgContext(object):
                     _topic, message = s.recv_multipart()
                     msg = fedmsg.encoding.loads(message)
                     if not validate or fedmsg.crypto.validate(msg, **self.c):
-                        # If there is even a slight change of replay, use check_for_replay
+                        # If there is even a slight change of replay, use
+                        # check_for_replay
                         if len(self.c.get('replay_endpoints', {}) > 0):
-                            for m in check_for_replay(_name, watched_names, msg, self.c, self.context):
+                            for m in check_for_replay(
+                                    _name, watched_names,
+                                    msg, self.c, self.context):
+
                                 # Revalidate all the replayed messages.
-                                if not validate or fedmsg.crypto.validate(m, **self.c):
+                                if not validate or \
+                                        fedmsg.crypto.validate(m, **self.c):
                                     yield _name, ep, m['topic'], m
                                 else:
-                                    warnings.warn("!! invalid message received: %r" % msg)
+                                    warnings.warn("!! invalid message " +
+                                                  "received: %r" % msg)
                         else:
                             yield _name, ep, _topic, msg
                     else:

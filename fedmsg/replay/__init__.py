@@ -25,6 +25,7 @@ import socket
 
 import zmq
 
+
 class ReplayContext(object):
     def __init__(self, **config):
         '''
@@ -66,9 +67,10 @@ class ReplayContext(object):
         if res > 0:
             query = fedmsg.encoding.loads(self.publisher.recv())
             try:
-                self.publisher.send_multipart(
-                        [fedmsg.encoding.dumps(m) for m in self.store.get(query)]
-                    )
+                self.publisher.send_multipart([
+                    fedmsg.encoding.dumps(m)
+                    for m in self.store.get(query)
+                ])
             except ValueError as e:
                 self.publisher.send("error: '{}'".format(e.message))
 
@@ -83,7 +85,8 @@ class ReplayContext(object):
 def get_replay(name, query, config, context=None):
     endpoint = config.get('replay_endpoints', {}).get(name, None)
     if not endpoint:
-        raise IOError("No appropriate replay endpoint found for {}".format(name))
+        raise IOError("No appropriate replay endpoint "
+                      "found for {}".format(name))
 
     if not context:
         context = zmq.Context(config['io_threads'])
@@ -94,7 +97,8 @@ def get_replay(name, query, config, context=None):
     try:
         socket.connect(endpoint)
     except zmq.ZMQError:
-        raise IOError("Error when connecting to the replay endpoint: '{}'".format(str(v)))
+        raise IOError("Error when connecting to the "
+                      "replay endpoint: '{}'".format(str(v)))
 
     # REQ/REP dance
     socket.send(fedmsg.encoding.dumps(query))
@@ -108,21 +112,29 @@ def get_replay(name, query, config, context=None):
             # We assume that if it isn't JSON then it's an error message
             raise ValueError(m)
 
+
 def check_for_replay(name, names_to_seq_id, msg, config, context=None):
     prev_seq_id = names_to_seq_id.get(name, None)
     cur_seq_id = msg.get("seq_id", None)
+
     if prev_seq_id is None or cur_seq_id is None:
         return [msg]
+
     if cur_seq_id <= prev_seq_id:
         # Might have been delayed by network lag or something, in which case
         # we assume the replay has already been asked for and we dismiss it
         return []
+
     if cur_seq_id == prev_seq_id+1 or prev_seq_id < 0:
         ret = [msg]
     else:
-        ret = list(get_replay(name, {"seq_id_range": (prev_seq_id, cur_seq_id)}, config, context))
+        ret = list(get_replay(name, {
+            "seq_id_range": (prev_seq_id, cur_seq_id)
+        }, config, context))
+
         if len(ret) == 0 or ret[-1]['seq_id'] < msg['seq_id']:
             ret.append(msg)
-    names_to_seq_id[name] = cur_seq_id
-    return ret
 
+    names_to_seq_id[name] = cur_seq_id
+
+    return ret

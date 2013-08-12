@@ -256,10 +256,10 @@ class IRCBotConsumer(FedmsgConsumer):
 
         if pretty:
             msg = pygments.highlight(
-                    fedmsg.encoding.pretty_dumps(msg),
-                    pygments.lexers.JavascriptLexer(),
-                    pygments.formatters.TerminalFormatter()
-                    ).strip().encode('UTF-8')
+                fedmsg.encoding.pretty_dumps(msg),
+                pygments.lexers.JavascriptLexer(),
+                pygments.formatters.TerminalFormatter()
+            ).strip().encode('UTF-8')
 
         return "{0:<30} {1}".format(topic, msg)
 

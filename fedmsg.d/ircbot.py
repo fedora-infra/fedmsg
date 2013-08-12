@@ -45,5 +45,5 @@ config = dict(
         "buildsys": "yellow",
         "planet": "light green",
     },
-    irc_method='notice', # Either 'msg' or 'notice'
+    irc_method='notice',  # Either 'msg' or 'notice'
 )
