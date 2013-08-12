@@ -24,6 +24,7 @@ import zmq
 
 from fedmsg.consumers import FedmsgConsumer
 
+
 class GatewayConsumer(FedmsgConsumer):
     config_key = 'fedmsg.consumers.gateway.enabled'
     jsonify = False
@@ -52,7 +53,8 @@ class GatewayConsumer(FedmsgConsumer):
         weakref.ref(threading.current_thread(), self.destroy)
 
     def _setup_special_gateway_socket(self):
-        self.log.info("Setting up special gateway socket on port %r" % self.port)
+        self.log.info("Setting up special gateway socket on " +
+                      "port %r" % self.port)
         self._context = zmq.Context(1)
         self.gateway_socket = self._context.socket(zmq.PUB)
 
@@ -67,7 +69,6 @@ class GatewayConsumer(FedmsgConsumer):
             # zeromq3
             self.gateway_socket.setsockopt(zmq.SNDHWM, hwm)
             self.gateway_socket.setsockopt(zmq.RCVHWM, hwm)
-
 
         self.gateway_socket.bind("tcp://*:{port}".format(port=self.port))
         self.log.info("Gateway socket established.")

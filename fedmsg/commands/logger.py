@@ -42,8 +42,8 @@ class LoggerCommand(BaseCommand):
         $ fedmsg-logger --message='{"a": 1}' --json-input
 
     Note that the python JSON parser is picky about the format of messages if
-    you're using the --json-input option.  Double-quotes must be on the "inside"
-    of the string and single quotes must be on the outside::
+    you're using the --json-input option.  Double-quotes must be on the
+    "inside" of the string and single quotes must be on the outside::
 
         '{"a": 1}' is good.
         "{'a': 1}" is bad.
@@ -71,7 +71,7 @@ class LoggerCommand(BaseCommand):
             'dest': 'modname',
             'metavar': "MODNAME",
             'default': "logger",
-            'help': "More control over the topic.  Think org.fp.MODNAME.TOPIC.",
+            'help': "More control over the topic. Think org.fp.MODNAME.TOPIC.",
         }),
         (['--cert-prefix'], {
             'dest': 'cert_prefix',
@@ -96,7 +96,6 @@ class LoggerCommand(BaseCommand):
     def __init__(self):
         super(LoggerCommand, self).__init__()
 
-
     def run(self):
         self.config['active'] = True
         self.config['name'] = 'relay_inbound'
@@ -109,6 +108,7 @@ class LoggerCommand(BaseCommand):
             while line:
                 self._log_message(self.config, line.strip())
                 line = sys.stdin.readline()
+
 
 def logger():
     command = LoggerCommand()

@@ -45,11 +45,12 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
           If you set ``validate_signatures = False`` on your consumer, it will
           be exempt from global validation rules.  Messages will not be
           checked for authenticity before being handed off to your consume
-          method.  This is handy if you're developing or building a special-case
-          consumer.  The consumer used by ``fedmsg-relay`` (described in
-          :doc:`commands`) sets ``validate_signatures = False`` so that it can
-          transparently forward along everything and let the terminal endpoints
-          decide whether or not to consume particular messages.
+          method.  This is handy if you're developing or building a
+          special-case consumer.  The consumer used by ``fedmsg-relay``
+          (described in :doc:`commands`) sets ``validate_signatures = False``
+          so that it can transparently forward along everything and let the
+          terminal endpoints decide whether or not to consume particular
+          messages.
 
         * Provide a mechanism for automatically validating fedmsg messages
           with :mod:`fedmsg.crypto`.
@@ -126,7 +127,10 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
             self.log.warn("Received invalid message {}".format(e))
             return
         if hasattr(self, "replay_name"):
-            for m in check_for_replay(self.replay_name, self.name_to_seq_id, message, self.hub.config):
+            for m in check_for_replay(
+                    self.replay_name, self.name_to_seq_id,
+                    message, self.hub.config):
+
                 try:
                     self.validate(m)
                     self.consume(m)
