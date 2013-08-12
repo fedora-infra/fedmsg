@@ -354,7 +354,7 @@ class FedMsgContext(object):
                     if not validate or fedmsg.crypto.validate(msg, **self.c):
                         # If there is even a slight change of replay, use
                         # check_for_replay
-                        if len(self.c.get('replay_endpoints', {}) > 0):
+                        if len(self.c.get('replay_endpoints', {})) > 0:
                             for m in check_for_replay(
                                     _name, watched_names,
                                     msg, self.c, self.context):
