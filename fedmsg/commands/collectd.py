@@ -128,6 +128,7 @@ class CollectdCommand(BaseCommand):
         main(self.config, [CollectdConsumer], [CollectdProducer],
              framework=False)
 
+
 def collectd():
     command = CollectdCommand()
     command.execute()

@@ -131,26 +131,29 @@ def load_config(extra_args=None,
             try:
                 records = query('_fedmsg._tcp.{}'.format(e), 'SRV')
             except NXDOMAIN:
-                warnings.warn("There is no appropriate SRV records for {}".format(e))
+                warnings.warn("There is no appropriate SRV records " +
+                              "for {}".format(e))
                 continue
             except Timeout:
-                warnings.warn("The DNS query for the SRV records of {} timed out.".format(e))
+                warnings.warn("The DNS query for the SRV records of" +
+                              " {} timed out.".format(e))
                 continue
             except NoNameservers:
-                warnings.warn("No name server is available, please check the configuration")
+                warnings.warn("No name server is available, please " +
+                              "check the configuration")
                 break
 
             for rec in records:
                 urls.append('tcp://{hostname}:{port}'.format(
                     hostname=rec.target.to_text(),
-                    port = rec.port
+                    port=rec.port
                 ))
             config['endpoints'][e] = urls
 
     if 'topic_prefix_re' not in config:
         # Turn "org.fedoraproject" into "org\.fedoraproject\.(dev|stg|prod)"
         config['topic_prefix_re'] = config['topic_prefix'].replace('.', '\.')\
-                + '\.(%s)' % '|'.join(VALID_ENVIRONMENTS)
+            + '\.(%s)' % '|'.join(VALID_ENVIRONMENTS)
 
     __cache = config
     return config

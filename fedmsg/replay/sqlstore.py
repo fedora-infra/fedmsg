@@ -27,6 +27,7 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import json
 
+
 class SqlMessage(Base):
     # This should probably be customizeable?
     __tablename__ = "fedmsg_messages"
@@ -35,21 +36,24 @@ class SqlMessage(Base):
     uuid = Column(String(36))
     topic = Column(String)
     timestamp = Column(DateTime)
-    msg = Column(Text) # The raw message, including the metadata (signature, topic, etc)
+    # The raw message, including the metadata (signature, topic, etc)
+    msg = Column(Text)
+
 
 class SqlStore(object):
     def __init__(self, engine):
         self.engine = engine
         self.session_class = sessionmaker(bind=engine)
-        Base.metadata.create_all(engine) 
+        Base.metadata.create_all(engine)
 
     def add(self, msg):
         session = self.session_class()
         msg_object = SqlMessage(
-                uuid = msg['msg_id'],
-                timestamp = datetime.fromtimestamp(msg['timestamp']),
-                topic = msg['topic'],
-                msg = "" # We still have to add the seq_id field
+            uuid=msg['msg_id'],
+            timestamp=datetime.fromtimestamp(msg['timestamp']),
+            topic=msg['topic'],
+            # We still have to add the seq_id field
+            msg=""
         )
         session.add(msg_object)
         session.commit()
@@ -84,8 +88,8 @@ class SqlStore(object):
         except (TypeError, ValueError):
             raise ValueError('Ill-format "time" field')
         return SqlMessage.timestamp.between(
-                datetime.fromtimestamp(time_beg),
-                datetime.fromtimestamp(time_end)
+            datetime.fromtimestamp(time_beg),
+            datetime.fromtimestamp(time_end)
         )
 
     def get(self, query):
@@ -100,13 +104,15 @@ class SqlStore(object):
             except ValueError:
                 raise
             except Exception:
-                raise ValueError('Something went wrong when processing the field "{}"'.format(key))
+                raise ValueError('Something went wrong when processing '
+                                 'the field "{}"'.format(key))
 
         session = self.session_class()
 
-        ret = [json.loads(m[0]) for m in session.query(SqlMessage.msg).filter(or_(*predicates)).all()]
+        ret = [json.loads(m[0])
+               for m in session.query(SqlMessage.msg)
+               .filter(or_(*predicates)).all()]
         session.close()
         if len(ret) == 0:
             raise ValueError('There was no match for the given query')
         return ret
-
