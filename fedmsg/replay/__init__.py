@@ -96,9 +96,9 @@ def get_replay(name, query, config, context=None):
     socket = context.socket(zmq.REQ)
     try:
         socket.connect(endpoint)
-    except zmq.ZMQError:
+    except zmq.ZMQError as e:
         raise IOError("Error when connecting to the "
-                      "replay endpoint: '{}'".format(str(v)))
+                      "replay endpoint: '{}'".format(str(e)))
 
     # REQ/REP dance
     socket.send(fedmsg.encoding.dumps(query))
