@@ -1,6 +1,6 @@
 [Unit]
 Description=Twitter/Identi.ca bot for fedmsg
-After=sockets.target
+After=network.target
 Documentation=http://fedmsg.readthedocs.org/en/latest/commands/
 
 [Service]
