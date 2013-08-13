@@ -129,14 +129,14 @@ def load_config(extra_args=None,
         for e in config['srv_endpoints']:
             urls = []
             try:
-                records = query('_fedmsg._tcp.{}'.format(e), 'SRV')
+                records = query('_fedmsg._tcp.{0}'.format(e), 'SRV')
             except NXDOMAIN:
                 warnings.warn("There is no appropriate SRV records " +
-                              "for {}".format(e))
+                              "for {0}".format(e))
                 continue
             except Timeout:
                 warnings.warn("The DNS query for the SRV records of" +
-                              " {} timed out.".format(e))
+                              " {0} timed out.".format(e))
                 continue
             except NoNameservers:
                 warnings.warn("No name server is available, please " +

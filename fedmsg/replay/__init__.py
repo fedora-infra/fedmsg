@@ -86,7 +86,7 @@ def get_replay(name, query, config, context=None):
     endpoint = config.get('replay_endpoints', {}).get(name, None)
     if not endpoint:
         raise IOError("No appropriate replay endpoint "
-                      "found for {}".format(name))
+                      "found for {0}".format(name))
 
     if not context:
         context = zmq.Context(config['io_threads'])
@@ -98,7 +98,7 @@ def get_replay(name, query, config, context=None):
         socket.connect(endpoint)
     except zmq.ZMQError as e:
         raise IOError("Error when connecting to the "
-                      "replay endpoint: '{}'".format(str(e)))
+                      "replay endpoint: '{0}'".format(str(e)))
 
     # REQ/REP dance
     socket.send(fedmsg.encoding.dumps(query))
