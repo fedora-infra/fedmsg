@@ -72,7 +72,7 @@ class ReplayContext(object):
                     for m in self.store.get(query)
                 ])
             except ValueError as e:
-                self.publisher.send("error: '{}'".format(e.message))
+                self.publisher.send("error: '{0}'".format(e.message))
 
     def listen(self):
         try:
