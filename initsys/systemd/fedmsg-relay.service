@@ -1,6 +1,6 @@
 [Unit]
 Description=fedmsg active<->passive relay
-After=sockets.target
+After=network.target
 Documentation=http://fedmsg.readthedocs.org/en/latest/commands/
 
 [Service]

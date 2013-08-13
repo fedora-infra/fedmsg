@@ -1,6 +1,6 @@
 [Unit]
 Description=Outbound fedmsg gateway
-After=sockets.target
+After=network.target
 Documentation=http://fedmsg.readthedocs.org/en/latest/commands/
 
 [Service]
