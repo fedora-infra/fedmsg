@@ -96,7 +96,7 @@ class SqlStore(object):
         predicates = []
 
         for key, value in query.iteritems():
-            fn = getattr(self, '_query_{}'.format(key), None)
+            fn = getattr(self, '_query_{0}'.format(key), None)
             if not fn:
                 raise ValueError('Unsupported field: "key"')
             try:
@@ -105,7 +105,7 @@ class SqlStore(object):
                 raise
             except Exception:
                 raise ValueError('Something went wrong when processing '
-                                 'the field "{}"'.format(key))
+                                 'the field "{0}"'.format(key))
 
         session = self.session_class()
 
