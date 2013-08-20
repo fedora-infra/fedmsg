@@ -131,7 +131,7 @@ class Base(unittest.TestCase):
 
 
 class TestUnhandled(Base):
-    expected_title = "unhandled_service.some_event (unsigned)"
+    expected_title = "unhandled_service.some_event"
     expected_subti = ""
     msg = {
         "topic": "org.fedoraproject.stg.unhandled_service.some_event"
@@ -139,7 +139,7 @@ class TestUnhandled(Base):
 
 
 class TestAnnouncement(Base):
-    expected_title = "announce.announcement (unsigned)"
+    expected_title = "announce.announcement"
     expected_subti = 'hello, world.'
     expected_link = 'foo'
     expected_usernames = set(['ralph'])
@@ -157,7 +157,7 @@ class TestAnnouncement(Base):
 
 
 class TestLoggerNormal(Base):
-    expected_title = "logger.log (unsigned)"
+    expected_title = "logger.log"
     expected_subti = 'hello, world.'
     expected_usernames = set(['ralph'])
 
@@ -173,7 +173,7 @@ class TestLoggerNormal(Base):
 
 
 class TestLoggerJSON(Base):
-    expected_title = "logger.log (unsigned)"
+    expected_title = "logger.log"
     expected_subti = '<custom JSON message>'
     expected_usernames = set(['root'])
 
