@@ -168,7 +168,7 @@ def init(**config):
         _implementation = x509
 
 
-def sign(message, ssldir, certname, **config):
+def sign(message, **config):
     """ Insert two new fields into the message dict and return it.
 
     Those fields are:
@@ -178,18 +178,18 @@ def sign(message, ssldir, certname, **config):
     """
 
     if not _implementation:
-        init(ssldir=ssldir, certname=certname, **config)
+        init(**config)
 
-    return _implementation.sign(message, ssldir, certname, **config)
+    return _implementation.sign(message, **config)
 
 
-def validate(message, ssldir, **config):
+def validate(message, **config):
     """ Return true or false if the message is signed appropriately. """
 
     if not _implementation:
-        init(ssldir=ssldir, **config)
+        init(**config)
 
-    return _implementation.validate(message, ssldir, **config)
+    return _implementation.validate(message, **config)
 
 
 def strip_credentials(message):
