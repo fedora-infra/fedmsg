@@ -56,8 +56,6 @@ import gettext
 t = gettext.translation('fedmsg', 'locale', fallback=True)
 _ = t.ugettext
 
-import fedmsg.crypto
-
 from fedmsg.meta.default import DefaultProcessor
 
 import pkg_resources
@@ -163,11 +161,7 @@ def msg2repr(msg, processor, **config):
 @with_processor()
 def msg2title(msg, processor, **config):
     """ Return a 'title' or primary text associated with a message. """
-    title = processor.title(msg, **config)
-    suffix = _msg2suffix(msg, **config)
-    if suffix:
-        title = title + " " + suffix
-    return title
+    return processor.title(msg, **config)
 
 
 @legacy_condition(unicode)
@@ -239,14 +233,3 @@ def msg2emails(msg, processor, **config):
 def msg2avatars(msg, processor, **config):
     """ Return a dict mapping of usernames to avatar URLs. """
     return processor.avatars(msg, **config)
-
-
-def _msg2suffix(msg, **config):
-    """ Generates the suffix for msg2title """
-    if 'signature' not in msg:
-        return _("(unsigned)")
-    elif config.get('validate_signatures'):
-        if not fedmsg.crypto.validate(msg, **config):
-            return _("(invalid signature!)")
-
-    return ""

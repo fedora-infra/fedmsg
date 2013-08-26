@@ -22,9 +22,11 @@
 # Author: Ralph Bean
 # Description: A bot that takes a config and puts messages matching given
 # regexes in specified IRC channels
+
 import fedmsg
 import fedmsg.encoding
 import fedmsg.meta
+from fedmsg.meta import _
 
 import copy
 import re
@@ -237,8 +239,16 @@ class IRCBotConsumer(FedmsgConsumer):
     def prettify(self, topic, msg, pretty=False, terse=False):
         if terse:
             if pretty:
+                title = fedmsg.meta.msg2title(msg, **self.hub.config)
+
+                if 'signature' not in msg:
+                    title += " " + _("(unsigned)")
+                elif self.hub.config.get('validate_signatures'):
+                    if not fedmsg.crypto.validate(msg, **self.hub.config):
+                        title += " " + _("(invalid signature!)")
+
                 return ircprettify(
-                    title=fedmsg.meta.msg2title(msg, **self.hub.config),
+                    title=title,
                     subtitle=fedmsg.meta.msg2subtitle(msg, **self.hub.config),
                     link=fedmsg.meta.msg2link(msg, **self.hub.config),
                     config=self.hub.config,
