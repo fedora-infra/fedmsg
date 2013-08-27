@@ -18,6 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 import fedmsg
+from fedmsg.utils import load_class
 from fedmsg.commands import BaseCommand
 
 
@@ -39,6 +40,12 @@ class HubCommand(BaseCommand):
     name = 'fedmsg-hub'
     daemonizable = True
     extra_args = [
+        (['--with-consumers'], {
+            'dest': 'explicit_hub_consumers',
+            'type': str,
+            'help': 'A comma-delimited list of conumers to run.',
+            'default': None,
+        }),
         (['--websocket-server-port'], {
             'dest': 'moksha.livesocket.websocket.port',
             'type': int,
@@ -52,6 +59,13 @@ class HubCommand(BaseCommand):
         if self.config['moksha.livesocket.websocket.port']:
             self.config['moksha.livesocket.backend'] = 'websocket'
 
+        # If the user wants to override any consumers installed on the system
+        # and *only* run the ones they want to, they can do that.
+        consumers = None
+        if self.config['explicit_hub_consumers']:
+            locations = self.config['explicit_hub_consumers'].split(',')
+            locations = [load_class(location) for location in locations]
+
         # Rephrase the fedmsg-config.py config as moksha *.ini format.
         # Note that the hub we kick off here cannot send any message.  You
         # should use fedmsg.publish(...) still for that.
@@ -63,7 +77,7 @@ class HubCommand(BaseCommand):
         self.config.update(moksha_options)
 
         from moksha.hub import main
-        main(options=self.config)
+        main(options=self.config, consumers=consumers)
 
 
 def hub():

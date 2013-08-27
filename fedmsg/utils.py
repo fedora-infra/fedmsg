@@ -83,3 +83,22 @@ def set_tcp_keepalive(socket, config):
             if attr:
                 _log.debug("Setting %r %r" % (const, config[key]))
                 socket.setsockopt(attr, config[key])
+
+
+def load_class(location):
+    """ Take a string of the form 'fedmsg.consumers.ircbot:IRCBotConsumer'
+    and return the IRCBotConsumer class.
+    """
+    mod_name, cls_name = location = location.strip().split(':')
+    tokens = mod_name.split('.')
+
+    fromlist = '[]'
+    if tokens > 1:
+        fromlist='.'.join(tokens[:-1])
+
+    module = __import__(mod_name, fromlist=fromlist)
+
+    try:
+        return getattr(module, cls_name)
+    except AttributeError as e:
+        raise ImportError("%r not found in %r" % (cls_name, mod_name))
