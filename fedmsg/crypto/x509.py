@@ -42,7 +42,7 @@ except ImportError, e:
     disabled = True
 
 
-def sign(message, ssldir, certname, **config):
+def sign(message, ssldir=None, certname=None, **config):
     """ Insert two new fields into the message dict and return it.
 
     Those fields are:
@@ -53,6 +53,9 @@ def sign(message, ssldir, certname, **config):
 
     if disabled:
         return message
+
+    if ssldir is None or certname is None:
+        raise ValueError("You must set the ssldir and certname keyword arguments.")
 
     certificate = M2Crypto.X509.load_cert(
         "%s/%s.crt" % (ssldir, certname)).as_pem()
@@ -73,7 +76,7 @@ def sign(message, ssldir, certname, **config):
     ])
 
 
-def validate(message, ssldir, **config):
+def validate(message, ssldir=None, **config):
     """ Return true or false if the message is signed appropriately.
 
     Four things must be true:
@@ -87,6 +90,8 @@ def validate(message, ssldir, **config):
 
     """
 
+    if ssldir is None:
+        raise ValueError("You must set the ssldir keyword argument.")
     def fail(reason):
         log.warn("Failed validation.  %s" % reason)
         return False
