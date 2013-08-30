@@ -110,6 +110,20 @@ class TailCommand(BaseCommand):
             'help': 'Only show topics that match the supplied regexp.',
             'default': '^((?!_heartbeat).)*$',
         }),
+        (['--users'], {
+            'dest': 'users',
+            'metavar': 'USERS',
+            'default': None,
+            'help': 'A comma-separated list of usernames.  Show only messages'
+            'related to these users.',
+        }),
+        (['--packages'], {
+            'dest': 'packages',
+            'metavar': 'PACKAGES',
+            'default': None,
+            'help': 'A comma-separated list of packages.  Show only messages'
+            'related to these packages.',
+        }),
     ]
 
     def run(self):
@@ -194,8 +208,16 @@ class TailCommand(BaseCommand):
                     ))
                 return "\n".join(lines)
 
+        # Build regular expressions for use in our loop.
         exclusive_regexp = re.compile(self.config['exclusive_regexp'])
         inclusive_regexp = re.compile(self.config['inclusive_regexp'])
+
+        # Build username and package filter sets for use in our loop.
+        users, packages = set(), set()
+        if self.config['users']:
+            users = set(map(str.strip, self.config['users'].split(',')))
+        if self.config['packages']:
+            packages = set(map(str.strip, self.config['packages'].split(',')))
 
         # Spin up a zmq.Poller and yield messages
         for name, ep, topic, message in fedmsg.tail_messages(**self.config):
@@ -203,6 +225,14 @@ class TailCommand(BaseCommand):
                 continue
 
             if not inclusive_regexp.search(topic):
+                continue
+
+            actual_users = fedmsg.meta.msg2usernames(message, **self.config)
+            if users and not users.intersection(actual_users):
+                continue
+
+            actual_packages = fedmsg.meta.msg2packages(message, **self.config)
+            if packages and not packages.intersection(actual_packages):
                 continue
 
             self.log.info(formatter(message))
