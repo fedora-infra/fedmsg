@@ -87,4 +87,8 @@ config = dict(
         # Unfortunately, we can't use socket.getfqdn()
         #"app01.stg": "app01.stg.phx2.fedoraproject.org",
     },
+    gpg_keys={
+        "unittest.%s" % hostname: 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC',
+        "__main__.%s" % hostname: 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC',
+    }
 )
