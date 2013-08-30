@@ -197,11 +197,7 @@ class TailCommand(BaseCommand):
         exclusive_regexp = re.compile(self.config['exclusive_regexp'])
         inclusive_regexp = re.compile(self.config['inclusive_regexp'])
 
-        # The "proper" fedmsg way to do this would be to spin up or connect to
-        # an existing Moksha Hub and register a consumer on the "*" topic that
-        # simply prints out each message it consumes.  That seems like
-        # overkill, so we're just going to directly access the endpoints
-        # ourself.
+        # Spin up a zmq.Poller and yield messages
         for name, ep, topic, message in fedmsg.tail_messages(**self.config):
             if exclusive_regexp.search(topic):
                 continue
