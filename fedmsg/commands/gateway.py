@@ -58,7 +58,14 @@ class GatewayCommand(BaseCommand):
         self.config[GatewayConsumer.config_key] = True
 
         from moksha.hub import main
-        main(options=self.config, consumers=[GatewayConsumer])
+        main(
+            # Pass in our config dict
+            options=self.config,
+            # Only run this *one* consumer
+            consumers=[GatewayConsumer],
+            # Tell moksha to quiet its logging.
+            framework=False,
+        )
 
 
 def gateway():
