@@ -5,7 +5,8 @@ config = dict(
         version=1,
         formatters=dict(
             bare={
-                "format": "%(message)s",
+                "datefmt": "%Y-%m-%d %H:%M:%S",
+                "format": "[%(asctime)s][%(name)10s %(levelname)7s] %(message)s"
             },
         ),
         handlers=dict(
