@@ -104,7 +104,7 @@ class TestCommands(unittest.TestCase):
 
         output = stdout.getvalue()
         expected = "{'topic': 'topic'}\n"
-        eq_(output, expected)
+        assert(output.endswith(expected))
 
     @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--pretty"])
     @patch("sys.stdout", new_callable=six.StringIO)
