@@ -22,6 +22,7 @@ import getpass
 import inspect
 import socket
 import threading
+import datetime
 import time
 import uuid
 import warnings
@@ -266,12 +267,14 @@ class FedMsgContext(object):
         if type(topic) == unicode:
             topic = to_bytes(topic, encoding='utf8', nonstring="passthru")
 
+        year = datetime.datetime.now().year
+
         self._i += 1
         msg = dict(
             topic=topic,
             msg=msg,
             timestamp=time.time(),
-            msg_id=str(uuid.uuid4()),
+            msg_id=str(year) + '-' + str(uuid.uuid4()),
             i=self._i,
             username=getpass.getuser(),
         )
