@@ -53,7 +53,14 @@ class IRCCommand(BaseCommand):
         self.config[IRCBotConsumer.config_key] = True
 
         from moksha.hub import main
-        main(options=self.config, consumers=[IRCBotConsumer])
+        main(
+            # Pass in our config dict
+            options=self.config,
+            # Only run this *one* consumer
+            consumers=[IRCBotConsumer],
+            # Tell moksah to quiet its logging
+            framework=False,
+        )
 
 
 def ircbot():
