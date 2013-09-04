@@ -77,7 +77,14 @@ class HubCommand(BaseCommand):
         self.config.update(moksha_options)
 
         from moksha.hub import main
-        main(options=self.config, consumers=consumers)
+        main(
+            # Pass in our config dict
+            options=self.config,
+            # Only run the specified consumers if any are so specified.
+            consumers=consumers,
+            # Tell moksha to quiet its logging.
+            framework=False,
+        )
 
 
 def hub():

@@ -104,7 +104,7 @@ class TestCommands(unittest.TestCase):
 
         output = stdout.getvalue()
         expected = "{'topic': 'topic'}\n"
-        eq_(output, expected)
+        assert(output.endswith(expected))
 
     @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--pretty"])
     @patch("sys.stdout", new_callable=six.StringIO)
@@ -167,7 +167,7 @@ class TestCommands(unittest.TestCase):
     def test_relay(self, argv):
         actual_options = []
 
-        def mock_main(options, consumers):
+        def mock_main(options, consumers, framework):
             actual_options.append(options)
 
         config = {}
