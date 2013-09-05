@@ -24,12 +24,19 @@ import zmq
 
 from fedmsg.consumers import FedmsgConsumer
 
+
 class GatewayConsumer(FedmsgConsumer):
-    topic = "org.fedoraproject.*"
     config_key = 'fedmsg.consumers.gateway.enabled'
     jsonify = False
 
     def __init__(self, hub):
+        self.hub = hub
+
+        # The consumer should pick up *all* messages.
+        self.topic = self.hub.config.get('topic_prefix', 'org.fedoraproject')
+        if not self.topic.endswith('*'):
+            self.topic += '*'
+
         super(GatewayConsumer, self).__init__(hub)
 
         # If fedmsg doesn't think we should be enabled, then we should quit
@@ -46,7 +53,8 @@ class GatewayConsumer(FedmsgConsumer):
         weakref.ref(threading.current_thread(), self.destroy)
 
     def _setup_special_gateway_socket(self):
-        self.log.info("Setting up special gateway socket on port %r" % self.port)
+        self.log.info("Setting up special gateway socket on " +
+                      "port %r" % self.port)
         self._context = zmq.Context(1)
         self.gateway_socket = self._context.socket(zmq.PUB)
 
@@ -61,7 +69,6 @@ class GatewayConsumer(FedmsgConsumer):
             # zeromq3
             self.gateway_socket.setsockopt(zmq.SNDHWM, hwm)
             self.gateway_socket.setsockopt(zmq.RCVHWM, hwm)
-
 
         self.gateway_socket.bind("tcp://*:{port}".format(port=self.port))
         self.log.info("Gateway socket established.")

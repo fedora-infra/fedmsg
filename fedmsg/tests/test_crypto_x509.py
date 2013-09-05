@@ -30,6 +30,7 @@ import fedmsg.crypto
 SEP = os.path.sep
 here = SEP.join(__file__.split(SEP)[:-1])
 
+
 def skip_if_missing_libs(f):
     def _wrapper(self, *args, **kw):
         try:
@@ -42,7 +43,8 @@ def skip_if_missing_libs(f):
 
     return _wrapper
 
-class TestCrypto(unittest.TestCase):
+
+class TestCryptoX509(unittest.TestCase):
 
     def setUp(self):
         self.config = {

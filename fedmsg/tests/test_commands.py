@@ -92,7 +92,7 @@ class TestCommands(unittest.TestCase):
     @patch("sys.stdout", new_callable=six.StringIO)
     def test_tail_basic(self, stdout, argv):
         def mock_tail(self, topic="", passive=False, **kw):
-            yield ("name", "endpoint", "topic", "message")
+            yield ("name", "endpoint", "topic", dict(topic="topic"))
 
         config = {}
         with patch("fedmsg.__local", self.local):
@@ -103,7 +103,8 @@ class TestCommands(unittest.TestCase):
                     command.execute()
 
         output = stdout.getvalue()
-        eq_(output, "message\n")
+        expected = "{'topic': 'topic'}\n"
+        assert(output.endswith(expected))
 
     @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--pretty"])
     @patch("sys.stdout", new_callable=six.StringIO)
@@ -113,7 +114,9 @@ class TestCommands(unittest.TestCase):
         def mock_tail(self, topic="", passive=False, **kw):
             msg = dict(
                 msg=dict(hello="world"),
+                msg_id='2ad5aaf8-68af-4a6d-9196-2a8b43a73238',
                 timestamp=1354563717.472648,  # Once upon a time...
+                topic="org.threebean.prod.testing",
             )
 
             yield ("name", "endpoint", "topic", msg)
@@ -127,8 +130,8 @@ class TestCommands(unittest.TestCase):
                     command.execute()
 
         output = stdout.getvalue()
-        expected = "\n{'msg': {'hello': 'world'}, 'timestamp': 'Mon Dec  3 13:41:57 2012'}\n"
-        eq_(output, expected)
+        expected = "{'msg': {'hello': 'world'},"
+        assert(expected in output)
 
     @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--really-pretty"])
     @patch("sys.stdout", new_callable=six.StringIO)
@@ -138,7 +141,9 @@ class TestCommands(unittest.TestCase):
         def mock_tail(self, topic="", passive=False, **kw):
             msg = dict(
                 msg=dict(hello="world"),
+                msg_id='2ad5aaf8-68af-4a6d-9196-2a8b43a73238',
                 timestamp=1354563717.472648,  # Once upon a time...
+                topic="org.threebean.prod.testing",
             )
 
             yield ("name", "endpoint", "topic", msg)
@@ -152,14 +157,17 @@ class TestCommands(unittest.TestCase):
                     command.execute()
 
         output = stdout.getvalue()
-        expected = '\n{\x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"msg"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m{\x1b[39;49;00m\n    \x1b[39;49;00m\x1b[33m"hello"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[33m"world"\x1b[39;49;00m\n  \x1b[39;49;00m}\x1b[39;49;00m,\x1b[39;49;00m \x1b[39;49;00m\n  \x1b[39;49;00m\x1b[33m"timestamp"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m\x1b[34m1354563717'
-        assert(output.startswith(expected))
+        expected = \
+            '\x1b[33m"hello"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m' + \
+            '\x1b[33m"world"\x1b[39;49;00m'
+
+        assert(expected in output)
 
     @patch("sys.argv", new_callable=lambda: ["fedmsg-relay"])
     def test_relay(self, argv):
         actual_options = []
 
-        def mock_main(options, consumers):
+        def mock_main(options, consumers, framework):
             actual_options.append(options)
 
         config = {}

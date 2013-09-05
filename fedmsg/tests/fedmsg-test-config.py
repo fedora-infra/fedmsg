@@ -37,6 +37,7 @@ except ImportError:
 port = random.randint(4000, 20000)
 
 config = dict(
+    topic_prefix="com.test_prefix",
     endpoints={
         "unittest.%s" % hostname: [
             "tcp://*:%i" % (port + 1),
@@ -59,6 +60,10 @@ config = dict(
         ],
     },
     relay_inbound=["tcp://127.0.0.1:%i" % (port - 1)],
+    replay_endpoints={
+        'unittest.%s' % hostname: "tcp://127.0.0.1:%i" % (port + 1),
+    },
+    persistent_store=None,
     environment="dev",
     high_water_mark=0,
     io_threads=1,
@@ -82,4 +87,8 @@ config = dict(
         # Unfortunately, we can't use socket.getfqdn()
         #"app01.stg": "app01.stg.phx2.fedoraproject.org",
     },
+    gpg_keys={
+        "unittest.%s" % hostname: 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC',
+        "__main__.%s" % hostname: 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC',
+    }
 )

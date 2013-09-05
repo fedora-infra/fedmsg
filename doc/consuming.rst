@@ -14,8 +14,8 @@ The other side of the :doc:`publishing` document is consuming messages.
    - **nirik>** trust, but verify. or... don't trust, and verify. ;)
 
 .. note::
-   There currently does not exist a comprehensive list of all messages, their
-   topics, and typical content.  See :doc:`FAQ` for more information.
+   This document is on *how* to consume messages.  But if you want to know
+   *what* messages there are, you might check out :doc:`topics`.
 
 "Naive" Consuming
 -----------------
@@ -80,8 +80,18 @@ To consume messages and do with them what you'd like, you need to:
      be set to ``True`` for your consumer to be activated by the fedmsg-hub.
    * ``consume`` -- A method that accepts a dict (the message) and contains code
      that "does what you would like to do".
+   * ``replay_name`` -- (optional) The name of the replay endpoint where the system should
+     query playback in case of missing messages. It must match a service key in
+     :term:`replay_endpoints`.
 
  * Register your class on the ``moksha.consumer`` python entry-point.
+
+A simple example
+~~~~~~~~~~~~~~~~
+
+`Luke Macken <http://lewk.org>`_ wrote a simple example of a `koji consumer
+<https://github.com/lmacken/fedmsg-koji-consumer>`_.  It's a good place to
+start if you're writing your own consumer.
 
 An Example From "busmon"
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -191,3 +201,17 @@ starting point for whatever you want to build::
 
 Just bear in mind that you don't reap any of the benefits of
 :mod:`fedmsg.crypto` or :mod:`fedmsg.meta`.
+
+.. note:: In the example above, the topic is just
+   ``'org.fedoraproject.prod.'`` and *not* ``'org.fedoraproject.prod.*'``.
+   The ``*`` that you see elsewhere is a Moksha convention and it is actually
+   just stripped from the topic.
+
+   Why? The ``*`` has meaning in AMQP, but not zeromq. The Moksha project
+   (which underlies fedmsg) aims to be an abstraction layer over zeromq,
+   AMQP, and STOMP and contains some code that allows use of the ``*`` for
+   zeromq, in order to make it look more like AMQP or STOMP (superficially).
+   fedmsg (being built on Moksha) inherits this behavior even though it
+   only uses the zeromq backend.  See `these comments
+   <http://threebean.org/blog/zeromq-and-fedmsg-diy/#disqus_thread>`_ for
+   some discussion.

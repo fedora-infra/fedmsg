@@ -28,7 +28,7 @@ Get::
 
     $ sudo yum install python-virtualenv openssl-devel zeromq-devel gcc
 
-Cloning Upstream the Git Repo
+Cloning the Upstream Git Repo
 -----------------------------
 
 The source code is on github.  For read-only access, simply::

@@ -25,8 +25,6 @@ import urllib
 import time
 import math
 
-import fedora.client
-
 import pygments
 import pygments.lexers
 import pygments.formatters
@@ -37,17 +35,14 @@ import fedmsg.meta
 from fedmsg.commands import BaseCommand
 
 
-def _grab_and_cache_avatar(username, directory):
-    """ Utility to grab gravatars from outerspace for the --gource option. """
+def _cache_avatar(username, url, directory):
+    """ Utility to grab avatars from outerspace for the --gource option. """
 
     fname = os.path.join(directory, "%s.jpg" % username)
     if os.path.exists(fname):
         # We already have it cached.  Just chill.
         pass
     else:
-        system = fedora.client.AccountSystem()
-        url = system.gravatar_url(username, lookup_email=False)
-
         # Make sure we have a place to write it
         if os.path.isdir(directory):
             # We've been here before... that's good.
@@ -56,7 +51,11 @@ def _grab_and_cache_avatar(username, directory):
             os.makedirs(directory)
 
         # Grab it from the net and write to local cache on disk.
-        urllib.urlretrieve(url, fname)
+        try:
+            urllib.urlretrieve(url, fname)
+        except IOError:
+            # If we can't talk to gravatar.com, try not to crash.
+            pass
 
 
 class TailCommand(BaseCommand):
@@ -91,7 +90,7 @@ class TailCommand(BaseCommand):
         (['--gource-user-image-dir'], {
             'dest': 'gource_user_image_dir',
             'help': 'Directory to store user avatar images for --gource',
-            'default': os.path.expanduser("~/.cache/gravatar"),
+            'default': os.path.expanduser("~/.cache/avatar"),
         }),
         (['--terse'], {
             'dest': 'terse',
@@ -99,17 +98,31 @@ class TailCommand(BaseCommand):
             'default': False,
             'action': 'store_true',
         }),
-        (['--filter'], {
+        (['--exclude'], {
             'dest': 'exclusive_regexp',
             'metavar': 'REGEXP',
             'help': 'Only show topics that do not match the supplied regexp.',
             'default': '_heartbeat',
         }),
-        (['--regexp'], {
+        (['--include'], {
             'dest': 'inclusive_regexp',
             'metavar': 'REGEXP',
             'help': 'Only show topics that match the supplied regexp.',
             'default': '^((?!_heartbeat).)*$',
+        }),
+        (['--users'], {
+            'dest': 'users',
+            'metavar': 'USERS',
+            'default': None,
+            'help': 'A comma-separated list of usernames.  Show only messages'
+            'related to these users.',
+        }),
+        (['--packages'], {
+            'dest': 'packages',
+            'metavar': 'PACKAGES',
+            'default': None,
+            'help': 'A comma-separated list of packages.  Show only messages'
+            'related to these packages.',
         }),
     ]
 
@@ -176,20 +189,17 @@ class TailCommand(BaseCommand):
 
                   $ fedmsg-tail --gource | gource \
                           -i 0 \
-                          --user-image-dir ~/.cache/gravatar/ \
+                          --user-image-dir ~/.cache/avatar/ \
                           --log-format custom -
                 """
                 proc = fedmsg.meta.msg2processor(message, **self.config)
-                users = fedmsg.meta.msg2usernames(message, **self.config)
+                avatars = fedmsg.meta.msg2avatars(message, **self.config)
                 objs = fedmsg.meta.msg2objects(message, **self.config)
                 name = proc.__name__.lower()
 
-                if not users:
-                    users = [name]
-
                 lines = []
-                for user, obj in itertools.product(users, objs):
-                    _grab_and_cache_avatar(user, cache_directory)
+                for user, obj in itertools.product(avatars.keys(), objs):
+                    _cache_avatar(user, avatars[user], cache_directory)
                     lines.append("%i|%s|A|%s|%s" % (
                         message['timestamp'],
                         user,
@@ -198,19 +208,31 @@ class TailCommand(BaseCommand):
                     ))
                 return "\n".join(lines)
 
+        # Build regular expressions for use in our loop.
         exclusive_regexp = re.compile(self.config['exclusive_regexp'])
         inclusive_regexp = re.compile(self.config['inclusive_regexp'])
 
-        # The "proper" fedmsg way to do this would be to spin up or connect to
-        # an existing Moksha Hub and register a consumer on the "*" topic that
-        # simply prints out each message it consumes.  That seems like
-        # overkill, so we're just going to directly access the endpoints
-        # ourself.
+        # Build username and package filter sets for use in our loop.
+        users, packages = set(), set()
+        if self.config['users']:
+            users = set(map(str.strip, self.config['users'].split(',')))
+        if self.config['packages']:
+            packages = set(map(str.strip, self.config['packages'].split(',')))
+
+        # Spin up a zmq.Poller and yield messages
         for name, ep, topic, message in fedmsg.tail_messages(**self.config):
             if exclusive_regexp.search(topic):
                 continue
 
             if not inclusive_regexp.search(topic):
+                continue
+
+            actual_users = fedmsg.meta.msg2usernames(message, **self.config)
+            if users and not users.intersection(actual_users):
+                continue
+
+            actual_packages = fedmsg.meta.msg2packages(message, **self.config)
+            if packages and not packages.intersection(actual_packages):
                 continue
 
             self.log.info(formatter(message))

@@ -45,8 +45,7 @@ install_requires = [
     'pyzmq',
     'fabulous',
     'kitchen',
-    'python-fedora',
-    'moksha.hub>=1.0.9',
+    'moksha.hub>=1.2.0',
     'requests',
     'pygments',
     #'daemon',
@@ -58,6 +57,7 @@ install_requires = [
 tests_require = [
     'nose',
     'mock',
+    'sqlalchemy',  # For the persistent-store test(s).
     'six',  # In the future, we'll use this across fedmsg proper for py3.
 ]
 
@@ -74,7 +74,7 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
 
 setup(
     name='fedmsg',
-    version='0.6.8',
+    version='0.7.0',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -93,7 +93,9 @@ setup(
         # around for backwards compatibility.  It's a symlink, for now.
         'fedmsg.text',
         'fedmsg.meta',
+        'fedmsg.replay',
         'fedmsg.tests',
+        'fedmsg.crypto'
     ],
     include_package_data=True,
     zip_safe=False,
@@ -125,6 +127,7 @@ setup(
             "fedmsg-collectd=fedmsg.commands.collectd:collectd",
             "fedmsg-tweet=fedmsg.commands.tweet:tweet",
             "fedmsg-announce=fedmsg.commands.announce:announce",
+            "fedmsg-trigger=fedmsg.commands.trigger:trigger",
         ],
         'moksha.consumer': [
             "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",

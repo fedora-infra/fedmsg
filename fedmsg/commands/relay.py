@@ -63,8 +63,15 @@ class RelayCommand(BaseCommand):
         for publish_endpoint in self.config['endpoints']['relay_outbound']:
             self.config['zmq_publish_endpoints'] = publish_endpoint
             try:
-                return main(options=self.config, consumers=[RelayConsumer])
-            except zmq.core.error.ZMQError:
+                return main(
+                    # Pass in our config dict
+                    options=self.config,
+                    # Only run this *one* consumer
+                    consumers=[RelayConsumer],
+                    # Tell moksha to quiet its logging.
+                    framework=False,
+                )
+            except zmq.ZMQError:
                 self.log.debug("Failed to bind to %r" % publish_endpoint)
 
         raise IOError("Failed to bind to any outbound endpoints.")

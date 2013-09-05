@@ -25,12 +25,16 @@ import logging
 
 
 class DummyConsumer(FedmsgConsumer):
-    topic = "org.fedoraproject.*"
     config_key = 'fedmsg.consumers.dummy.enabled'
 
     def __init__(self, hub):
         self.hub = hub
         self.DBSession = None
+
+        # The consumer should pick up *all* messages.
+        self.topic = self.hub.config.get('topic_prefix', 'org.fedoraproject')
+        if not self.topic.endswith('*'):
+            self.topic += '*'
 
         return super(DummyConsumer, self).__init__(hub)
 

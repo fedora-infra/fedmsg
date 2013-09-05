@@ -73,7 +73,7 @@ class TestHub(unittest.TestCase):
         self.hub = CentralMokshaHub(config=config)
 
         # fully qualified
-        self.fq_topic = "org.fedoraproject.dev.unittest.foo"
+        self.fq_topic = "com.test_prefix.dev.unittest.foo"
         # short version
         self.topic = "foo"
 
@@ -134,12 +134,11 @@ class TestHub(unittest.TestCase):
                 fedmsg.destroy()
                 self.test_reinit_success = True
 
-
         thread = Publisher()
         thread.start()
         thread.join()
 
-        assert(self.test_reinit_success == True)
+        assert(self.test_reinit_success)
 
 if __name__ == '__main__':
     unittest.main()

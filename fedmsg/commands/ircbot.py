@@ -22,6 +22,8 @@
 """
 Description: A bot that takes a config and puts messages matching given
 regexes in specified IRC channels.  See :term:`irc` for options.
+
+Think of it like a one-way firehose that spews fedmsg messages to IRC.
 """
 
 from fedmsg.commands import BaseCommand
@@ -51,7 +53,14 @@ class IRCCommand(BaseCommand):
         self.config[IRCBotConsumer.config_key] = True
 
         from moksha.hub import main
-        main(options=self.config, consumers=[IRCBotConsumer])
+        main(
+            # Pass in our config dict
+            options=self.config,
+            # Only run this *one* consumer
+            consumers=[IRCBotConsumer],
+            # Tell moksah to quiet its logging
+            framework=False,
+        )
 
 
 def ircbot():

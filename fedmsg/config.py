@@ -51,8 +51,6 @@ VALID_ENVIRONMENTS = ['dev', 'stg', 'prod']
 
 defaults = dict(
     topic_prefix="org.fedoraproject",
-    topic_prefix_re = r'org\.fedoraproject\.(%s)' % (
-        '|'.join(VALID_ENVIRONMENTS)),
     environment="dev",
     io_threads=1,
     post_init_sleep=0.5,
@@ -61,6 +59,7 @@ defaults = dict(
     high_water_mark=0,  # zero means no limit
     zmq_linger=1000,    # Wait one second before timing out on fedmsg-relay
     active=False,       # generally only true for fedmsg-logger
+    persistent_store=None,  # an object.  See the fedmsg.replay module.
 )
 
 __cache = {}
@@ -122,6 +121,39 @@ def load_config(extra_args=None,
 
     if 'endpoints' not in config:
         raise ValueError("No config value 'endpoints' found.")
+    if not isinstance(config['endpoints'], dict):
+        raise ValueError("The 'endpoint' config value must be a dict.")
+
+    if 'srv_endpoints' in config and len(config['srv_endpoints']) > 0:
+        from dns.resolver import query, NXDOMAIN, Timeout, NoNameservers
+        for e in config['srv_endpoints']:
+            urls = []
+            try:
+                records = query('_fedmsg._tcp.{0}'.format(e), 'SRV')
+            except NXDOMAIN:
+                warnings.warn("There is no appropriate SRV records " +
+                              "for {0}".format(e))
+                continue
+            except Timeout:
+                warnings.warn("The DNS query for the SRV records of" +
+                              " {0} timed out.".format(e))
+                continue
+            except NoNameservers:
+                warnings.warn("No name server is available, please " +
+                              "check the configuration")
+                break
+
+            for rec in records:
+                urls.append('tcp://{hostname}:{port}'.format(
+                    hostname=rec.target.to_text(),
+                    port=rec.port
+                ))
+            config['endpoints'][e] = urls
+
+    if 'topic_prefix_re' not in config:
+        # Turn "org.fedoraproject" into "org\.fedoraproject\.(dev|stg|prod)"
+        config['topic_prefix_re'] = config['topic_prefix'].replace('.', '\.')\
+            + '\.(%s)' % '|'.join(VALID_ENVIRONMENTS)
 
     __cache = config
     return config

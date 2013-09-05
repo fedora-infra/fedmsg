@@ -19,12 +19,31 @@
 #
 """ Tests for fedmsg.meta """
 
+import os
 import unittest
+
+from nose import SkipTest
 from nose.tools import eq_
+from nose.tools.nontrivial import make_decorator
 
 import fedmsg.meta
 
 from common import load_config
+
+
+def skip_on(attributes):
+    """ A test decorator that will skip if any of the named attributes
+    are left unspecified (are None-valued).
+    """
+    def wrapper(func):
+        @make_decorator(func)
+        def inner(self):
+            for attr in attributes:
+                if getattr(self, attr) is None:
+                    raise SkipTest("%r left unspecified" % attr)
+            return func(self)
+        return inner
+    return wrapper
 
 
 class Base(unittest.TestCase):
@@ -34,74 +53,85 @@ class Base(unittest.TestCase):
     expected_link = None
     expected_icon = None
     expected_secondary_icon = None
-    expected_usernames = set()
-    expected_packages = set()
-    expected_objects = set()
+    expected_usernames = None
+    expected_packages = None
+    expected_objects = None
+    expected_emails = None
+    expected_avatars = None
 
     def setUp(self):
-        self.config = fedmsg.config.load_config(None, None,
-                                                invalidate_cache=True)
+        dirname = os.path.abspath(os.path.dirname(__file__))
+        self.config = fedmsg.config.load_config(
+            filenames=[os.path.join(dirname, "fedmsg-test-config.py")],
+            invalidate_cache=True,
+        )
+        self.config['topic_prefix'] = 'org.fedoraproject'
+        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
         fedmsg.meta.make_processors(**self.config)
 
+    @skip_on(['msg', 'expected_title'])
     def test_title(self):
         """ Does fedmsg.meta produce the expected title? """
-        if None in (self.msg, self.expected_title):
-            return
         actual_title = fedmsg.meta.msg2title(self.msg, **self.config)
         eq_(actual_title, self.expected_title)
 
+    @skip_on(['msg', 'expected_subti'])
     def test_subtitle(self):
         """ Does fedmsg.meta produce the expected subtitle? """
-        if None in (self.msg, self.expected_subti):
-            return
         actual_subti = fedmsg.meta.msg2subtitle(self.msg, **self.config)
         eq_(actual_subti, self.expected_subti)
 
+    @skip_on(['msg', 'expected_link'])
     def test_link(self):
         """ Does fedmsg.meta produce the expected link? """
-        if None in (self.msg, self.expected_link):
-            return
         actual_link = fedmsg.meta.msg2link(self.msg, **self.config)
         eq_(actual_link, self.expected_link)
 
+    @skip_on(['msg', 'expected_icon'])
     def test_icon(self):
         """ Does fedmsg.meta produce the expected icon? """
-        if None in (self.msg, self.expected_icon):
-            return
         actual_icon = fedmsg.meta.msg2icon(self.msg, **self.config)
         eq_(actual_icon, self.expected_icon)
 
+    @skip_on(['msg', 'expected_secondary_icon'])
     def test_secondary_icon(self):
         """ Does fedmsg.meta produce the expected secondary icon? """
-        if None in (self.msg, self.expected_secondary_icon):
-            return
         actual_icon = fedmsg.meta.msg2secondary_icon(self.msg, **self.config)
         eq_(actual_icon, self.expected_secondary_icon)
 
+    @skip_on(['msg', 'expected_usernames'])
     def test_usernames(self):
         """ Does fedmsg.meta produce the expected list of usernames? """
-        if self.msg is None:
-            return
         actual_usernames = fedmsg.meta.msg2usernames(self.msg, **self.config)
         eq_(actual_usernames, self.expected_usernames)
 
+    @skip_on(['msg', 'expected_packages'])
     def test_packages(self):
         """ Does fedmsg.meta produce the expected list of packages? """
-        if self.msg is None:
-            return
         actual_packages = fedmsg.meta.msg2packages(self.msg, **self.config)
         eq_(actual_packages, self.expected_packages)
 
+    @skip_on(['msg', 'expected_objects'])
     def test_objects(self):
         """ Does fedmsg.meta produce the expected list of objects? """
-        if self.msg is None:
-            return
         actual_objects = fedmsg.meta.msg2objects(self.msg, **self.config)
         eq_(actual_objects, self.expected_objects)
 
+    @skip_on(['msg', 'expected_emails'])
+    def test_emails(self):
+        """ Does fedmsg.meta produce the expected list of emails? """
+        actual_emails = fedmsg.meta.msg2emails(self.msg, **self.config)
+        eq_(actual_emails, self.expected_emails)
+
+    @skip_on(['msg', 'expected_avatars'])
+    def test_avatars(self):
+        """ Does fedmsg.meta produce the expected list of avatars? """
+        actual_avatars = fedmsg.meta.msg2avatars(self.msg, **self.config)
+        eq_(actual_avatars, self.expected_avatars)
+
 
 class TestUnhandled(Base):
-    expected_title = "unhandled_service.some_event (unsigned)"
+    expected_title = "unhandled_service.some_event"
     expected_subti = ""
     msg = {
         "topic": "org.fedoraproject.stg.unhandled_service.some_event"
@@ -109,7 +139,7 @@ class TestUnhandled(Base):
 
 
 class TestAnnouncement(Base):
-    expected_title = "announce.announcement (unsigned)"
+    expected_title = "announce.announcement"
     expected_subti = 'hello, world.'
     expected_link = 'foo'
     expected_usernames = set(['ralph'])
@@ -127,7 +157,7 @@ class TestAnnouncement(Base):
 
 
 class TestLoggerNormal(Base):
-    expected_title = "logger.log (unsigned)"
+    expected_title = "logger.log"
     expected_subti = 'hello, world.'
     expected_usernames = set(['ralph'])
 
@@ -143,7 +173,7 @@ class TestLoggerNormal(Base):
 
 
 class TestLoggerJSON(Base):
-    expected_title = "logger.log (unsigned)"
+    expected_title = "logger.log"
     expected_subti = '<custom JSON message>'
     expected_usernames = set(['root'])
 

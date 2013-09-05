@@ -22,9 +22,11 @@
 # Author: Ralph Bean
 # Description: A bot that takes a config and puts messages matching given
 # regexes in specified IRC channels
+
 import fedmsg
 import fedmsg.encoding
 import fedmsg.meta
+from fedmsg.meta import _
 
 import copy
 import re
@@ -160,7 +162,6 @@ class FedMsngrFactory(protocol.ClientFactory):
 
 
 class IRCBotConsumer(FedmsgConsumer):
-    topic = "org.fedoraproject.*"
     validate_signatures = False
     config_key = 'fedmsg.consumers.ircbot.enabled'
 
@@ -168,6 +169,11 @@ class IRCBotConsumer(FedmsgConsumer):
         self.hub = hub
         self.DBSession = None
         self.irc_clients = []
+
+        # The consumer should pick up *all* messages.
+        self.topic = self.hub.config.get('topic_prefix', 'org.fedoraproject')
+        if not self.topic.endswith('*'):
+            self.topic += '*'
 
         super(IRCBotConsumer, self).__init__(hub)
         fedmsg.meta.make_processors(**hub.config)
@@ -233,8 +239,16 @@ class IRCBotConsumer(FedmsgConsumer):
     def prettify(self, topic, msg, pretty=False, terse=False):
         if terse:
             if pretty:
+                title = fedmsg.meta.msg2title(msg, **self.hub.config)
+
+                if 'signature' not in msg:
+                    title += " " + _("(unsigned)")
+                elif self.hub.config.get('validate_signatures'):
+                    if not fedmsg.crypto.validate(msg, **self.hub.config):
+                        title += " " + _("(invalid signature!)")
+
                 return ircprettify(
-                    title=fedmsg.meta.msg2title(msg, **self.hub.config),
+                    title=title,
                     subtitle=fedmsg.meta.msg2subtitle(msg, **self.hub.config),
                     link=fedmsg.meta.msg2link(msg, **self.hub.config),
                     config=self.hub.config,
@@ -252,10 +266,10 @@ class IRCBotConsumer(FedmsgConsumer):
 
         if pretty:
             msg = pygments.highlight(
-                    fedmsg.encoding.pretty_dumps(msg),
-                    pygments.lexers.JavascriptLexer(),
-                    pygments.formatters.TerminalFormatter()
-                    ).strip().encode('UTF-8')
+                fedmsg.encoding.pretty_dumps(msg),
+                pygments.lexers.JavascriptLexer(),
+                pygments.formatters.TerminalFormatter()
+            ).strip().encode('UTF-8')
 
         return "{0:<30} {1}".format(topic, msg)
 
@@ -276,7 +290,7 @@ class IRCBotConsumer(FedmsgConsumer):
                     terse=client.factory.terse,
                 )
                 raw_msg = raw_msg.encode('utf-8')
-                client.msg(
+                getattr(client, self.hub.config['irc_method'], 'notice')(
                     client.factory.channel,
                     raw_msg,
                 )

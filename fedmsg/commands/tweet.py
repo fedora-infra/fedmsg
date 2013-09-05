@@ -65,7 +65,14 @@ class TweetCommand(BaseCommand):
         self.config[TweetBotConsumer.config_key] = True
 
         from moksha.hub import main
-        main(options=self.config, consumers=[TweetBotConsumer])
+        main(
+            # Pass in our config dict
+            options=self.config,
+            # Only run this *one* consumer
+            consumers=[TweetBotConsumer],
+            # Tell moksha to quiet its logging.
+            framework=False,
+        )
 
 
 def tweet():

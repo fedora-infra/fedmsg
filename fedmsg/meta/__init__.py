@@ -56,8 +56,6 @@ import gettext
 t = gettext.translation('fedmsg', 'locale', fallback=True)
 _ = t.ugettext
 
-import fedmsg.crypto
-
 from fedmsg.meta.default import DefaultProcessor
 
 import pkg_resources
@@ -101,13 +99,13 @@ def make_processors(**config):
 
 
 def msg2processor(msg, **config):
-    """ For a given message return the text processor that can handle it
+    """ For a given message return the text processor that can handle it.
 
-    This will raise a ``ProcessorsNotInitialized`` exception if
-    :function:`make_processors` hasn't been called yet.
+    This will raise a :class:`fedmsg.meta.ProcessorsNotInitialized` exception
+    if :func:`fedmsg.meta.make_processors` hasn't been called yet.
     """
     for processor in processors:
-        if processor.handle_msg(msg, **config):
+        if processor.handle_msg(msg, **config) is not None:
             return processor
     else:
         return processors[-1]  # DefaultProcessor
@@ -146,13 +144,12 @@ def with_processor():
 
 @legacy_condition(unicode)
 @with_processor()
-def msg2repr(msg, **config):
+def msg2repr(msg, processor, **config):
     """ Return a human-readable or "natural language" representation of a
     dict-like fedmsg message.  Think of this as the 'top-most level' function
     in this module.
 
     """
-    processor = msg2processor(msg, **config)
     fmt = u"{title} -- {subtitle} {link}"
     title = msg2title(msg, **config)
     subtitle = processor.subtitle(msg, **config)
@@ -164,11 +161,7 @@ def msg2repr(msg, **config):
 @with_processor()
 def msg2title(msg, processor, **config):
     """ Return a 'title' or primary text associated with a message. """
-    title = processor.title(msg, **config)
-    suffix = _msg2suffix(msg, **config)
-    if suffix:
-        title = title + " " + suffix
-    return title
+    return processor.title(msg, **config)
 
 
 @legacy_condition(unicode)
@@ -189,8 +182,6 @@ def msg2link(msg, processor, **config):
 @with_processor()
 def msg2icon(msg, processor, **config):
     """ Return a primary icon associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.icon(msg, **config)
 
 
@@ -198,8 +189,6 @@ def msg2icon(msg, processor, **config):
 @with_processor()
 def msg2secondary_icon(msg, processor, **config):
     """ Return a secondary icon associated with a message. """
-    if not processor:
-        processor = msg2processor(msg, **config)
     return processor.secondary_icon(msg, **config)
 
 
@@ -232,12 +221,15 @@ def msg2objects(msg, processor, **config):
     return processor.objects(msg, **config)
 
 
-def _msg2suffix(msg, **config):
-    """ Generates the suffix for msg2title """
-    if 'signature' not in msg:
-        return _("(unsigned)")
-    elif config.get('validate_signatures'):
-        if not fedmsg.crypto.validate(msg, **config):
-            return _("(invalid signature!)")
+@legacy_condition(dict)
+@with_processor()
+def msg2emails(msg, processor, **config):
+    """ Return a dict mapping of usernames to email addresses. """
+    return processor.emails(msg, **config)
 
-    return ""
+
+@legacy_condition(dict)
+@with_processor()
+def msg2avatars(msg, processor, **config):
+    """ Return a dict mapping of usernames to avatar URLs. """
+    return processor.avatars(msg, **config)
