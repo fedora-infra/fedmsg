@@ -18,7 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 import socket
-hostname = socket.gethostname()
+hostname = socket.gethostname().split('.', 1)[0]
 
 config = dict(
     # This is a dict of possible addresses from which fedmsg can send

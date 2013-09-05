@@ -24,7 +24,7 @@ def load_config(name='fedmsg-test-config.py'):
     config['zmq_subscribe_endpoints'] = ','.join(
         ','.join(bunch) for bunch in config['endpoints'].values()
     )
-    hub_name = "twisted.%s" % socket.gethostname()
+    hub_name = "twisted.%s" % socket.gethostname().split('.', 1)[0]
     config['zmq_publish_endpoints'] = ','.join(
         config['endpoints'][hub_name]
     )

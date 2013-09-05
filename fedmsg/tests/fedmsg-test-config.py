@@ -24,7 +24,7 @@ import random
 
 SEP = os.path.sep
 here = os.getcwd()
-hostname = socket.gethostname()
+hostname = socket.gethostname().split('.', 1)[0]
 
 ssl_enabled_for_tests = True
 try:
