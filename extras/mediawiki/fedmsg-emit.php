@@ -148,7 +148,7 @@ function emit_message($subtopic, $message) {
   $message_obj = array(
     "topic" => $topic,
     "msg" => $message,
-    "timestamp" => time(),
+    "timestamp" => round(time(), 3),
     # TODO -> we don't have a good way to increment this counter from php yet.
     "i" => 1,
   );
