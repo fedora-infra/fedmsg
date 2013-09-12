@@ -2,6 +2,7 @@
 
 import getpass
 import git
+import itertools
 import os
 import sys
 
@@ -18,16 +19,13 @@ repo_name = '.'.join(abspath.split(os.path.sep)[-1].split('.')[:-1])
 username = getpass.getuser()
 
 repo = git.repo.Repo(abspath)
+
 def _build_commit(rev):
-    old, rev, branch = rev
+    old, new, branch = rev
     branch = '/'.join(branch.split('/')[2:])
-    commit = repo.rev_parse(rev=rev)
+    commits = repo.iter_commits('{0}..{1}'.format(old, new))
 
-    # We just don't handle these
-    if isinstance(commit, git.TagObject):
-        return None
-
-    return dict(
+    return [dict(
         name=commit.author.name,
         email=commit.author.email,
         username=username,
@@ -38,9 +36,11 @@ def _build_commit(rev):
             total=commit.stats.total,
         ),
         rev=rev,
+        path=abspath,
         repo=repo_name,
         branch=branch,
-    )
+        agent=os.getlogin(),
+    ) for commit in commits if not isinstance(commit, git.TagObject)]
 
 commits = map(_build_commit, lines)
 
@@ -50,14 +50,14 @@ config['active'] = True
 config['endpoints']['relay_inbound'] = config['relay_inbound']
 fedmsg.init(name='relay_inbound', cert_prefix='scm', **config)
 
-for commit in commits:
+for commit in itertools.chain(*commits):
 
     if commit is None:
         continue
 
     fedmsg.publish(
-        # XXX - Expect this to change to just "receive" in the future.
-        topic="receive.%s.%s" % (repo_name, commit['branch']),
+        # Expect this to change to just "receive" in the future.
+        topic="receive",
         msg=dict(commit=commit),
         modname="git",
     )
