@@ -38,8 +38,10 @@ def _build_commit(rev):
             total=commit.stats.total,
         ),
         rev=rev,
+        path=abspath,
         repo=repo_name,
         branch=branch,
+        agent=os.getlogin(),
     )
 
 commits = map(_build_commit, lines)
@@ -56,8 +58,8 @@ for commit in commits:
         continue
 
     fedmsg.publish(
-        # XXX - Expect this to change to just "receive" in the future.
-        topic="receive.%s.%s" % (repo_name, commit['branch']),
+        # Expect this to change to just "receive" in the future.
+        topic="receive",
         msg=dict(commit=commit),
         modname="git",
     )
