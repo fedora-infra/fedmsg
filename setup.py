@@ -43,7 +43,6 @@ except Exception:
 
 install_requires = [
     'pyzmq',
-    'fabulous',
     'kitchen',
     'moksha.hub>=1.2.0',
     'requests',
