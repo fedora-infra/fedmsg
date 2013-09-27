@@ -44,7 +44,7 @@ from fedmsg.replay.sqlstore import SqlStore, SqlMessage
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
-hostname = socket.gethostname()
+hostname = socket.gethostname().split('.', 1)[0]
 local_name = 'unittest.{0}'.format(hostname)
 
 

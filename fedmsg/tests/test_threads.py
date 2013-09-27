@@ -57,7 +57,7 @@ def load_config(name='fedmsg-test-config.py'):
     config['zmq_subscribe_endpoints'] = ','.join(
         ','.join(bunch) for bunch in config['endpoints'].values()
     )
-    hub_name = "twisted.%s" % socket.gethostname()
+    hub_name = "twisted.%s" % socket.gethostname().split('.', 1)[0]
     config['zmq_publish_endpoints'] = ','.join(
         config['endpoints'][hub_name]
     )
@@ -90,7 +90,7 @@ class TestHub(unittest.TestCase):
         self.hub.subscribe(topic=self.fq_topic, callback=callback)
         sleep(sleep_duration)
 
-        test_name = "__main__.%s" % socket.gethostname()
+        test_name = "__main__.%s" % socket.gethostname().split('.', 1)[0]
         self.config['name'] = test_name
 
         class Publisher(threading.Thread):
@@ -117,7 +117,7 @@ class TestHub(unittest.TestCase):
     def test_reinitialize(self):
         """ In a thread, try to destroy and re-init the API. """
 
-        test_name = "__main__.%s" % socket.gethostname()
+        test_name = "__main__.%s" % socket.gethostname().split('.', 1)[0]
         self.config['name'] = test_name
 
         self.test_reinit_success = False

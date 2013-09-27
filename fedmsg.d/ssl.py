@@ -22,7 +22,6 @@ import socket
 
 SEP = os.path.sep
 here = os.getcwd()
-hostname = socket.gethostname()
 
 config = dict(
     sign_messages=False,

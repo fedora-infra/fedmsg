@@ -1,6 +1,23 @@
 Changelog
 =========
 
+0.7.1
+-----
+
+- Make usage of socket.gethostname consistent throughout the test suite (so that we succeed on a koji builder). `3adf17ef8 <https://github.com/fedora-infra/fedmsg/commit/3adf17ef8c766db3b8c7064965abc3e467fa6ae6>`_
+- Round the timestamp to three decimal places. `b4d541ec0 <https://github.com/fedora-infra/fedmsg/commit/b4d541ec0c9b3eb71fc140b2db810701da524211>`_
+- Also round timestamp in the php mediawiki plugin. `a590aae53 <https://github.com/fedora-infra/fedmsg/commit/a590aae530345e511219babdbeb5eaf85eeeab8a>`_
+- Merge pull request #186 from fedora-infra/feature/timestamp-precision-reduction `4f7a35280 <https://github.com/fedora-infra/fedmsg/commit/4f7a352802ad51269c29b5f0ae20b88310d2c3a3>`_
+- Good logging should be on by default, even if the config file is absent. `ed9bd9881 <https://github.com/fedora-infra/fedmsg/commit/ed9bd9881262208c30ec8b0af2e4258a43bf9643>`_
+- Merge pull request #187 from fedora-infra/feature/default-logging `d5ad224db <https://github.com/fedora-infra/fedmsg/commit/d5ad224dbf00553b1bc9b65c86092d7183b43204>`_
+- Sync with Fedora Infrastructure puppet repo `4ffd0ff8d <https://github.com/fedora-infra/fedmsg/commit/4ffd0ff8d06445453c75a910a8cbb4dc229e9375>`_
+- Send one message for every commit in a push `6a5db8e87 <https://github.com/fedora-infra/fedmsg/commit/6a5db8e876232813ea177989442a7b9ec0acb52c>`_
+- Merge pull request #189 from fedora-infra/feature/git-post-receive-multicommit `cb2c0d9c8 <https://github.com/fedora-infra/fedmsg/commit/cb2c0d9c808d9afc63d069632fdd8de1da6693cd>`_
+- Remove dep on fabulous. `2ce15ab08 <https://github.com/fedora-infra/fedmsg/commit/2ce15ab0840fe69ddb060d5da2684c278365a20c>`_
+- Merge pull request #190 from fedora-infra/feature/prune-deps `7ed16dbb4 <https://github.com/fedora-infra/fedmsg/commit/7ed16dbb40a70564b69aff3f34402f5c09e078f7>`_
+- CRL serials are base-16, not base-10. `c857d15f7 <https://github.com/fedora-infra/fedmsg/commit/c857d15f75736528c870a74a05e07181164f9012>`_
+- Merge pull request #192 from fedora-infra/feature/crl-parsing `4602a1a4f <https://github.com/fedora-infra/fedmsg/commit/4602a1a4f1a38110c1d2b4f059f008d7218a580a>`_
+
 0.7.0
 -----
 
