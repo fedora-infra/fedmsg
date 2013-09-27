@@ -149,7 +149,7 @@ def validate(message, ssldir=None, **config):
     # There is a patch into M2Crypto to handle this for us.  We should use it
     # once its integrated upstream.
     # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
-    revoked_serials = [long(line.split(': ')[1].strip())
+    revoked_serials = [long(line.split(': ')[1].strip(), base=16)
                        for line in crl.as_text().split('\n')
                        if 'Serial Number:' in line]
     if cert.get_serial_number() in revoked_serials:
