@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # This file is part of fedmsg.
 # Copyright (C) 2012 Red Hat, Inc.
 #
@@ -26,6 +29,7 @@ except ImportError:
     from setuptools import setup
 
 import sys
+import platform
 
 f = open('README.rst')
 long_description = f.read().strip()
@@ -70,6 +74,18 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
         'unittest2',
     ])
 
+# Specific the path for the config's file for some layout.
+# https://github.com/fedora-infra/fedmsg/issues/193
+list_fedmsgd = ['fedmsg.d/base.py', 'fedmsg.d/endpoints.py',
+                'fedmsg.d/gateway.py', 'fedmsg.d/ircbot.py',
+                'fedmsg.d/logging.py', 'fedmsg.d/relay.py',
+                'fedmsg.d/ssl.py', 'fedmsg.d/tweet.py']
+
+if platform.system() == 'Windows':
+    # Don't know the config path on Windows
+    path_config = 'C:/fedmsg.d'
+else:
+    path_config = '/etc/fedmsg.d'
 
 setup(
     name='fedmsg',
@@ -83,6 +99,7 @@ setup(
     install_requires=install_requires,
     tests_require=tests_require,
     test_suite='nose.collector',
+    data_files=[(path_config, list_fedmsgd)],
     packages=[
         'fedmsg',
         'fedmsg.encoding',
