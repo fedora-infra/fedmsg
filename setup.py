@@ -94,7 +94,7 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
 
 
 class NoPrefix(Command):
-    description = "Don't install the config file on the specific rute."
+    description = "Don't install the config file on the specific route."
     user_options = list()
 
     def initialize_options(self):
