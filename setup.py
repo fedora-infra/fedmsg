@@ -114,6 +114,7 @@ setup(
     install_requires=install_requires,
     tests_require=tests_require,
     test_suite='nose.collector',
+    cmdclass={'noprefix': NoPrefix},
     packages=[
         'fedmsg',
         'fedmsg.encoding',
@@ -146,8 +147,6 @@ setup(
         'scripts/fedmsg-config',
     ],
     entry_points={
-        'distutils.commands': [
-            "noprefix = NoPrefix"],
         'console_scripts': [
             "fedmsg-logger=fedmsg.commands.logger:logger",
             "fedmsg-tail=fedmsg.commands.tail:tail",
