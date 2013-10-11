@@ -88,8 +88,9 @@ if platform.system() == 'Windows':
 else:
     path_config = '/etc/fedmsg.d'
 
-global data_config
-data_config = {'data_files': [(path_config, list_fedmsgd)]}
+
+class DataConfig(object):
+    data_config = {'data_files': [(path_config, list_fedmsgd)]}
 
 
 class NoPrefix(Command):
@@ -105,8 +106,7 @@ class NoPrefix(Command):
     def run(self):
         # For install with specific path, send the param 'spath'
         # setup.py install spath
-        global data_config
-        data_config = dict()
+        DataConfig.data_config = dict()
 
 setup(
     name='fedmsg',
@@ -181,5 +181,5 @@ setup(
             "announce=fedmsg.meta.announce:AnnounceProcessor",
         ],
     },
-    **data_config
+    **DataConfig.data_config
 )
