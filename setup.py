@@ -96,6 +96,12 @@ class NoPrefix(Command):
     description = "Don't install the config file on the specific rute."
     user_options = list()
 
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
     def run(self):
         # For install with specific path, send the param 'spath'
         # setup.py install spath
