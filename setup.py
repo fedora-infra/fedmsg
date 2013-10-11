@@ -28,6 +28,7 @@ except ImportError:
     use_setuptools()
     from setuptools import setup
 
+from setuptools import Command
 import sys
 import platform
 
@@ -87,12 +88,19 @@ if platform.system() == 'Windows':
 else:
     path_config = '/etc/fedmsg.d'
 
+global data_config
 data_config = {'data_files': [(path_config, list_fedmsgd)]}
 
-# For install with specific path, send the param 'spath'
-# setup.py install spath
-if 'no-prefix' in sys.argv:
-    data_config = dict()
+
+class NoPrefix(Command):
+    description = "Don't install the config file on the specific rute."
+    user_options = list()
+
+    def run(self):
+        # For install with specific path, send the param 'spath'
+        # setup.py install spath
+        global data_config
+        data_config = dict()
 
 setup(
     name='fedmsg',
@@ -138,6 +146,8 @@ setup(
         'scripts/fedmsg-config',
     ],
     entry_points={
+        'distutils.commands': [
+            "noprefix = NoPrefix"],
         'console_scripts': [
             "fedmsg-logger=fedmsg.commands.logger:logger",
             "fedmsg-tail=fedmsg.commands.tail:tail",
