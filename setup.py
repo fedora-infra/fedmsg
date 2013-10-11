@@ -87,12 +87,12 @@ if platform.system() == 'Windows':
 else:
     path_config = '/etc/fedmsg.d'
 
-data_config = dict()
+data_config = {'data_files': [(path_config, list_fedmsgd)]}
 
 # For install with specific path, send the param 'spath'
 # setup.py install spath
-if 'spath' in sys.argv:
-    data_config = {'data_files': [(path_config, list_fedmsgd)]}
+if 'no-prefix' in sys.argv:
+    data_config = dict()
 
 setup(
     name='fedmsg',
