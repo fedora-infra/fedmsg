@@ -32,6 +32,26 @@ from setuptools import Command
 import sys
 import platform
 
+# Specific the path for the config's file for some layout.
+# https://github.com/fedora-infra/fedmsg/issues/193
+list_fedmsgd = ['fedmsg.d/base.py', 'fedmsg.d/endpoints.py',
+                'fedmsg.d/gateway.py', 'fedmsg.d/ircbot.py',
+                'fedmsg.d/logging.py', 'fedmsg.d/relay.py',
+                'fedmsg.d/ssl.py', 'fedmsg.d/tweet.py']
+
+if platform.system() == 'Windows':
+    # Don't know the config path on Windows
+    path_config = 'C:/fedmsg.d'
+else:
+    path_config = '/etc/fedmsg.d'
+
+# Install without prefix "python setup.py install noprefix"
+
+data_config = dict()
+
+if not 'noprefix' in sys.argv:
+    data_config = {'data_files': [(path_config, list_fedmsgd)]}
+
 f = open('README.rst')
 long_description = f.read().strip()
 long_description = long_description.split('split here', 1)[1]
@@ -75,27 +95,11 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
         'unittest2',
     ])
 
-# Specific the path for the config's file for some layout.
-# https://github.com/fedora-infra/fedmsg/issues/193
-list_fedmsgd = ['fedmsg.d/base.py', 'fedmsg.d/endpoints.py',
-                'fedmsg.d/gateway.py', 'fedmsg.d/ircbot.py',
-                'fedmsg.d/logging.py', 'fedmsg.d/relay.py',
-                'fedmsg.d/ssl.py', 'fedmsg.d/tweet.py']
-
-if platform.system() == 'Windows':
-    # Don't know the config path on Windows
-    path_config = 'C:/fedmsg.d'
-else:
-    path_config = '/etc/fedmsg.d'
-
-
-class DataConfig(object):
-    data_config = {'data_files': [(path_config, list_fedmsgd)]}
-
 
 class NoPrefix(Command):
     description = "Don't install the config file on the specific rute."
     user_options = list()
+    no_prefix = 0
 
     def initialize_options(self):
         pass
@@ -106,7 +110,7 @@ class NoPrefix(Command):
     def run(self):
         # For install with specific path, send the param 'spath'
         # setup.py install spath
-        DataConfig.data_config = dict()
+        pass
 
 setup(
     name='fedmsg',
@@ -181,5 +185,5 @@ setup(
             "announce=fedmsg.meta.announce:AnnounceProcessor",
         ],
     },
-    **DataConfig.data_config
+    **data_config
 )
