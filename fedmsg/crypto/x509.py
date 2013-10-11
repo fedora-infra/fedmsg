@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # This file is part of fedmsg.
 # Copyright (C) 2012 Red Hat, Inc.
 #
@@ -55,7 +58,8 @@ def sign(message, ssldir=None, certname=None, **config):
         return message
 
     if ssldir is None or certname is None:
-        raise ValueError("You must set the ssldir and certname keyword arguments.")
+        error = "You must set the ssldir and certname keyword arguments."
+        raise ValueError(error)
 
     certificate = M2Crypto.X509.load_cert(
         "%s/%s.crt" % (ssldir, certname)).as_pem()
@@ -92,6 +96,7 @@ def validate(message, ssldir=None, **config):
 
     if ssldir is None:
         raise ValueError("You must set the ssldir keyword argument.")
+
     def fail(reason):
         log.warn("Failed validation.  %s" % reason)
         return False

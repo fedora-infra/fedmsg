@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # This file is part of fedmsg.
 # Copyright (C) 2012 Red Hat, Inc.
 #
@@ -35,6 +38,9 @@ except ImportError:
 
 # Pick random ports for the tests so travis-ci doesn't flip out.
 port = random.randint(4000, 20000)
+
+gpg_key_unittest = 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
+gpg_key_main = 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
 
 config = dict(
     topic_prefix="com.test_prefix",
@@ -88,7 +94,7 @@ config = dict(
         #"app01.stg": "app01.stg.phx2.fedoraproject.org",
     },
     gpg_keys={
-        "unittest.%s" % hostname: 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC',
-        "__main__.%s" % hostname: 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC',
+        "unittest.%s" % hostname: gpg_key_unittest,
+        "__main__.%s" % hostname: gpg_key_main,
     }
 )

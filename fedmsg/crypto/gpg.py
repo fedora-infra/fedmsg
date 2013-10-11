@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # This file is part of fedmsg.
 # Copyright (C) 2013 Simon Chopin <chopin.simon@gmail.com>
 #
@@ -156,6 +159,7 @@ def sign(message, gpg_home=None, gpg_signing_key=None, **config):
         homedir=gpg_home
     )
     return dict(message.items() + [('signature', signature.encode('base64'))])
+
 
 def validate(message, gpg_home=None, **config):
     """ Return true or false if the message is signed appropriately.

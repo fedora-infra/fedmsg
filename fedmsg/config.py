@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # This file is part of fedmsg.
 # Copyright (C) 2012 Red Hat, Inc.
 #
@@ -48,6 +51,7 @@ import warnings
 from fedmsg.encoding import pretty_dumps
 
 VALID_ENVIRONMENTS = ['dev', 'stg', 'prod']
+bare_format = "[%(asctime)s][%(name)10s %(levelname)7s] %(message)s"
 
 defaults = dict(
     topic_prefix="org.fedoraproject",
@@ -65,7 +69,7 @@ defaults = dict(
         formatters=dict(
             bare={
                 "datefmt": "%Y-%m-%d %H:%M:%S",
-                "format": "[%(asctime)s][%(name)10s %(levelname)7s] %(message)s"
+                "format": bare_format
             },
         ),
         handlers=dict(

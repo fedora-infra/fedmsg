@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # This file is part of fedmsg.
 # Copyright (C) 2012 Red Hat, Inc.
 #
@@ -94,7 +97,7 @@ def load_class(location):
 
     fromlist = '[]'
     if tokens > 1:
-        fromlist='.'.join(tokens[:-1])
+        fromlist = '.'.join(tokens[:-1])
 
     module = __import__(mod_name, fromlist=fromlist)
 
