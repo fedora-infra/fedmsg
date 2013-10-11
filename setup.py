@@ -87,6 +87,13 @@ if platform.system() == 'Windows':
 else:
     path_config = '/etc/fedmsg.d'
 
+data_config = dict()
+
+# For install with specific path, send the param 'spath'
+# setup.py install spath
+if 'spath' in sys.argv:
+    data_config = {'data_files': [(path_config, list_fedmsgd)]}
+
 setup(
     name='fedmsg',
     version='0.7.1',
@@ -99,7 +106,6 @@ setup(
     install_requires=install_requires,
     tests_require=tests_require,
     test_suite='nose.collector',
-    data_files=[(path_config, list_fedmsgd)],
     packages=[
         'fedmsg',
         'fedmsg.encoding',
@@ -159,5 +165,6 @@ setup(
             "logger=fedmsg.meta.logger:LoggerProcessor",
             "announce=fedmsg.meta.announce:AnnounceProcessor",
         ],
-    }
+    },
+    **data_config
 )
