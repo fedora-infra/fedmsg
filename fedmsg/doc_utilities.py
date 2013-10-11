@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """ Code to generate doc/topics.rst during 'sphinx-build'.
 
 This code:

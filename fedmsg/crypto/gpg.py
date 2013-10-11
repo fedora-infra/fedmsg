@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 # This file is part of fedmsg.
 # Copyright (C) 2013 Simon Chopin <chopin.simon@gmail.com>
 #

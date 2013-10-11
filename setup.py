@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 # This file is part of fedmsg.
 # Copyright (C) 2012 Red Hat, Inc.
 #
@@ -99,7 +96,6 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
 class NoPrefix(Command):
     description = "Don't install the config file on the specific rute."
     user_options = list()
-    no_prefix = 0
 
     def initialize_options(self):
         pass
@@ -108,8 +104,6 @@ class NoPrefix(Command):
         pass
 
     def run(self):
-        # For install with specific path, send the param 'spath'
-        # setup.py install spath
         pass
 
 setup(
