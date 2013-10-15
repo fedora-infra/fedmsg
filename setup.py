@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # This file is part of fedmsg.
 # Copyright (C) 2012 Red Hat, Inc.
 #
@@ -25,8 +28,8 @@ except ImportError:
     use_setuptools()
     from setuptools import setup
 
-from setuptools import Command
 import sys
+import os
 import platform
 
 # Specific the path for the config's file for some layout.
@@ -36,18 +39,16 @@ list_fedmsgd = ['fedmsg.d/base.py', 'fedmsg.d/endpoints.py',
                 'fedmsg.d/logging.py', 'fedmsg.d/relay.py',
                 'fedmsg.d/ssl.py', 'fedmsg.d/tweet.py']
 
-if platform.system() == 'Windows':
-    # Don't know the config path on Windows
-    path_config = 'C:/fedmsg.d'
+if 'VIRTUAL_ENV' in os.environ:
+    path_config = os.getcwd()
 else:
-    path_config = '/etc/fedmsg.d'
+    if platform.system() == 'Windows':
+        # Don't know the config path on Windows
+        path_config = 'C:/fedmsg.d'
+    else:
+        path_config = '/etc/fedmsg.d'
 
-# Install without prefix "python setup.py install noprefix"
-
-data_config = dict()
-
-if not 'noprefix' in sys.argv:
-    data_config = {'data_files': [(path_config, list_fedmsgd)]}
+data_config = {'data_files': [(path_config, list_fedmsgd)]}
 
 f = open('README.rst')
 long_description = f.read().strip()
@@ -92,20 +93,6 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
         'unittest2',
     ])
 
-
-class NoPrefix(Command):
-    description = "Don't install the config file on the specific route."
-    user_options = list()
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        pass
-
 setup(
     name='fedmsg',
     version='0.7.1',
@@ -118,7 +105,6 @@ setup(
     install_requires=install_requires,
     tests_require=tests_require,
     test_suite='nose.collector',
-    cmdclass={'noprefix': NoPrefix},
     packages=[
         'fedmsg',
         'fedmsg.encoding',
