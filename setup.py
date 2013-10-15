@@ -40,7 +40,7 @@ list_fedmsgd = ['fedmsg.d/base.py', 'fedmsg.d/endpoints.py',
                 'fedmsg.d/ssl.py', 'fedmsg.d/tweet.py']
 
 if 'VIRTUAL_ENV' in os.environ:
-    path_config = os.getcwd()
+    path_config = os.environ['VIRTUAL_ENV']
 else:
     if platform.system() == 'Windows':
         # Don't know the config path on Windows
