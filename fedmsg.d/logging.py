@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 # Setup fedmsg logging.
 # See the following for constraints on this format http://bit.ly/Xn1WDn
 bare_format = "[%(asctime)s][%(name)10s %(levelname)7s] %(message)s"

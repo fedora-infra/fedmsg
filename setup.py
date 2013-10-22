@@ -31,10 +31,7 @@ import platform
 
 # Specific the path for the config's file for some layout.
 # https://github.com/fedora-infra/fedmsg/issues/193
-list_fedmsgd = ['fedmsg.d/base.py', 'fedmsg.d/endpoints.py',
-                'fedmsg.d/gateway.py', 'fedmsg.d/ircbot.py',
-                'fedmsg.d/logging.py', 'fedmsg.d/relay.py',
-                'fedmsg.d/ssl.py', 'fedmsg.d/tweet.py']
+list_fedmsgd = ['fedmsg.d/' + item for item in os.listdir('fedmsg.d')]
 
 if 'VIRTUAL_ENV' in os.environ:
     path_config = os.environ['VIRTUAL_ENV']
