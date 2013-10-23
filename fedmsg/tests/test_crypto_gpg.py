@@ -22,7 +22,13 @@ import functools
 
 from nose.tools import raises
 from nose.exc import SkipTest
-import nose.tools.nontrivial
+
+try:
+    from nose.tools.nontrivial import make_decorator
+except ImportError:
+    # It lives here in older versions of nose (el6)
+    from nose.tools import make_decorator
+
 import unittest
 
 import fedmsg.crypto.gpg
@@ -43,7 +49,7 @@ def skip_on_travis(fn):
         if os.environ.get('TRAVIS', None):
             raise SkipTest("gpg permissions are weird on travis-ci.org")
         return fn(self, *args, **kw)
-    return nose.tools.nontrivial.make_decorator(fn)(newfunc)
+    return make_decorator(fn)(newfunc)
 
 
 class TestGpg(unittest.TestCase):
