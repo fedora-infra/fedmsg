@@ -157,6 +157,7 @@ def sign(message, gpg_home=None, gpg_signing_key=None, **config):
     )
     return dict(message.items() + [('signature', signature.encode('base64'))])
 
+
 def validate(message, gpg_home=None, **config):
     """ Return true or false if the message is signed appropriately.
 
