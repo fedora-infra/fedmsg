@@ -21,8 +21,6 @@
 import time
 import traceback
 
-import bitlyapi
-
 import fedmsg
 import fedmsg.meta
 from fedmsg.commands import BaseCommand
