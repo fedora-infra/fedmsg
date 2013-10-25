@@ -24,7 +24,12 @@ import unittest
 
 from nose import SkipTest
 from nose.tools import eq_
-from nose.tools.nontrivial import make_decorator
+
+try:
+    from nose.tools.nontrivial import make_decorator
+except ImportError:
+    # It lives here in older versions of nose (el6)
+    from nose.tools import make_decorator
 
 import fedmsg.meta
 

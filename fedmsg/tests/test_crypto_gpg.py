@@ -22,7 +22,13 @@ import functools
 
 from nose.tools import raises
 from nose.exc import SkipTest
-import nose.tools.nontrivial
+
+try:
+    from nose.tools.nontrivial import make_decorator
+except ImportError:
+    # It lives here in older versions of nose (el6)
+    from nose.tools import make_decorator
+
 import unittest
 
 import fedmsg.crypto.gpg
@@ -43,16 +49,18 @@ def skip_on_travis(fn):
         if os.environ.get('TRAVIS', None):
             raise SkipTest("gpg permissions are weird on travis-ci.org")
         return fn(self, *args, **kw)
-    return nose.tools.nontrivial.make_decorator(fn)(newfunc)
+    return make_decorator(fn)(newfunc)
 
 
 class TestGpg(unittest.TestCase):
     def setUp(self):
-        self.ctx = fedmsg.crypto.gpg.Context(keyrings = keyrings, homedir = data_dir)
+        self.ctx = fedmsg.crypto.gpg.Context(keyrings=keyrings,
+                                             homedir=data_dir)
 
     def test_verif_detach_sig(self):
         signature_path = os.path.join(data_dir, "test_data.sig")
-        self.ctx.verify(open(clear_data_path).read(), signature = open(signature_path).read())
+        self.ctx.verify(open(clear_data_path).read(),
+                        signature=open(signature_path).read())
         self.ctx.verify_from_file(clear_data_path, sig_path=signature_path)
 
     @raises(fedmsg.crypto.gpg.GpgBinaryError)
@@ -74,12 +82,15 @@ class TestGpg(unittest.TestCase):
 
 
 import fedmsg.crypto
+
+
 class TestCryptoGPG(unittest.TestCase):
     def setUp(self):
+        gpg_key = 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
         self.config = {
             'crypto_backend': 'gpg',
             'gpg_home': SEP.join((here, 'test_certs', 'gpg')),
-            'gpg_signing_key': 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
+            'gpg_signing_key': gpg_key
         }
 
     def tearDown(self):
@@ -99,8 +110,10 @@ class TestCryptoGPG(unittest.TestCase):
         # space aliens read data off the wire and inject incorrect data
         signed['msg'] = "eve wuz here"
         assert not fedmsg.crypto.validate(signed, **self.config)
+
     def tearDown(self):
-        # We have to reset the implementation in fedmsg.crypto otherwise all the other tests will use the gpg backend
+        # We have to reset the implementation in fedmsg.crypto
+        # otherwise all the other tests will use the gpg backend
         fedmsg.crypto._implementation = None
 
 
