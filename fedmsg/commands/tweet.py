@@ -21,7 +21,6 @@
 import time
 import traceback
 
-import twitter as twitter_api
 import bitlyapi
 
 import fedmsg
