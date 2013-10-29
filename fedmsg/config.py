@@ -178,7 +178,7 @@ def load_config(extra_args=None,
                     hostname=rec.target.to_text(),
                     port=rec.port
                 ))
-            config['endpoints'][e] = urls
+            config['endpoints'][e] = list(iterate(urls))
 
     if 'topic_prefix_re' not in config:
         # Turn "org.fedoraproject" into "org\.fedoraproject\.(dev|stg|prod)"
