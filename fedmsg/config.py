@@ -45,8 +45,9 @@ import sys
 import textwrap
 import warnings
 
-from fedmsg.encoding import pretty_dumps
 from kitchen.iterutils import iterate
+from fedmsg.encoding import pretty_dumps
+
 
 VALID_ENVIRONMENTS = ['dev', 'stg', 'prod']
 bare_format = "[%(asctime)s][%(name)10s %(levelname)7s] %(message)s"
