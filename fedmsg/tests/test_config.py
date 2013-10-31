@@ -20,8 +20,6 @@
 """ Tests for fedmsg.config """
 
 import unittest
-import sys
-import traceback
 from nose.tools import eq_
 
 import fedmsg.config
