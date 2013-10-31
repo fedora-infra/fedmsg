@@ -57,10 +57,9 @@ config = dict(
             "tcp://*:%i" % (port + 8),
             "tcp://*:%i" % (port + 9),
         ],
-        "blah.%s": [
-            # Guarantee that we don't fall over with a bogus endpoint.
-            "tcp://www.flugle.horn:88",
-        ],
+        # Guarantee that we don't fall over with a bogus endpoint.
+        "blah.%s": "tcp://www.flugle.horn:88",
+        
     },
     relay_inbound=["tcp://127.0.0.1:%i" % (port - 1)],
     replay_endpoints={

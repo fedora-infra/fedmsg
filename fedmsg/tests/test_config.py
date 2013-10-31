@@ -23,6 +23,7 @@ import unittest
 from nose.tools import eq_
 
 import fedmsg.config
+from common import load_config
 
 
 class RecursiveUpdateBase(unittest.TestCase):
@@ -70,6 +71,18 @@ class TestMerge(RecursiveUpdateBase):
         dict(a=dict(b=3)),
     ]
     expected = dict(a=dict(a=2, b=3))
+
+
+class TestConfig(unittest.TestCase):
+    """Test for try out the function iterate in
+    endpoints config"""
+
+    def test_config(self):
+        config = load_config()
+        endpoints = config['endpoints']
+
+        for key, value in endpoints.iteritems():
+            assert isinstance(value, list), value
 
 
 if __name__ == '__main__':
