@@ -74,14 +74,7 @@ class TestMerge(RecursiveUpdateBase):
     ]
     expected = dict(a=dict(a=2, b=3))
 
-class TestConfig(unittest.TestCase):
-    """Test for try out the function iterate in
-    endpoints config"""
 
-    def setUp(self):
-        self.config = load_config()
-
-    
 class TestConfig(unittest.TestCase):
     """Test for try out the function iterate in
     endpoints config"""
