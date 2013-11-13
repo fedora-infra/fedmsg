@@ -1,6 +1,57 @@
 Changelog
 =========
 
+0.7.2
+-----
+
+- Fix issue #193 on setup.py `c4bea1ff0 <https://github.com/fedora-infra/fedmsg/commit/c4bea1ff016eebbe898dbeac939e2084bf7c6f3f>`_
+- Fix PEP8 `5d1e8a7fb <https://github.com/fedora-infra/fedmsg/commit/5d1e8a7fbc4b9c31050a092cf2c704f190878cee>`_
+- Add the data_config as optional function `418567ad5 <https://github.com/fedora-infra/fedmsg/commit/418567ad5a50c84cfebbdfc935a661ccb61293f5>`_
+- Built on travis, and install with pip `e2053d450 <https://github.com/fedora-infra/fedmsg/commit/e2053d4504d591d2026ae4f304515d0866458ba6>`_
+- Fix issue with command for install from pip `9365f2f72 <https://github.com/fedora-infra/fedmsg/commit/9365f2f72f34dba7fc2513f0af0c18e7d3cf5687>`_
+- Add cmdclass `792f8ea39 <https://github.com/fedora-infra/fedmsg/commit/792f8ea3988f675e29fa7ba82b690be2f472bb89>`_
+- Update .travis `e11b4e8db <https://github.com/fedora-infra/fedmsg/commit/e11b4e8db2af9e4212641649bac065a053755722>`_
+- Update .travis `4e684ca97 <https://github.com/fedora-infra/fedmsg/commit/4e684ca97178e771d40b482d9df0743226c38db4>`_
+- Change to class DataConfig `b0c83e27e <https://github.com/fedora-infra/fedmsg/commit/b0c83e27ee020bc6f9ec5196439f2d33cea91161>`_
+- Work install with and without noprefix arg `7646460c2 <https://github.com/fedora-infra/fedmsg/commit/7646460c2772ce8cbd0967c9d11ffc26e6f18c6c>`_
+- Remove shebangs. Thanks to: pingou `0b24fb07e <https://github.com/fedora-infra/fedmsg/commit/0b24fb07e0e4871e369050be7d77830e5287db36>`_
+- rute -> route on the setup.py `3bd960e46 <https://github.com/fedora-infra/fedmsg/commit/3bd960e468a6ec8782de849f41f737c29c2043ac>`_
+- Add VIRTUAL_ENV support to setup.py `4027852fd <https://github.com/fedora-infra/fedmsg/commit/4027852fd2a09e44d946160a9e5562ed3a60a925>`_
+- Update .travis.yml: Delete noprefix arg `41ec7fbb6 <https://github.com/fedora-infra/fedmsg/commit/41ec7fbb6bfb2d1694848621c98a7c663cde127e>`_
+- Update config.py: Add support to VIRTUAL_ENV `af162afbe <https://github.com/fedora-infra/fedmsg/commit/af162afbe39ac208f2e1d1ee7e07a9baf57b492a>`_
+- Remove shebags `581fabb72 <https://github.com/fedora-infra/fedmsg/commit/581fabb72e23f8648f3d5f283a0a0d080d16406c>`_
+- Conditionally import from nose.tools.nontrivial to support running tests on el6. `5f32a9cc5 <https://github.com/fedora-infra/fedmsg/commit/5f32a9cc517e25b201017479aec0f15c87065b3b>`_
+- Remove shebbag in loggin.py and add os.listdir in setup.py `253875b3c <https://github.com/fedora-infra/fedmsg/commit/253875b3ceda33fbf7ba28ae9efd6166a7efad72>`_
+- Merge pull request #196 from fedora-infra/feature/nontrivial `d290aa3d8 <https://github.com/fedora-infra/fedmsg/commit/d290aa3d85563b0a03f14613eba138f2b331cc02>`_
+- Merge pull request #195 from yograterol/develop `d62c6738a <https://github.com/fedora-infra/fedmsg/commit/d62c6738a4e66d18c78f7cd9580fd3bb92e285d1>`_
+- Fixes issue:#130 `16468eff2 <https://github.com/fedora-infra/fedmsg/commit/16468eff239dc6e28223dc6833cee592b673ad31>`_
+- Merge pull request #197 from chandankumar1/fork `ba275778e <https://github.com/fedora-infra/fedmsg/commit/ba275778e7425f0d04b9c1f6fe4ee2b378ff9c2e>`_
+- Some fixes to the twitter dep. `c1b631de0 <https://github.com/fedora-infra/fedmsg/commit/c1b631de0f5b3449ffad410b5a96f894eac6a980>`_
+- Merge branch 'develop' of github.com:fedora-infra/fedmsg into develop `8f772ae33 <https://github.com/fedora-infra/fedmsg/commit/8f772ae33e9bdc79a6374a75786b127e21db2f04>`_
+- Also, bitlyapi for the docs. `7b7c073b4 <https://github.com/fedora-infra/fedmsg/commit/7b7c073b480d8637f7a278ed030620c33f071aff>`_
+- Drop mention of the identi.ca bot from the frontpage since it is retired. `6a9d3a3a0 <https://github.com/fedora-infra/fedmsg/commit/6a9d3a3a0a9d76b4cbc32320aa175814635305c4>`_
+- Iterate endpoints with kitchen.iterate `686f87c68 <https://github.com/fedora-infra/fedmsg/commit/686f87c68457bf8f772370185a4fe78b95c54494>`_
+- Add kitchen.iterate import `c921753e6 <https://github.com/fedora-infra/fedmsg/commit/c921753e69371b9433cbaf6c44c14cbe6b11469b>`_
+- PEP8 imports fixed `43821d162 <https://github.com/fedora-infra/fedmsg/commit/43821d1627465d4a04546aff4bd9be036d0cdcc9>`_
+- Remove unused import. `935ab04c3 <https://github.com/fedora-infra/fedmsg/commit/935ab04c3ca879c52564510803cb6bb94216810d>`_
+- Add fix for pre-defined endpoints and tests `2305ded44 <https://github.com/fedora-infra/fedmsg/commit/2305ded442eb489b215533aa5476bceeaa9e0595>`_
+- Remove redefined class TestConfig `1b7ee911a <https://github.com/fedora-infra/fedmsg/commit/1b7ee911a2f1227639fa1c404b7cb58919fcf5f0>`_
+- Remove unnecessary imports `cdb3dad95 <https://github.com/fedora-infra/fedmsg/commit/cdb3dad95f9d8a9d7795790bd5519db90f2d45fc>`_
+- Merge pull request #198 from echevemaster/develop `5d54876be <https://github.com/fedora-infra/fedmsg/commit/5d54876beb01e552be896da48559c6023ab3fe57>`_
+- Remove unused imports. `9c7dbfcad <https://github.com/fedora-infra/fedmsg/commit/9c7dbfcad94b7fcf75880006774fdadb13f73f61>`_
+- Merge branch 'develop' of github.com:fedora-infra/fedmsg into develop `572d78023 <https://github.com/fedora-infra/fedmsg/commit/572d780238d6eec9ecfd76e812da077faa26da96>`_
+- Remove old debug artifact. `4eeebe56b <https://github.com/fedora-infra/fedmsg/commit/4eeebe56bddf741b9165344ccf9ef9043b0e0de0>`_
+- Test float precision in json encoding. `94f5f630c <https://github.com/fedora-infra/fedmsg/commit/94f5f630c315bc6951c98cd2a9f4908ce05d59a4>`_
+- Monkey patch json encoder to restrict float precision. `9e9bbdb00 <https://github.com/fedora-infra/fedmsg/commit/9e9bbdb00f4111023981918c0ff69e001bf4eae0>`_
+- Remove old, ineffective float precision restriction. `2b056ff3d <https://github.com/fedora-infra/fedmsg/commit/2b056ff3dba78096c7c96abdc5f2dd281dd4560e>`_
+- Ignore sphinx build products. `6caf6dce1 <https://github.com/fedora-infra/fedmsg/commit/6caf6dce1544bafa7e412c163b955d8a34cca9b9>`_
+- PEP8/cosmetic. `0438aa6c8 <https://github.com/fedora-infra/fedmsg/commit/0438aa6c8ff967ae6a8ba6d47d517b7e2db83a5b>`_
+- PEP8/costmetic. `d087f8e8c <https://github.com/fedora-infra/fedmsg/commit/d087f8e8cc2a03a94d144193f67c0dcfa917fc37>`_
+- Another approach: just cap the timestamp at second level precision. `e58592d12 <https://github.com/fedora-infra/fedmsg/commit/e58592d12b521446a6b6bf37200f040216be64d3>`_
+- Also, ignore coverage. `839865a0f <https://github.com/fedora-infra/fedmsg/commit/839865a0f39fa1fb5a809a87350db95f731a074c>`_
+- Merge pull request #201 from fedora-infra/feature/precision-take-two `7fbc23ba6 <https://github.com/fedora-infra/fedmsg/commit/7fbc23ba62df296838f88e84b6b0e8d17c6bc9bf>`_
+- Merge pull request #202 from fedora-infra/feature/pep8 `72a948461 <https://github.com/fedora-infra/fedmsg/commit/72a9484615b4de8d88ed2df75ae914a767b9cc0c>`_
+
 0.7.1
 -----
 
