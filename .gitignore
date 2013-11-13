@@ -10,3 +10,5 @@ html-output
 htmldoc
 _tweet-real.py
 doc/topics.rst
+htmldocs
+.coverage

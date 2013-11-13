@@ -274,7 +274,7 @@ class FedMsgContext(object):
         msg = dict(
             topic=topic,
             msg=msg,
-            timestamp=round(time.time(), 3),
+            timestamp=int(time.time()),
             msg_id=str(year) + '-' + str(uuid.uuid4()),
             i=self._i,
             username=getpass.getuser(),
