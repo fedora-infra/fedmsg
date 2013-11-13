@@ -59,6 +59,10 @@ import json
 import json.encoder
 
 
+# Restrict the precision on float representation.
+# Discussion: http://bit.ly/17pFRVF
+json.encoder.FLOAT_REPR = lambda o: format(o, '.3f')
+
 class FedMsgEncoder(json.encoder.JSONEncoder):
     """ Encoder with convenience support. """
 
