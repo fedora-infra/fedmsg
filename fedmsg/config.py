@@ -154,8 +154,8 @@ def load_config(extra_args=None,
     if 'endpoints' not in config:
         raise ValueError("No config value 'endpoints' found.")
 
-    config['endpoints'] = dict(map(lambda (k,v): (k, list(iterate(v))),
-                           config['endpoints'].iteritems()))
+    config['endpoints'] = dict(map(lambda (k, v): (k, list(iterate(v))),
+                                   config['endpoints'].iteritems()))
 
     if not isinstance(config['endpoints'], dict):
         raise ValueError("The 'endpoint' config value must be a dict.")
