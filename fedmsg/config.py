@@ -45,9 +45,12 @@ import sys
 import textwrap
 import warnings
 
+from kitchen.iterutils import iterate
 from fedmsg.encoding import pretty_dumps
 
+
 VALID_ENVIRONMENTS = ['dev', 'stg', 'prod']
+bare_format = "[%(asctime)s][%(name)10s %(levelname)7s] %(message)s"
 
 defaults = dict(
     topic_prefix="org.fedoraproject",
@@ -65,7 +68,7 @@ defaults = dict(
         formatters=dict(
             bare={
                 "datefmt": "%Y-%m-%d %H:%M:%S",
-                "format": "[%(asctime)s][%(name)10s %(levelname)7s] %(message)s"
+                "format": bare_format
             },
         ),
         handlers=dict(
@@ -150,6 +153,10 @@ def load_config(extra_args=None,
 
     if 'endpoints' not in config:
         raise ValueError("No config value 'endpoints' found.")
+
+    config['endpoints'] = dict(map(lambda (k, v): (k, list(iterate(v))),
+                                   config['endpoints'].iteritems()))
+
     if not isinstance(config['endpoints'], dict):
         raise ValueError("The 'endpoint' config value must be a dict.")
 
@@ -177,7 +184,7 @@ def load_config(extra_args=None,
                     hostname=rec.target.to_text(),
                     port=rec.port
                 ))
-            config['endpoints'][e] = urls
+            config['endpoints'][e] = list(iterate(urls))
 
     if 'topic_prefix_re' not in config:
         # Turn "org.fedoraproject" into "org\.fedoraproject\.(dev|stg|prod)"
@@ -326,11 +333,13 @@ def _process_config_file(filenames=None):
             os.path.expanduser('~/.fedmsg-config.py'),
             os.getcwd() + '/fedmsg-config.py',
         ]
-        filenames = sum(map(_gather_configs_in, [
-            "/etc/fedmsg.d/",
-            os.path.expanduser('~/.fedmsg.d/'),
-            os.getcwd() + '/fedmsg.d/',
-        ]), []) + filenames
+        folders = ["/etc/fedmsg.d/", os.path.expanduser('~/.fedmsg.d/'),
+                   os.getcwd() + '/fedmsg.d/', ]
+        if 'VIRTUAL_ENV' in os.environ:
+            folders.append(os.path.join(os.environ['VIRTUAL_ENV'],
+                                        'fedmsg.d'))
+
+        filenames = sum(map(_gather_configs_in, folders), []) + filenames
 
     # Each .ini file should really be a python module that
     # builds a config dict.

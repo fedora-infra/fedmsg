@@ -20,8 +20,6 @@
 """
 """
 
-import zmq.core.error
-
 from fedmsg.commands import BaseCommand
 from fedmsg.consumers.relay import RelayConsumer
 

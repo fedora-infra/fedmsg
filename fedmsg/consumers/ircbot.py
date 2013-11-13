@@ -231,7 +231,6 @@ class IRCBotConsumer(FedmsgConsumer):
             if f and re.search(f, topic):
                 return False
         for f in filters.get('body', []):
-            type(msg)
             if f and re.search(f, str(msg)):
                 return False
         return True

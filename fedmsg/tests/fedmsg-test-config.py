@@ -36,6 +36,9 @@ except ImportError:
 # Pick random ports for the tests so travis-ci doesn't flip out.
 port = random.randint(4000, 20000)
 
+gpg_key_unittest = 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
+gpg_key_main = 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
+
 config = dict(
     topic_prefix="com.test_prefix",
     endpoints={
@@ -54,10 +57,8 @@ config = dict(
             "tcp://*:%i" % (port + 8),
             "tcp://*:%i" % (port + 9),
         ],
-        "blah.%s": [
-            # Guarantee that we don't fall over with a bogus endpoint.
-            "tcp://www.flugle.horn:88",
-        ],
+        # Guarantee that we don't fall over with a bogus endpoint.
+        "blah.%s": "tcp://www.flugle.horn:88",
     },
     relay_inbound=["tcp://127.0.0.1:%i" % (port - 1)],
     replay_endpoints={
@@ -88,7 +89,7 @@ config = dict(
         #"app01.stg": "app01.stg.phx2.fedoraproject.org",
     },
     gpg_keys={
-        "unittest.%s" % hostname: 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC',
-        "__main__.%s" % hostname: 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC',
+        "unittest.%s" % hostname: gpg_key_unittest,
+        "__main__.%s" % hostname: gpg_key_main,
     }
 )

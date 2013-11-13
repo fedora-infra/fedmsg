@@ -18,23 +18,15 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 import datetime
-import logging
 import socket
 import time
-import sys
-
-import pygments
-import pygments.lexers
-import pygments.formatters
 
 import fedmsg
-import fedmsg.encoding
 import fedmsg.meta
 
 from fedmsg.commands import BaseCommand
 from fedmsg.consumers import FedmsgConsumer
 from moksha.hub.api import PollingProducer
-from kitchen.iterutils import iterate
 
 
 class CollectdConsumer(FedmsgConsumer):

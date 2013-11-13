@@ -74,7 +74,8 @@ class FedMsgContext(object):
         if self.c.get('sign_messages', False) and config.get("name"):
             if not config.get("crypto_backend") == "gpg":
                 if 'cert_prefix' in config:
-                    cert_index = "%s.%s" % (config['cert_prefix'], self.hostname)
+                    cert_index = "%s.%s" % (config['cert_prefix'],
+                                            self.hostname)
                 else:
                     cert_index = config['name']
                     if cert_index == 'relay_inbound':
@@ -273,7 +274,7 @@ class FedMsgContext(object):
         msg = dict(
             topic=topic,
             msg=msg,
-            timestamp=round(time.time(), 3),
+            timestamp=int(time.time()),
             msg_id=str(year) + '-' + str(uuid.uuid4()),
             i=self._i,
             username=getpass.getuser(),

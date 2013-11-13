@@ -26,6 +26,23 @@ except ImportError:
     from setuptools import setup
 
 import sys
+import os
+import platform
+
+# Specific the path for the config's file for some layout.
+# https://github.com/fedora-infra/fedmsg/issues/193
+list_fedmsgd = ['fedmsg.d/' + item for item in os.listdir('fedmsg.d')]
+
+if 'VIRTUAL_ENV' in os.environ:
+    path_config = os.environ['VIRTUAL_ENV']
+else:
+    if platform.system() == 'Windows':
+        # Don't know the config path on Windows
+        path_config = 'C:/fedmsg.d'
+    else:
+        path_config = '/etc/fedmsg.d'
+
+data_config = {'data_files': [(path_config, list_fedmsgd)]}
 
 f = open('README.rst')
 long_description = f.read().strip()
@@ -70,10 +87,9 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
         'unittest2',
     ])
 
-
 setup(
     name='fedmsg',
-    version='0.7.1',
+    version='0.7.2',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -142,5 +158,6 @@ setup(
             "logger=fedmsg.meta.logger:LoggerProcessor",
             "announce=fedmsg.meta.announce:AnnounceProcessor",
         ],
-    }
+    },
+    **data_config
 )
