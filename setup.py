@@ -34,7 +34,7 @@ import platform
 list_fedmsgd = ['fedmsg.d/' + item for item in os.listdir('fedmsg.d')]
 
 if 'VIRTUAL_ENV' in os.environ:
-    path_config = os.environ['VIRTUAL_ENV']
+    path_config = os.environ['VIRTUAL_ENV'] + "/etc"
 else:
     if platform.system() == 'Windows':
         # Don't know the config path on Windows

@@ -336,8 +336,8 @@ def _process_config_file(filenames=None):
         folders = ["/etc/fedmsg.d/", os.path.expanduser('~/.fedmsg.d/'),
                    os.getcwd() + '/fedmsg.d/', ]
         if 'VIRTUAL_ENV' in os.environ:
-            folders.append(os.path.join(os.environ['VIRTUAL_ENV'],
-                                        'fedmsg.d'))
+            folders.append(os.path.join(
+                os.environ['VIRTUAL_ENV'], 'etc/fedmsg.d'))
 
         filenames = sum(map(_gather_configs_in, folders), []) + filenames
 
