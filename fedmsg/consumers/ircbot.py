@@ -74,9 +74,7 @@ def ircprettify(title, subtitle, link="", config=None):
 
     if link:
         link = markup(link, "teal")
-
-    # Sometimes the link is None which looks ugly in channel.
-    if link is None:
+    else:
         link = ""
 
     color_lookup = config.get('irc_color_lookup', {})
