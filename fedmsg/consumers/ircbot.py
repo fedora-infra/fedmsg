@@ -75,6 +75,10 @@ def ircprettify(title, subtitle, link="", config=None):
     if link:
         link = markup(link, "teal")
 
+    # Sometimes the link is None which looks ugly in channel.
+    if link is None:
+        link = ""
+
     color_lookup = config.get('irc_color_lookup', {})
     title_color = color_lookup.get(title.split('.')[0], "light grey")
     title = markup(title, title_color)
