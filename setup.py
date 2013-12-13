@@ -29,20 +29,26 @@ import sys
 import os
 import platform
 
-# Specific the path for the config's file for some layout.
-# https://github.com/fedora-infra/fedmsg/issues/193
-list_fedmsgd = ['fedmsg.d/' + item for item in os.listdir('fedmsg.d')]
+data_config = {}
 
-if 'VIRTUAL_ENV' in os.environ:
-    path_config = os.environ['VIRTUAL_ENV'] + "/etc"
-else:
-    if platform.system() == 'Windows':
-        # Don't know the config path on Windows
-        path_config = 'C:/fedmsg.d'
+# We would set this up every time, but it results in an easy_install sandbox
+# violation when fedmsg is installed as a dep from PyPI.  Consequently, we
+# disable it unless the user explicitly asks for it.
+if '--with-fedmsg-config' in sys.argv:
+    # Specific the path for the config's file for some layout.
+    # https://github.com/fedora-infra/fedmsg/issues/193
+    list_fedmsgd = os.listdir('fedmsg.d')
+
+    if 'VIRTUAL_ENV' in os.environ:
+        path_config = os.environ['VIRTUAL_ENV'] + "/etc/fedmsg.d"
     else:
-        path_config = '/etc/fedmsg.d'
+        if platform.system() == 'Windows':
+            # Don't know the config path on Windows
+            path_config = 'C:/fedmsg.d'
+        else:
+            path_config = '/etc/fedmsg.d'
 
-data_config = {'data_files': [(path_config, list_fedmsgd)]}
+    data_config = {'data_files': [(path_config, list_fedmsgd)]}
 
 f = open('README.rst')
 long_description = f.read().strip()
