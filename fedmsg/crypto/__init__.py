@@ -149,10 +149,10 @@ import copy
 import os
 
 _implementation = None
+_validate_implementations = None
 
 import gpg
 import x509
-_validate_implementations = (gpg, x509)
 
 def init(**config):
     """ Initialize the crypto backend.
@@ -163,12 +163,22 @@ def init(**config):
         - 'gpg' - Uses GnuPG keys.
     """
     global _implementation
+    global _validate_implementations
 
     if config.get('crypto_backend') == 'gpg':
         _implementation = gpg
     else:
         _implementation = x509
 
+    _validate_implementations = []
+    for mod in config.get('crypto_validate_backends', []):
+        if mod == 'gpg':
+            _validate_implementations.append(gpg)
+        elif mod == 'x509':
+            _validate_implementations.append(x509)
+
+    if not _validate_implementations:
+        _validate_implementations.append(_implementation)
 
 def sign(message, **config):
     """ Insert two new fields into the message dict and return it.
@@ -187,6 +197,9 @@ def sign(message, **config):
 
 def validate(message, **config):
     """ Return true or false if the message is signed appropriately. """
+
+    if not _validate_implementations:
+        init(**config)
 
     cfg = copy.deepcopy(config)
     if 'gpg_home' not in cfg:
