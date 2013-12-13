@@ -37,10 +37,10 @@ data_config = {}
 if '--with-fedmsg-config' in sys.argv:
     # Specific the path for the config's file for some layout.
     # https://github.com/fedora-infra/fedmsg/issues/193
-    list_fedmsgd = ['fedmsg.d/' + item for item in os.listdir('fedmsg.d')]
+    list_fedmsgd = os.listdir('fedmsg.d')
 
     if 'VIRTUAL_ENV' in os.environ:
-        path_config = os.environ['VIRTUAL_ENV'] + "/etc"
+        path_config = os.environ['VIRTUAL_ENV'] + "/etc/fedmsg.d"
     else:
         if platform.system() == 'Windows':
             # Don't know the config path on Windows
