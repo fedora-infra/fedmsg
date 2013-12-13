@@ -208,12 +208,15 @@ def validate(message, **config):
     if 'ssldir' not in cfg:
         cfg['ssldir'] = '/etc/pki/fedmsg'
 
-    for backend in _validate_implementations:
-        ### TODO: have to adapt validate so that it does not warn.  we have to
-        ### do logging here so that we only warn when we do the wrong thing in both
-        validated = backend.validate(message, **config)
-        if validated:
-            return validated
+    # This looks a bit strange because it is.  It's forward compat for how we
+    # want to do this eventually
+    if 'certificate' in message:
+        backend = 'x509'
+    else:
+        backend = 'gpg'
+
+    if backend in _validate_implementations:
+        return backend.validate(message, **config)
     return False
 
 def strip_credentials(message):
