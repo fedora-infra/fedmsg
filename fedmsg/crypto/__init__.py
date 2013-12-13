@@ -146,9 +146,13 @@ implementation details.
 """
 
 import copy
+import os
 
 _implementation = None
 
+import gpg
+import x509
+_validate_implementations = (gpg, x509)
 
 def init(**config):
     """ Initialize the crypto backend.
@@ -161,10 +165,8 @@ def init(**config):
     global _implementation
 
     if config.get('crypto_backend') == 'gpg':
-        import gpg
         _implementation = gpg
     else:
-        import x509
         _implementation = x509
 
 
@@ -186,11 +188,20 @@ def sign(message, **config):
 def validate(message, **config):
     """ Return true or false if the message is signed appropriately. """
 
-    if not _implementation:
-        init(**config)
+    cfg = copy.deepcopy(config)
+    if 'gpg_home' not in cfg:
+        cfg['gpg_honme'] = os.path.expanduser('~/.gnupg/')
 
-    return _implementation.validate(message, **config)
+    if 'ssldir' not in cfg:
+        cfg['ssldir'] = '/etc/pki/fedmsg'
 
+    for backend in _validate_implementations:
+        ### TODO: have to adapt validate so that it does not warn.  we have to
+        ### do logging here so that we only warn when we do the wrong thing in both
+        validated = backend.validate(message, **config)
+        if validated:
+            return validated
+    return False
 
 def strip_credentials(message):
     """ Strip credentials from a message dict.
