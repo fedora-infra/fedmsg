@@ -216,7 +216,7 @@ def validate(message, **config):
         backend = 'gpg'
 
     if backend in _validate_implementations:
-        return backend.validate(message, **config)
+        return backend.validate(message, **cfg)
     return False
 
 def strip_credentials(message):
