@@ -1,6 +1,24 @@
 Changelog
 =========
 
+0.7.3
+-----
+
+- Rename layout.html to page.html. Fix #130 `6998ceb37 <https://github.com/fedora-infra/fedmsg/commit/6998ceb37bf5e0c1e567a2943fdd3684ac88b0d6>`_
+- Merge pull request #203 from axilleas/github_ribbon `2db2dba54 <https://github.com/fedora-infra/fedmsg/commit/2db2dba54efe5971b7982c21128979c2f0120ac4>`_
+- Temp fix of forkme button width `41c46c9df <https://github.com/fedora-infra/fedmsg/commit/41c46c9df92c326ff1039cea179fc0d8d3262d41>`_
+- Merge pull request #204 from axilleas/fix_forkme_width `fb9bc5cd9 <https://github.com/fedora-infra/fedmsg/commit/fb9bc5cd9461e6c4367fadba02af1a3e3ab5b978>`_
+- Keep virtualenv config in an etc/ folder. `3f2608f19 <https://github.com/fedora-infra/fedmsg/commit/3f2608f199dd029c40f5d3e2eb2c52adda2c4f56>`_
+- Merge pull request #205 from fedora-infra/feature/virtualenv+etc `d3d9cc3da <https://github.com/fedora-infra/fedmsg/commit/d3d9cc3da4a0c09169a66b84430a8908810d6599>`_
+- Scrub "None" links from channel. `c503ea8b8 <https://github.com/fedora-infra/fedmsg/commit/c503ea8b8b33de2684156212bbecfdbdd25c97d9>`_
+- Make that an else branch. `83056c70b <https://github.com/fedora-infra/fedmsg/commit/83056c70bcd7fbd2a04c439c872d7bae0ba68d43>`_
+- Merge pull request #207 from fedora-infra/feature/irc-none-link `c466e1725 <https://github.com/fedora-infra/fedmsg/commit/c466e1725df69f8878e18ccebfe7bfad26d19c2f>`_
+- Disable installing fedmsg config unless it is explicitly requested. `aa3d66526 <https://github.com/fedora-infra/fedmsg/commit/aa3d66526169401c40c8b9864e3a4a2a8bd7178c>`_
+- Correct the paths for fedmsg config. `862908a0d <https://github.com/fedora-infra/fedmsg/commit/862908a0d56d0f6c01477aa39364d7556f429502>`_
+- Merge pull request #208 from fedora-infra/feature/disable-installed-config `af0d4409f <https://github.com/fedora-infra/fedmsg/commit/af0d4409fad0b37c1598bfa2591d798b4dde8236>`_
+- Add forgotten import. `20202ab77 <https://github.com/fedora-infra/fedmsg/commit/20202ab774bc064cb23d2c8a7c811e08d968b8da>`_
+- Merge branch 'develop' of github.com:fedora-infra/fedmsg into develop `e993230ba <https://github.com/fedora-infra/fedmsg/commit/e993230ba12612d71b4c84ab7c0253d96318f7e6>`_
+
 0.7.2
 -----
 
