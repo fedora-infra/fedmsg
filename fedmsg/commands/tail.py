@@ -227,13 +227,15 @@ class TailCommand(BaseCommand):
             if not inclusive_regexp.search(topic):
                 continue
 
-            actual_users = fedmsg.meta.msg2usernames(message, **self.config)
-            if users and not users.intersection(actual_users):
-                continue
+            if users:
+                actual = fedmsg.meta.msg2usernames(message, **self.config)
+                if not users.intersection(actual):
+                    continue
 
-            actual_packages = fedmsg.meta.msg2packages(message, **self.config)
-            if packages and not packages.intersection(actual_packages):
-                continue
+            if packages:
+                actual = fedmsg.meta.msg2packages(message, **self.config)
+                if not packages.intersection(actual):
+                    continue
 
             self.log.info(formatter(message))
 
