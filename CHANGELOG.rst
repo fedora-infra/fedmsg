@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.7.4
+-----
+
+- Protect against NotImplementedError. `6c9c75239 <https://github.com/fedora-infra/fedmsg/commit/6c9c7523957c2477347123bf7aae59749b66963a>`_
+- Merge pull request #210 from fedora-infra/feature/protect-against-notimplemented `881e615c4 <https://github.com/fedora-infra/fedmsg/commit/881e615c48c41134a4775bf6f828b79f7f4ace0f>`_
+- Merge branch 'develop' of github.com:fedora-infra/fedmsg into develop `04190a592 <https://github.com/fedora-infra/fedmsg/commit/04190a59220fdb65989bcf93585bd7c696525b2b>`_
+
 0.7.3
 -----
 
