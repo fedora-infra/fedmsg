@@ -41,9 +41,8 @@ class LoggerCommand(BaseCommand):
         $ fedmsg-logger --message="This is a message."
         $ fedmsg-logger --message='{"a": 1}' --json-input
 
-    Note that the python JSON parser is picky about the format of messages if
-    you're using the --json-input option.  Double-quotes must be on the
-    "inside" of the string and single quotes must be on the outside::
+    Note that when using --json-input, you must send valid JSON, including
+    the use of double quotes as opposed to single quotes:
 
         '{"a": 1}' is good.
         "{'a': 1}" is bad.
