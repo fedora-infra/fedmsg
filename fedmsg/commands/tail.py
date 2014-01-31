@@ -177,7 +177,7 @@ class TailCommand(BaseCommand):
             procs = [proc.__name__.lower() for proc in fedmsg.meta.processors]
             colors = ["FFFFFF", "008F37", "FF680A", "CC4E00",
                       "8F0058", "8F7E00", "37008F", "7E008F"]
-            n_wraps = 1 + int(math.ceil(len(colors) / float(len(procs))))
+            n_wraps = int(math.ceil(len(procs) / float(len(colors))))
             colors = colors * n_wraps
             color_lookup = dict(zip(procs, colors))
 
@@ -237,7 +237,9 @@ class TailCommand(BaseCommand):
                 if not packages.intersection(actual):
                     continue
 
-            self.log.info(formatter(message))
+            output = formatter(message)
+            if output:
+                self.log.info(output)
 
 
 def tail():
