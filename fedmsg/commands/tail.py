@@ -237,7 +237,9 @@ class TailCommand(BaseCommand):
                 if not packages.intersection(actual):
                     continue
 
-            self.log.info(formatter(message))
+            output = formatter(message)
+            if output:
+                self.log.info(output)
 
 
 def tail():
