@@ -211,9 +211,9 @@ def validate(message, **config):
     # This looks a bit strange because it is.  It's forward compat for how we
     # want to do this eventually
     if 'certificate' in message:
-        backend = 'x509'
+        backend = x509
     else:
-        backend = 'gpg'
+        backend = gpg
 
     if backend in _validate_implementations:
         return backend.validate(message, **cfg)
