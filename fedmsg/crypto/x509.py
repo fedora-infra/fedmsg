@@ -182,7 +182,7 @@ def validate(message, ssldir=None, **config):
 
     # Perform the authz dance
     # Do we have a list of permitted senders for the topic of this message?
-    if message['topic'] in routing_policy:
+    if message.get('topic') in routing_policy:
         # If so.. is the signer one of those permitted senders?
         if signer in routing_policy[message['topic']]:
             # We are good.  The signer of this message is explicitly
