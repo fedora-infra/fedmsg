@@ -147,6 +147,9 @@ implementation details.
 
 import copy
 import os
+import logging
+
+log = logging.getLogger(__name__)
 
 _implementation = None
 _validate_implementations = None
@@ -217,7 +220,9 @@ def validate(message, **config):
 
     if backend in _validate_implementations:
         return backend.validate(message, **cfg)
-    return False
+    else:
+        log.warn("Crypto backend %r is disallowed" % backend)
+        return False
 
 def strip_credentials(message):
     """ Strip credentials from a message dict.
