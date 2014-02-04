@@ -33,7 +33,7 @@ SEP = os.path.sep
 here = SEP.join(__file__.split(SEP)[:-1])
 
 
-def skip_if_missing_libs(f):
+def skip_if_missing_x509_libs(f):
     def _wrapper(self, *args, **kw):
         try:
             import M2Crypto
@@ -46,7 +46,7 @@ def skip_if_missing_libs(f):
     return nose.tools.nontrivial.make_decorator(f)(_wrapper)
 
 
-class TestCryptoX509(unittest.TestCase):
+class TestCryptoSwitching(unittest.TestCase):
 
     def setUp(self):
         self.config = {
@@ -57,7 +57,9 @@ class TestCryptoX509(unittest.TestCase):
             'crl_location': "http://threebean.org/fedmsg-tests/crl.pem",
             'crl_cache': "/tmp/crl.pem",
             'crl_cache_expiry': 10,
-            'crypto_validate_backends': ['x509'],
+
+            # But *not* x509
+            'crypto_validate_backends': ['gpg'],
         }
         # Need to reset this global
         fedmsg.crypto._validate_implementations = None
@@ -67,20 +69,11 @@ class TestCryptoX509(unittest.TestCase):
         # Need to reset this global
         fedmsg.crypto._validate_implementations = None
 
-    @skip_if_missing_libs
-    def test_full_circle(self):
-        """ Try to sign and validate a message. """
+    @skip_if_missing_x509_libs
+    def test_invalid_validator(self):
+        """ Try to verify an x509 message when only gpg is allowed. """
         message = dict(msg='awesome')
         signed = fedmsg.crypto.sign(message, **self.config)
-        assert fedmsg.crypto.validate(signed, **self.config)
-
-    @skip_if_missing_libs
-    def test_failed_validation(self):
-        """ Try to fail validation. """
-        message = dict(msg='awesome')
-        signed = fedmsg.crypto.sign(message, **self.config)
-        # space aliens read data off the wire and inject incorrect data
-        signed['msg'] = "eve wuz here"
         assert not fedmsg.crypto.validate(signed, **self.config)
 
 

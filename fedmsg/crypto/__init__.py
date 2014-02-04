@@ -119,6 +119,7 @@ by :mod:`fedmsg.config`).
 The cryptography routines expect the following values to be defined:
 
   - :term:`crypto_backend`
+  - :term:`crypto_validate_backends`
   - :term:`sign_messages`
   - :term:`validate_signatures`
   - :term:`ssldir`
@@ -179,6 +180,8 @@ def init(**config):
             _validate_implementations.append(gpg)
         elif mod == 'x509':
             _validate_implementations.append(x509)
+        else:
+            raise ValueError("%r is not a valid crypto backend" % mod)
 
     if not _validate_implementations:
         _validate_implementations.append(_implementation)
