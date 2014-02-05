@@ -215,7 +215,10 @@ def validate(message, **config):
         cfg['ssldir'] = '/etc/pki/fedmsg'
 
     # This looks a bit strange because it is.  It's forward compat for how we
-    # want to do this eventually
+    # want to do this in the future.  Eventually we want the messages to
+    # contain a field that explicitly says what type of signature it has.  We
+    # would then read that field here to decide which algorithm to use to
+    # validate the message.
     if 'certificate' in message:
         backend = x509
     else:
