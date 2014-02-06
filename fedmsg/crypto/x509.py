@@ -58,6 +58,8 @@ def sign(message, ssldir=None, certname=None, **config):
         error = "You must set the ssldir and certname keyword arguments."
         raise ValueError(error)
 
+    message['crypto'] = 'x509'
+
     certificate = M2Crypto.X509.load_cert(
         "%s/%s.crt" % (ssldir, certname)).as_pem()
     # FIXME ? -- Opening this file requires elevated privileges in stg/prod.
