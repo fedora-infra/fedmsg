@@ -4,8 +4,10 @@ python:
  - "2.7"
 # Someday, soon.
 # - "3.2"
-install: python setup.py install
-script: python setup.py test
+install:
+ - python setup.py install
+ - pip install nose mock sqlalchemy six unittest2
+script: nosetests -v
 notifications:
     email: false
     irc:

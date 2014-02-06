@@ -58,6 +58,8 @@ def sign(message, ssldir=None, certname=None, **config):
         error = "You must set the ssldir and certname keyword arguments."
         raise ValueError(error)
 
+    message['crypto'] = 'x509'
+
     certificate = M2Crypto.X509.load_cert(
         "%s/%s.crt" % (ssldir, certname)).as_pem()
     # FIXME ? -- Opening this file requires elevated privileges in stg/prod.
@@ -182,7 +184,7 @@ def validate(message, ssldir=None, **config):
 
     # Perform the authz dance
     # Do we have a list of permitted senders for the topic of this message?
-    if message['topic'] in routing_policy:
+    if message.get('topic') in routing_policy:
         # If so.. is the signer one of those permitted senders?
         if signer in routing_policy[message['topic']]:
             # We are good.  The signer of this message is explicitly

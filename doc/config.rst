@@ -166,6 +166,14 @@ Glossary of Configuration Values
         This is also used by :mod:`fedmsg.meta` to denote trustworthiness
         in the natural language representations produced by that module.
 
+    crypto_backend
+        ``str`` - The name of the :mod:`fedmsg.crypto` backend that should
+        be used to sign outgoing messages.  It may be either 'x509' or 'gpg'.
+
+    crypto_validate_backends
+        ``list`` - A list of names of :mod:`fedmsg.crypto` backends that
+        may be used to validate incoming messages.
+
     ssldir
         ``str`` - This should be directory on the filesystem
         where the certificates used by :mod:`fedmsg.crypto` can be found.

@@ -18,7 +18,6 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 import os
-import shutil
 
 import nose.tools.nontrivial
 
@@ -34,7 +33,7 @@ SEP = os.path.sep
 here = SEP.join(__file__.split(SEP)[:-1])
 
 
-def skip_if_missing_libs(f):
+def skip_if_missing_x509_libs(f):
     def _wrapper(self, *args, **kw):
         try:
             import M2Crypto
@@ -47,7 +46,7 @@ def skip_if_missing_libs(f):
     return nose.tools.nontrivial.make_decorator(f)(_wrapper)
 
 
-class TestCryptoX509(unittest.TestCase):
+class TestCryptoSwitching(unittest.TestCase):
 
     def setUp(self):
         self.config = {
@@ -55,47 +54,26 @@ class TestCryptoX509(unittest.TestCase):
             'ssldir': SEP.join((here, 'test_certs/keys')),
             # Normally this is 'app01.stg.phx2.fedoraproject.org'
             'certname': 'shell-app01.phx2.fedoraproject.org',
-
-            'ca_cert_cache': '/var/tmp/fedmsg-ca.crt',
-            'ca_cert_cache_expiry': 10000,
-
             'crl_location': "http://threebean.org/fedmsg-tests/crl.pem",
-            'crl_cache': "/var/tmp/crl.pem",
-            'crl_cache_expiry': 10000,
-            'crypto_validate_backends': ['x509'],
+            'crl_cache': "/tmp/crl.pem",
+            'crl_cache_expiry': 10,
+
+            # But *not* x509
+            'crypto_validate_backends': ['gpg'],
         }
         # Need to reset this global
         fedmsg.crypto._validate_implementations = None
-        shutil.copy(
-            src=SEP.join([self.config['ssldir'], 'ca.crt']),
-            dst=self.config['ca_cert_cache'],
-        )
-        shutil.copy(
-            src=SEP.join([self.config['ssldir'], 'crl.pem']),
-            dst=self.config['crl_cache'],
-        )
 
     def tearDown(self):
-        os.remove(self.config['ca_cert_cache'])
-        os.remove(self.config['crl_cache'])
         self.config = None
         # Need to reset this global
         fedmsg.crypto._validate_implementations = None
 
-    @skip_if_missing_libs
-    def test_full_circle(self):
-        """ Try to sign and validate a message. """
+    @skip_if_missing_x509_libs
+    def test_invalid_validator(self):
+        """ Try to verify an x509 message when only gpg is allowed. """
         message = dict(msg='awesome')
         signed = fedmsg.crypto.sign(message, **self.config)
-        assert fedmsg.crypto.validate(signed, **self.config)
-
-    @skip_if_missing_libs
-    def test_failed_validation(self):
-        """ Try to fail validation. """
-        message = dict(msg='awesome')
-        signed = fedmsg.crypto.sign(message, **self.config)
-        # space aliens read data off the wire and inject incorrect data
-        signed['msg'] = "eve wuz here"
         assert not fedmsg.crypto.validate(signed, **self.config)
 
 

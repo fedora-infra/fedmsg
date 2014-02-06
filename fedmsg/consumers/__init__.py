@@ -124,7 +124,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         try:
             self.validate(message)
         except RuntimeWarning as e:
-            self.log.warn("Received invalid message {}".format(e))
+            self.log.warn("Received invalid message {0}".format(e))
             return
         if hasattr(self, "replay_name"):
             for m in check_for_replay(
