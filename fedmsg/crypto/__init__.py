@@ -235,8 +235,11 @@ def validate(message, **config):
     # versions, attempt to guess the backend to use
     elif 'certificate' in message:
         backend = x509
-    else:
+    elif 'signature' in message:
         backend = gpg
+    else:
+        log.warn('Could not determine crypto backend.  Message unsigned?')
+        return False
 
     if backend in _validate_implementations:
         return backend.validate(message, **cfg)
