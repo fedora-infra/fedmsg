@@ -158,6 +158,7 @@ _validate_implementations = None
 import gpg
 import x509
 
+
 def init(**config):
     """ Initialize the crypto backend.
 
@@ -185,6 +186,7 @@ def init(**config):
 
     if not _validate_implementations:
         _validate_implementations.append(_implementation)
+
 
 def sign(message, **config):
     """ Insert two new fields into the message dict and return it.
@@ -229,6 +231,7 @@ def validate(message, **config):
     else:
         log.warn("Crypto backend %r is disallowed" % backend)
         return False
+
 
 def strip_credentials(message):
     """ Strip credentials from a message dict.
