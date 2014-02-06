@@ -40,10 +40,9 @@ sleep_duration = 0.25
 secret = "secret_message"
 
 
-# This used to raise a keyerror, but no longer.
 @raises(KeyError)
-def test_init_missing_endpoint():
-    """ Try to initialize the context with a nonexistant service name. """
+def test_init_missing_cert():
+    """ Try to initialize the context with a nonexistant cert. """
     config = load_config()
     config['name'] = "failboat"
     config['sign_messages'] = True
