@@ -158,6 +158,11 @@ _validate_implementations = None
 import gpg
 import x509
 
+_possible_backends = {
+    'gpg': gpg,
+    'x509': x509,
+}
+
 
 def init(**config):
     """ Initialize the crypto backend.
@@ -221,6 +226,15 @@ def validate(message, **config):
     # contain a field that explicitly says what type of signature it has.  We
     # would then read that field here to decide which algorithm to use to
     # validate the message.
+    if 'crypto' in message:
+        if not message['crypto'] in _possible_backends:
+            log.warn("Message specified an unpossible crypto backend")
+            return False
+        try:
+            backend = _possible_backends[message['crypto']]
+        except Exception as e:
+            log.warn("Failed to load %r %r" % (message['crypto'], e))
+            return False
     if 'certificate' in message:
         backend = x509
     else:
