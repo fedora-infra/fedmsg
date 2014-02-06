@@ -70,21 +70,6 @@ class FedMsgContext(object):
             if any(map(config["name"].startswith, ['fedmsg'])):
                 config["name"] = None
 
-        # Find my message-signing cert if I need one.
-        if self.c.get('sign_messages', False) and config.get("name"):
-            if not config.get("crypto_backend") == "gpg":
-                if 'cert_prefix' in config:
-                    cert_index = "%s.%s" % (config['cert_prefix'],
-                                            self.hostname)
-                else:
-                    cert_index = config['name']
-                    if cert_index == 'relay_inbound':
-                        cert_index = "shell.%s" % self.hostname
-
-                self.c['certname'] = self.c['certnames'][cert_index]
-            else:
-                self.c['gpg_signing_key'] = self.c['gpg_keys'][cert_index]
-
         # Do a little special-case mangling.  We never want to "listen" to the
         # relay_inbound address, but in the special case that we want to emit
         # our messages there, we add it to the :term:`endpoints` dict so that
@@ -279,6 +264,22 @@ class FedMsgContext(object):
             i=self._i,
             username=getpass.getuser(),
         )
+
+        # Find my message-signing cert if I need one.
+        if self.c.get('sign_messages', False):
+            if not self.c.get("crypto_backend") == "gpg":
+                if 'cert_prefix' in self.c:
+                    cert_index = "%s.%s" % (self.c['cert_prefix'],
+                                            self.hostname)
+                else:
+                    cert_index = self.c['name']
+                    if cert_index == 'relay_inbound':
+                        cert_index = "shell.%s" % self.hostname
+
+                self.c['certname'] = self.c['certnames'][cert_index]
+            else:
+                self.c['gpg_signing_key'] = self.c['gpg_keys'][cert_index]
+
 
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)

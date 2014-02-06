@@ -47,6 +47,7 @@ def test_init_missing_cert():
     config['name'] = "failboat"
     config['sign_messages'] = True
     context = FedMsgContext(**config)
+    context.publish(topic='awesome', msg=dict(foo='bar'))
 
 
 class TestHub(unittest.TestCase):
