@@ -221,11 +221,6 @@ def validate(message, **config):
     if 'ssldir' not in cfg:
         cfg['ssldir'] = '/etc/pki/fedmsg'
 
-    # This looks a bit strange because it is.  It's forward compat for how we
-    # want to do this in the future.  Eventually we want the messages to
-    # contain a field that explicitly says what type of signature it has.  We
-    # would then read that field here to decide which algorithm to use to
-    # validate the message.
     if 'crypto' in message:
         if not message['crypto'] in _possible_backends:
             log.warn("Message specified an unpossible crypto backend")
@@ -235,6 +230,9 @@ def validate(message, **config):
         except Exception as e:
             log.warn("Failed to load %r %r" % (message['crypto'], e))
             return False
+    # fedmsg 0.7.2 and earlier did not specify which crypto backend a message
+    # was signed with.  As long as we care about interoperability with those
+    # versions, attempt to guess the backend to use
     if 'certificate' in message:
         backend = x509
     else:
