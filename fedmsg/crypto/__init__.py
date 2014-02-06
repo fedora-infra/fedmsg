@@ -233,7 +233,7 @@ def validate(message, **config):
     # fedmsg 0.7.2 and earlier did not specify which crypto backend a message
     # was signed with.  As long as we care about interoperability with those
     # versions, attempt to guess the backend to use
-    if 'certificate' in message:
+    elif 'certificate' in message:
         backend = x509
     else:
         backend = gpg
