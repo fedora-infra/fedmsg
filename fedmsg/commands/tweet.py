@@ -34,7 +34,6 @@ class TweetCommand(BaseCommand):
     and dicts of authentication credentials such as:
 
         - :term:`tweet_endpoints`
-        - :term:`bitly_settings`
 
     And scalars to help with rate limiting such as:
 
