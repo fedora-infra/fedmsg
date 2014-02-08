@@ -17,13 +17,9 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 
-import itertools
-import os
 import pprint
 import re
-import urllib
 import time
-import math
 
 import pygments
 import pygments.lexers
@@ -33,29 +29,6 @@ import fedmsg
 import fedmsg.encoding
 import fedmsg.meta
 from fedmsg.commands import BaseCommand
-
-
-def _cache_avatar(username, url, directory):
-    """ Utility to grab avatars from outerspace for the --gource option. """
-
-    fname = os.path.join(directory, "%s.jpg" % username)
-    if os.path.exists(fname):
-        # We already have it cached.  Just chill.
-        pass
-    else:
-        # Make sure we have a place to write it
-        if os.path.isdir(directory):
-            # We've been here before... that's good.
-            pass
-        else:
-            os.makedirs(directory)
-
-        # Grab it from the net and write to local cache on disk.
-        try:
-            urllib.urlretrieve(url, fname)
-        except IOError:
-            # If we can't talk to gravatar.com, try not to crash.
-            pass
 
 
 class TailCommand(BaseCommand):
@@ -79,18 +52,6 @@ class TailCommand(BaseCommand):
             'help': 'Extra-pretty print the JSON messages.',
             'default': False,
             'action': 'store_true',
-        }),
-        (['--gource'], {
-            'dest': 'gource',
-            'help': 'Print a live "git log" of the bus suitable for '
-            'piping into the "gource" tool.',
-            'default': False,
-            'action': 'store_true',
-        }),
-        (['--gource-user-image-dir'], {
-            'dest': 'gource_user_image_dir',
-            'help': 'Directory to store user avatar images for --gource',
-            'default': os.path.expanduser("~/.cache/avatar"),
         }),
         (['--terse'], {
             'dest': 'terse',
@@ -164,49 +125,6 @@ class TailCommand(BaseCommand):
 
         if self.config['terse']:
             formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)
-
-        if self.config['gource']:
-            # Output strings suitable for consumption by the "gource" tool.
-
-            # We have 8 colors here and an unknown number of message types.
-            # (There were 14 message types at the time this code was written).
-            # Here we build a dict that maps message type names (a.k.a modnames
-            # or services) to hex colors for usage in the gource graph.  We
-            # wrap-around that dict if there are more message types than
-            # there are colors (which there almost certainly are).
-            procs = [proc.__name__.lower() for proc in fedmsg.meta.processors]
-            colors = ["FFFFFF", "008F37", "FF680A", "CC4E00",
-                      "8F0058", "8F7E00", "37008F", "7E008F"]
-            n_wraps = int(math.ceil(len(procs) / float(len(colors))))
-            colors = colors * n_wraps
-            color_lookup = dict(zip(procs, colors))
-
-            cache_directory = self.config['gource_user_image_dir']
-
-            # After all that color trickiness, here is our formatter we'll use.
-            def formatter(message):
-                """ Use this like::
-
-                  $ fedmsg-tail --gource | gource \
-                          -i 0 \
-                          --user-image-dir ~/.cache/avatar/ \
-                          --log-format custom -
-                """
-                proc = fedmsg.meta.msg2processor(message, **self.config)
-                avatars = fedmsg.meta.msg2avatars(message, **self.config)
-                objs = fedmsg.meta.msg2objects(message, **self.config)
-                name = proc.__name__.lower()
-
-                lines = []
-                for user, obj in itertools.product(avatars.keys(), objs):
-                    _cache_avatar(user, avatars[user], cache_directory)
-                    lines.append("%i|%s|A|%s|%s" % (
-                        message['timestamp'],
-                        user,
-                        name + "/" + obj,
-                        color_lookup[name],
-                    ))
-                return "\n".join(lines)
 
         # Build regular expressions for use in our loop.
         exclusive_regexp = re.compile(self.config['exclusive_regexp'])
