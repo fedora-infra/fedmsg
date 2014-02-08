@@ -83,7 +83,7 @@ class TweetBotConsumer(FedmsgConsumer):
         if link:
             try:
                 resp = requests.get('http://da.gd/s', params=dict(url=link))
-                link = resp.text.split('>')[1].split('<')[0]
+                link = resp.text.strip()
             except Exception:
                 self.log.warn("Bad URI for http://da.gd %r" % link)
                 link = ""
