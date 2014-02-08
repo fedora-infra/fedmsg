@@ -382,15 +382,6 @@ Glossary of Configuration Values
         <https://gist.github.com/4070630>`_ in order to get your
         ``access_token_key`` and ``access_token_secret``.
 
-    bitly_settings
-        ``dict`` - A dictionary containing credentials to shorten links against
-        http://bit.ly/.  It must contain values for ``api_user`` and ``api_key``
-        which can be obtained from http://bit.ly/
-
-        This is used primarily for :func:`fedmsg.commands.tweet.tweet` but could
-        in theory be used elsewhere (like in
-        :func:`fedmsg.commands.ircbot.ircbot`)
-
     tweet_hibernate_duration
         ``float`` - A number of seconds that :func:`fedmsg.commands.tweet.tweet`
         should go to sleep if it encounters a rate limit error from either
