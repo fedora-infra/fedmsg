@@ -1,6 +1,54 @@
 Changelog
 =========
 
+0.7.5
+-----
+
+- Initial commit to enable parallel crypto verification `0971f13cd <https://github.com/fedora-infra/fedmsg/commit/0971f13cd2824b1e50121d607a98fb789d2790d6>`_
+- Allow configuration to choose which backends can be used to verify a certificate. `d4432556a <https://github.com/fedora-infra/fedmsg/commit/d4432556ab7c89bd5f69efe3146955a01f26b185>`_
+- Detect which verification backend to run on a particular message  For issue #209 `8f80c80ca <https://github.com/fedora-infra/fedmsg/commit/8f80c80ca65863b9d331fd17d21ff56e5d03ab5b>`_
+- Fix validate to use modified copy of cfg. `610b015a5 <https://github.com/fedora-infra/fedmsg/commit/610b015a509152c6eba9adaf4d10887139f37892>`_
+- Use an empty string here instead of None. `b77085b28 <https://github.com/fedora-infra/fedmsg/commit/b77085b28d6021b8183229f49e6e0def275ff3d9>`_
+- Avoid raising an exception here. `e820949f2 <https://github.com/fedora-infra/fedmsg/commit/e820949f2ce7e5e812c093dd3fbfc53d01a2b241>`_
+- Merge pull request #211 from fedora-infra/feature/ease-up-on-the-exception `0c834b99e <https://github.com/fedora-infra/fedmsg/commit/0c834b99eefb39956d5e6fe47018e8fedcf19da9>`_
+- Update status doc. `98bd9f70e <https://github.com/fedora-infra/fedmsg/commit/98bd9f70e7fabc11836b57bc2ef8eb3eabcc9ded>`_
+- Some updates to the topology diagram. `c07106cee <https://github.com/fedora-infra/fedmsg/commit/c07106cee6daa70bd7e7aeae8239fa3b06272d77>`_
+- Add fmn to the topology diagram. `e881bfa34 <https://github.com/fedora-infra/fedmsg/commit/e881bfa34d948e386484f94a52bf896727df5f07>`_
+- Build of the topology doc. `468dd3fa2 <https://github.com/fedora-infra/fedmsg/commit/468dd3fa29fe10e93d0b5ac17db5e4e9275c1326>`_
+- Merge pull request #212 from fedora-infra/feature/updated-status `53681fe67 <https://github.com/fedora-infra/fedmsg/commit/53681fe67d5578d255206816406a35df85398797>`_
+- Blame the right project for JSON format `2e1bb6105 <https://github.com/fedora-infra/fedmsg/commit/2e1bb61056be5728ac11bb742d38be9403f2b509>`_
+- Merge pull request #213 from fedora-infra/logger-doc `4209c6e84 <https://github.com/fedora-infra/fedmsg/commit/4209c6e84141d8cce3fdc672e94ebe5f7b9d5df8>`_
+- Only output if there is something to output. `10e35d9e1 <https://github.com/fedora-infra/fedmsg/commit/10e35d9e10324b5c5b28f8a1cbcc7f464fcb9869>`_
+- Invert this. `e151f95eb <https://github.com/fedora-infra/fedmsg/commit/e151f95eb79eb40c1d0bfe0a4543b327e0937ff6>`_
+- Merge pull request #215 from fedora-infra/feature/fedmsg-tail-fixes `bdc52feb8 <https://github.com/fedora-infra/fedmsg/commit/bdc52feb83bc41caa4d41c72a0b578888569fe2f>`_
+- Bugfix.  These should not be strings. `c4d5ac570 <https://github.com/fedora-infra/fedmsg/commit/c4d5ac570e702f6cb7068081cd6fb0e9684f06ce>`_
+- Provide rationale for failed validation. `8695eb417 <https://github.com/fedora-infra/fedmsg/commit/8695eb4178156729368de33013e50f3e209e86bb>`_
+- Docs and tests for crypto switching. `ece8b515b <https://github.com/fedora-infra/fedmsg/commit/ece8b515b972560eba4657b9a570c69d631789b7>`_
+- Don't explode here if the message has no embedded topic. `b5c68eff1 <https://github.com/fedora-infra/fedmsg/commit/b5c68eff11ed3c3bdfac94545499f7205c0e3ea7>`_
+- Avoid unnecessary network activity during x509 tests. `9fd4f3a32 <https://github.com/fedora-infra/fedmsg/commit/9fd4f3a32b2d78b30b9e43118415b5c267833a4d>`_
+- While we're at it, remove this random_seed from git control. `5d4ea9e8d <https://github.com/fedora-infra/fedmsg/commit/5d4ea9e8df829c57163406d55403e92044b99680>`_
+- Update "strange" comment with more dtails. `42ac6bf81 <https://github.com/fedora-infra/fedmsg/commit/42ac6bf81940dd15dc4d7da1c7feedafbd9b2650>`_
+- Attempt to fix travis build on py2.6. `4326f3cd1 <https://github.com/fedora-infra/fedmsg/commit/4326f3cd1afcd6a9151bdccdcd8ce2b35ae3e69d>`_
+- pep8 `35fc02798 <https://github.com/fedora-infra/fedmsg/commit/35fc027983b0f5b7f360ba570b36b90069a08058>`_
+- Add a new field to signed messages indicating what method was used. `d9039821e <https://github.com/fedora-infra/fedmsg/commit/d9039821eff89c3f105905f457fb35b9ae9e531e>`_
+- Employ crypto backend hinting. `a2823a258 <https://github.com/fedora-infra/fedmsg/commit/a2823a258ba96c7cebeced8153b4e8e0a59e9537>`_
+- Get tests running with both "python setup.py test" and "nosetests" commands. `775874a88 <https://github.com/fedora-infra/fedmsg/commit/775874a88912e57ada9ac5ccd9bc7a7a7d741812>`_
+- Fix .format() usage for python2.6 `328b7a8cd <https://github.com/fedora-infra/fedmsg/commit/328b7a8cdc6b3aa96e1110ece4997929800ef5b4>`_
+- Update comment to reflect that the crypto field has been implemented `81a2ab20a <https://github.com/fedora-infra/fedmsg/commit/81a2ab20ac1059840a75419053943528e6e6ece4>`_
+- s/if/elif/ `b583d3565 <https://github.com/fedora-infra/fedmsg/commit/b583d3565c9d0ae572811b4af5d63e4782900089>`_
+- symlink fedmsg.d/ for travis tests. `b45e09239 <https://github.com/fedora-infra/fedmsg/commit/b45e0923953d9aad5c69376f7bee2c712d3bc0af>`_
+- Handle gpg more explicitly. `b85979e98 <https://github.com/fedora-infra/fedmsg/commit/b85979e987559d08b0c6bc3ad2e97f3e8de56d3f>`_
+- Merge pull request #216 from fedora-infra/feature/parallel-crypto-verify-backends `30d91908c <https://github.com/fedora-infra/fedmsg/commit/30d91908ca740bf4b9dd189d93071bc467e4820f>`_
+- Rename this test.. it is actually testing something else. `160369c3f <https://github.com/fedora-infra/fedmsg/commit/160369c3fef17046c5e7a2975d16d0e379f7558a>`_
+- Move cert loading from init-time to publish-time.  Fixes #181. `dc25abd91 <https://github.com/fedora-infra/fedmsg/commit/dc25abd91d08560be4a8a0635de332d6cbd52d62>`_
+- Merge pull request #217 from fedora-infra/feature/defer-exception-for-certs `558ff84ed <https://github.com/fedora-infra/fedmsg/commit/558ff84ed4cfe9244d19dee6df110625be1b70c8>`_
+- Remove bitly, use da.gd.  Fixes #218. `29d2e65f6 <https://github.com/fedora-infra/fedmsg/commit/29d2e65f60bc16ba07ce5fba8caff7a398459700>`_
+- We no longer need to parse this.  Thanks @CodeBlock! `bc09c5f5d <https://github.com/fedora-infra/fedmsg/commit/bc09c5f5de2103cefc33af1c5c505aa0587e10ee>`_
+- Merge pull request #220 from fedora-infra/feature/dagd `ed58619c5 <https://github.com/fedora-infra/fedmsg/commit/ed58619c5cde9f1455df0bd7e1a4f45df66b0520>`_
+- Remove gource code from fedmsg-tail `92e69db8e <https://github.com/fedora-infra/fedmsg/commit/92e69db8eed6ced9161ae4b7dbc6f66729301152>`_
+- Also remove mention from the docs. `afb30ccea <https://github.com/fedora-infra/fedmsg/commit/afb30cceae3769a9c7f372278a07e5a0bd6c746e>`_
+- Merge pull request #221 from fedora-infra/feature/remove-gource `01881f3eb <https://github.com/fedora-infra/fedmsg/commit/01881f3eb672ec568960cbcd6e9e2a32047bacd7>`_
+
 0.7.4
 -----
 
