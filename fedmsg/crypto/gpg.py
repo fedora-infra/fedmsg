@@ -150,6 +150,8 @@ def sign(message, gpg_home=None, gpg_signing_key=None, **config):
         raise ValueError("You must set the gpg_home \
                          and gpg_signing_key keyword arguments.")
 
+    message['crypto'] = 'gpg'
+
     signature = _ctx.sign(
         fedmsg.encoding.dumps(message['msg']),
         gpg_signing_key,

@@ -119,6 +119,7 @@ by :mod:`fedmsg.config`).
 The cryptography routines expect the following values to be defined:
 
   - :term:`crypto_backend`
+  - :term:`crypto_validate_backends`
   - :term:`sign_messages`
   - :term:`validate_signatures`
   - :term:`ssldir`
@@ -146,8 +147,21 @@ implementation details.
 """
 
 import copy
+import os
+import logging
+
+log = logging.getLogger(__name__)
 
 _implementation = None
+_validate_implementations = None
+
+import gpg
+import x509
+
+_possible_backends = {
+    'gpg': gpg,
+    'x509': x509,
+}
 
 
 def init(**config):
@@ -159,13 +173,24 @@ def init(**config):
         - 'gpg' - Uses GnuPG keys.
     """
     global _implementation
+    global _validate_implementations
 
     if config.get('crypto_backend') == 'gpg':
-        import gpg
         _implementation = gpg
     else:
-        import x509
         _implementation = x509
+
+    _validate_implementations = []
+    for mod in config.get('crypto_validate_backends', []):
+        if mod == 'gpg':
+            _validate_implementations.append(gpg)
+        elif mod == 'x509':
+            _validate_implementations.append(x509)
+        else:
+            raise ValueError("%r is not a valid crypto backend" % mod)
+
+    if not _validate_implementations:
+        _validate_implementations.append(_implementation)
 
 
 def sign(message, **config):
@@ -186,10 +211,41 @@ def sign(message, **config):
 def validate(message, **config):
     """ Return true or false if the message is signed appropriately. """
 
-    if not _implementation:
+    if not _validate_implementations:
         init(**config)
 
-    return _implementation.validate(message, **config)
+    cfg = copy.deepcopy(config)
+    if 'gpg_home' not in cfg:
+        cfg['gpg_honme'] = os.path.expanduser('~/.gnupg/')
+
+    if 'ssldir' not in cfg:
+        cfg['ssldir'] = '/etc/pki/fedmsg'
+
+    if 'crypto' in message:
+        if not message['crypto'] in _possible_backends:
+            log.warn("Message specified an unpossible crypto backend")
+            return False
+        try:
+            backend = _possible_backends[message['crypto']]
+        except Exception as e:
+            log.warn("Failed to load %r %r" % (message['crypto'], e))
+            return False
+    # fedmsg 0.7.2 and earlier did not specify which crypto backend a message
+    # was signed with.  As long as we care about interoperability with those
+    # versions, attempt to guess the backend to use
+    elif 'certificate' in message:
+        backend = x509
+    elif 'signature' in message:
+        backend = gpg
+    else:
+        log.warn('Could not determine crypto backend.  Message unsigned?')
+        return False
+
+    if backend in _validate_implementations:
+        return backend.validate(message, **cfg)
+    else:
+        log.warn("Crypto backend %r is disallowed" % backend)
+        return False
 
 
 def strip_credentials(message):

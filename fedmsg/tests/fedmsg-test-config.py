@@ -75,7 +75,7 @@ config = dict(
     # SSL stuff.
     sign_messages=ssl_enabled_for_tests,
     validate_signatures=ssl_enabled_for_tests,
-    ssldir=SEP.join([here, 'dev_certs/keys']),
+    ssldir=SEP.join([here, 'test_certs/keys']),
 
     crl_location="http://threebean.org/fedmsg-tests/crl.pem",
     crl_cache="/tmp/crl.pem",

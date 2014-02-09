@@ -153,7 +153,7 @@ def msg2repr(msg, processor, **config):
     fmt = u"{title} -- {subtitle} {link}"
     title = msg2title(msg, **config)
     subtitle = processor.subtitle(msg, **config)
-    link = processor.link(msg, **config)
+    link = processor.link(msg, **config) or ''
     return fmt.format(**locals())
 
 

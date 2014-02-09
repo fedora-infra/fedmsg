@@ -26,8 +26,12 @@ here = os.getcwd()
 config = dict(
     sign_messages=False,
     validate_signatures=True,
-    ssldir="/etc/pki/fedmsg",
 
+    # Use these implementations to sign and validate messages
+    crypto_backend='x509',
+    crypto_validate_backends=['x509'],
+
+    ssldir="/etc/pki/fedmsg",
     crl_location="https://fedoraproject.org/fedmsg/crl.pem",
     crl_cache="/var/run/fedmsg/crl.pem",
     crl_cache_expiry=10,

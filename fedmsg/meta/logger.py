@@ -34,7 +34,7 @@ class LoggerProcessor(BaseProcessor):
             else:
                 return self._("<custom JSON message>")
         else:
-            raise NotImplementedError
+            return self._("<unhandled log message>")
 
     def usernames(self, msg, **config):
         if 'username' in msg:

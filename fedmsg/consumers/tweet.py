@@ -18,7 +18,6 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 
-import bitlyapi
 import twitter as twitter_api
 
 import time
@@ -49,13 +48,6 @@ class TweetBotConsumer(FedmsgConsumer):
         # Set up twitter and statusnet.. multiple accounts if configured
         settings = self.config.get('tweet_endpoints', [])
         self.apis = [twitter_api.Api(**endpoint) for endpoint in settings]
-
-        # Set up bitly
-        settings = self.config['bitly_settings']
-        self.bitly = bitlyapi.BitLy(
-            settings['api_user'],
-            settings['api_key'],
-        )
 
         # How long to sleep if we spew too fast.
         hibernate_duration = self.config['tweet_hibernate_duration']
@@ -90,9 +82,10 @@ class TweetBotConsumer(FedmsgConsumer):
 
         if link:
             try:
-                link = self.bitly.shorten(longUrl=link)['url']
+                resp = requests.get('http://da.gd/s', params=dict(url=link))
+                link = resp.text.strip()
             except Exception:
-                self.log.warn("Bad URI for bitly %r" % link)
+                self.log.warn("Bad URI for http://da.gd %r" % link)
                 link = ""
 
             message = message[:137 - len(link)] + " " + link

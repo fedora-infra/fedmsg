@@ -21,8 +21,4 @@ config = dict(
             access_token_secret="https://gist.github.com/4070630",
         ),
     ],
-    bitly_settings=dict(
-        api_user="get this from",
-        api_key="http://bit.ly/"
-    ),
 )

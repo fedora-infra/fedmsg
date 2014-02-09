@@ -166,6 +166,14 @@ Glossary of Configuration Values
         This is also used by :mod:`fedmsg.meta` to denote trustworthiness
         in the natural language representations produced by that module.
 
+    crypto_backend
+        ``str`` - The name of the :mod:`fedmsg.crypto` backend that should
+        be used to sign outgoing messages.  It may be either 'x509' or 'gpg'.
+
+    crypto_validate_backends
+        ``list`` - A list of names of :mod:`fedmsg.crypto` backends that
+        may be used to validate incoming messages.
+
     ssldir
         ``str`` - This should be directory on the filesystem
         where the certificates used by :mod:`fedmsg.crypto` can be found.
@@ -373,15 +381,6 @@ Glossary of Configuration Values
         and then perform the "oauth dance" with `this python script
         <https://gist.github.com/4070630>`_ in order to get your
         ``access_token_key`` and ``access_token_secret``.
-
-    bitly_settings
-        ``dict`` - A dictionary containing credentials to shorten links against
-        http://bit.ly/.  It must contain values for ``api_user`` and ``api_key``
-        which can be obtained from http://bit.ly/
-
-        This is used primarily for :func:`fedmsg.commands.tweet.tweet` but could
-        in theory be used elsewhere (like in
-        :func:`fedmsg.commands.ircbot.ircbot`)
 
     tweet_hibernate_duration
         ``float`` - A number of seconds that :func:`fedmsg.commands.tweet.tweet`
