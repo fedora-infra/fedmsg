@@ -14,6 +14,7 @@ import fedmsg.commands
 from fedmsg.commands.logger import LoggerCommand
 from fedmsg.commands.tail import TailCommand
 from fedmsg.commands.relay import RelayCommand
+from fedmsg.commands.config import config as config_command
 import fedmsg.consumers.relay
 
 from nose.tools import eq_
@@ -21,6 +22,8 @@ from nose.tools import eq_
 import threading
 
 import six
+
+CONF_FILE = os.path.join(os.path.dirname(__file__), "fedmsg.d", "ircbot.py")
 
 
 class TestCommands(unittest.TestCase):
@@ -184,3 +187,72 @@ class TestCommands(unittest.TestCase):
         assert(
             actual_options[fedmsg.consumers.relay.RelayConsumer.config_key]
         )
+
+    @patch("sys.argv", new_callable=lambda: ["fedmsg-config"])
+    @patch("sys.stdout", new_callable=six.StringIO)
+    def test_config_basic(self, stdout, argv):
+        with patch('fedmsg.config.__cache', {}):
+            config_command()
+
+        output = stdout.getvalue()
+        output_conf = json.loads(output)
+
+        with patch('fedmsg.config.__cache', {}):
+            fedmsg_conf = fedmsg.config.load_config()
+
+        eq_(output_conf, fedmsg_conf)
+
+    @patch("sys.argv", new_callable=lambda: [
+        "fedmsg-config", "--query", "endpoints",
+    ])
+    @patch("sys.stdout", new_callable=six.StringIO)
+    def test_config_query(self, stdout, argv):
+        with patch('fedmsg.config.__cache', {}):
+            config_command()
+
+        output = stdout.getvalue()
+        output_conf = json.loads(output)
+
+        with patch('fedmsg.config.__cache', {}):
+            fedmsg_conf = fedmsg.config.load_config()
+
+        eq_(output_conf, fedmsg_conf["endpoints"])
+
+    @patch("sys.argv", new_callable=lambda: [
+        "fedmsg-config", "--query", "endpoints.broken",
+    ])
+    @patch("sys.stdout", new_callable=six.StringIO)
+    @patch("sys.stderr", new_callable=six.StringIO)
+    def test_config_query_broken(self, stderr, stdout, argv):
+        try:
+            with patch('fedmsg.config.__cache', {}):
+                config_command()
+        except SystemExit as exc:
+            eq_(exc.code, 1)
+        else:
+            assert False
+
+        output = stdout.getvalue()
+        error = stderr.getvalue()
+
+        eq_(output.strip(), "")
+        eq_(error.strip(), "Key `endpoints.broken` does not exist in config")
+
+    @patch("sys.argv", new_callable=lambda: [
+        "fedmsg-config", "--disable-defaults", "--config-filename", CONF_FILE,
+    ])
+    @patch("sys.stdout", new_callable=six.StringIO)
+    def test_config_single_file(self, stdout, argv):
+        with patch('fedmsg.config.__cache', {}):
+            config_command()
+
+        output = stdout.getvalue()
+        output_conf = json.loads(output)
+
+        with patch('fedmsg.config.__cache', {}):
+            fedmsg_conf = fedmsg.config.load_config(
+                filenames=[CONF_FILE],
+                disable_defaults=True,
+            )
+
+        eq_(output_conf, fedmsg_conf)

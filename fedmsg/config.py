@@ -101,11 +101,12 @@ def load_config(extra_args=None,
                 doc=None,
                 filenames=None,
                 invalidate_cache=False,
-                fedmsg_command=False):
+                fedmsg_command=False,
+                disable_defaults=False):
     """ Setup a runtime config dict by integrating the following sources
     (ordered by precedence):
 
-      - defaults
+      - defaults (unless disable_defaults = True)
       - config file
       - command line arguments
 
@@ -125,7 +126,11 @@ def load_config(extra_args=None,
     extra_args = extra_args or []
     doc = doc or ""
 
-    config = copy.deepcopy(defaults)
+    if not disable_defaults:
+        config = copy.deepcopy(defaults)
+    else:
+        config = {}
+
     config.update(_process_config_file(filenames=filenames))
 
     # This is optional (and defaults to false) so that only 'fedmsg-*' commands
@@ -143,22 +148,23 @@ def load_config(extra_args=None,
                            filenames=[config['config_filename']])
 
     # Just a little debug option.  :)
-    if config['print_config']:
+    if config.get('print_config'):
         print pretty_dumps(config)
         sys.exit(0)
 
-    if config['environment'] not in VALID_ENVIRONMENTS:
+    if config.get('environment', 'prod') not in VALID_ENVIRONMENTS:
         raise ValueError("%r not one of %r" % (
             config['environment'], VALID_ENVIRONMENTS))
 
-    if 'endpoints' not in config:
+    if not disable_defaults and 'endpoints' not in config:
         raise ValueError("No config value 'endpoints' found.")
 
-    config['endpoints'] = dict(map(lambda (k, v): (k, list(iterate(v))),
-                                   config['endpoints'].iteritems()))
-
-    if not isinstance(config['endpoints'], dict):
+    if not isinstance(config.get('endpoints', {}), dict):
         raise ValueError("The 'endpoint' config value must be a dict.")
+
+    if 'endpoints' in config:
+        config['endpoints'] = dict(map(lambda (k, v): (k, list(iterate(v))),
+                                       config['endpoints'].iteritems()))
 
     if 'srv_endpoints' in config and len(config['srv_endpoints']) > 0:
         from dns.resolver import query, NXDOMAIN, Timeout, NoNameservers
@@ -186,7 +192,7 @@ def load_config(extra_args=None,
                 ))
             config['endpoints'][e] = list(iterate(urls))
 
-    if 'topic_prefix_re' not in config:
+    if 'topic_prefix_re' not in config and 'topic_prefix' in config:
         # Turn "org.fedoraproject" into "org\.fedoraproject\.(dev|stg|prod)"
         config['topic_prefix_re'] = config['topic_prefix'].replace('.', '\.')\
             + '\.(%s)' % '|'.join(VALID_ENVIRONMENTS)
