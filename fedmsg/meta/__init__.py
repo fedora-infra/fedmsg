@@ -58,7 +58,6 @@ _ = t.ugettext
 
 from fedmsg.meta.default import DefaultProcessor
 
-import pkg_resources
 import logging
 
 
@@ -84,6 +83,7 @@ def make_processors(**config):
         >>> text = fedmsg.meta.msg2repr(some_message_dict, **config)
 
     """
+    import pkg_resources
     global processors
     processors = []
     for processor in pkg_resources.iter_entry_points('fedmsg.meta'):
