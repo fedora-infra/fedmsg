@@ -132,7 +132,6 @@ class TailCommand(BaseCommand):
 
         if self.config['topics']:
             def formatter(d):
-                d = fedmsg.crypto.strip_credentials(d)
                 return "\n" + d['topic']
 
         if self.config['terse']:
