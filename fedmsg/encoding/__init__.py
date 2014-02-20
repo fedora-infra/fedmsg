@@ -65,7 +65,7 @@ class FedMsgEncoder(json.encoder.JSONEncoder):
     def default(self, obj):
         if hasattr(obj, '__json__'):
             return obj.__json__()
-        if isinstance(obj, datetime.datetime):
+        if isinstance(obj, (datetime.datetime, datetime.date)):
             return time.mktime(obj.timetuple())
         if isinstance(obj, time.struct_time):
             return time.mktime(obj)
