@@ -1,6 +1,20 @@
 Changelog
 =========
 
+0.7.6
+-----
+
+- Add a `disable_defaults` option to the config parser `2e564666a <https://github.com/fedora-infra/fedmsg/commit/2e564666aa19e95deb02d20fc500a4fc5db4203a>`_
+- Add some features to fedmsg-config `763798610 <https://github.com/fedora-infra/fedmsg/commit/763798610f4bb10e8963fb04ed7a1c078c427cb8>`_
+- Merge pull request #222 from olasd/feature/query-config `e5a3a1804 <https://github.com/fedora-infra/fedmsg/commit/e5a3a1804207ee21945343d14ab9045f8ffc68d8>`_
+- Avoid importing pkg_resources in fedmsg.meta `ffbc37615 <https://github.com/fedora-infra/fedmsg/commit/ffbc376155f475b4c4aaa12c715be91ea4d29fde>`_
+- Merge pull request #223 from fedora-infra/feature/avoid-pkg_resources `9bfe5ec79 <https://github.com/fedora-infra/fedmsg/commit/9bfe5ec79106e7cdcce83e5e8a056012712a2187>`_
+- Add the possibility to fedmsg-tail to only return the topics of the messages `97da58f9c <https://github.com/fedora-infra/fedmsg/commit/97da58f9ccce7c2dbbb2cde324ac48fd5b2c5486>`_
+- When printing only the topics, no need to clean the credentials `cb2124314 <https://github.com/fedora-infra/fedmsg/commit/cb2124314566133aaf8be2873dda590d478cbfb3>`_
+- Merge pull request #224 from fedora-infra/feature/tail_topics `619dc1e10 <https://github.com/fedora-infra/fedmsg/commit/619dc1e10bb8b083c8f5f6b718d19fd9dcf15a98>`_
+- Handle dates too. `1635c4911 <https://github.com/fedora-infra/fedmsg/commit/1635c49110a4145cedf2d105533b2adae4ff2422>`_
+- Merge pull request #225 from fedora-infra/feature/handle-dates-too `736f9394b <https://github.com/fedora-infra/fedmsg/commit/736f9394bbe320c124cc550c199a41e6c9c28187>`_
+
 0.7.5
 -----
 
