@@ -20,6 +20,7 @@
 import pprint
 import re
 import time
+import sys
 
 import pygments
 import pygments.lexers
@@ -41,12 +42,11 @@ class TailCommand(BaseCommand):
             'help': 'The topic pattern to listen for.  Everything by default.',
             'default': '',
         }),
-        (['--topics'], {
-            'dest': 'topics',
-            'help': 'Displays only the topics of the message instead of '
-            'everything.',
-            'default': False,
-            'action': 'store_true',
+        (['--query'], {
+            'dest': 'query',
+            'help': 'Displays only the element of the message specified.',
+            type: str,
+            'default': None
         }),
         (['--pretty'], {
             'dest': 'pretty',
@@ -130,9 +130,21 @@ class TailCommand(BaseCommand):
                 ).strip()
                 return "\n" + fancy
 
-        if self.config['topics']:
+        if self.config['query']:
             def formatter(d):
-                return "\n" + d['topic']
+                keys = self.config['query'].split('.')
+                curpath = []
+                for key in keys:
+                    curpath.append(key)
+                    if key in d:
+                        d = d[key]
+                    else:
+                        print >> sys.stderr, (
+                            "Key `%s` does not exist in config" %
+                            ".".join(curpath)
+                        )
+                        sys.exit(1)
+                return "\n" + d
 
         if self.config['terse']:
             formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)
