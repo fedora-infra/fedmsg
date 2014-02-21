@@ -41,6 +41,13 @@ class TailCommand(BaseCommand):
             'help': 'The topic pattern to listen for.  Everything by default.',
             'default': '',
         }),
+        (['--topics'], {
+            'dest': 'topics',
+            'help': 'Displays only the topics of the message instead of '
+            'everything.',
+            'default': False,
+            'action': 'store_true',
+        }),
         (['--pretty'], {
             'dest': 'pretty',
             'help': 'Pretty print the JSON messages.',
@@ -122,6 +129,10 @@ class TailCommand(BaseCommand):
                     pygments.formatters.TerminalFormatter()
                 ).strip()
                 return "\n" + fancy
+
+        if self.config['topics']:
+            def formatter(d):
+                return "\n" + d['topic']
 
         if self.config['terse']:
             formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)
