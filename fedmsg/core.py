@@ -280,7 +280,6 @@ class FedMsgContext(object):
             else:
                 self.c['gpg_signing_key'] = self.c['gpg_keys'][cert_index]
 
-
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)
 
