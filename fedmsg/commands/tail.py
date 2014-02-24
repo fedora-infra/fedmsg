@@ -132,19 +132,21 @@ class TailCommand(BaseCommand):
 
         if self.config['query']:
             def formatter(d):
-                keys = self.config['query'].split('.')
-                curpath = []
-                for key in keys:
-                    curpath.append(key)
-                    if key in d:
-                        d = d[key]
-                    else:
-                        print >> sys.stderr, (
-                            "Key `%s` does not exist in config" %
-                            ".".join(curpath)
-                        )
-                        sys.exit(1)
-                return "\n" + d
+                out = ''
+                for filt in self.config['query'].split(','):
+                    keys = filt.split('.')
+                    curpath = []
+                    for key in keys:
+                        curpath.append(key)
+                        if key in d:
+                            out += "\n" + d[key]
+                        else:
+                            print >> sys.stderr, (
+                                "Key `%s` does not exist in config" %
+                                ".".join(curpath)
+                            )
+                            sys.exit(1)
+                return out
 
         if self.config['terse']:
             formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)
