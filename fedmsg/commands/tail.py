@@ -132,20 +132,8 @@ class TailCommand(BaseCommand):
 
         if self.config['query']:
             def formatter(d):
-                def _browse(keys, dic):
-                    if keys[0] in dic:
-                        if isinstance(dic[keys[0]], dict):
-                            return _browse(keys[1:], dic[keys[0]])
-                        else:
-                            return dic[keys[0]]
-
-                out = ''
-                for filt in self.config['query'].split(','):
-                    keys = filt.split('.')
-                    tmp = _browse(keys, d)
-                    if tmp:
-                        out += "\n" + _browse(keys, d)
-                return out
+                result = fedmsg.utils.dict_query(d, self.config['query'])
+                return ", ".join([unicode(value) for value in result.values()])
 
         if self.config['terse']:
             formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)
