@@ -230,7 +230,9 @@ class TestCommands(unittest.TestCase):
         except SystemExit as exc:
             eq_(exc.code, 1)
         else:
-            assert False
+            output = "output: %r, error: %r" % (
+                stdout.getvalue(), stderr.getvalue())
+            assert False, output
 
         output = stdout.getvalue()
         error = stderr.getvalue()

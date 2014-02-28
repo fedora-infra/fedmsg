@@ -92,6 +92,10 @@ def config():
 
     if args.query:
         cur = fedmsg.utils.dict_query(cur, args.query)
+        if cur[args.query] is None:
+            print >>sys.stderr, (
+                "Key `%s` does not exist in config" % args.query)
+            sys.exit(1)
 
     if isinstance(cur, list):
         for i in cur:
