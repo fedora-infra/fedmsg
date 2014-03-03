@@ -179,31 +179,10 @@ here is the HTTP API we have called "datagrepper".  Let's set it up::
 
 Add a config file for it in ``/etc/httpd/conf.d/datagrepper.conf`` with these contents::
 
-    LoadModule expires_module modules/mod_expires.so
-    LoadModule headers_module modules/mod_headers.so
-    LoadModule deflate_module modules/mod_deflate.so
-    ExpiresActive On
-    #ExpiresDefault "access plus 300 seconds"
-
-    ErrorLog logs/datagrepper_error_log
-    CustomLog logs/datagrepper_access_log combined
-
-    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript text/css application/x-javascript
-
-    # This caching may not necessarily be ideal, or even correct.
-    # However, it was the only I could get firebug to show me 302's for
-    # my ToscaWidget resources.
-    <filesmatch ".(gif|jpe?g|png|css|js)$">
-       Header unset Cache-Control
-       Header unset Etag
-       Header add Cache-Control "max-age=2592000"
-       #ExpiresDefault A2592000
-    </filesmatch>
+    LoadModule wsgi_module modules/mod_wsgi.so
 
     # Static resources for the datagrepper app.
     Alias /datagrepper/css /usr/lib/python2.6/site-packages/datagrepper/static/css
-    # Job runner output dir.
-    Alias /datagrepper/output /var/cache/datagrepper
 
     WSGIDaemonProcess datagrepper user=fedmsg group=fedmsg maximum-requests=50000 display-name=datagrepper processes=8 threads=4 inactivity-timeout=300
     WSGISocketPrefix run/wsgi
