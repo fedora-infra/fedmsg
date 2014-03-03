@@ -13,6 +13,24 @@ The quickest way to see what the bus is all about is to jump into
 ``#fedora-fedmsg`` on the freenode network.  There's a firehose bot there
 echoing messages to channel.
 
+Receiving Messages with Python
+------------------------------
+
+.. code-block:: python
+
+    import fedmsg
+
+    # Yield messages as they're available from a generator
+    for name, endpoint, topic, msg in fedmsg.tail_messages():
+        print topic, msg
+
+Receiving Messages from the Shell
+---------------------------------
+
+.. code-block:: bash
+
+    $ fedmsg-tail --really-pretty
+
 Publishing Messages with Python
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
