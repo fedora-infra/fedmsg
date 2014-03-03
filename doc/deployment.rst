@@ -1,13 +1,13 @@
 Deploying fedmsg for yourself
 =============================
 
-Often, the emphasis in fedmsg docs is on how to subscribe to an existing fedmsg
+Elsewhere, the emphasis in fedmsg docs is on how to subscribe to an existing fedmsg
 deployment; how do I listen for koji builds from Fedora Infrastructure?  This
 document, on the other hand, is directed at those who want to deploy fedmsg for
 their own systems.
 
 This document also only goes as far as setting things up for a single machine.
-You typically deploy fedmsg across an *infrastructure*.  If you just want to
+You typically deploy fedmsg across an *infrastructure* but if you just want to
 try it out for "proof-of-concept", these are the docs for you.
 
 Lastly, the emphasis here is on the practical -- there will be lots of
@@ -61,7 +61,7 @@ logs in ``journalctl --follow``.  On other systems you can find the logs in
 ``/var/log/fedmsg/fedmsg-relay.log``.
 
 Out of the box, it should be listening for incoming messages on
-``tcp://127.0.0.1:2003`` and re-publishing them indisrciminantly at
+``tcp://127.0.0.1:2003`` and re-publishing them indiscriminately at
 ``tcp://127.0.0.1:4001``.  It is fine to keep these defaults.
 
 Test it out
@@ -143,7 +143,7 @@ to look like this::
 
     config = {
         'datanommer.enabled': True,
-        'datanommer.sqlalchemy.url': 'postgresql://datanommer:bunbunbun@localhost/datanommer',
+        'datanommer.sqlalchemy.url': 'postgresql://datanommer:password@localhost/datanommer',
     }
 
 Run the following command from the ``datanommer-commands`` package to set up
