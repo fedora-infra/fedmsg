@@ -98,6 +98,24 @@ class TestCryptoX509(unittest.TestCase):
         signed['msg'] = "eve wuz here"
         assert not fedmsg.crypto.validate(signed, **self.config)
 
+    @skip_if_missing_libs
+    def test_signed_by_true(self):
+        """ Try to succeed at specific-signer validation. """
+        message = dict(topic='biz.bar', msg='awesome')
+        signed = fedmsg.crypto.sign(message, **self.config)
+        signer = "shell-app01.phx2.fedoraproject.org"
+        res = fedmsg.crypto.validate_signed_by(signed, signer, **self.config)
+        assert res
+
+    @skip_if_missing_libs
+    def test_signed_by_false(self):
+        """ Try to fail at specific-signer validation. """
+        message = dict(topic='biz.bar', msg='awesome')
+        signed = fedmsg.crypto.sign(message, **self.config)
+        signer = "shell-app02.phx2.fedoraproject.org"
+        res = fedmsg.crypto.validate_signed_by(signed, signer, **self.config)
+        assert not res
+
 
 if __name__ == '__main__':
     unittest.main()
