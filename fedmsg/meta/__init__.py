@@ -59,6 +59,7 @@ _ = t.ugettext
 from fedmsg.meta.default import DefaultProcessor
 
 import logging
+log = logging.getLogger("fedmsg")
 
 
 class ProcessorsNotInitialized(Exception):
@@ -90,7 +91,6 @@ def make_processors(**config):
         try:
             processors.append(processor.load()(_, **config))
         except Exception as e:
-            log = logging.getLogger("fedmsg")
             log.warn("Failed to load %r processor." % processor.name)
             log.warn(str(e))
 
