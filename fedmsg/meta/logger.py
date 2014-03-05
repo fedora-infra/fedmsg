@@ -30,9 +30,10 @@ class LoggerProcessor(BaseProcessor):
     def subtitle(self, msg, **config):
         if 'logger.log' in msg['topic']:
             if 'log' in msg['msg']:
-                return msg['msg']['log']
+                result = msg['msg']['log']
             else:
-                return self._("<custom JSON message>")
+                result = self._("<custom JSON message>")
+            return result + " (%s)" % msg.get('username', 'none')
         else:
             return self._("<unhandled log message>")
 

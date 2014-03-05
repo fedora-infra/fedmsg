@@ -163,7 +163,7 @@ class TestAnnouncement(Base):
 
 class TestLoggerNormal(Base):
     expected_title = "logger.log"
-    expected_subti = 'hello, world.'
+    expected_subti = 'hello, world. (ralph)'
     expected_usernames = set(['ralph'])
 
     msg = {
@@ -179,7 +179,7 @@ class TestLoggerNormal(Base):
 
 class TestLoggerJSON(Base):
     expected_title = "logger.log"
-    expected_subti = '<custom JSON message>'
+    expected_subti = '<custom JSON message> (root)'
     expected_usernames = set(['root'])
 
     msg = {
