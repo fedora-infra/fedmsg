@@ -97,6 +97,13 @@ def make_processors(**config):
     # This should always be last
     processors.append(DefaultProcessor(_, **config))
 
+    # By default we have three builtin processors:  Default, Logger, and
+    # Announce.  If these are the only three, then we didn't find any
+    # externally provided ones.  calls to msg2subtitle and msg2link likely will
+    # not work the way the user is expecting.
+    if len(processors) == 3:
+        log.warn("No fedmsg.meta plugins found.  fedmsg.meta.msg2* crippled")
+
 
 def msg2processor(msg, **config):
     """ For a given message return the text processor that can handle it.

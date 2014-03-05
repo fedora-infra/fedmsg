@@ -51,6 +51,33 @@ def skip_on(attributes):
     return wrapper
 
 
+class TestForWarning(unittest.TestCase):
+    def setUp(self):
+        dirname = os.path.abspath(os.path.dirname(__file__))
+        self.config = fedmsg.config.load_config(
+            filenames=[os.path.join(dirname, "fedmsg-test-config.py")],
+            invalidate_cache=True,
+        )
+        self.config['topic_prefix'] = 'org.fedoraproject'
+        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+
+    def test_for_no_plugins(self):
+        """ Test that we print a warning if no plugin is installed """
+        messages = []
+
+        def mocked_warning(message):
+            messages.append(message)
+
+        expected = 'No fedmsg.meta plugins found.  fedmsg.meta.msg2* crippled'
+        original = fedmsg.meta.log.warn
+        try:
+            fedmsg.meta.log.warn = mocked_warning
+            fedmsg.meta.make_processors(**self.config)
+            eq_(messages, [expected])
+        finally:
+            fedmsg.meta.log.warn = original
+
+
 class Base(unittest.TestCase):
     msg = None
     expected_title = None
