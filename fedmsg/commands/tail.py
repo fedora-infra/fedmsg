@@ -110,7 +110,6 @@ class TailCommand(BaseCommand):
         self.config['mute'] = True
 
         fedmsg.init(**self.config)
-        fedmsg.meta.make_processors(**self.config)
 
         # Build a message formatter
         formatter = lambda d: d
@@ -148,6 +147,10 @@ class TailCommand(BaseCommand):
             users = set(map(str.strip, self.config['users'].split(',')))
         if self.config['packages']:
             packages = set(map(str.strip, self.config['packages'].split(',')))
+
+        # Only initialize this if we have to
+        if users or packages or self.config['terse']:
+            fedmsg.meta.make_processors(**self.config)
 
         # Spin up a zmq.Poller and yield messages
         for name, ep, topic, message in fedmsg.tail_messages(**self.config):
