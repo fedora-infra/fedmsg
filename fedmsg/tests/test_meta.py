@@ -51,6 +51,52 @@ def skip_on(attributes):
     return wrapper
 
 
+def skip_if_fedmsg_meta_FI_is_present(f):
+    """ A test decorator that will skip if fedmsg_meta_fedora_infrastructure
+    is installed.
+
+    The presence of that module will screw up some tests.
+    """
+    def _wrapper(self, *args, **kw):
+        try:
+            import fedmsg_meta_fedora_infrastructure
+            raise SkipTest("fedmsg_meta_FI is present")
+        except ImportError:
+            pass
+
+        return f(self, *args, **kw)
+
+    return make_decorator(f)(_wrapper)
+
+
+class TestForWarning(unittest.TestCase):
+    def setUp(self):
+        dirname = os.path.abspath(os.path.dirname(__file__))
+        self.config = fedmsg.config.load_config(
+            filenames=[os.path.join(dirname, "fedmsg-test-config.py")],
+            invalidate_cache=True,
+        )
+        self.config['topic_prefix'] = 'org.fedoraproject'
+        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+
+    @skip_if_fedmsg_meta_FI_is_present
+    def test_for_no_plugins(self):
+        """ Test that we print a warning if no plugin is installed """
+        messages = []
+
+        def mocked_warning(message):
+            messages.append(message)
+
+        expected = 'No fedmsg.meta plugins found.  fedmsg.meta.msg2* crippled'
+        original = fedmsg.meta.log.warn
+        try:
+            fedmsg.meta.log.warn = mocked_warning
+            fedmsg.meta.make_processors(**self.config)
+            eq_(messages, [expected])
+        finally:
+            fedmsg.meta.log.warn = original
+
+
 class Base(unittest.TestCase):
     msg = None
     expected_title = None
