@@ -67,7 +67,7 @@ class BaseProcessor(object):
             raise ValueError("Must declare a __obj__")
 
         # Build a regular expression used to match message topics for us
-        self.__prefix__ = re.compile('^%s\.(%s)\.?(.*)$' % (
+        self.__prefix__ = re.compile('^%s\.(%s)(\.(.*))?$' % (
             config['topic_prefix_re'], self.__name__.lower()))
 
     def handle_msg(self, msg, **config):
