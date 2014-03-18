@@ -97,6 +97,42 @@ class TestForWarning(unittest.TestCase):
             fedmsg.meta.log.warn = original
 
 
+class TestProcessorRegex(unittest.TestCase):
+    def setUp(self):
+        dirname = os.path.abspath(os.path.dirname(__file__))
+        self.config = fedmsg.config.load_config(
+            filenames=[os.path.join(dirname, "fedmsg-test-config.py")],
+            invalidate_cache=True,
+        )
+        self.config['topic_prefix'] = 'org.fedoraproject'
+        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+
+        class MyGitProcessor(fedmsg.meta.base.BaseProcessor):
+            __name__ = 'git'
+            __description__ = 'This processor handles git messages'
+            __link__ = 'http://fedmsg.com'
+            __docs__ = 'http://fedmsg.com'
+            __obj__ = 'git commits'
+
+        self.proc = MyGitProcessor(lambda x: x, **self.config)
+
+    def test_processor_handle_hit(self):
+        """ Test that a proc can handle what it should. """
+        fake_message = {
+            'topic': 'org.fedoraproject.dev.git.push',
+        }
+        result = self.proc.handle_msg(fake_message, **self.config)
+        assert result, "Proc didn't say it could handle the message."
+
+    def test_processor_handle_miss(self):
+        """ Test that a proc says it won't handle what it shouldn't. """
+        fake_message = {
+            'topic': 'org.fedoraproject.dev.github.push',
+        }
+        result = self.proc.handle_msg(fake_message, **self.config)
+        assert not result, "Proc falsely claimed it could handle the msg."
+
+
 class Base(unittest.TestCase):
     msg = None
     expected_title = None
