@@ -28,9 +28,6 @@ except ImportError:
     from ordereddict import OrderedDict
 
 
-_log = logging.getLogger('fedmsg')
-
-
 def set_high_water_mark(socket, config):
     """ Set a high water mark on the zmq socket.  Do so in a way that is
     cross-compatible with zeromq2 and zeromq3.
@@ -87,7 +84,6 @@ def set_tcp_keepalive(socket, config):
         if key in config:
             attr = getattr(zmq, const, None)
             if attr:
-                _log.debug("Setting %r %r" % (const, config[key]))
                 socket.setsockopt(attr, config[key])
 
 
