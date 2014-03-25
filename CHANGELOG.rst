@@ -1,6 +1,44 @@
 Changelog
 =========
 
+0.7.7
+-----
+
+- Add the --query argument to fedmsg-tail `adccb1048 <https://github.com/fedora-infra/fedmsg/commit/adccb1048cd95576bd049101812a4452d0461cf5>`_
+- Add support for fedmsg-taill --query to return multiple items provided as a comma separated list `13038a29e <https://github.com/fedora-infra/fedmsg/commit/13038a29e5fda7dd70c311272868ada09c247a79>`_
+- Small pep8 fix to make pep8.me happy `a29ee93f8 <https://github.com/fedora-infra/fedmsg/commit/a29ee93f8d0f0e1bf7b12837a90c4d9e6643fad9>`_
+- Fix the --query to enable filtering for multiple, different elements in the messages `de60e1a37 <https://github.com/fedora-infra/fedmsg/commit/de60e1a3789116623a7f5db697477593cc42d316>`_
+- Handle dates too. `212f5f332 <https://github.com/fedora-infra/fedmsg/commit/212f5f33236c61ab02fb1829751aeb6d56c4f655>`_
+- 0.7.6 `d9ceaec87 <https://github.com/fedora-infra/fedmsg/commit/d9ceaec87e59a973786aa9510ea3c6808ceaab19>`_
+- Combine the dict_query from fedmsg-config and fedmsg-tail into the same function. `efd8d242f <https://github.com/fedora-infra/fedmsg/commit/efd8d242fc96ea94e94bb0d4d7d77dbabdc48f55>`_
+- Merge pull request #227 from fedora-infra/feature/fedmsg-tail-query-combined `a11c83f94 <https://github.com/fedora-infra/fedmsg/commit/a11c83f948459e17a8a548f73c7a0db2c8b98f5e>`_
+- Merge pull request #226 from fedora-infra/feature/fedmsg-tail-query `aaf3362b6 <https://github.com/fedora-infra/fedmsg/commit/aaf3362b66415a33dec5ade531ec0ed2327d207c>`_
+- Remove unused import. `5589ad19f <https://github.com/fedora-infra/fedmsg/commit/5589ad19f8af9701b633f1a2cc428369a78a04fe>`_
+- @olasd is expecting this to exit with an error code. `07ade1295 <https://github.com/fedora-infra/fedmsg/commit/07ade1295bc4072dfe1d8715c978f7fbbb8cc15b>`_
+- @olasd is also expecting this to be top-level. `b7a85a3f7 <https://github.com/fedora-infra/fedmsg/commit/b7a85a3f7f03ca4137c85cde56d392b3eae08709>`_
+- Merge pull request #230 from fedora-infra/feature/fix-config-query `85fc2fd04 <https://github.com/fedora-infra/fedmsg/commit/85fc2fd048a93b61fd88cf38046a2c3f3a291542>`_
+- Write a first draft of a deployment doc. `5bd75de96 <https://github.com/fedora-infra/fedmsg/commit/5bd75de962c7964a0a538db98b195eb8224e6051>`_
+- Seems like most people want to know about receiving before sending, actually. `494f2e83d <https://github.com/fedora-infra/fedmsg/commit/494f2e83da1098d8711a5e0e68ec4f559776d1a2>`_
+- Fix some typos pointed out by @pypingou. `1103ed796 <https://github.com/fedora-infra/fedmsg/commit/1103ed796131eb25c1d6cfa546f4ae1d539c7124>`_
+- Simplify the datagrepper wsgi config. `65cdada6a <https://github.com/fedora-infra/fedmsg/commit/65cdada6a553bbd4e4874cbb7affc05d2f804799>`_
+- Merge pull request #231 from fedora-infra/feature/updated-docs `42b65ea89 <https://github.com/fedora-infra/fedmsg/commit/42b65ea899c32a2dcc32114cdf7828ee79ebe1da>`_
+- Add API func to validate that message bears a particular sig `a878a82ac <https://github.com/fedora-infra/fedmsg/commit/a878a82ace967e9779de8e547cb0bd9464020a78>`_
+- Merge pull request #232 from fedora-infra/feature/validate-signed-by `73dc1b9ef <https://github.com/fedora-infra/fedmsg/commit/73dc1b9efe03c4db3af70bc7758c90e905623081>`_
+- Only initialize fedmsg.meta in fedmsg-tail if we have to. `012078300 <https://github.com/fedora-infra/fedmsg/commit/012078300254f3f0d4761d23b857c4f76f54ca73>`_
+- Make this log obj available at the module level for monkey patching. `88d7a9109 <https://github.com/fedora-infra/fedmsg/commit/88d7a910957ee3719ecad67f4e384ac50f3e7435>`_
+- Issue a warning is no fedmsg.meta plugins are installed `184647b8a <https://github.com/fedora-infra/fedmsg/commit/184647b8a14e5dd1a4577e0778bbea4c4d36be35>`_
+- Automatically tack on the username to the end of logger subtitles. `ac1e44f96 <https://github.com/fedora-infra/fedmsg/commit/ac1e44f968ea3e3b0334289b4ae68bb2d190d18c>`_
+- Merge pull request #235 from fedora-infra/feature/automagick `661140485 <https://github.com/fedora-infra/fedmsg/commit/661140485427c53da0888e0dab9f3ca4e5c26cf6>`_
+- Correct an outdate doc path. `c4df21d46 <https://github.com/fedora-infra/fedmsg/commit/c4df21d463ec503ff82983b30c41b129e1879bad>`_
+- Skip that test under certain conditions. `9b3f65be2 <https://github.com/fedora-infra/fedmsg/commit/9b3f65be22b59eafb007cc8771f026895c3fbdd3>`_
+- Merge pull request #234 from fedora-infra/feature/warn-if-no-plugin `281439dbf <https://github.com/fedora-infra/fedmsg/commit/281439dbf7fb7ec9db739d72c03f29d0cfdb44aa>`_
+- Add a failing test with this one weird trick. `ba2c5270a <https://github.com/fedora-infra/fedmsg/commit/ba2c5270a92a06dd964c768cb721cbbe15cd9d27>`_
+- Fix the BaseProcessor regex to work with multiple topics starting with the same text. `33fcd3aa7 <https://github.com/fedora-infra/fedmsg/commit/33fcd3aa7e38f0fbea36159df2fc42380bb41930>`_
+- Merge pull request #237 from fedora-infra/feature/regex-for-github `1a027b4d7 <https://github.com/fedora-infra/fedmsg/commit/1a027b4d742dd0176954d6382025bf4cccdbae4c>`_
+- Remove this one noisy debug statement. `6bd2371c1 <https://github.com/fedora-infra/fedmsg/commit/6bd2371c1e48d7886e3515b7f2f95d0f7dbdf6c7>`_
+- Merge pull request #238 from fedora-infra/feature/the-sound-of-silence `ea544da92 <https://github.com/fedora-infra/fedmsg/commit/ea544da92abb4aa1365e2230966c9d54e26e20b0>`_
+- Ignore this. `244fe2ec4 <https://github.com/fedora-infra/fedmsg/commit/244fe2ec4a9b03b1dc68b8289b5296b4424fe524>`_
+
 0.7.6
 -----
 

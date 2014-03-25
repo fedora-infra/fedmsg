@@ -22,7 +22,10 @@ import zmq
 import logging
 import inspect
 
-_log = logging.getLogger('fedmsg')
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
 
 
 def set_high_water_mark(socket, config):
@@ -81,7 +84,6 @@ def set_tcp_keepalive(socket, config):
         if key in config:
             attr = getattr(zmq, const, None)
             if attr:
-                _log.debug("Setting %r %r" % (const, config[key]))
                 socket.setsockopt(attr, config[key])
 
 
@@ -102,3 +104,47 @@ def load_class(location):
         return getattr(module, cls_name)
     except AttributeError as e:
         raise ImportError("%r not found in %r" % (cls_name, mod_name))
+
+
+def dict_query(dic, query):
+    """ Query a dict with 'dotted notation'.  Returns an OrderedDict.
+
+    A query of "foo.bar.baz" would retrieve 'wat' from this::
+
+        dic = {
+            'foo': {
+                'bar': {
+                    'baz': 'wat',
+                }
+            }
+        }
+
+    Multiple queries can be specified if comma-separated.  For instance, the
+    query "foo.bar.baz,foo.bar.something_else" would return this::
+
+        OrderedDict({
+            "foo.bar.baz": "wat",
+            "foo.bar.something_else": None,
+        })
+
+    """
+
+    def _browse(tokens, d):
+        """ Recurse through a dict to retrieve a value. """
+        current, rest = tokens[0], tokens[1:]
+
+        if not rest:
+            return d.get(current, None)
+
+        if current in d:
+            if isinstance(d[current], dict):
+                return _browse(rest, d[current])
+            elif rest:
+                return None
+            else:
+                return d[current]
+
+    keys = [key.strip().split('.') for key in query.split(',')]
+    return OrderedDict([
+        ('.'.join(tokens), _browse(tokens, dic)) for tokens in keys
+    ])

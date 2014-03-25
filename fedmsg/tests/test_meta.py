@@ -51,6 +51,88 @@ def skip_on(attributes):
     return wrapper
 
 
+def skip_if_fedmsg_meta_FI_is_present(f):
+    """ A test decorator that will skip if fedmsg_meta_fedora_infrastructure
+    is installed.
+
+    The presence of that module will screw up some tests.
+    """
+    def _wrapper(self, *args, **kw):
+        try:
+            import fedmsg_meta_fedora_infrastructure
+            raise SkipTest("fedmsg_meta_FI is present")
+        except ImportError:
+            pass
+
+        return f(self, *args, **kw)
+
+    return make_decorator(f)(_wrapper)
+
+
+class TestForWarning(unittest.TestCase):
+    def setUp(self):
+        dirname = os.path.abspath(os.path.dirname(__file__))
+        self.config = fedmsg.config.load_config(
+            filenames=[os.path.join(dirname, "fedmsg-test-config.py")],
+            invalidate_cache=True,
+        )
+        self.config['topic_prefix'] = 'org.fedoraproject'
+        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+
+    @skip_if_fedmsg_meta_FI_is_present
+    def test_for_no_plugins(self):
+        """ Test that we print a warning if no plugin is installed """
+        messages = []
+
+        def mocked_warning(message):
+            messages.append(message)
+
+        expected = 'No fedmsg.meta plugins found.  fedmsg.meta.msg2* crippled'
+        original = fedmsg.meta.log.warn
+        try:
+            fedmsg.meta.log.warn = mocked_warning
+            fedmsg.meta.make_processors(**self.config)
+            eq_(messages, [expected])
+        finally:
+            fedmsg.meta.log.warn = original
+
+
+class TestProcessorRegex(unittest.TestCase):
+    def setUp(self):
+        dirname = os.path.abspath(os.path.dirname(__file__))
+        self.config = fedmsg.config.load_config(
+            filenames=[os.path.join(dirname, "fedmsg-test-config.py")],
+            invalidate_cache=True,
+        )
+        self.config['topic_prefix'] = 'org.fedoraproject'
+        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+
+        class MyGitProcessor(fedmsg.meta.base.BaseProcessor):
+            __name__ = 'git'
+            __description__ = 'This processor handles git messages'
+            __link__ = 'http://fedmsg.com'
+            __docs__ = 'http://fedmsg.com'
+            __obj__ = 'git commits'
+
+        self.proc = MyGitProcessor(lambda x: x, **self.config)
+
+    def test_processor_handle_hit(self):
+        """ Test that a proc can handle what it should. """
+        fake_message = {
+            'topic': 'org.fedoraproject.dev.git.push',
+        }
+        result = self.proc.handle_msg(fake_message, **self.config)
+        assert result, "Proc didn't say it could handle the message."
+
+    def test_processor_handle_miss(self):
+        """ Test that a proc says it won't handle what it shouldn't. """
+        fake_message = {
+            'topic': 'org.fedoraproject.dev.github.push',
+        }
+        result = self.proc.handle_msg(fake_message, **self.config)
+        assert not result, "Proc falsely claimed it could handle the msg."
+
+
 class Base(unittest.TestCase):
     msg = None
     expected_title = None
@@ -163,7 +245,7 @@ class TestAnnouncement(Base):
 
 class TestLoggerNormal(Base):
     expected_title = "logger.log"
-    expected_subti = 'hello, world.'
+    expected_subti = 'hello, world. (ralph)'
     expected_usernames = set(['ralph'])
 
     msg = {
@@ -179,7 +261,7 @@ class TestLoggerNormal(Base):
 
 class TestLoggerJSON(Base):
     expected_title = "logger.log"
-    expected_subti = '<custom JSON message>'
+    expected_subti = '<custom JSON message> (root)'
     expected_usernames = set(['root'])
 
     msg = {

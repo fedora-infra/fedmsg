@@ -19,7 +19,6 @@
 #
 
 import getpass
-import inspect
 import socket
 import threading
 import datetime
@@ -279,7 +278,6 @@ class FedMsgContext(object):
                 self.c['certname'] = self.c['certnames'][cert_index]
             else:
                 self.c['gpg_signing_key'] = self.c['gpg_keys'][cert_index]
-
 
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)

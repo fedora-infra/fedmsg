@@ -20,6 +20,7 @@
 import pprint
 import re
 import time
+import sys
 
 import pygments
 import pygments.lexers
@@ -41,12 +42,11 @@ class TailCommand(BaseCommand):
             'help': 'The topic pattern to listen for.  Everything by default.',
             'default': '',
         }),
-        (['--topics'], {
-            'dest': 'topics',
-            'help': 'Displays only the topics of the message instead of '
-            'everything.',
-            'default': False,
-            'action': 'store_true',
+        (['--query'], {
+            'dest': 'query',
+            'help': 'Displays only the element of the message specified.',
+            'type': str,
+            'default': None
         }),
         (['--pretty'], {
             'dest': 'pretty',
@@ -110,7 +110,6 @@ class TailCommand(BaseCommand):
         self.config['mute'] = True
 
         fedmsg.init(**self.config)
-        fedmsg.meta.make_processors(**self.config)
 
         # Build a message formatter
         formatter = lambda d: d
@@ -130,9 +129,10 @@ class TailCommand(BaseCommand):
                 ).strip()
                 return "\n" + fancy
 
-        if self.config['topics']:
+        if self.config['query']:
             def formatter(d):
-                return "\n" + d['topic']
+                result = fedmsg.utils.dict_query(d, self.config['query'])
+                return ", ".join([unicode(value) for value in result.values()])
 
         if self.config['terse']:
             formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)
@@ -147,6 +147,10 @@ class TailCommand(BaseCommand):
             users = set(map(str.strip, self.config['users'].split(',')))
         if self.config['packages']:
             packages = set(map(str.strip, self.config['packages'].split(',')))
+
+        # Only initialize this if we have to
+        if users or packages or self.config['terse']:
+            fedmsg.meta.make_processors(**self.config)
 
         # Spin up a zmq.Poller and yield messages
         for name, ep, topic, message in fedmsg.tail_messages(**self.config):

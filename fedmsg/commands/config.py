@@ -91,17 +91,11 @@ def config():
     cur = config
 
     if args.query:
-        keys = args.query.split('.')
-        curpath = []
-        for key in keys:
-            curpath.append(key)
-            if key in cur:
-                cur = cur[key]
-            else:
-                print >>sys.stderr, (
-                    "Key `%s` does not exist in config" % ".".join(curpath)
-                )
-                sys.exit(1)
+        cur = fedmsg.utils.dict_query(cur, args.query)[args.query]
+        if cur is None:
+            print >>sys.stderr, (
+                "Key `%s` does not exist in config" % args.query)
+            sys.exit(1)
 
     if isinstance(cur, list):
         for i in cur:
