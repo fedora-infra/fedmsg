@@ -22,8 +22,6 @@ import fedmsg.config
 import warnings
 import sys
 
-import psutil
-
 import logging
 try:
     # Python2.7 and later
@@ -76,6 +74,7 @@ class BaseCommand(object):
             warnings.warn(str(e))
 
     def _daemonize(self):
+        import psutil
         from daemon import DaemonContext
         try:
             from daemon.pidfile import TimeoutPIDLockFile as PIDLockFile
