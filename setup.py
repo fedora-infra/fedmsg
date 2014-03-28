@@ -71,6 +71,7 @@ install_requires = [
     'requests',
     'pygments',
     #'daemon',
+    #'psutil',
 
     # These are "optional" for now to make installation from pypi easier.
     #'M2Crypto',
