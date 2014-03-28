@@ -240,18 +240,27 @@ class IRCBotConsumer(FedmsgConsumer):
     def prettify(self, topic, msg, pretty=False, terse=False):
         if terse:
             if pretty:
-                title = fedmsg.meta.msg2title(msg, **self.hub.config)
-
-                if 'signature' not in msg:
-                    title += " " + _("(unsigned)")
-                elif self.hub.config.get('validate_signatures'):
-                    if not fedmsg.crypto.validate(msg, **self.hub.config):
-                        title += " " + _("(invalid signature!)")
+                if (self.hub.config.get('validate_signatures')
+                    and not fedmsg.crypto.validate(msg, **self.hub.config)):
+                    # If we're validating signatures the message is invalid,
+                    # then be careful with it and don't pass it to fedmsg.meta.
+                    title = topic
+                    if 'signature' not in msg:
+                        subtitle = _("(unsigned)")
+                    else:
+                        subtitle = _("(invalid signature!)")
+                    link = None
+                else:
+                    # Otherwise, either we aren't validating signatures, or we
+                    # are and the message passed validation.
+                    title = fedmsg.meta.msg2title(msg, **self.hub.config)
+                    subtitle = fedmsg.meta.msg2subtitle(msg, **self.hub.config)
+                    link = fedmsg.meta.msg2link(msg, **self.hub.config)
 
                 return ircprettify(
                     title=title,
-                    subtitle=fedmsg.meta.msg2subtitle(msg, **self.hub.config),
-                    link=fedmsg.meta.msg2link(msg, **self.hub.config),
+                    subtitle=subtitle,
+                    link=link,
                     config=self.hub.config,
                 )
             else:
