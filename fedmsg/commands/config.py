@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2012 Red Hat, Inc.
+# Copyright (C) 2012 - 2014 Red Hat, Inc.
 # Copyright (C) 2014 Nicolas Dandrimont <olasd@debian.org>
 #
 # fedmsg is free software; you can redistribute it and/or
