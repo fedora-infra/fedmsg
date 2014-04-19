@@ -67,7 +67,7 @@ except Exception:
 install_requires = [
     'pyzmq',
     'kitchen',
-    'moksha.hub>=1.2.0',
+    'moksha.hub>=1.3.0',
     'requests',
     'pygments',
     #'daemon',

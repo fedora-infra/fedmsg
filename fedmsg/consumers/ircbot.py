@@ -299,8 +299,11 @@ class IRCBotConsumer(FedmsgConsumer):
                     pretty=client.factory.pretty,
                     terse=client.factory.terse,
                 )
-                raw_msg = raw_msg.encode('utf-8')
-                getattr(client, self.hub.config['irc_method'], 'notice')(
-                    client.factory.channel,
-                    raw_msg,
-                )
+                send = getattr(client, self.hub.config['irc_method'], 'notice')
+                send(client.factory.channel, raw_msg.encode('utf-8'))
+
+                backlog = self.incoming.qsize()
+                if backlog and (backlog % 20) == 0:
+                    warning = "* backlogged by %i messages" % backlog
+                    self.log.warning(warning)
+                    send(client.factory.channel, warning.encode('utf-8'))
