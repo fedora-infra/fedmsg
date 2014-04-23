@@ -45,7 +45,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
 hostname = socket.gethostname().split('.', 1)[0]
-local_name = 'unittest.{0}'.format(hostname)
+local_name = '{0}.{1}'.format(unittest.__name__, hostname)
 
 
 @raises(KeyError)

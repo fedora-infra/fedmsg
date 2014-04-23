@@ -13,7 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+try:
+    # For python-2.6, so we can do skipTest
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 import os
 import socket
@@ -58,7 +62,7 @@ class TestHub(unittest.TestCase):
         self.context = FedMsgContext(**config)
 
         # fully qualified
-        self.fq_topic = "com.test_prefix.dev.unittest.foo"
+        self.fq_topic = "com.test_prefix.dev.%s.foo" % unittest.__name__
         # short version
         self.topic = "foo"
 
@@ -129,6 +133,8 @@ class TestHub(unittest.TestCase):
 
         simulate_reactor(sleep_duration)
         sleep(sleep_duration)
+        simulate_reactor(sleep_duration)
+        sleep(sleep_duration)
 
         eq_(len(messages_received), 1)
         eq_(messages_received[0], obj)
@@ -175,7 +181,7 @@ class TestHub(unittest.TestCase):
 
         # TODO -- now that moksha.hub is doing its internal threading/queueing
         # behavior, this feature of fedmsg is a bit more difficult to test.
-        return self.skipTest("Not sure how to test this behavior now.")
+        raise self.skipTest("Not sure how to test this behavior now.")
 
         obj = {'secret': secret}
         messages_received = []

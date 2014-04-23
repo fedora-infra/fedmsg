@@ -57,12 +57,17 @@ config = dict(
             "tcp://*:%i" % (port + 8),
             "tcp://*:%i" % (port + 9),
         ],
+        "unittest2.%s" % hostname: [
+            "tcp://*:%i" % (port + 10),
+            "tcp://*:%i" % (port + 11),
+        ],
         # Guarantee that we don't fall over with a bogus endpoint.
         "blah.%s": "tcp://www.flugle.horn:88",
     },
     relay_inbound=["tcp://127.0.0.1:%i" % (port - 1)],
     replay_endpoints={
         'unittest.%s' % hostname: "tcp://127.0.0.1:%i" % (port + 1),
+        'unittest2.%s' % hostname: "tcp://127.0.0.1:%i" % (port + 2),
     },
     persistent_store=None,
     environment="dev",
@@ -83,6 +88,7 @@ config = dict(
 
     certnames={
         "unittest.%s" % hostname: "shell-app01.phx2.fedoraproject.org",
+        "unittest2.%s" % hostname: "shell-app01.phx2.fedoraproject.org",
         "__main__.%s" % hostname: "shell-app01.phx2.fedoraproject.org",
         # In prod/stg, map hostname to the name of the cert in ssldir.
         # Unfortunately, we can't use socket.getfqdn()
@@ -90,6 +96,7 @@ config = dict(
     },
     gpg_keys={
         "unittest.%s" % hostname: gpg_key_unittest,
+        "unittest2.%s" % hostname: gpg_key_unittest,
         "__main__.%s" % hostname: gpg_key_main,
     }
 )

@@ -194,5 +194,5 @@ def validate(message, gpg_home=None, **config):
         )
         return True
     except GpgBinaryError as e:
-        log.warn("Failed validation. {}".format(six.text_type(message)))
+        log.warn("Failed validation. {0}".format(six.text_type(message)))
         return False
