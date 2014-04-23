@@ -32,7 +32,7 @@ import fedmsg.config
 import fedmsg.consumers
 import fedmsg.encoding
 
-from common import load_config
+from fedmsg.tests.common import load_config
 
 
 # Some constants used throughout the hub tests
@@ -116,7 +116,7 @@ class TestHub(unittest.TestCase):
             topic = self.fq_topic
             config_key = "test_consumer_enabled"
 
-            def consume(self, message):
+            def _consume(self, message):
                 messages_received.append(
                     message['body']['msg']
                 )
@@ -142,7 +142,7 @@ class TestHub(unittest.TestCase):
             topic = self.fq_topic
             config_key = "test_consumer_enabled"
 
-            def consume(self, message):
+            def _consume(self, message):
                 messages_received.append(
                     message['body']['msg']
                 )
@@ -151,7 +151,7 @@ class TestHub(unittest.TestCase):
             topic = self.fq_topic
             config_key = "test_consumer_enabled"
 
-            def consume(self, message):
+            def _consume(self, message):
                 messages_received.append(
                     message['body']['msg']
                 )
@@ -179,7 +179,7 @@ class TestHub(unittest.TestCase):
             topic = self.fq_topic
             config_key = "test_consumer_enabled"
 
-            def consume(self, message):
+            def _consume(self, message):
                 messages_received.append(
                     message['body']['msg']
                 )

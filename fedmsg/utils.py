@@ -95,7 +95,7 @@ def load_class(location):
     tokens = mod_name.split('.')
 
     fromlist = '[]'
-    if tokens > 1:
+    if len(tokens) > 1:
         fromlist = '.'.join(tokens[:-1])
 
     module = __import__(mod_name, fromlist=fromlist)

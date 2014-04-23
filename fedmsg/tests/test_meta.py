@@ -33,7 +33,7 @@ except ImportError:
 
 import fedmsg.meta
 
-from common import load_config
+from fedmsg.tests.common import load_config
 
 
 def skip_on(attributes):

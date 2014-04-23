@@ -23,7 +23,7 @@ import unittest
 from nose.tools import eq_
 
 import fedmsg.config
-from common import load_config
+from fedmsg.tests.common import load_config
 
 
 class RecursiveUpdateBase(unittest.TestCase):
@@ -81,7 +81,7 @@ class TestConfig(unittest.TestCase):
         config = load_config()
         endpoints = config['endpoints']
 
-        for key, value in endpoints.iteritems():
+        for key, value in endpoints.items():
             assert isinstance(value, list), value
 
 

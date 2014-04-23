@@ -16,8 +16,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 # Authors:  Simon Chopin <chopin.simon@gmail.com>
+#           Ralph Bean <rbean@redhat.com>
 #
 
+import six
 import fedmsg.encoding
 import fedmsg.utils
 
@@ -65,14 +67,16 @@ class ReplayContext(object):
     def _req_rep_cycle(self):
         res = self.publisher.poll(1000)
         if res > 0:
-            query = fedmsg.encoding.loads(self.publisher.recv())
+            raw = self.publisher.recv()
+            query = fedmsg.encoding.loads(raw.decode('utf-8'))
             try:
                 self.publisher.send_multipart([
-                    fedmsg.encoding.dumps(m)
+                    fedmsg.encoding.dumps(m).encode('utf-8')
                     for m in self.store.get(query)
                 ])
             except ValueError as e:
-                self.publisher.send("error: '{0}'".format(e.message))
+                self.publisher.send(
+                    u"error: '{0}'".format(six.text_type(e)).encode('utf-8'))
 
     def listen(self):
         try:
@@ -101,13 +105,13 @@ def get_replay(name, query, config, context=None):
                       "replay endpoint: '{0}'".format(str(e)))
 
     # REQ/REP dance
-    socket.send(fedmsg.encoding.dumps(query))
+    socket.send(fedmsg.encoding.dumps(query).encode('utf-8'))
     msgs = socket.recv_multipart()
     socket.close()
 
     for m in msgs:
         try:
-            yield fedmsg.encoding.loads(m)
+            yield fedmsg.encoding.loads(m.decode('utf-8'))
         except ValueError:
             # We assume that if it isn't JSON then it's an error message
             raise ValueError(m)

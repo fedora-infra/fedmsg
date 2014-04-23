@@ -17,6 +17,7 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
+import six
 import os
 
 import nose.tools.nontrivial
@@ -38,8 +39,8 @@ def skip_if_missing_x509_libs(f):
         try:
             import M2Crypto
             import m2ext
-        except ImportError, e:
-            self.skipTest(str(e))
+        except ImportError as e:
+            self.skipTest(six.text_type(e))
 
         return f(self, *args, **kw)
 

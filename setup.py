@@ -70,6 +70,7 @@ install_requires = [
     'moksha.hub>=1.3.0',
     'requests',
     'pygments',
+    'six',
     #'daemon',
     #'psutil',
 
@@ -81,7 +82,6 @@ tests_require = [
     'nose',
     'mock',
     'sqlalchemy',  # For the persistent-store test(s).
-    'six',  # In the future, we'll use this across fedmsg proper for py3.
 ]
 
 if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
