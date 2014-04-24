@@ -344,57 +344,6 @@ Glossary of Configuration Values
         ``str`` — the name of the method used to publish the messages on IRC.
         Valid values are 'msg' and 'notice', the latter being the default.
 
-    tweet_endpoints
-        ``list`` - A list of twitter/statusnet configuration dicts.  This is the
-        primary way of configuring the ``fedmsg-tweet`` bot implemented in
-        :func:`fedmsg.commands.tweet.tweet`.
-
-        Each dict contains a number of possible options.  Take the following
-        example:
-
-          >>> tweet_endpoints=[
-          ...     tweet_settings=dict(
-          ...         base_url="http://api.twitter.com",
-          ...         consumer_key="123456789ABCDEF",
-          ...         consumer_secret="123456789ABCDEF",
-          ...         access_token_key="12345678ABCDEF",
-          ...         access_token_secret="1234567ABCDEF",
-          ...     ),
-          ...     dict(
-          ...         base_url="http://identi.ca/api",
-          ...         consumer_key="12345676ABCDEF",
-          ...         consumer_secret="12345678ABCDEF",
-          ...         access_token_key="12355ABCEEF",
-          ...         access_token_secret="123456ABCDEF",
-          ...     ),
-          ... ],
-
-        The ``base_url`` entry specifies which service to use.  The other
-        options are all oauth credentials.
-
-        See https://dev.twitter.com/docs/auth/tokens-devtwittercom about getting
-        credentials for twitter.com.  You can get all four authn values from
-        their site.
-
-        Statusnet is a bit more tricky.  You'll need to get your
-        ``consumer_key`` and ``consumer_secret`` yourself from http://identi.ca/
-        and then perform the "oauth dance" with `this python script
-        <https://gist.github.com/4070630>`_ in order to get your
-        ``access_token_key`` and ``access_token_secret``.
-
-    tweet_hibernate_duration
-        ``float`` - A number of seconds that :func:`fedmsg.commands.tweet.tweet`
-        should go to sleep if it encounters a rate limit error from either
-        statusnet or twitter.com.  Set this relatively high, multiple minutes
-        (120 or 180) since you don't want to exhaust your allowance.
-        There is a daily limit of 1,000 messages.  See http://bit.ly/W6agqr
-        for more information.
-
-    tweet_intermessage_pause
-        ``float`` - A number of seconds that :func:`fedmsg.commands.tweet.tweet`
-        should go to sleep inbetween every message it posts.  Set this
-        relatively low to 0.5 or 1.
-
     zmq_enabled
         ``bool`` - A value that must be true.  It is present solely
         for compatibility/interoperability with `moksha

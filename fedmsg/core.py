@@ -22,6 +22,7 @@ import getpass
 import socket
 import threading
 import datetime
+import six
 import time
 import uuid
 import warnings
@@ -249,14 +250,14 @@ class FedMsgContext(object):
                 topic,
             ])
 
-        if type(topic) == unicode:
+        if isinstance(topic, six.text_type):
             topic = to_bytes(topic, encoding='utf8', nonstring="passthru")
 
         year = datetime.datetime.now().year
 
         self._i += 1
         msg = dict(
-            topic=topic,
+            topic=topic.decode('utf-8'),
             msg=msg,
             timestamp=int(time.time()),
             msg_id=str(year) + '-' + str(uuid.uuid4()),
@@ -288,7 +289,7 @@ class FedMsgContext(object):
             msg = store.add(msg)
 
         self.publisher.send_multipart(
-            [topic, fedmsg.encoding.dumps(msg)],
+            [topic, fedmsg.encoding.dumps(msg).encode('utf-8')],
             flags=zmq.NOBLOCK,
         )
 

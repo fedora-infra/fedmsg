@@ -20,6 +20,7 @@
 import fedmsg
 import fedmsg.config
 import warnings
+import six
 import sys
 
 import logging
@@ -70,8 +71,8 @@ class BaseCommand(object):
 
         try:
             reactor.stop()
-        except ReactorNotRunning, e:
-            warnings.warn(str(e))
+        except ReactorNotRunning as e:
+            warnings.warn(six.text_type(e))
 
     def _daemonize(self):
         import psutil

@@ -2,11 +2,11 @@ language: python
 python:
  - "2.6"
  - "2.7"
-# Someday, soon.
-# - "3.2"
+ - "3.3"
+
 install:
  - python setup.py install
- - pip install nose mock sqlalchemy six unittest2
+ - pip install nose mock sqlalchemy unittest2
 script: nosetests -v
 notifications:
     email: false
@@ -14,3 +14,7 @@ notifications:
         - "irc.freenode.net#fedora-apps"
     on_success: change
     on_failure: change
+
+matrix:
+  allow_failures:
+    - python: "3.3"

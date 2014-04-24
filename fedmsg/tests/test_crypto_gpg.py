@@ -59,8 +59,8 @@ class TestGpg(unittest.TestCase):
 
     def test_verif_detach_sig(self):
         signature_path = os.path.join(data_dir, "test_data.sig")
-        self.ctx.verify(open(clear_data_path).read(),
-                        signature=open(signature_path).read())
+        self.ctx.verify(open(clear_data_path, 'r').read(),
+                        signature=open(signature_path, 'rb').read())
         self.ctx.verify_from_file(clear_data_path, sig_path=signature_path)
 
     @raises(fedmsg.crypto.gpg.GpgBinaryError)
@@ -70,13 +70,13 @@ class TestGpg(unittest.TestCase):
 
     @skip_on_travis
     def test_sign_cleartext(self):
-        test_data = 'I can haz a signature?'
+        test_data = u'I can haz a signature?'
         signed_text = self.ctx.clearsign(test_data, fingerprint=secret_fp)
         self.ctx.verify(signed_text)
 
     @skip_on_travis
     def test_sign_detached(self):
-        test_data = 'I can haz a signature?'
+        test_data = u'I can haz a signature?'
         signature = self.ctx.sign(test_data, fingerprint=secret_fp)
         self.ctx.verify(test_data, signature)
 

@@ -3,7 +3,7 @@ import unittest
 import mock
 import warnings
 from fedmsg.core import FedMsgContext
-from common import load_config
+from fedmsg.tests.common import load_config
 
 
 class TestCore(unittest.TestCase):

@@ -95,7 +95,7 @@ class SqlStore(object):
     def get(self, query):
         predicates = []
 
-        for key, value in query.iteritems():
+        for key, value in query.items():
             fn = getattr(self, '_query_{0}'.format(key), None)
             if not fn:
                 raise ValueError('Unsupported field: "key"')

@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2013 Simon Chopin <chopin.simon@gmail.com>
+# Copyright (C) 2013-2014 Simon Chopin <chopin.simon@gmail.com>
 #
 # fedmsg is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -15,13 +15,17 @@
 # License along with fedmsg; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
-# Author: Simon Chopin <chopin.simon@gmail.com>
+# Authors:  Simon Chopin <chopin.simon@gmail.com>
+#           Ralph Bean <rbean@redhat.com>
 
 import os
 import os.path
 import tempfile
 import shutil
+import six
 import subprocess
+
+from base64 import b64encode, b64decode
 
 import logging
 log = logging.getLogger(__name__)
@@ -54,14 +58,17 @@ class Context(object):
         `homedir` <string> Override the configured homedir.
         '''
 
+        if isinstance(data, six.text_type):
+            data = data.encode('utf-8')
+
         tmpdir = tempfile.mkdtemp()
         data_file, data_path = tempfile.mkstemp(dir=tmpdir)
-        data_file = os.fdopen(data_file, 'w')
+        data_file = os.fdopen(data_file, 'wb')
         data_file.write(data)
         data_file.close()
         if signature:
             sig_file, sig_path = tempfile.mkstemp(dir=tmpdir)
-            sig_file = os.fdopen(sig_file, 'w')
+            sig_file = os.fdopen(sig_file, 'wb')
             sig_file.write(signature)
             sig_file.close()
         else:
@@ -100,6 +107,10 @@ class Context(object):
         return True
 
     def clearsign(self, data, fingerprint, keyrings=None, homedir=None):
+
+        if isinstance(data, six.text_type):
+            data = data.encode('utf-8')
+
         cmd_line = ['gpg', '--homedir', homedir or self.homedir]
         cmd_line.extend(self._get_keyrings_cl(keyrings))
 
@@ -116,6 +127,10 @@ class Context(object):
         return stdout
 
     def sign(self, data, fingerprint, keyrings=None, homedir=None):
+
+        if isinstance(data, six.text_type):
+            data = data.encode('utf-8')
+
         cmd_line = ['gpg', '--homedir', homedir or self.homedir]
         cmd_line.extend(self._get_keyrings_cl(keyrings))
 
@@ -157,7 +172,7 @@ def sign(message, gpg_home=None, gpg_signing_key=None, **config):
         gpg_signing_key,
         homedir=gpg_home
     )
-    return dict(message.items() + [('signature', signature.encode('base64'))])
+    return dict(list(message.items()) + [('signature', b64encode(signature))])
 
 
 def validate(message, gpg_home=None, **config):
@@ -174,10 +189,10 @@ def validate(message, gpg_home=None, **config):
     try:
         _ctx.verify(
             fedmsg.encoding.dumps(message['msg']),
-            message['signature'].decode('base64'),
+            b64decode(message['signature']),
             homedir=gpg_home
         )
         return True
     except GpgBinaryError as e:
-        log.warn("Failed validation. {}".format(e.message))
+        log.warn("Failed validation. {0}".format(six.text_type(message)))
         return False

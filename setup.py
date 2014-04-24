@@ -70,6 +70,7 @@ install_requires = [
     'moksha.hub>=1.3.0',
     'requests',
     'pygments',
+    'six',
     #'daemon',
     #'psutil',
 
@@ -81,7 +82,6 @@ tests_require = [
     'nose',
     'mock',
     'sqlalchemy',  # For the persistent-store test(s).
-    'six',  # In the future, we'll use this across fedmsg proper for py3.
 ]
 
 if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
@@ -147,7 +147,6 @@ setup(
             #"fedmsg-config=fedmsg.commands.config:config",
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot",
             "fedmsg-collectd=fedmsg.commands.collectd:collectd",
-            "fedmsg-tweet=fedmsg.commands.tweet:tweet",
             "fedmsg-announce=fedmsg.commands.announce:announce",
             "fedmsg-trigger=fedmsg.commands.trigger:trigger",
         ],
@@ -156,7 +155,6 @@ setup(
             "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer",
             "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer",
             "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer",
-            "fedmsg-tweet=fedmsg.consumers.tweet:TweetBotConsumer",
         ],
         'moksha.producer': [
         ],

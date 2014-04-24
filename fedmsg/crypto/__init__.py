@@ -155,8 +155,8 @@ log = logging.getLogger(__name__)
 _implementation = None
 _validate_implementations = None
 
-import gpg
-import x509
+from . import gpg
+from . import x509
 
 _possible_backends = {
     'gpg': gpg,

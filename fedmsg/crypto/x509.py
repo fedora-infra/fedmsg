@@ -36,7 +36,7 @@ try:
     # https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
     import m2ext
     disabled = False
-except ImportError, e:
+except ImportError as e:
     logging.basicConfig()
     log.warn("Crypto disabled %r" % e)
     disabled = True
