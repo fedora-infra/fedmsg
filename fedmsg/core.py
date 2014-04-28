@@ -39,6 +39,7 @@ from fedmsg.utils import (
     set_high_water_mark,
     guess_calling_module,
     set_tcp_keepalive,
+    set_tcp_reconnect,
 )
 
 from fedmsg.replay import check_for_replay
@@ -335,6 +336,7 @@ class FedMsgContext(object):
 
                 set_high_water_mark(subscriber, self.c)
                 set_tcp_keepalive(subscriber, self.c)
+                set_tcp_reconnect(subscriber, self.c)
 
                 getattr(subscriber, method)(endpoint)
                 subs[subscriber] = (_name, endpoint)
