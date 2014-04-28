@@ -77,6 +77,9 @@ config = dict(
     zmq_enabled=True,
     zmq_strict=False,
 
+    zmq_reconnect_ivl=100,
+    zmq_reconnect_ivl_max=1000,
+
     # SSL stuff.
     sign_messages=ssl_enabled_for_tests,
     validate_signatures=ssl_enabled_for_tests,

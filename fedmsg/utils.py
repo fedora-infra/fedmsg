@@ -87,6 +87,35 @@ def set_tcp_keepalive(socket, config):
                 socket.setsockopt(attr, config[key])
 
 
+def set_tcp_reconnect(socket, config):
+    """ Set a series of TCP reconnect options on the socket if
+    and only if
+      1) they are specified explicitly in the config and
+      2) the version of pyzmq has been compiled with support
+
+    Once our fedmsg bus grew to include many hundreds of endpoints, we started
+    notices a *lot* of SYN-ACKs in the logs.  By default, if an endpoint is
+    unavailable, zeromq will attempt to reconnect every 100ms until it gets a
+    connection.  With this code, you can reconfigure that to back off
+    exponentially to some max delay (like 1000ms) to reduce reconnect storm
+    spam.
+
+    See the following
+      - http://api.zeromq.org/3-2:zmq-setsockopt
+    """
+
+    keepalive_options = {
+        # Map fedmsg config keys to zeromq socket constants
+        'zmq_reconnect_ivl': 'RECONNECT_IVL',
+        'zmq_reconnect_ivl_max': 'RECONNECT_IVL_max',
+    }
+    for key, const in keepalive_options.items():
+        if key in config:
+            attr = getattr(zmq, const, None)
+            if attr:
+                socket.setsockopt(attr, config[key])
+
+
 def load_class(location):
     """ Take a string of the form 'fedmsg.consumers.ircbot:IRCBotConsumer'
     and return the IRCBotConsumer class.
