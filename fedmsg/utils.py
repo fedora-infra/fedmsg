@@ -104,12 +104,12 @@ def set_tcp_reconnect(socket, config):
       - http://api.zeromq.org/3-2:zmq-setsockopt
     """
 
-    keepalive_options = {
+    reconnect_options = {
         # Map fedmsg config keys to zeromq socket constants
         'zmq_reconnect_ivl': 'RECONNECT_IVL',
         'zmq_reconnect_ivl_max': 'RECONNECT_IVL_max',
     }
-    for key, const in keepalive_options.items():
+    for key, const in reconnect_options.items():
         if key in config:
             attr = getattr(zmq, const, None)
             if attr:
