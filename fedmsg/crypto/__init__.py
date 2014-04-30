@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2012 Red Hat, Inc.
+# Copyright (C) 2012 - 2014 Red Hat, Inc.
 #
 # fedmsg is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -155,8 +155,8 @@ log = logging.getLogger(__name__)
 _implementation = None
 _validate_implementations = None
 
-import gpg
-import x509
+from . import gpg
+from . import x509
 
 _possible_backends = {
     'gpg': gpg,

@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2012 Red Hat, Inc.
+# Copyright (C) 2012 - 2014 Red Hat, Inc.
 # Copyright (C) 2014 Nicolas Dandrimont <olasd@debian.org>
 #
 # fedmsg is free software; you can redistribute it and/or
@@ -19,8 +19,10 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #           Nicolas Dandrimont <olasd@debian.org>
 #
+from __future__ import print_function
 
 import argparse
+import six
 import sys
 import textwrap
 
@@ -93,14 +95,14 @@ def config():
     if args.query:
         cur = fedmsg.utils.dict_query(cur, args.query)[args.query]
         if cur is None:
-            print >>sys.stderr, (
-                "Key `%s` does not exist in config" % args.query)
+            print ("Key `%s` does not exist in config" % args.query,
+                   file=sys.stderr)
             sys.exit(1)
 
     if isinstance(cur, list):
         for i in cur:
-            print i
-    elif isinstance(cur, basestring):
-        print cur
+            print(i)
+    elif isinstance(cur, six.string_types):
+        print(cur)
     else:
-        print fedmsg.encoding.pretty_dumps(cur)
+        print(fedmsg.encoding.pretty_dumps(cur))

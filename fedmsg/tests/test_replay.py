@@ -36,7 +36,7 @@ import zmq
 import socket
 from threading import Thread, Event
 
-from common import load_config
+from fedmsg.tests.common import load_config
 
 from fedmsg.replay import ReplayContext, get_replay
 
@@ -45,7 +45,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
 hostname = socket.gethostname().split('.', 1)[0]
-local_name = 'unittest.{0}'.format(hostname)
+local_name = '{0}.{1}'.format(unittest.__name__, hostname)
 
 
 @raises(KeyError)
@@ -100,16 +100,16 @@ class TestReplayContext(unittest.TestCase):
         self.config['persistent_store'].get = Mock(side_effect=[answer])
         # Doesn't matter what we send as long as it is legit JSON,
         # since the store is mocked
-        self.request_socket.send('{"id": 1}')
+        self.request_socket.send(u'{"id": 1}'.encode('utf-8'))
         self.replay_context._req_rep_cycle()
 
         rep = self.request_socket.recv_multipart()
-        print rep
-        print answer
+        print(rep)
+        print(answer)
 
         assert len(answer) == len(rep)
         for r, a in zip(rep, answer):
-            self.assertDictEqual(json.loads(r), a)
+            self.assertDictEqual(json.loads(r.decode('utf-8')), a)
 
     def test_get_error(self):
         # Setup the store to return what we ask.
@@ -117,13 +117,13 @@ class TestReplayContext(unittest.TestCase):
         self.config['persistent_store'].get = Mock(side_effect=[answer])
         # Doesn't matter what we send as long as it is legit JSON,
         # since the store is mocked
-        self.request_socket.send('{"id": 1}')
+        self.request_socket.send(u'{"id": 1}'.encode('utf-8'))
         self.replay_context._req_rep_cycle()
 
         rep = self.request_socket.recv_multipart()
-        print rep
+        print(rep)
 
-        assert len(rep) == 1 and "error: 'No luck!'" == rep[0]
+        assert len(rep) == 1 and "error: 'No luck!'" == rep[0].decode('utf-8')
 
 
 class TestSqlStore(unittest.TestCase):

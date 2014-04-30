@@ -1,6 +1,56 @@
 Changelog
 =========
 
+0.8.0
+-----
+
+- Kill the restart hiccup. `2ae22795e <https://github.com/fedora-infra/fedmsg/commit/2ae22795e73e993ec028d8a1fbbaccacc2ebead3>`_
+- Move that. `a3321d11c <https://github.com/fedora-infra/fedmsg/commit/a3321d11c18b42ee916bfd34888f76c01b17c49e>`_
+- Careful with unsigned or invalid messages in fedmsg-irc. `3fc938cb4 <https://github.com/fedora-infra/fedmsg/commit/3fc938cb48233417a81c37ad0772983fe6dbb423>`_
+- Merge pull request #240 from fedora-infra/feature/restart-hiccup `68de8320a <https://github.com/fedora-infra/fedmsg/commit/68de8320a267f300034b81fd8a3ae1f7a90492fa>`_
+- Merge pull request #239 from fedora-infra/feature/careful-with-unsigned `c10759a3a <https://github.com/fedora-infra/fedmsg/commit/c10759a3a84866c06580ada410eaaa53f30a81df>`_
+- Update sysv init scripts to manage lockfile.  Should fix hanging at restart. `996d806c5 <https://github.com/fedora-infra/fedmsg/commit/996d806c5e6a4e1f8623058397cab6310a5780d7>`_
+- Merge pull request #241 from fedora-infra/feature/more-hiccup-fixes `7002cfb86 <https://github.com/fedora-infra/fedmsg/commit/7002cfb86dbad49b1aab63e60d1b2adc530e04a7>`_
+- Remove the "FIXME".  This is intentional. `8ea4d25ca <https://github.com/fedora-infra/fedmsg/commit/8ea4d25caad7703596ead0e492984cc747077e15>`_
+- Copyright ©2012 - 2014 Red Hat, Inc. `93b02334c <https://github.com/fedora-infra/fedmsg/commit/93b02334c7fb5dcebf6c34c711513f14774d15fe>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `95233362d <https://github.com/fedora-infra/fedmsg/commit/95233362de5eb54b3289e1578c0af82bf1991b32>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `1c3aba6c9 <https://github.com/fedora-infra/fedmsg/commit/1c3aba6c985d7b4a63f961cf0c1f1b909678a576>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `ef7d328ac <https://github.com/fedora-infra/fedmsg/commit/ef7d328ac5c17a9ee43b0b1fdfbf6e95f31b34e7>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `abf95db70 <https://github.com/fedora-infra/fedmsg/commit/abf95db70ba64927dfc1eb552e04b147a364dc46>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `000625393 <https://github.com/fedora-infra/fedmsg/commit/0006253931397f3dacd94a392405c04c9dbae338>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `6df04cbeb <https://github.com/fedora-infra/fedmsg/commit/6df04cbebe7a9134ca59e2710e495848c7013ade>`_
+- Copyright (C) 2013 - 2014 Red Hat, Inc. `d965e9f29 <https://github.com/fedora-infra/fedmsg/commit/d965e9f290a8c746ad1b644ca1da321b71e068b1>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `c6cdb1051 <https://github.com/fedora-infra/fedmsg/commit/c6cdb10511259eb6387dce6c9a850ad246117063>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `b0abddd0a <https://github.com/fedora-infra/fedmsg/commit/b0abddd0ad65a45492179687aa2735f278cfb6ac>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `009c4796f <https://github.com/fedora-infra/fedmsg/commit/009c4796fe0b115acfb7eb82cd2076d2828abca4>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `775b7535b <https://github.com/fedora-infra/fedmsg/commit/775b7535bae4481e429edeb2a3fe81a059142b8c>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `c1e4015e4 <https://github.com/fedora-infra/fedmsg/commit/c1e4015e4961783e0cd666a6476689cd81929ed9>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `09f129e84 <https://github.com/fedora-infra/fedmsg/commit/09f129e84ef76c62c53b6c3b2256e828bcb46858>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `3491036ec <https://github.com/fedora-infra/fedmsg/commit/3491036ecb109b89432677af287586963d982b94>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `84230a9eb <https://github.com/fedora-infra/fedmsg/commit/84230a9eb2c64b1382a73a835f8f0aa08b03a0b6>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `4fe54804a <https://github.com/fedora-infra/fedmsg/commit/4fe54804a24112c9d778202c8387ff3688b60c4e>`_
+- Copyright (C) 2008 - 2014 Red Hat, Inc. `48d2e97f0 <https://github.com/fedora-infra/fedmsg/commit/48d2e97f0eacb683322087164a4d5d6589a8fb72>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `c1b4660a4 <https://github.com/fedora-infra/fedmsg/commit/c1b4660a4e560ad89c8494ba2a08bba0804dfda2>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `27bba681f <https://github.com/fedora-infra/fedmsg/commit/27bba681fa2ad6696ee351f43883877aad95c541>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `8044c9a42 <https://github.com/fedora-infra/fedmsg/commit/8044c9a42d062e9b8b799f9454cbf8a3a30610db>`_
+- Copyright (C) 2012 - 2014 Red Hat, Inc. `4f3b5d7bb <https://github.com/fedora-infra/fedmsg/commit/4f3b5d7bb9c987eb7466044b6db4b0ce331181a8>`_
+- Merge pull request #243 from lbazan/develop `fa66d02d6 <https://github.com/fedora-infra/fedmsg/commit/fa66d02d67f25dcee7ebbce84fa1590d6cdc9213>`_
+- fedmsg.com Doc copyright 2012 - 2014 `677fb56de <https://github.com/fedora-infra/fedmsg/commit/677fb56defa7dbc6c5c475ebb6c15c148b16231e>`_
+- Merge pull request #244 from lbazan/develop `c9ca4f195 <https://github.com/fedora-infra/fedmsg/commit/c9ca4f19515dfcf3ba00b42f7dab7e7b37d9453e>`_
+- Provide backlog notices for the ircbot. `a9a784e82 <https://github.com/fedora-infra/fedmsg/commit/a9a784e82671d8585ab813d4364967f0935a185a>`_
+- Merge pull request #246 from fedora-infra/feature/irc-backlog-notices `50ff43d79 <https://github.com/fedora-infra/fedmsg/commit/50ff43d79063a449c3d79af1a1b5201ee5504015>`_
+- Nuke the twitter bot.  No one has used it in a long long time. `ef2599d31 <https://github.com/fedora-infra/fedmsg/commit/ef2599d311692b5c526db44ce670755ccc5afacd>`_
+- Port to a python2/python3 codebase. `93d1aab21 <https://github.com/fedora-infra/fedmsg/commit/93d1aab2132ee9274a22cdf82cd478e76229a35c>`_
+- Disable one weird test. `90a6f7c28 <https://github.com/fedora-infra/fedmsg/commit/90a6f7c28a9e0e92742fa4f2a98b7b4aede21ca0>`_
+- Enable python3 tests on travis. `ac0255e6f <https://github.com/fedora-infra/fedmsg/commit/ac0255e6faca6c93cb17cc5a19415755cece2afb>`_
+- Get py2.6 tests running again. `9d96f3a53 <https://github.com/fedora-infra/fedmsg/commit/9d96f3a53ff04cef053d39140def779b363b6740>`_
+- Merge pull request #247 from fedora-infra/feature/python3-porting `0e8b8a28d <https://github.com/fedora-infra/fedmsg/commit/0e8b8a28db892821aa3ee9ab4229dc4027919b34>`_
+- Add support for zmq reconnect options. `607ce8728 <https://github.com/fedora-infra/fedmsg/commit/607ce87283b677f0a51f27d4f38a7c040363c012>`_
+- Give this an appropriate name. `d44b6c2a0 <https://github.com/fedora-infra/fedmsg/commit/d44b6c2a08607910d5c729e87c1bc3dff5c36160>`_
+- Merge pull request #248 from fedora-infra/feature/zmq_reconnect `4be1b3e67 <https://github.com/fedora-infra/fedmsg/commit/4be1b3e67a10ff633d4ea7f11ca30a7a048de0ac>`_
+- Be explicit with encodings in the gateway. `195b35dc6 <https://github.com/fedora-infra/fedmsg/commit/195b35dc6b41f30bea2f2ec254b8aac2453805a2>`_
+- Merge pull request #249 from fedora-infra/feature/explicit-encoding `452310a97 <https://github.com/fedora-infra/fedmsg/commit/452310a975125d39c396ce599af4488eb343ccc2>`_
+
 0.7.7
 -----
 

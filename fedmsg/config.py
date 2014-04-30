@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2012 Red Hat, Inc.
+# Copyright (C) 2012 - 2014 Red Hat, Inc.
 #
 # fedmsg is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -149,7 +149,7 @@ def load_config(extra_args=None,
 
     # Just a little debug option.  :)
     if config.get('print_config'):
-        print pretty_dumps(config)
+        print(pretty_dumps(config))
         sys.exit(0)
 
     if config.get('environment', 'prod') not in VALID_ENVIRONMENTS:
@@ -163,8 +163,9 @@ def load_config(extra_args=None,
         raise ValueError("The 'endpoint' config value must be a dict.")
 
     if 'endpoints' in config:
-        config['endpoints'] = dict(map(lambda (k, v): (k, list(iterate(v))),
-                                       config['endpoints'].iteritems()))
+        config['endpoints'] = dict([
+            (k, list(iterate(v))) for k, v in config['endpoints'].items()
+        ])
 
     if 'srv_endpoints' in config and len(config['srv_endpoints']) > 0:
         from dns.resolver import query, NXDOMAIN, Timeout, NoNameservers
@@ -321,6 +322,13 @@ def _recursive_update(d1, d2):
         d1[k] = d2[k]
 
     return d1
+
+
+def execfile(fname, variables):
+    """ This is builtin in python2, but we have to roll our own on py3. """
+    with open(fname) as f:
+        code = compile(f.read(), fname, 'exec')
+        exec(code, variables)
 
 
 def _process_config_file(filenames=None):

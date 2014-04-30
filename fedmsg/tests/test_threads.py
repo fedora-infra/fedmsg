@@ -13,7 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+try:
+    # For python-2.6, so we can do skipTest
+    import unittest2 as unittest
+except ImportError:
+    import unittest
+
 import threading
 import copy
 import os
@@ -73,7 +78,7 @@ class TestHub(unittest.TestCase):
         self.hub = CentralMokshaHub(config=config)
 
         # fully qualified
-        self.fq_topic = "com.test_prefix.dev.unittest.foo"
+        self.fq_topic = "com.test_prefix.dev.threadtest.foo"
         # short version
         self.topic = "foo"
 
@@ -99,7 +104,7 @@ class TestHub(unittest.TestCase):
                 import fedmsg
                 fedmsg.init(**config)
                 fedmsg.publish(topic=self.topic, msg=secret,
-                               modname="unittest")
+                               modname="threadtest")
 
         threads = [Publisher() for i in range(5)]
         for thread in threads:

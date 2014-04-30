@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2012 Red Hat, Inc.
+# Copyright (C) 2012 - 2014 Red Hat, Inc.
 #
 # fedmsg is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -50,11 +50,18 @@ End users can have multiple plugin sets installed simultaneously.
 
 """
 
+import six
+
 # gettext is used for internationalization.  I have tested that it can produce
 # the correct files, but I haven't submitted it to anyone for translation.
 import gettext
 t = gettext.translation('fedmsg', 'locale', fallback=True)
-_ = t.ugettext
+
+if six.PY3:
+    _ = t.gettext
+else:
+    _ = t.ugettext
+
 
 from fedmsg.meta.default import DefaultProcessor
 
@@ -149,7 +156,7 @@ def with_processor():
     return _wrapper
 
 
-@legacy_condition(unicode)
+@legacy_condition(six.text_type)
 @with_processor()
 def msg2repr(msg, processor, **config):
     """ Return a human-readable or "natural language" representation of a
@@ -164,35 +171,35 @@ def msg2repr(msg, processor, **config):
     return fmt.format(**locals())
 
 
-@legacy_condition(unicode)
+@legacy_condition(six.text_type)
 @with_processor()
 def msg2title(msg, processor, **config):
     """ Return a 'title' or primary text associated with a message. """
     return processor.title(msg, **config)
 
 
-@legacy_condition(unicode)
+@legacy_condition(six.text_type)
 @with_processor()
 def msg2subtitle(msg, processor, **config):
     """ Return a 'subtitle' or secondary text associated with a message. """
     return processor.subtitle(msg, **config)
 
 
-@legacy_condition(unicode)
+@legacy_condition(six.text_type)
 @with_processor()
 def msg2link(msg, processor, **config):
     """ Return a URL associated with a message. """
     return processor.link(msg, **config)
 
 
-@legacy_condition(unicode)
+@legacy_condition(six.text_type)
 @with_processor()
 def msg2icon(msg, processor, **config):
     """ Return a primary icon associated with a message. """
     return processor.icon(msg, **config)
 
 
-@legacy_condition(unicode)
+@legacy_condition(six.text_type)
 @with_processor()
 def msg2secondary_icon(msg, processor, **config):
     """ Return a secondary icon associated with a message. """

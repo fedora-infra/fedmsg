@@ -85,4 +85,7 @@ class GatewayConsumer(FedmsgConsumer):
 
     def consume(self, msg):
         self.log.debug("Gateway: %r" % msg.topic)
-        self.gateway_socket.send_multipart([msg.topic, msg.body])
+        self.gateway_socket.send_multipart([
+            msg.topic.encode('utf-8'),
+            msg.body.encode('utf-8'),
+        ])

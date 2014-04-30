@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2012 Red Hat, Inc.
+# Copyright (C) 2012 - 2014 Red Hat, Inc.
 #
 # fedmsg is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,7 @@ import getpass
 import socket
 import threading
 import datetime
+import six
 import time
 import uuid
 import warnings
@@ -38,6 +39,7 @@ from fedmsg.utils import (
     set_high_water_mark,
     guess_calling_module,
     set_tcp_keepalive,
+    set_tcp_reconnect,
 )
 
 from fedmsg.replay import check_for_replay
@@ -249,14 +251,14 @@ class FedMsgContext(object):
                 topic,
             ])
 
-        if type(topic) == unicode:
+        if isinstance(topic, six.text_type):
             topic = to_bytes(topic, encoding='utf8', nonstring="passthru")
 
         year = datetime.datetime.now().year
 
         self._i += 1
         msg = dict(
-            topic=topic,
+            topic=topic.decode('utf-8'),
             msg=msg,
             timestamp=int(time.time()),
             msg_id=str(year) + '-' + str(uuid.uuid4()),
@@ -288,7 +290,7 @@ class FedMsgContext(object):
             msg = store.add(msg)
 
         self.publisher.send_multipart(
-            [topic, fedmsg.encoding.dumps(msg)],
+            [topic, fedmsg.encoding.dumps(msg).encode('utf-8')],
             flags=zmq.NOBLOCK,
         )
 
@@ -334,6 +336,7 @@ class FedMsgContext(object):
 
                 set_high_water_mark(subscriber, self.c)
                 set_tcp_keepalive(subscriber, self.c)
+                set_tcp_reconnect(subscriber, self.c)
 
                 getattr(subscriber, method)(endpoint)
                 subs[subscriber] = (_name, endpoint)

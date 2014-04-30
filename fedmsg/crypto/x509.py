@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2012 Red Hat, Inc.
+# Copyright (C) 2012 - 2014 Red Hat, Inc.
 #
 # fedmsg is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,7 @@ try:
     # https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
     import m2ext
     disabled = False
-except ImportError, e:
+except ImportError as e:
     logging.basicConfig()
     log.warn("Crypto disabled %r" % e)
     disabled = True
@@ -62,7 +62,7 @@ def sign(message, ssldir=None, certname=None, **config):
 
     certificate = M2Crypto.X509.load_cert(
         "%s/%s.crt" % (ssldir, certname)).as_pem()
-    # FIXME ? -- Opening this file requires elevated privileges in stg/prod.
+    # Opening this file requires elevated privileges in stg/prod.
     rsa_private = M2Crypto.RSA.load_key(
         "%s/%s.key" % (ssldir, certname))
 

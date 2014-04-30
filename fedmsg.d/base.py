@@ -51,4 +51,7 @@ config = dict(
     zmq_tcp_keepalive_cnt=3,
     zmq_tcp_keepalive_idle=60,
     zmq_tcp_keepalive_intvl=5,
+
+    zmq_reconnect_ivl=100,
+    zmq_reconnect_ivl_max=1000,
 )

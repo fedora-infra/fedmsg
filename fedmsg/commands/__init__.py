@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2012 Red Hat, Inc.
+# Copyright (C) 2014 Red Hat, Inc.
 #
 # fedmsg is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@
 import fedmsg
 import fedmsg.config
 import warnings
+import six
 import sys
 
 import logging
@@ -70,10 +71,11 @@ class BaseCommand(object):
 
         try:
             reactor.stop()
-        except ReactorNotRunning, e:
-            warnings.warn(str(e))
+        except ReactorNotRunning as e:
+            warnings.warn(six.text_type(e))
 
     def _daemonize(self):
+        import psutil
         from daemon import DaemonContext
         try:
             from daemon.pidfile import TimeoutPIDLockFile as PIDLockFile
@@ -81,6 +83,12 @@ class BaseCommand(object):
             from daemon.pidlockfile import PIDLockFile
 
         pidlock = PIDLockFile('/var/run/fedmsg/%s.pid' % self.name)
+
+        pid = pidlock.read_pid()
+        if pid and not psutil.pid_exists(pid):
+            self.log.warn("PID file exists but with no proc:  coup d'etat!")
+            pidlock.break_lock()
+
         output = file('/var/log/fedmsg/%s.log' % self.name, 'a')
         daemon = DaemonContext(pidfile=pidlock, stdout=output, stderr=output)
         daemon.terminate = self._handle_signal

@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2012 Red Hat, Inc.
+# Copyright (C) 2012 - 2014 Red Hat, Inc.
 #
 # fedmsg is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 #
 import os
 import shutil
+import six
 
 import nose.tools.nontrivial
 
@@ -39,8 +40,8 @@ def skip_if_missing_libs(f):
         try:
             import M2Crypto
             import m2ext
-        except ImportError, e:
-            self.skipTest(str(e))
+        except ImportError as e:
+            self.skipTest(six.text_type(e))
 
         return f(self, *args, **kw)
 

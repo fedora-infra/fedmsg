@@ -23,13 +23,13 @@
 
 PROG=fedmsg-hub
 USER=fedmsg
-PIDFILE=/var/run/fedmsg/$PROG.pid
 OPTIONS=--daemon
-SUBSYS=/var/lock/subsys/$PROG
+PIDFILE=/var/run/fedmsg/$PROG.pid
+LOCKFILE=${PIDFILE}.lock
 
 start() {
     echo -n "Starting the FedMsg Hub: "
-    if [ -f $PIDFILE.lock ]; then
+    if [ -f $LOCKFILE ]; then
         echo FedMsg Hub already running
         exit 2;
     fi
@@ -45,7 +45,6 @@ start() {
 
     if [ $RETVAL -eq 0 ]; then
         success
-        touch $SUBSYS
     else
         failure
     fi
@@ -55,7 +54,7 @@ stop() {
         echo -n $"Stopping the FedMsg Hub: "
         killproc -p ${PIDFILE} $PROG
         echo
-        rm -f ${SUBSYS}
+        rm -f ${LOCKFILE}
         RETVAL=$?
         echo
 }

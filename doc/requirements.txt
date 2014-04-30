@@ -2,5 +2,4 @@ cloud_sptheme
 pyzmq-static
 fedmsg_meta_fedora_infrastructure>=0.1.2
 nose
-python-twitter
 requests
