@@ -53,7 +53,7 @@ html_theme_options = {
     # Style it like Fedora..
     "bodyfont":         "Cantarell",
 
-    "highlightcolor":   "#060",  # First Green
+    "highlightcolor":   "#4FAF4F",
 
     "sidebarbgcolor":   "#FEFEFE",
     "sidebartrimcolor": "#FEFEFE",
