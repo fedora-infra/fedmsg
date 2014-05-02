@@ -9,9 +9,11 @@ the heterogenous, "Rube-Goldberg" ways they do now.
 Fedora Infrastructure to send and receive messages to and from applications.
 See :doc:`overview` for a thorough introduction.
 
-The quickest way to see what the bus is all about is to jump into
-``#fedora-fedmsg`` on the freenode network.  There's a firehose bot there
-echoing messages to channel.
+
+`Click here to see a feed of the Fedora bus
+<https://apps.fedoraproject.org/datagrepper/raw>`_.  There's also a
+``#fedora-fedmsg`` channel on the freenode network with a firehose bot echoing
+messages to channel to help give you a feel for what's going on.
 
 Receiving Messages with Python
 ------------------------------
