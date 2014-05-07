@@ -9,7 +9,6 @@ _build
 html-output
 htmldoc
 _tweet-real.py
-doc/topics.rst
 htmldocs
 .coverage
 fedmsg/tests/test_certs/gpg/random_seed
