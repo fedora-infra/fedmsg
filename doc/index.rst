@@ -34,7 +34,7 @@ Receiving Messages from the Shell
     $ fedmsg-tail --really-pretty
 
 Publishing Messages with Python
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 See :doc:`development` on setting up your environment and workflow.
 
@@ -46,7 +46,7 @@ See :doc:`development` on setting up your environment and workflow.
    })
 
 Publishing Messages from the Shell
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------
 
 .. code-block:: bash
 
@@ -55,19 +55,6 @@ Publishing Messages from the Shell
    $ fedmsg-logger --message="This is a message."
    $ fedmsg-logger --message='{"a": 1}' --json-input
 
-
-Community
-~~~~~~~~~
-
-The source for this document can be found `on github
-<http://github.com/fedora-infra/fedmsg>`_.  The issue tracker can be `found
-there <http://github.com/fedora-infra/fedmsg/issues>`_, too.
-
-Almost all discussion happens in ``#fedora-apps`` on the freenode network.
-There is also a `mailing list
-<https://admin.fedoraproject.org/mailman/listinfo/messaging-sig>`_ that
-doesn't have much traffic.
-
 Testimonials
 ------------
 
@@ -75,6 +62,21 @@ Testimonials
   meaning to open infrastructure."
 - `David Gay <http://oddshocks.com>`_ -- "It's like I'm working with software
   made by people who thought about the future."
+
+
+Community
+---------
+
+The source for this document can be found `on github
+<http://github.com/fedora-infra/fedmsg>`_.  The issue tracker can be `found
+there <http://github.com/fedora-infra/fedmsg/issues>`_, too.
+
+Almost all discussion happens in ``#fedora-apps`` on the freenode network.
+There is also a `mailing list
+<https://admin.fedoraproject.org/mailman/listinfo/messaging-sig>`_.
+
+Table of Contents
+-----------------
 
 .. toctree::
    :maxdepth: 0
