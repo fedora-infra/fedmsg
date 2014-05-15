@@ -18,6 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 
+import six
 import zmq
 import logging
 import inspect
@@ -157,6 +158,9 @@ def dict_query(dic, query):
         })
 
     """
+
+    if not isinstance(query, six.string_types):
+        raise ValueError("query must be a string, not %r" % type(query))
 
     def _browse(tokens, d):
         """ Recurse through a dict to retrieve a value. """
