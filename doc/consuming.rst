@@ -63,7 +63,7 @@ The Hub-Consumer Approach
 
 In contrast to the "naive" approach above, a more efficient way of
 consuming events can be accomplished by way of the fedmsg-hub.  The drawback is
-that programming it is a sort of indirect and declarative; it can be
+that programming it is sort of indirect and declarative; it can be
 confusing at first.
 
 To consume messages and do with them what you'd like, you need to:
