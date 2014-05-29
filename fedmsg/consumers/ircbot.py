@@ -1,3 +1,4 @@
+# -*- coding; utf-8 -*-
 # This file is part of fedmsg.
 # Copyright (C) 2012 - 2014 Red Hat, Inc.
 #
@@ -16,12 +17,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
-#
-# -*- coding; utf-8 -*-
-# Author: Ryan Brown
-# Author: Ralph Bean
-# Description: A bot that takes a config and puts messages matching given
-# regexes in specified IRC channels
+#           Ryan Brown
+""" A bot that takes a config and puts messages matching given
+regexes in specified IRC channels.
+"""
 
 import fedmsg
 import fedmsg.encoding
