@@ -26,7 +26,22 @@ from fedmsg.commands import BaseCommand
 
 
 class ReplayCommand(BaseCommand):
-    """ Replay a message from the datagrepper history on your local bus. """
+    """ Replay a message from the datagrepper history on your local bus.
+
+    Example::
+
+        $ fedmsg-dg-replay --msg-id 2014-8909e1e9-2a46-4e53-9a0e-f5415a9bedcf
+
+    This depends on there being a datagrepper instance available to query.  The
+    default is to query the Fedora Project history at
+    https://apps.fedoraproject.org/datagrepper
+
+    This also requires that the local configuration be pointed at a
+    ``fedmsg-relay`` instance.
+
+    The message is stripped of its original credentials.  Local credentials are
+    applied if :term:`sign_messages` is set to ``True``.
+    """
 
     name = "fedmsg-dg-replay"
     extra_args = [

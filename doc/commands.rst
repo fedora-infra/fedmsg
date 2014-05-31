@@ -17,6 +17,11 @@ fedmsg-tail
 
 .. autofunction:: fedmsg.commands.tail.tail
 
+fedmsg-dg-replay
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: fedmsg.commands.replay.replay
+
 fedmsg-collectd
 ~~~~~~~~~~~~~~~
 
