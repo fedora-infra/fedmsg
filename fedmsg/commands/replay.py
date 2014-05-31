@@ -78,8 +78,8 @@ class ReplayCommand(BaseCommand):
 
         msg = resp.json()
         tokens = msg['topic'].split('.')
-        modname = tokens[4]
-        topic = '.'.join(tokens[5:])
+        modname = tokens[3]
+        topic = '.'.join(tokens[4:])
 
         print("Broadcasting %r" % idx)
         fedmsg.publish(modname=modname, topic=topic, msg=msg['msg'])
