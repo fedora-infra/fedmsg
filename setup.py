@@ -121,8 +121,7 @@ setup(
     ],
     include_package_data=True,
     zip_safe=False,
-    scripts=[
-        # This is separate from the other console scripts just for efficiency's
+    scripts=[ # This is separate from the other console scripts just for efficiency's
         # sake.  It gets called over and over and over again by our mediawiki
         # plugin/mod_php.  By making it *not* a setuptools console_script it
         # does a lot less IO work to stand up.
@@ -149,6 +148,7 @@ setup(
             "fedmsg-collectd=fedmsg.commands.collectd:collectd",
             "fedmsg-announce=fedmsg.commands.announce:announce",
             "fedmsg-trigger=fedmsg.commands.trigger:trigger",
+            "fedmsg-dg-replay=fedmsg.commands.replay:replay",
         ],
         'moksha.consumer': [
             "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",
