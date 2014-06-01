@@ -101,7 +101,7 @@ setup(
     long_description=long_description,
     author='Ralph Bean',
     author_email='rbean@redhat.com',
-    url='http://github.com/fedora-infra/fedmsg/',
+    url='https://github.com/fedora-infra/fedmsg/',
     license='LGPLv2+',
     install_requires=install_requires,
     tests_require=tests_require,

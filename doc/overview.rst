@@ -15,17 +15,17 @@ At present, many of the steps in this process require the maintainer to wait and
 watch for a previous step to complete.  For instance once a branch of a
 package is successfully built in koji, the maintainer must `submit their
 update to bodhi
-<http://fedoraproject.org/wiki/PackageMaintainers/UpdatingPackageHowTo#Submit_your_update_to_Bodhi>`_
+<https://fedoraproject.org/wiki/PackageMaintainers/UpdatingPackageHowTo#Submit_your_update_to_Bodhi>`_
 (See the `new package process
-<http://fedoraproject.org/wiki/New_package_process_for_existing_contributors>`_
+<https://fedoraproject.org/wiki/New_package_process_for_existing_contributors>`_
 for more details).
 
 Other progressions in the pipeline are automated.  For instance, `AutoQA
-<http://fedoraproject.org/wiki/AutoQA_architecture>`_ defines a `set of
+<https://fedoraproject.org/wiki/AutoQA_architecture>`_ defines a `set of
 watchers
-<http://git.fedorahosted.org/git/?p=autoqa.git;a=tree;f=watchers;h=af4f6d5e68e9dfcff938d0481ac65fa52bcd1d17;hb=HEAD>`_.
+<https://git.fedorahosted.org/git/?p=autoqa.git;a=tree;f=watchers;h=af4f6d5e68e9dfcff938d0481ac65fa52bcd1d17;hb=HEAD>`_.
 Most watchers are run as a cron task.  Each one looks for `certain events
-<http://git.fedorahosted.org/git/?p=autoqa.git;a=tree;f=events>`_ and fires off
+<https://git.fedorahosted.org/git/?p=autoqa.git;a=tree;f=events>`_ and fires off
 tests when appropriate.
 
 At LinuxFest Northwest (2009), jkeating gave `a talk
@@ -91,7 +91,7 @@ AMQP or "Broker?  Damn near killed 'er!"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When discussions on the `Fedora Messaging SIG
-<http://fedoraproject.org/wiki/Messaging_SIG>`_ began, AMQP was the choice by
+<https://fedoraproject.org/wiki/Messaging_SIG>`_ began, AMQP was the choice by
 default.  Since then members of the SIG have become attracted to an alternative
 messaging interface called `0mq <http://www.zeromq.org>`_.
 
@@ -143,7 +143,7 @@ connect to that port to begin consuming messages.  Without a central broker
 doing `all the things
 <http://www.imatix.com/articles:whats-wrong-with-amqp>`_, 0mq can afford a high
 throughput.  For instance, in initial tests of a 0mq-enabled `moksha hub
-<http://moksha.fedorahosted.org>`_, the Fedora Engineering Team achieved a
+<https://moksha.fedorahosted.org>`_, the Fedora Engineering Team achieved a
 100-fold speedup over AMQP.
 
 Service discovery

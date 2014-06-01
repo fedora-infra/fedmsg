@@ -30,7 +30,7 @@ class AnnounceCommand(BaseCommand):
     Example::
 
         $ echo "Fedora Core 4 has been declared GOLD" | fedmsg-announce \
-                --link http://fedoraproject.org/news
+                --link https://fedoraproject.org/news
 
     Technically this command is a simpler version of fedmsg-logger that emits
     on a special topic.  It is expected that :term:`routing_policy` is

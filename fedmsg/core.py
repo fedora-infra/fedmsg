@@ -75,7 +75,7 @@ class FedMsgContext(object):
         # relay_inbound address, but in the special case that we want to emit
         # our messages there, we add it to the :term:`endpoints` dict so that
         # the code below where we "Actually set up our publisher" can be
-        # simplified.  See Issue #37 - http://bit.ly/KN6dEK
+        # simplified.  See Issue #37 - https://bit.ly/KN6dEK
         if config.get('active', False):
             # If the user has called us with "active=True" then presumably they
             # have given us a "name" as well.
@@ -148,7 +148,7 @@ class FedMsgContext(object):
                 "fedmsg is not configured to send any messages "
                 "for name %r" % config.get("name", None))
 
-        # Cleanup.  See http://bit.ly/SaGeOr for discussion.
+        # Cleanup.  See https://bit.ly/SaGeOr for discussion.
         weakref.ref(threading.current_thread(), self.destroy)
 
         # Sleep just to make sure that the socket gets set up before anyone
@@ -203,7 +203,7 @@ class FedMsgContext(object):
         **An example from Fedora Tagger -- SQLAlchemy encoding**
 
         Here's an example from
-        `fedora-tagger <http://github.com/fedora-infra/fedora-tagger>`_ that
+        `fedora-tagger <https://github.com/fedora-infra/fedora-tagger>`_ that
         sends the information about a new tag over
         ``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``::
 

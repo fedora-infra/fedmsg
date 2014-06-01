@@ -36,7 +36,7 @@
  * Version:   0.2.0
  * License:   LGPLv2+
  * Author:    Ralph Bean
- * Source:    http://github.com/fedora-infra/fedmsg
+ * Source:    https://github.com/fedora-infra/fedmsg
  */
 
 if (!defined('MEDIAWIKI')) {echo("Cannot be run outside MediaWiki"); die(1);}
@@ -46,7 +46,7 @@ $config = 0;
 $queue = 0;
 
 // A utility function, taken from the comments at
-// http://php.net/manual/en/language.types.boolean.php
+// https://php.net/manual/en/language.types.boolean.php
 function to_bool ($_val) {
   $_trueValues = array('yes', 'y', 'true');
   $_forceLowercase = true;

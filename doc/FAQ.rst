@@ -40,4 +40,4 @@ Frequently Asked Questions
   - If you *really are* seeing different messages between fedmsg-bot and
     fedmsg-tail, please report it in the ``#fedora-apps`` IRC channel or
     as a `ticket on github
-    <http://github.com/fedora-infra/fedmsg/issues/new>`_.
+    <https://github.com/fedora-infra/fedmsg/issues/new>`_.

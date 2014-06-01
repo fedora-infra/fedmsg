@@ -23,6 +23,6 @@ from fedmsg.meta.base import BaseProcessor
 class DefaultProcessor(BaseProcessor):
     __name__ = "unhandled"
     __description__ = "fedmsg doesn't know how to handle this message"
-    __link__ = "http://github.com/fedora-infra/fedmsg"
-    __docs__ = "http://fedmsg.rtfd.org"
+    __link__ = "https://github.com/fedora-infra/fedmsg"
+    __docs__ = "https://fedmsg.readthedocs.org/"
     __obj__ = "Everything Else"

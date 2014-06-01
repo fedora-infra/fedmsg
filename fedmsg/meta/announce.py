@@ -23,8 +23,8 @@ from fedmsg.meta.base import BaseProcessor
 class AnnounceProcessor(BaseProcessor):
     __name__ = "announce"
     __description__ = "Official Fedora Announcements"
-    __link__ = "http://fedoraproject.org/"
-    __docs__ = "http://fedoraproject.org/"
+    __link__ = "https://fedoraproject.org/"
+    __docs__ = "https://fedoraproject.org/"
     __obj__ = "Announcements"
 
     def subtitle(self, msg, **config):
