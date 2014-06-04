@@ -239,8 +239,8 @@ class IRCBotConsumer(FedmsgConsumer):
     def prettify(self, topic, msg, pretty=False, terse=False):
         if terse:
             if pretty:
-                if (self.hub.config.get('validate_signatures')
-                    and not fedmsg.crypto.validate(msg, **self.hub.config)):
+                if (self.hub.config.get('validate_signatures') and
+                        not fedmsg.crypto.validate(msg, **self.hub.config)):
                     # If we're validating signatures the message is invalid,
                     # then be careful with it and don't pass it to fedmsg.meta.
                     title = topic
