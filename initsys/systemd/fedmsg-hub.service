@@ -1,7 +1,7 @@
 [Unit]
 Description=Generic fedmsg processing hub
 After=network.target
-Documentation=https://fedmsg.readthedocs.org/en/latest/commands/
+Documentation=https://fedmsg.readthedocs.org/
 
 [Service]
 ExecStart=/usr/bin/fedmsg-hub
