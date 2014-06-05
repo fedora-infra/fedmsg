@@ -68,8 +68,8 @@ Community
 ---------
 
 The source for this document can be found `on github
-<http://github.com/fedora-infra/fedmsg>`_.  The issue tracker can be `found
-there <http://github.com/fedora-infra/fedmsg/issues>`_, too.
+<https://github.com/fedora-infra/fedmsg>`_.  The issue tracker can be `found
+there <https://github.com/fedora-infra/fedmsg/issues>`_, too.
 
 Almost all discussion happens in ``#fedora-apps`` on the freenode network.
 There is also a `mailing list

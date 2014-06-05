@@ -88,7 +88,7 @@ class FedMsngr(irc.IRCClient):
     # The 0.6 seconds here is empircally guessed so we don't get dropped by
     # freenode.  FIXME - this should be pulled from the config.
     lineRate = 0.6
-    sourceURL = "http://github.com/fedora-infra/fedmsg"
+    sourceURL = "https://github.com/fedora-infra/fedmsg"
 
     def __init__(self, *args, **kw):
         super(FedMsgnr, self).__init__(*args, **kw)
@@ -239,8 +239,8 @@ class IRCBotConsumer(FedmsgConsumer):
     def prettify(self, topic, msg, pretty=False, terse=False):
         if terse:
             if pretty:
-                if (self.hub.config.get('validate_signatures')
-                    and not fedmsg.crypto.validate(msg, **self.hub.config)):
+                if (self.hub.config.get('validate_signatures') and
+                        not fedmsg.crypto.validate(msg, **self.hub.config)):
                     # If we're validating signatures the message is invalid,
                     # then be careful with it and don't pass it to fedmsg.meta.
                     title = topic

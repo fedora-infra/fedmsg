@@ -6,7 +6,7 @@ Proposal - Fedora Messaging with 0mq (``fedmsg``)
 This proposal reviews existing services in the Fedora infrastructure, reviews
 the problem of complexity in the interaction of those services, reviews previous
 work by the `Fedora Messaging SIG (special interest group)
-<http://fedoraproject.org/wiki/Messaging_SIG>`_ on AMQP, and introduces an
+<https://fedoraproject.org/wiki/Messaging_SIG>`_ on AMQP, and introduces an
 architecture-level description of a solution using 0mq.
 
 ----
@@ -15,7 +15,7 @@ For discussion, check
 https://admin.fedoraproject.org/mailman/listinfo/messaging-sig
 
 Get (or modify) the source for this document:
-http://github.com/fedora-infra/fedmsg
+https://github.com/fedora-infra/fedmsg
 
 Authors:
  - Ralph Bean (threebean)
@@ -34,7 +34,7 @@ heterogenous ways they do now.
 
 We're writing a python library called ``fedmsg`` to help apps handle this more
 easily.  It's built on `0mq <http://zeromq.org>`_ and `moksha
-<http://moksha.fedorahosted.org>`_.
+<https://moksha.fedorahosted.org>`_.
 
 Planned Stages of development/deployment
 ----------------------------------------
@@ -65,17 +65,17 @@ At present, many of the steps in this process require the maintainer to wait and
 watch for a previous step to complete.  For instance once a branch of a
 package is successfully built in koji, the maintainer must `submit their
 update to bodhi
-<http://fedoraproject.org/wiki/PackageMaintainers/UpdatingPackageHowTo#Submit_your_update_to_Bodhi>`_
+<https://fedoraproject.org/wiki/PackageMaintainers/UpdatingPackageHowTo#Submit_your_update_to_Bodhi>`_
 (See the `new package process
-<http://fedoraproject.org/wiki/New_package_process_for_existing_contributors>`_
+<https://fedoraproject.org/wiki/New_package_process_for_existing_contributors>`_
 for more details).
 
 Other progressions in the pipeline are automated.  For instance, `AutoQA
-<http://fedoraproject.org/wiki/AutoQA_architecture>`_ defines a `set of
+<https://fedoraproject.org/wiki/AutoQA_architecture>`_ defines a `set of
 watchers
-<http://git.fedorahosted.org/git/?p=autoqa.git;a=tree;f=watchers;h=af4f6d5e68e9dfcff938d0481ac65fa52bcd1d17;hb=HEAD>`_.
+<https://git.fedorahosted.org/git/?p=autoqa.git;a=tree;f=watchers;h=af4f6d5e68e9dfcff938d0481ac65fa52bcd1d17;hb=HEAD>`_.
 Most watchers are run as a cron task.  Each one looks for `certain events
-<http://git.fedorahosted.org/git/?p=autoqa.git;a=tree;f=events>`_ and fires off
+<https://git.fedorahosted.org/git/?p=autoqa.git;a=tree;f=events>`_ and fires off
 tests when appropriate.
 
 At LinuxFest Northwest (2009), jkeating gave `a talk
@@ -141,7 +141,7 @@ AMQP or "Broker?  Damn near killed 'er!"
 ----------------------------------------
 
 When discussions on the `Fedora Messaging SIG
-<http://fedoraproject.org/wiki/Messaging_SIG>`_ began, AMQP was the choice by
+<https://fedoraproject.org/wiki/Messaging_SIG>`_ began, AMQP was the choice by
 default.  Since then members of the SIG have become attracted to an alternative
 messaging interface called `0mq <http://www.zeromq.org>`_.
 
@@ -193,7 +193,7 @@ connect to that port to begin consuming messages.  Without a central broker
 doing `all the things
 <http://www.imatix.com/articles:whats-wrong-with-amqp>`_, 0mq can afford a high
 throughput.  For instance, in initial tests of a 0mq-enabled `moksha hub
-<http://moksha.fedorahosted.org>`_, the Fedora Engineering Team achieved a
+<https://moksha.fedorahosted.org>`_, the Fedora Engineering Team achieved a
 100-fold speedup over AMQP.
 
 Service discovery
@@ -379,8 +379,8 @@ Code Examples - 0mq and ``fedmsg``
 ==================================
 
 This package (the `package containing the docs you are reading right now
-<http://github.com/fedora-infra/fedmsg>`_) is ``fedmsg``.  It aims to be a wrapper
-around calls to the `moksha hub <http://moksha.fedorahosted.org>`_ API that:
+<https://github.com/fedora-infra/fedmsg>`_) is ``fedmsg``.  It aims to be a wrapper
+around calls to the `moksha hub <https://moksha.fedorahosted.org>`_ API that:
 
  - Handles Fedora-Infra authn/authz
  - Handles Fedora-Infra service discovery
@@ -405,7 +405,7 @@ that to produce an intelligent topic.
 Specifying ``modname`` argues that ``fedmsg`` not be `too smart`.
 
 Here's an example from
-`fedora-tagger <http://github.com/fedora-infra/fedora-tagger>`_ that sends the
+`fedora-tagger <https://github.com/fedora-infra/fedora-tagger>`_ that sends the
 information about a new tag over
 ``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``::
 

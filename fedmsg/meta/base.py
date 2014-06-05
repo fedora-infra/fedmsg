@@ -42,7 +42,7 @@ class BaseProcessor(object):
     # the BodhiProcessor can handle a message, then our caller's code can use
     # these attributes to say "btw, this message is from Bodhi, the Fedora
     # update system.  It lives at https://admin.fedoraproject.org/updates/
-    # and you can read more about it at http://fedoraproject.org/wiki/Bodhi"
+    # and you can read more about it at https://fedoraproject.org/wiki/Bodhi"
     __name__ = None
     __description__ = None
     __link__ = None

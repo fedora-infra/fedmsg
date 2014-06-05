@@ -326,7 +326,7 @@ Glossary of Configuration Values
 
     irc_color_lookup
         ``dict`` - A mapping of ``modname`` values to `MIRC irc color names
-        <http://www.mirc.com/colors.html>`_.  For example:
+        <https://www.mirc.com/colors.html>`_.  For example:
 
           >>> irc_color_lookup = {
           ...     "fas": "light blue",

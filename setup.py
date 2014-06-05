@@ -101,7 +101,7 @@ setup(
     long_description=long_description,
     author='Ralph Bean',
     author_email='rbean@redhat.com',
-    url='http://github.com/fedora-infra/fedmsg/',
+    url='https://github.com/fedora-infra/fedmsg/',
     license='LGPLv2+',
     install_requires=install_requires,
     tests_require=tests_require,
@@ -121,7 +121,8 @@ setup(
     ],
     include_package_data=True,
     zip_safe=False,
-    scripts=[ # This is separate from the other console scripts just for efficiency's
+    scripts=[
+        # This is separate from the other console scripts just for efficiency's
         # sake.  It gets called over and over and over again by our mediawiki
         # plugin/mod_php.  By making it *not* a setuptools console_script it
         # does a lot less IO work to stand up.

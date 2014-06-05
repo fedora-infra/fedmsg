@@ -23,8 +23,8 @@ from fedmsg.meta.base import BaseProcessor
 class LoggerProcessor(BaseProcessor):
     __name__ = "logger"
     __description__ = "miscellaneous Fedora Infrastructure shell scripts"
-    __link__ = "http://fedoraproject.org/wiki/Infrastructure"
-    __docs__ = "http://fedoraproject.org/wiki/Infrastructure"
+    __link__ = "https://fedoraproject.org/wiki/Infrastructure"
+    __docs__ = "https://fedoraproject.org/wiki/Infrastructure"
     __obj__ = "System Logs"
 
     def subtitle(self, msg, **config):
