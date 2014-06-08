@@ -73,10 +73,12 @@ class BaseProcessor(object):
     def handle_msg(self, msg, **config):
         """
         If we can handle the given message, return the remainder of the topic.
+
+        Returns None if we can't handle the message.
         """
         match = self.__prefix__.match(msg['topic'])
         if match:
-            return match.groups()[-1]
+            return match.groups()[-1] or ""
 
     def title(self, msg, **config):
         return '.'.join(msg['topic'].split('.')[3:])

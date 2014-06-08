@@ -122,7 +122,7 @@ class TestProcessorRegex(unittest.TestCase):
             'topic': 'org.fedoraproject.dev.git.push',
         }
         result = self.proc.handle_msg(fake_message, **self.config)
-        assert result, "Proc didn't say it could handle the message."
+        assert result is not None, "Proc didn't say it could handle the message."
 
     def test_processor_handle_miss(self):
         """ Test that a proc says it won't handle what it shouldn't. """
@@ -130,8 +130,15 @@ class TestProcessorRegex(unittest.TestCase):
             'topic': 'org.fedoraproject.dev.github.push',
         }
         result = self.proc.handle_msg(fake_message, **self.config)
-        assert not result, "Proc falsely claimed it could handle the msg."
+        assert result is None, "Proc falsely claimed it could handle the msg."
 
+    def test_processor_handle_empty_subtopic(self):
+        """Test that a processor will handle a message with an empty subtopic"""
+        fake_message = {
+            'topic': 'org.fedoraproject.dev.git',
+        }
+        result = self.proc.handle_msg(fake_message, **self.config)
+        assert result is "", "Proc said it couldn't handle the msg."
 
 class Base(unittest.TestCase):
     msg = None
