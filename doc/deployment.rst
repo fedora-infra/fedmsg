@@ -55,6 +55,7 @@ Install fedmsg-relay and start it::
 
     $ sudo yum install fedmsg-relay
     $ sudo systemctl restart fedmsg-relay
+    $ sudo systemctl enable fedmsg-relay
 
 It has a pid file in ``/var/run/fedmsg/fedmsg-relay.pid`` and you can view the
 logs in ``journalctl --follow``.  On other systems you can find the logs in
