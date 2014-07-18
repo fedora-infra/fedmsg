@@ -110,7 +110,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         # Create its directory if it doesn't exist.
         self.status_directory = self.hub.config.get('status_directory')
         if self.status_directory:
-            self.status_filename = "/".join([
+            self.status_filename = os.path.join([
                 self.status_directory,
                 current_proc().name(),
                 type(self).__name__
