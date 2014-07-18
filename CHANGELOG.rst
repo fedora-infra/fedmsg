@@ -1,6 +1,47 @@
 Changelog
 =========
 
+0.9.0
+-----
+
+- Change highlight color in the docs.  Fixes #250 `c6dc6777b <https://github.com/fedora-infra/fedmsg/commit/c6dc6777b858e40fc93b0517f036a92a14af3882>`_
+- Link to datagrepper from the top of fedmsg.com. `4d51b15c5 <https://github.com/fedora-infra/fedmsg/commit/4d51b15c591cf54dd7791f78cf0d862a2f2d558d>`_
+- We're past this now. `e6e932375 <https://github.com/fedora-infra/fedmsg/commit/e6e93237580e72fd6163a7815a28b33e07d318f4>`_
+- Add link to new topics doc. `e9715d4fd <https://github.com/fedora-infra/fedmsg/commit/e9715d4fd091f8e093b207aee57c89db9b1a69c9>`_
+- Merge pull request #252 from fedora-infra/feature/doc-split `e41a38d9a <https://github.com/fedora-infra/fedmsg/commit/e41a38d9afd2e06343cfba5c9078aed5eed833e6>`_
+- Remove this block now that doc_utilities is moved away. `5761d487a <https://github.com/fedora-infra/fedmsg/commit/5761d487aef4d297f0802a90001229e86c6e221a>`_
+- Touching up/shuffling around docs. `c75ad229c <https://github.com/fedora-infra/fedmsg/commit/c75ad229cd7104b1916b262ff10283f7af614e94>`_
+- Test the dict_query function in fedmsg.utils. `890b9d2c8 <https://github.com/fedora-infra/fedmsg/commit/890b9d2c87e56c10caaba88505f3635d155564f0>`_
+- Merge pull request #253 from fedora-infra/feature/testing-utils `d3f40fd80 <https://github.com/fedora-infra/fedmsg/commit/d3f40fd805dd04f495ee20bef4fb6bcc6ab21403>`_
+- Fix typo in head-consumer approach section `5a2403c70 <https://github.com/fedora-infra/fedmsg/commit/5a2403c707daa822ab8eb8855dc00b2792bdd7e3>`_
+- Adjust file header. `7b71c5162 <https://github.com/fedora-infra/fedmsg/commit/7b71c5162fb7ee318da045ecafcc58f1f7522fc7>`_
+- Add a new "replay" command. `dff09690d <https://github.com/fedora-infra/fedmsg/commit/dff09690d38df26bd06cbaa993d5fde0cd379f4d>`_
+- Add the actual code for the "replay" command. `1a2ea5ad2 <https://github.com/fedora-infra/fedmsg/commit/1a2ea5ad225f3577f0e0b208af3031c01a898231>`_
+- Documentation for the replay command. `0b52f6ee3 <https://github.com/fedora-infra/fedmsg/commit/0b52f6ee385d37ea2dbfb8cb4ce33c9473d14c97>`_
+- Fix bug identified in oddshocks/fedimg#1 `728ee32aa <https://github.com/fedora-infra/fedmsg/commit/728ee32aad271a037e683c4433c3c381778eaeb0>`_
+- Merge pull request #256 from fedora-infra/feature/replay `27fcc9bad <https://github.com/fedora-infra/fedmsg/commit/27fcc9bad22eefaf40c47eb89ddfcfbe1c01320b>`_
+- Use more https links `e3a799468 <https://github.com/fedora-infra/fedmsg/commit/e3a799468b87fc3a0164b9350dc5403c5192c84f>`_
+- systemd units: Shorten documentation URL `18042941f <https://github.com/fedora-infra/fedmsg/commit/18042941fe75bdf69c48c698cdd9cde4f4496f3a>`_
+- setup.py: Fix PEP8 violation `1126e45d5 <https://github.com/fedora-infra/fedmsg/commit/1126e45d5aa8bf2346615326671dc00c62be3db4>`_
+- fedmsg/consumers/ircbot.py: Fix PEP8 violation `c7cb6d5ac <https://github.com/fedora-infra/fedmsg/commit/c7cb6d5acbb973e66f27098c676d62ffc8d771d0>`_
+- Allow optional markup of msg2subtitle. `68379a1a3 <https://github.com/fedora-infra/fedmsg/commit/68379a1a3a466c3b4af73699fdc1ef0ff804ded5>`_
+- Merge pull request #258 from fedora-infra/feature/optional-markup `2d0e75221 <https://github.com/fedora-infra/fedmsg/commit/2d0e752210d4eb1dd52df9ef3e3c9b278f87b816>`_
+- Merge pull request #257 from tyll/https `091bd36ea <https://github.com/fedora-infra/fedmsg/commit/091bd36ea91249fc93a671f5c77276b4f24a70e1>`_
+- fedmsg/meta: make sure an empty subtopic returns an empty string `4648a7d53 <https://github.com/fedora-infra/fedmsg/commit/4648a7d53575d4506c8fb859602c2c11d81ebc2e>`_
+- Merge pull request #259 from olasd/bugfix/fedmsg_meta_empty_subtopic `2dd64e904 <https://github.com/fedora-infra/fedmsg/commit/2dd64e90405323979b62a7a9db1760885645d0b4>`_
+- fix broken link to virtualenvwrapper `7eac79bc6 <https://github.com/fedora-infra/fedmsg/commit/7eac79bc6b8bb59edd3cd327995b824816951ca4>`_
+- Merge pull request #261 from herlo/develop `e4a22294b <https://github.com/fedora-infra/fedmsg/commit/e4a22294bccf03386661d2ea552267ed9f5e259d>`_
+- Update our fedmsg-emit.php file... `01c6bec06 <https://github.com/fedora-infra/fedmsg/commit/01c6bec066ca78540d0924e27a14198c5c35dbf1>`_
+- fixed: * postgresql startup command * pg_hba entries for ipv6 * installation of psycopg2 * enabled all services that have been started throught the document `fe3f473bd <https://github.com/fedora-infra/fedmsg/commit/fe3f473bdfb27c5562699921652a135149715f9f>`_
+- Merge pull request #264 from droopy4096/develop `909b17979 <https://github.com/fedora-infra/fedmsg/commit/909b17979873b34f465dd128f9049e48a66552bd>`_
+- missed one "systemctl enable..." `f2ded8fe8 <https://github.com/fedora-infra/fedmsg/commit/f2ded8fe8cd93a0db8a3724e3fcd300bc138f75d>`_
+- Merge pull request #265 from droopy4096/develop `cfec55ea4 <https://github.com/fedora-infra/fedmsg/commit/cfec55ea43c9888cfe122e74d7031e2a9741d61b>`_
+- Handle backlog on startup. `b04dd8d3f <https://github.com/fedora-infra/fedmsg/commit/b04dd8d3fac9b7aae0f15b6307aaa3e0f964a04a>`_
+- Update gitignore. `f90a8be51 <https://github.com/fedora-infra/fedmsg/commit/f90a8be51201929a0f608e4eed76cf7bd5bfdb10>`_
+- PEP8. `c3f4d876e <https://github.com/fedora-infra/fedmsg/commit/c3f4d876ed85fc07f242358bc3d3f172cfe382a3>`_
+- os.path.join. `03ac05353 <https://github.com/fedora-infra/fedmsg/commit/03ac0535386bf9d82ba2da51accd485f4ad9f864>`_
+- Merge pull request #266 from fedora-infra/feature/backlog `3c52d835e <https://github.com/fedora-infra/fedmsg/commit/3c52d835ead07f6cfe960518898331dd554f5362>`_
+
 0.8.0
 -----
 
