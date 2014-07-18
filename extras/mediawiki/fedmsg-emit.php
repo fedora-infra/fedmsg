@@ -36,7 +36,7 @@
  * Version:   0.2.0
  * License:   LGPLv2+
  * Author:    Ralph Bean
- * Source:    http://github.com/fedora-infra/fedmsg
+ * Source:    http://github.com/ralphbean/fedmsg
  */
 
 if (!defined('MEDIAWIKI')) {echo("Cannot be run outside MediaWiki"); die(1);}
@@ -59,6 +59,18 @@ function to_bool ($_val) {
   } else {
     return (boolean) $_val;
   }
+}
+
+// A utility function to recursively sort an associative
+// array by key.  Kind of like ordereddict from Python.
+// Used for encoding and signing messages.
+function deep_ksort(&$arr) {
+    ksort($arr);
+    foreach ($arr as &$a) {
+        if (is_array($a) && !empty($a)) {
+            deep_ksort($a);
+        }
+    }
 }
 
 function initialize() {
@@ -88,6 +100,13 @@ function initialize() {
     // API for fedmsg <= 0.5.1
     $queue->connect($config['relay_inbound']);
   }
+
+  # Go to sleep for a brief moment.. just long enough to let our zmq socket
+  # initialize.
+  if (array_key_exists('post_init_sleep', $config)) {
+    usleep($config['post_init_sleep'] * 1000000);
+  }
+
   return true;
 }
 
@@ -102,9 +121,15 @@ function sign_message($message_obj) {
 
   # This is required so that the string we sign is identical in python and in
   # php.  Ordereddict is used there; ksort here.
-  ksort($message_obj);
+  deep_ksort($message_obj);
 
+  # It would be best to pass JSON_UNESCAPE_SLASHES as an option here, but it is
+  # not available until php-5.4
   $message = json_encode($message_obj);
+  # In the meantime, we'll remove escaped slashes ourselves.  This is
+  # necessary in order to produce the exact same encoding as python (so that our
+  # signatures match for validation).
+  $message = stripcslashes($message);
 
   # Step 0) - Find our cert.
   $fqdn = gethostname();
@@ -149,6 +174,8 @@ function emit_message($subtopic, $message) {
     "topic" => $topic,
     "msg" => $message,
     "timestamp" => round(time(), 3),
+    "msg_id" => date("Y") . "-" . uuid_create(),
+    "username" => "apache",
     # TODO -> we don't have a good way to increment this counter from php yet.
     "i" => 1,
   );
@@ -157,8 +184,8 @@ function emit_message($subtopic, $message) {
   }
 
   $envelope = json_encode($message_obj);
-  $queue->send($topic, ZMQ::MODE_SNDMORE | ZMQ::MODE_NOBLOCK);
-  $queue->send($envelope, ZMQ::MODE_NOBLOCK);
+  $queue->send($topic, ZMQ::MODE_SNDMORE);
+  $queue->send($envelope);
 }
 
 function article_save(
@@ -197,13 +224,14 @@ function article_save(
   $msg = array(
     "title" => $titletext,
     "user" => $user->getName(),
-    "summary" => $summary,
     "minor_edit" => $minoredit,
     "watch_this" => $watchthis,
     "section_anchor" => $sectionanchor,
     "revision" => $revision,
     "base_rev_id" => $baseRevId,
     "url" => $url,
+    #"summary" => $summary,  # We *used* to send this, but it mucked things up.
+    # https://fedorahosted.org/fedora-infrastructure/ticket/3738#comment:7
     #"text" => $text,  # We *could* send this, but it's a lot of spam.
     # TODO - flags?
     # TODO - status?

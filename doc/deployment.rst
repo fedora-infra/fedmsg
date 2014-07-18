@@ -55,6 +55,7 @@ Install fedmsg-relay and start it::
 
     $ sudo yum install fedmsg-relay
     $ sudo systemctl restart fedmsg-relay
+    $ sudo systemctl enable fedmsg-relay
 
 It has a pid file in ``/var/run/fedmsg/fedmsg-relay.pid`` and you can view the
 logs in ``journalctl --follow``.  On other systems you can find the logs in
@@ -104,17 +105,20 @@ Setting up postgres
 
 Here, set up a postgres database::
 
-    $ sudo yum install postgresql-server psycopg2
+    $ sudo yum install postgresql-server python-psycopg2
     $ postgresql-setup initdb
 
 Edit the ``/var/lib/pgsql/data/pg_hba.conf`` as the user postgres. You might
 find a line like this::
 
   host all all 127.0.0.1/32 ident sameuser
+  host all all ::1/128 ident sameuser
+
 
 Instead of that line, change it to this::
 
   host all all 127.0.0.1/32 trust
+  host all all ::1/128 trust
 
 .. note:: Using ``trust`` is super unsafe long term.  That means that anyone
    with any password will be able to connect locally.  That's fine for our
@@ -123,7 +127,8 @@ Instead of that line, change it to this::
 
 Start up postgres::
 
-    $ systemctl postgres start
+    $ systemctl start postgresql
+    $ systemctl enable postgresql
 
 Create a database user and the db itself for datanommer and friends::
 
@@ -159,6 +164,7 @@ messages, and store them all in the db.
 ::
 
     $ sudo systemctl start fedmsg-hub
+    $ sudo systemctl enable fedmsg-hub
 
 You can check ``journalctl --follow`` for logs.
 
@@ -182,7 +188,7 @@ Add a config file for it in ``/etc/httpd/conf.d/datagrepper.conf`` with these co
     LoadModule wsgi_module modules/mod_wsgi.so
 
     # Static resources for the datagrepper app.
-    Alias /datagrepper/css /usr/lib/python2.6/site-packages/datagrepper/static/css
+    Alias /datagrepper/css /usr/lib/python2.7/site-packages/datagrepper/static/css
 
     WSGIDaemonProcess datagrepper user=fedmsg group=fedmsg maximum-requests=50000 display-name=datagrepper processes=8 threads=4 inactivity-timeout=300
     WSGISocketPrefix run/wsgi
@@ -201,6 +207,7 @@ Add a config file for it in ``/etc/httpd/conf.d/datagrepper.conf`` with these co
 Finally, start up httpd with::
 
     $ sudo systemctl restart httpd
+    $ sudo systemctl enable httpd
 
 And it should just work.  Open a web browser and try to visit
 ``http://localhost/datagrepper/``.

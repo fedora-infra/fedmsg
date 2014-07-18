@@ -127,6 +127,18 @@ Glossary of Configuration Values
           ...     srv_endpoints=[foo.example.com]
           ...)
 
+    status_directory
+        ``str`` - A path to a directory where consumers can save the status of
+        their last processed message.  In conjunction with
+        :term:`datagrepper_url`, allows for automatic retrieval of backlog on
+        daemon startup.
+
+    datagrepper_url
+        ``url`` - A URL to an instance of the datagrepper web service, such as
+        https://apps.fedoraproject.org/datagrepper/raw.  Can be used in
+        conjuction with :term:`status_directory` to allow for automatic
+        retrieval of backlog on daemon startup.
+
     replay_endpoints
         ``dict`` - A mapping of service keys, the same as for :term:`endpoints`
         to replay endpoints, each key having only one. The replay endpoints are
@@ -326,7 +338,7 @@ Glossary of Configuration Values
 
     irc_color_lookup
         ``dict`` - A mapping of ``modname`` values to `MIRC irc color names
-        <http://www.mirc.com/colors.html>`_.  For example:
+        <https://www.mirc.com/colors.html>`_.  For example:
 
           >>> irc_color_lookup = {
           ...     "fas": "light blue",

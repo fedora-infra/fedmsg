@@ -1,7 +1,7 @@
 [Unit]
 Description=Outbound fedmsg gateway
 After=network.target
-Documentation=http://fedmsg.readthedocs.org/en/latest/commands/
+Documentation=https://fedmsg.readthedocs.org/
 
 [Service]
 ExecStart=/usr/bin/fedmsg-gateway

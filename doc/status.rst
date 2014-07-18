@@ -70,7 +70,7 @@ There is no information here about *receiving* messages, only sending.
 
 
 .. _1: https://github.com/abadger/fedora-elections-flask/pull/1
-.. _2: http://github.com/rossdylan/fuss
+.. _2: https://github.com/rossdylan/fuss
 .. _3: https://fedorahosted.org/fedora-infrastructure/ticket/3438
 .. _4: https://fedorahosted.org/fedora-infrastructure/ticket/3700
 

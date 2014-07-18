@@ -96,12 +96,12 @@ if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
 
 setup(
     name='fedmsg',
-    version='0.8.0',
+    version='0.9.0',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
     author_email='rbean@redhat.com',
-    url='http://github.com/fedora-infra/fedmsg/',
+    url='https://github.com/fedora-infra/fedmsg/',
     license='LGPLv2+',
     install_requires=install_requires,
     tests_require=tests_require,
@@ -149,6 +149,7 @@ setup(
             "fedmsg-collectd=fedmsg.commands.collectd:collectd",
             "fedmsg-announce=fedmsg.commands.announce:announce",
             "fedmsg-trigger=fedmsg.commands.trigger:trigger",
+            "fedmsg-dg-replay=fedmsg.commands.replay:replay",
         ],
         'moksha.consumer': [
             "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",

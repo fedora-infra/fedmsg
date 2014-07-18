@@ -29,10 +29,6 @@ import os
 # import Cloud
 import cloud_sptheme as csp
 
-from fedmsg.doc_utilities import make_topics_doc
-here = os.path.dirname(os.path.abspath(__file__))
-make_topics_doc(here)
-
 # ... some contents omitted ...
 
 # set the html theme
@@ -53,7 +49,7 @@ html_theme_options = {
     # Style it like Fedora..
     "bodyfont":         "Cantarell",
 
-    "highlightcolor":   "#060",  # First Green
+    "highlightcolor":   "#4FAF4F",
 
     "sidebarbgcolor":   "#FEFEFE",
     "sidebartrimcolor": "#FEFEFE",

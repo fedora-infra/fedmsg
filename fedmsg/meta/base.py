@@ -42,7 +42,7 @@ class BaseProcessor(object):
     # the BodhiProcessor can handle a message, then our caller's code can use
     # these attributes to say "btw, this message is from Bodhi, the Fedora
     # update system.  It lives at https://admin.fedoraproject.org/updates/
-    # and you can read more about it at http://fedoraproject.org/wiki/Bodhi"
+    # and you can read more about it at https://fedoraproject.org/wiki/Bodhi"
     __name__ = None
     __description__ = None
     __link__ = None
@@ -73,10 +73,12 @@ class BaseProcessor(object):
     def handle_msg(self, msg, **config):
         """
         If we can handle the given message, return the remainder of the topic.
+
+        Returns None if we can't handle the message.
         """
         match = self.__prefix__.match(msg['topic'])
         if match:
-            return match.groups()[-1]
+            return match.groups()[-1] or ""
 
     def title(self, msg, **config):
         return '.'.join(msg['topic'].split('.')[3:])

@@ -6,8 +6,8 @@ Using a virtualenv
 ------------------
 
 Although you don't strictly *have* to, you should use
-`virtualenvwrapper <http://virtualenvwrapper.rtfd.org>`_ for isolating your
-development environment.  It is to your benefit because you'll be able to
+`virtualenvwrapper <https://virtualenvwrapper.readthedocs.org/>`_ for isolating
+your development environment.  It is to your benefit because you'll be able to
 install the latest fedmsg from a git checkout without messing with your system
 fedmsg install (if you have one).  The instructions here will assume you are
 using that.
