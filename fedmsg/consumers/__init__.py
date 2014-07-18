@@ -111,7 +111,9 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         self.status_directory = self.hub.config.get('status_directory')
         if self.status_directory:
             self.status_filename = "/".join([
-                self.status_directory, current_proc().name(), type(self).__name__
+                self.status_directory,
+                current_proc().name(),
+                type(self).__name__
             ])
             topmost_directory, _ = self.status_filename.rsplit('/', 1)
             if not os.path.exists(topmost_directory):
