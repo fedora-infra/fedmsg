@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.9.1
+-----
+
+- Some py2.6 fixes. `ed74506fc <https://github.com/fedora-infra/fedmsg/commit/ed74506fc578b20394f825e1850e48cb090ac03d>`_
+- Merge pull request #267 from fedora-infra/feature/py2.6-fixes `7ba7d0c04 <https://github.com/fedora-infra/fedmsg/commit/7ba7d0c0438fdb7b56523438b4a09932afacdf8b>`_
+
 0.9.0
 -----
 
