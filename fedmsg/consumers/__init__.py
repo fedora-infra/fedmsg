@@ -110,11 +110,15 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         # Create its directory if it doesn't exist.
         self.status_directory = self.hub.config.get('status_directory')
         if self.status_directory:
-            self.status_filename = os.path.join([
-                self.status_directory,
-                current_proc().name(),
-                type(self).__name__
-            ])
+
+            # Extract proc name and handle differences between py2.6 and py2.7
+            proc_name = current_proc().name
+            if callable(proc_name):
+                proc_name = proc_name()
+
+            self.status_filename = os.path.join(
+                self.status_directory, proc_name, type(self).__name__)
+
             topmost_directory, _ = self.status_filename.rsplit('/', 1)
             if not os.path.exists(topmost_directory):
                 os.makedirs(topmost_directory)
