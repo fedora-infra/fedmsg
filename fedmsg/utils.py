@@ -108,7 +108,7 @@ def set_tcp_reconnect(socket, config):
     reconnect_options = {
         # Map fedmsg config keys to zeromq socket constants
         'zmq_reconnect_ivl': 'RECONNECT_IVL',
-        'zmq_reconnect_ivl_max': 'RECONNECT_IVL_max',
+        'zmq_reconnect_ivl_max': 'RECONNECT_IVL_MAX',
     }
     for key, const in reconnect_options.items():
         if key in config:
