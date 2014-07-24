@@ -30,6 +30,7 @@ import time
 import moksha.hub.api.consumer
 
 import fedmsg.crypto
+import fedmsg.encoding
 from fedmsg.replay import check_for_replay
 
 
@@ -161,6 +162,9 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
             return
 
         last = data['message']['body']
+        if isinstance(last, basestring):
+            last = json.loads(last)
+
         then = last['timestamp']
         now = int(time.time())
 
@@ -248,7 +252,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         if self.status_filename:
             with self.status_lock:
                 with open(self.status_filename, 'w') as f:
-                    f.write(json.dumps(data))
+                    f.write(fedmsg.encoding.dumps(data))
 
 
 def current_proc():
