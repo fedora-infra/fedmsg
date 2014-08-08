@@ -19,7 +19,7 @@ examples.  There is plenty of long-winded explanation over at :doc:`overview`.
    - `data.gouv.fr <http://data.gouv.fr>`_
    - to some extent, Debian Infrastructure
 
-   We wrote this document much later aftewards, so, if you come across errors,
+   We wrote this document much later afterwards, so, if you come across errors,
    or things that don't work right.  Please `report it
    <https://github.com/fedora-infra/fedmsg/issues/new>`_.
 
@@ -178,7 +178,7 @@ Querying datanommer with datagrepper
 ------------------------------------
 
 You can, of course, query datanommer with SQL yourself (and there's a python
-API for directly querying in the ``datanommer.models`` module).  For the best
+API for directly querying in the ``datanommer.models`` module).  For the rest
 here is the HTTP API we have called "datagrepper".  Let's set it up::
 
     $ sudo yum install datagrepper mod_wsgi

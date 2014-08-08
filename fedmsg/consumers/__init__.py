@@ -24,11 +24,13 @@ import logging
 import os
 import psutil
 import requests
+import threading
 import time
 
 import moksha.hub.api.consumer
 
 import fedmsg.crypto
+import fedmsg.encoding
 from fedmsg.replay import check_for_replay
 
 
@@ -131,9 +133,11 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
             # a thread to set up our workload.
             self.log.info("Backlog handling setup.  status: %r, url: %r" % (
                 self.status_filename, self.datagrepper_url))
+            self.status_lock = threading.Lock()
             try:
-                with open(self.status_filename, 'r') as f:
-                    data = f.read()
+                with self.status_lock:
+                    with open(self.status_filename, 'r') as f:
+                        data = f.read()
                 moksha.hub.reactor.reactor.callInThread(self._backlog, data)
             except IOError as e:
                 self.log.info(e)
@@ -158,6 +162,9 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
             return
 
         last = data['message']['body']
+        if isinstance(last, basestring):
+            last = json.loads(last)
+
         then = last['timestamp']
         now = int(time.time())
 
@@ -243,8 +250,9 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
     def save_status(self, data):
         if self.status_filename:
-            with open(self.status_filename, 'w') as f:
-                f.write(json.dumps(data))
+            with self.status_lock:
+                with open(self.status_filename, 'w') as f:
+                    f.write(fedmsg.encoding.dumps(data))
 
 
 def current_proc():

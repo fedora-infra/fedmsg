@@ -79,8 +79,12 @@ class FedMsgContext(object):
         if config.get('active', False):
             # If the user has called us with "active=True" then presumably they
             # have given us a "name" as well.
-            name = config.get("name", "relay_inbound")
-            config['endpoints'][name] = config[name]
+            try:
+                name = config.get("name", "relay_inbound")
+                config['endpoints'][name] = config[name]
+            except KeyError:
+                raise KeyError("Could not find endpoint for fedmsg-relay."
+                              " Try installing fedmsg-relay.")
 
         # Actually set up our publisher
         if (

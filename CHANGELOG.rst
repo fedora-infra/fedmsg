@@ -1,6 +1,21 @@
 Changelog
 =========
 
+0.9.2
+-----
+
+- Typofix. `f55a6d7f1 <https://github.com/fedora-infra/fedmsg/commit/f55a6d7f10859fa9a954eb54b48000c1e1a23c17>`_
+- Merge pull request #268 from fedora-infra/feature/typofix `4fd120aea <https://github.com/fedora-infra/fedmsg/commit/4fd120aea89bb15aa7ff29bffda0c9f28631c3ae>`_
+- add message to configuration incomplete. `2669fc016 <https://github.com/fedora-infra/fedmsg/commit/2669fc0163d3a51c39e5f5800769454bdf439032>`_
+- Merge pull request #269 from arielb2/develop `152d290aa <https://github.com/fedora-infra/fedmsg/commit/152d290aa4e5bf8de798410b4f8a9ed0ea4b4dda>`_
+- Two little typofixes. `71f05afc5 <https://github.com/fedora-infra/fedmsg/commit/71f05afc563e5b739602283b1dee9d5360a5060d>`_
+- Merge branch 'develop' of github.com:fedora-infra/fedmsg into develop `3fa23e35e <https://github.com/fedora-infra/fedmsg/commit/3fa23e35e7ecd00a1039044e7d93a9ecc01620d1>`_
+- Keep status on lock. `b50eb9a37 <https://github.com/fedora-infra/fedmsg/commit/b50eb9a3785c09378405981aca552287b2a076c1>`_
+- Merge pull request #270 from fedora-infra/feature/keep-status-on-lock `1de393ba6 <https://github.com/fedora-infra/fedmsg/commit/1de393ba654fe995750c6cd5d10cae979536f058>`_
+- Use fedmsg.encoding here so we can encode moksha.hub.zeromq.ZMQMessage objects. `1ab33b107 <https://github.com/fedora-infra/fedmsg/commit/1ab33b10752e869ddf9bc4be14fb4f3235718536>`_
+- Require psutil in the setup.py `8770e44a4 <https://github.com/fedora-infra/fedmsg/commit/8770e44a43bb3918e0e1e0cba9c88cf351d00433>`_
+- Merge pull request #272 from fedora-infra/feature/psutil `b6f3ed86e <https://github.com/fedora-infra/fedmsg/commit/b6f3ed86e64ee16b2fcd9f99e6f655caf1ab992f>`_
+
 0.9.1
 -----
 
