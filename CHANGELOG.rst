@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.9.3
+-----
+
+- Be more careful with new status lock /cc @tflink. `dc405be97 <https://github.com/fedora-infra/fedmsg/commit/dc405be971e4ca8c620c5e92e344c2c31fe4d37b>`_
+- Disable the backlog stuff out of the box.  It bit @tflink. `c0f789a60 <https://github.com/fedora-infra/fedmsg/commit/c0f789a608be7290de0834a8bf2f1ca784797023>`_
+
 0.9.2
 -----
 

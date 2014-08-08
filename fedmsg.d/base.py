@@ -31,10 +31,11 @@ config = dict(
     ## For the fedmsg-hub and fedmsg-relay. ##
 
     # This is a status dir to keep a record of the last processed message
-    status_directory=os.getcwd() + "/status",
+    #status_directory=os.getcwd() + "/status",
+    #status_directory='/var/run/fedmsg/status',
 
     # This is the URL of a datagrepper isntance that we can query for backlog.
-    datagrepper_url="https://apps.fedoraproject.org/datagrepper/raw",
+    #datagrepper_url="https://apps.fedoraproject.org/datagrepper/raw",
 
     # We almost always want the fedmsg-hub to be sending messages with zmq as
     # opposed to amqp or stomp.

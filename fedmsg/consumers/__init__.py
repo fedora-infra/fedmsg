@@ -111,6 +111,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         # Check if we have a status file to see if we have a backlog or not.
         # Create its directory if it doesn't exist.
         self.status_directory = self.hub.config.get('status_directory')
+        self.status_filename, self.status_lock = None, None
         if self.status_directory:
 
             # Extract proc name and handle differences between py2.6 and py2.7
@@ -124,8 +125,6 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
             topmost_directory, _ = self.status_filename.rsplit('/', 1)
             if not os.path.exists(topmost_directory):
                 os.makedirs(topmost_directory)
-        else:
-            self.status_filename = None
 
         self.datagrepper_url = self.hub.config.get('datagrepper_url')
         if self.status_filename and self.datagrepper_url:
@@ -249,7 +248,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         ))
 
     def save_status(self, data):
-        if self.status_filename:
+        if self.status_filename and self.status_lock:
             with self.status_lock:
                 with open(self.status_filename, 'w') as f:
                     f.write(fedmsg.encoding.dumps(data))
