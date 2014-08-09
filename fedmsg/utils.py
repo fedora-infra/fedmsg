@@ -187,8 +187,8 @@ def cowsay_output(message):
     """ Invoke a shell command to print cowsay output. Primary replacement for
     os.system calls.
     """
-    command = 'cowsay ' + message
+    command = 'cowsay "%s"' % message
     ret = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     output, error = ret.communicate()
-    return output
+    return output, error

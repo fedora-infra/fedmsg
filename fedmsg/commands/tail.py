@@ -146,8 +146,11 @@ class TailCommand(BaseCommand):
 
         if self.config['cowsay']:
             def formatter(d):
-                result = cowsay_output(fedmsg.meta.msg2subtitle(d, **self.config))
-                return "\n" + result
+                result, error = cowsay_output(fedmsg.meta.msg2subtitle(d, **self.config))
+                if not error:
+                    return "\n" + result
+                else:
+                    return "\n" + error
 
         # Build regular expressions for use in our loop.
         exclusive_regexp = re.compile(self.config['exclusive_regexp'])
