@@ -180,7 +180,8 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
     def get_datagrepper_results(self, then, now):
         def _make_query(page=1):
             return requests.get(self.datagrepper_url, params=dict(
-                rows_per_page=100, page=page, start=then, end=now)).json()
+                rows_per_page=100, page=page, start=then, end=now, order='asc'
+            )).json()
 
         # Grab the first page of results
         data = _make_query()
