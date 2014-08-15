@@ -158,8 +158,11 @@ def validate(message, ssldir=None, **config):
                        if 'Serial Number:' in line]
     if cert.get_serial_number() in revoked_serials:
         subject = cert.get_subject()
-        signer = subject.get_entries_by_nid(subject.nid['CN'])[0]\
-            .get_data().as_text()
+        if subject.nid.get('CN'):
+            signer = subject.get_entries_by_nid(subject.nid['CN'])[0]\
+                .get_data().as_text()
+        else:
+            signer = '(no CN)'
         return fail("X509 cert %r, %r is in the Revocation List (CRL)" % (
             signer, cert.get_serial_number()))
 
