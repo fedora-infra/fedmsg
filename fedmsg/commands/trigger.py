@@ -129,7 +129,6 @@ class TriggerCommand(BaseCommand):
                 if not inclusive_regexp.search(topic):
                     continue
 
-                print 'Queue'
                 queue.put(message)
 
                 if timer is not None:
