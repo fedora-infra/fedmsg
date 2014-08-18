@@ -61,12 +61,14 @@ class TriggerCommand(BaseCommand):
         }),
         (['--wait-for'], {
             'dest': 'wait_for',
-            'help': 'Delay after receiving messages before outputting',
+            'help': 'Seconds to delay after the matching message before ' +
+                    'executing command. Timer resets with every matching ' +
+                    'message',
             'default': 0,
         }),
         (['--max-queue-size'], {
             'dest': 'max_queue_size',
-            'help': 'The max size of the queue before ignoring the delay',
+            'help': 'The max size of the queue before ignoring the delay.',
             'default': 0,
         }),
     ]
