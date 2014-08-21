@@ -70,6 +70,34 @@ class BaseProcessor(object):
         self.__prefix__ = re.compile('^%s\.(%s)(\.(.*))?$' % (
             config['topic_prefix_re'], self.__name__.lower()))
 
+    def conglomerate(self, messages, **config):
+        """ Given N messages, return another list that has some of them
+        grouped together into a common 'item'.
+
+        A conglomeration of messages should be of the following form::
+
+          {
+            'subtitle': 'relrod pushed commits to ghc and 487 other packages',
+            'link': None,  # This could be something.
+            'icon': 'https://that-git-logo',
+            'secondary_icon': 'https://that-relrod-avatar',
+            'start_time': some_timestamp,
+            'end_time': some_other_timestamp,
+            'human_time': '5 minutes ago',
+            'msg_ids': ['2014-abcde', '2014-bcdef', '2014-cdefg', ... ],
+          },
+
+        The telltale sign that an entry in a list of messages represents a
+        conglomerate message is the presence of the plural ``msg_ids`` field.
+        In contrast, ungrouped singular messages should bear a singular
+        ``msg_id`` field.
+
+        By default, this method does nothing and just returns the list it was
+        given.  Subclasses may override this behavior to group messages as they
+        see fit.
+        """
+        return messages
+
     def handle_msg(self, msg, **config):
         """
         If we can handle the given message, return the remainder of the topic.

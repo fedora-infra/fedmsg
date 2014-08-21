@@ -50,6 +50,7 @@ End users can have multiple plugin sets installed simultaneously.
 
 """
 
+import arrow
 import six
 
 # gettext is used for internationalization.  I have tested that it can produce
@@ -154,6 +155,44 @@ def with_processor():
         __wrapper.__name__ = f.__name__
         return __wrapper
     return _wrapper
+
+
+def conglomerate(messages, **config):
+    """ Return a list of messages with some of them grouped into conglomerate
+    messages.  Conglomerate messages represent several other messages.
+
+    For example, you might pass this function a list of 40 messages.
+    38 of those are git.commit messages, 1 is a bodhi.update message, and 1 is
+    a badge.award message.  This function could return a list of three
+    messages, one representing the 38 git commit messages, one representing the
+    bodhi.update message, and one representing the badge.award message.
+
+    Functionality is provided by fedmsg.meta plugins on a "best effort" basis.
+    """
+
+    # First, give every registered processor a chance to do its work
+    for processor in processors:
+        messages = processor.conglomerate(messages, **config)
+
+    # Then, just fake it for every other ungrouped message.
+    for i, message in enumerate(messages):
+        # If these were successfully grouped, then skip
+        if 'msg_ids' in message:
+            continue
+
+        # For ungrouped ones, replace them with a fake conglomerate
+        messages[i] = {
+            'subtitle': msg2subtitle(message, **config),
+            'link': msg2link(message, **config),
+            'icon': msg2icon(message, **config),
+            'secondary_icon': msg2secondary_icon(message, **config),
+            'start_time': message['timestamp'],
+            'end_time': message['timestamp'],
+            'human_time': arrow.get(message['timestamp']).humanize(),
+            'msg_ids': [message['msg_id']],
+        }
+
+    return messages
 
 
 @legacy_condition(six.text_type)
