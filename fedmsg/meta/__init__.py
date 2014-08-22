@@ -189,6 +189,8 @@ def conglomerate(messages, **config):
             'start_time': message['timestamp'],
             'end_time': message['timestamp'],
             'human_time': arrow.get(message['timestamp']).humanize(),
+            'usernames': msg2usernames(message, **config),
+            'packages': msg2packages(message, **config),
             'msg_ids': [message['msg_id']],
         }
 
