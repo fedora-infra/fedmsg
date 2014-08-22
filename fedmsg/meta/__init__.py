@@ -100,7 +100,7 @@ def make_processors(**config):
             processors.append(processor.load()(_, **config))
         except Exception as e:
             log.warn("Failed to load %r processor." % processor.name)
-            log.warn(str(e))
+            log.exception(e)
 
     # This should always be last
     processors.append(DefaultProcessor(_, **config))
@@ -189,6 +189,8 @@ def conglomerate(messages, **config):
             'start_time': message['timestamp'],
             'end_time': message['timestamp'],
             'human_time': arrow.get(message['timestamp']).humanize(),
+            'usernames': msg2usernames(message, **config),
+            'packages': msg2packages(message, **config),
             'msg_ids': [message['msg_id']],
         }
 

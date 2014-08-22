@@ -140,6 +140,7 @@ class TestProcessorRegex(unittest.TestCase):
         result = self.proc.handle_msg(fake_message, **self.config)
         assert result is "", "Proc said it couldn't handle the msg."
 
+
 class Base(unittest.TestCase):
     msg = None
     expected_title = None
@@ -288,6 +289,28 @@ class TestLoggerJSON(Base):
         },
         'username': 'root',
     }
+
+
+class ConglomerateBase(unittest.TestCase):
+    originals = None
+    expected = None
+    maxDiff = None
+
+    def setUp(self):
+        dirname = os.path.abspath(os.path.dirname(__file__))
+        self.config = fedmsg.config.load_config(
+            filenames=[os.path.join(dirname, "fedmsg-test-config.py")],
+            invalidate_cache=True,
+        )
+        self.config['topic_prefix'] = 'org.fedoraproject'
+        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+        fedmsg.meta.make_processors(**self.config)
+
+    @skip_on(['originals', 'expected'])
+    def test_conglomerate(self):
+        """ Does fedmsg.meta produce the expected conglomeration? """
+        actual = fedmsg.meta.conglomerate(self.originals, **self.config)
+        self.assertEquals(actual, self.expected)
 
 
 if __name__ == '__main__':
