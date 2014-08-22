@@ -242,6 +242,34 @@ class BaseConglomerator(object):
             'icon': self.processor.__icon__,
         }
 
+    @staticmethod
+    def list_to_series(items, N=3, oxford_comma=True):
+        """ Convert a list of things into a comma-separated string.
+
+        >>> list_to_series(['a', 'b', 'c', 'd'])
+        'a, b, and 2 others'
+        >>> list_to_series(['a', 'b', 'c', 'd'], N=4, oxford_comma=False)
+        'a, b, c and d'
+
+        """
+
+        if not items:
+            return "(nothing)"
+
+        if len(items) == 1:
+            return items[0]
+
+        if len(items) > N:
+            items[N - 1:] = ["%i others" % (len(items) - N + 1)]
+
+        first = ", ".join(items[:-1])
+
+        conjunction = " and "
+        if oxford_comma and len(items) > 2:
+            conjunction = "," + conjunction
+
+        return first + conjunction + items[-1]
+
     @abc.abstractmethod
     def can_handle(self, msg, **config):
         """ Return true if we should begin to consider a given message. """
