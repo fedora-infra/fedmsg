@@ -159,6 +159,7 @@ class BaseProcessor(object):
         """ Return a dict of avatar URLs associated with a message. """
         return dict()
 
+
 class BaseConglomerator(object):
     """ Base Conglomerator.  This abstract base class must be extended.
 
