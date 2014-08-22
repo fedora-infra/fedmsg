@@ -78,8 +78,10 @@ class BaseProcessor(object):
         if self.conglomerators is None:
             self.conglomerators = []
 
+        self.conglomerator_objects = []
         for i, conglomerator_class in enumerate(self.conglomerators):
-            self.conglomerators[i] = conglomerator_class(self, self._, **config)
+            conglomerator = conglomerator_class(self, self._, **config)
+            self.conglomerator_objects.append(conglomerator)
 
     def conglomerate(self, messages, **config):
         """ Given N messages, return another list that has some of them
@@ -105,7 +107,7 @@ class BaseProcessor(object):
         In contrast, ungrouped singular messages should bear a singular
         ``msg_id`` field.
         """
-        for conglomerator in self.conglomerators:
+        for conglomerator in self.conglomerator_objects:
             messages = conglomerator.conglomerate(messages, **config)
         return messages
 
