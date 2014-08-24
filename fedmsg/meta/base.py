@@ -215,6 +215,8 @@ class BaseConglomerator(object):
             constituents = []
             base = i + 1
             for j, secondary in list(enumerate(messages))[base:]:
+                if not self.can_handle(secondary, **config):
+                    continue
                 if self.matches(primary, secondary, **config):
                     constituents.append((j, secondary))
 
