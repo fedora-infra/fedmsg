@@ -188,6 +188,7 @@ def conglomerate(messages, **config):
             'secondary_icon': msg2secondary_icon(message, **config),
             'start_time': message['timestamp'],
             'end_time': message['timestamp'],
+            'timestamp': message['timestamp'],
             'human_time': arrow.get(message['timestamp']).humanize(),
             'usernames': msg2usernames(message, **config),
             'packages': msg2packages(message, **config),
