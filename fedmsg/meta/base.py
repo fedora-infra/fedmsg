@@ -57,6 +57,7 @@ class BaseProcessor(object):
     __prefix__ = None
 
     conglomerators = None
+    topic_prefix_re = None
 
     def __init__(self, internationalization_callable, **config):
         self._ = internationalization_callable
@@ -72,8 +73,14 @@ class BaseProcessor(object):
             raise ValueError("Must declare a __obj__")
 
         # Build a regular expression used to match message topics for us
+        # A subclass may hardcode what topic prefix they are expecting (the
+        # fedora plugin hardcodes fedora and the debian hardcodes debian).  For
+        # backwards-compatibility reasons, if the subclassing plugin does not
+        # hardcode a topic_prefix, then the global one is taken from config.
+        if not self.topic_prefix_re:
+            self.topic_prefix_re = config['topic_prefix_re']
         self.__prefix__ = re.compile('^%s\.(%s)(\.(.*))?$' % (
-            config['topic_prefix_re'], self.__name__.lower()))
+            self.topic_prefix_re, self.__name__.lower()))
 
         if self.conglomerators is None:
             self.conglomerators = []
