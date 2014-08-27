@@ -20,6 +20,7 @@
 
 import abc
 import re
+import time
 
 import arrow
 
@@ -232,8 +233,13 @@ class BaseConglomerator(object):
         Produces the beginnings of a merged conglomerate message that needs to
         be later filled out by a subclass.
         """
+        def _extract_timestamp(msg):
+            value = msg['timestamp']
+            if hasattr(value, 'timetuple'):
+                value = time.mktime(value.timetuple())
+            return value
         N = len(constituents)
-        timestamps = [msg['timestamp'] for msg in constituents]
+        timestamps = [_extract_timestamp(msg) for msg in constituents]
         average_timestamp = sum(timestamps) / N
 
         usernames = set(sum([
