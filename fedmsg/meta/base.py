@@ -202,21 +202,26 @@ class BaseConglomerator(object):
 
         return messages
 
+    def skip(self, message, **config):
+        # Skip ones that have already been squashed.
+        if 'msg_ids' in message:
+            return True
+        # Skip ones we have no idea about
+        if not self.can_handle(message, **config):
+            return True
+        return False
+
     def select_constituents(self, messages, **config):
         """ From a list of messages, return a subset that can be merged """
         for i, primary in enumerate(messages):
-            # Skip ones that have already been squashed.
-            if 'msg_ids' in primary:
-                continue
-            # Skip ones we have no idea about
-            if not self.can_handle(primary, **config):
+            if self.skip(primary, **config):
                 continue
 
             # If we have one that looks good, find its siblings further down
             constituents = []
             base = i + 1
             for j, secondary in list(enumerate(messages))[base:]:
-                if not self.can_handle(secondary, **config):
+                if self.skip(secondary, **config):
                     continue
                 if self.matches(primary, secondary, **config):
                     constituents.append((j, secondary))
