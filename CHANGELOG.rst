@@ -1,6 +1,39 @@
 Changelog
 =========
 
+0.10.0
+------
+
+- add support for cowsay command `578826834 <https://github.com/fedora-infra/fedmsg/commit/5788268342c1186507c7fc36db986814e9a8c198>`_
+- display the error if the cowsay command returns an error `8431ec4bb <https://github.com/fedora-infra/fedmsg/commit/8431ec4bbfbe2e4246bb36288460e603328a5b7b>`_
+- Merge pull request #273 from sayanchowdhury/cowsay `db00bd35e <https://github.com/fedora-infra/fedmsg/commit/db00bd35e5984abc43c8a30dd8360529dda25125>`_
+- Get backlog from datagrepper in ascending order. `eaf209ba7 <https://github.com/fedora-infra/fedmsg/commit/eaf209ba74faa09461bc4f28e11a93fec8499ab6>`_
+- Merge pull request #275 from fedora-infra/feature/ascending-backlog `551150d5d <https://github.com/fedora-infra/fedmsg/commit/551150d5d3c4a60fe7074ea64beda4884c649871>`_
+- Provide more info when crl-check fails. `1cab882e6 <https://github.com/fedora-infra/fedmsg/commit/1cab882e641fbbbdf6bec981e800de18b002667c>`_
+- Careful with "CN". `a73c23634 <https://github.com/fedora-infra/fedmsg/commit/a73c23634d92936a91a1e48381241465139755d2>`_
+- Still more careful. `12e9f0b93 <https://github.com/fedora-infra/fedmsg/commit/12e9f0b934fe057d19bda85936e021cf3c7ced45>`_
+- Merge pull request #276 from fedora-infra/feature/crl-debugging `e165462a4 <https://github.com/fedora-infra/fedmsg/commit/e165462a49774bfc518fda37a69c869af444e82c>`_
+- Implement wait_for argument for fedmsg-trigger `f7a1c72e6 <https://github.com/fedora-infra/fedmsg/commit/f7a1c72e68622830a034c59edc97bb3ed74610d8>`_
+- Improve help message for --wait-for `349bb8ad7 <https://github.com/fedora-infra/fedmsg/commit/349bb8ad7648437c38ca3c1ea367bcd4b09de918>`_
+- Remove debugging code `f43de1316 <https://github.com/fedora-infra/fedmsg/commit/f43de1316eb423afde932af6d18241fe5b8e1e0d>`_
+- Merge pull request #277 from fedora-infra/feature/wait-for `2f3635435 <https://github.com/fedora-infra/fedmsg/commit/2f3635435ccfe6b4d27aae3f8d5fd3730d8f4068>`_
+- An API for grouping together messages. `0382730f7 <https://github.com/fedora-infra/fedmsg/commit/0382730f7312824775e33172f89cf07a596d08b6>`_
+- Merge pull request #278 from fedora-infra/feature/grouped `891f6f528 <https://github.com/fedora-infra/fedmsg/commit/891f6f5287f7407fefb42173fa40b68f4751077e>`_
+- Fix the link to fedmsg-notify in the docs `b9bb5b334 <https://github.com/fedora-infra/fedmsg/commit/b9bb5b33491448ad58706c306ac954a2ab2265d7>`_
+- A second take on the 'conglomerate' API. `9e71ef17c <https://github.com/fedora-infra/fedmsg/commit/9e71ef17cc636e96802d0d036cce2dae7f767e1a>`_
+- Add a convenience method for subclasses. `bc228b44e <https://github.com/fedora-infra/fedmsg/commit/bc228b44eca7128c3cba72113779ec5f378cfb2c>`_
+- Be more explicit with warnings from processors. `60eff3f16 <https://github.com/fedora-infra/fedmsg/commit/60eff3f16a6675d4a9b9e04f8160d6d7e335d4ac>`_
+- Fix class/object attribute collision. `558773feb <https://github.com/fedora-infra/fedmsg/commit/558773feb7166d5a4f51339569d8f1b23c0a65be>`_
+- Pep8. `c1a297d96 <https://github.com/fedora-infra/fedmsg/commit/c1a297d96ef210c4a48c0b48d94f04a3f2c816cc>`_
+- Merge pull request #279 from fedora-infra/feature/grouped `58dd80312 <https://github.com/fedora-infra/fedmsg/commit/58dd8031232559f74fbff5977a33d4f5cedbf65e>`_
+- Allow fedmsg.meta plugins to hardcode topic prefix. `3be665e0f <https://github.com/fedora-infra/fedmsg/commit/3be665e0f74451a8fbd21fee3e14fb0a41826bba>`_
+- Merge pull request #280 from fedora-infra/feature/topic-prefix-hardcode `8068cfa1a <https://github.com/fedora-infra/fedmsg/commit/8068cfa1abb6a641476171b8b0f038045bb90dba>`_
+- If a subsequent couldn't be handled, then it follows that it wouldn't match either. `d81a2ced6 <https://github.com/fedora-infra/fedmsg/commit/d81a2ced607808a940564df9d0d7ba2024e39c82>`_
+- Pass along the timestamp here too. `e1d5a538e <https://github.com/fedora-infra/fedmsg/commit/e1d5a538e0c6a483c4f016bd3d9144522d374495>`_
+- Handle datetime objects. `2573ace8e <https://github.com/fedora-infra/fedmsg/commit/2573ace8e0919bf8ad2ed70bedc452e2d986329b>`_
+- Consolidate skipping logic for conglomeration. `1f8d26831 <https://github.com/fedora-infra/fedmsg/commit/1f8d2683194ea3c629542d6c852fbc900a2d1670>`_
+- Merge pull request #281 from fedora-infra/feature/conglomerate-fixes `bf767127b <https://github.com/fedora-infra/fedmsg/commit/bf767127bb7e6fca8a50b32dc36500c9637ff65d>`_
+
 0.9.3
 -----
 
