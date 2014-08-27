@@ -18,7 +18,11 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #           Luke Macken <lmacken@redhat.com>
 
+import abc
 import re
+import time
+
+import arrow
 
 
 class BaseProcessor(object):
@@ -53,6 +57,9 @@ class BaseProcessor(object):
     # An automatically generated regex to match messages for this processor
     __prefix__ = None
 
+    conglomerators = None
+    topic_prefix_re = None
+
     def __init__(self, internationalization_callable, **config):
         self._ = internationalization_callable
         if not self.__name__:
@@ -67,8 +74,50 @@ class BaseProcessor(object):
             raise ValueError("Must declare a __obj__")
 
         # Build a regular expression used to match message topics for us
+        # A subclass may hardcode what topic prefix they are expecting (the
+        # fedora plugin hardcodes fedora and the debian hardcodes debian).  For
+        # backwards-compatibility reasons, if the subclassing plugin does not
+        # hardcode a topic_prefix, then the global one is taken from config.
+        if not self.topic_prefix_re:
+            self.topic_prefix_re = config['topic_prefix_re']
         self.__prefix__ = re.compile('^%s\.(%s)(\.(.*))?$' % (
-            config['topic_prefix_re'], self.__name__.lower()))
+            self.topic_prefix_re, self.__name__.lower()))
+
+        if self.conglomerators is None:
+            self.conglomerators = []
+
+        self.conglomerator_objects = []
+        for i, conglomerator_class in enumerate(self.conglomerators):
+            conglomerator = conglomerator_class(self, self._, **config)
+            self.conglomerator_objects.append(conglomerator)
+
+    def conglomerate(self, messages, **config):
+        """ Given N messages, return another list that has some of them
+        grouped together into a common 'item'.
+
+        A conglomeration of messages should be of the following form::
+
+          {
+            'subtitle': 'relrod pushed commits to ghc and 487 other packages',
+            'link': None,  # This could be something.
+            'icon': 'https://that-git-logo',
+            'secondary_icon': 'https://that-relrod-avatar',
+            'start_time': some_timestamp,
+            'end_time': some_other_timestamp,
+            'human_time': '5 minutes ago',
+            'usernames': ['relrod'],
+            'packages': ['ghc', 'nethack', ... ],
+            'msg_ids': ['2014-abcde', '2014-bcdef', '2014-cdefg', ... ],
+          },
+
+        The telltale sign that an entry in a list of messages represents a
+        conglomerate message is the presence of the plural ``msg_ids`` field.
+        In contrast, ungrouped singular messages should bear a singular
+        ``msg_id`` field.
+        """
+        for conglomerator in self.conglomerator_objects:
+            messages = conglomerator.conglomerate(messages, **config)
+        return messages
 
     def handle_msg(self, msg, **config):
         """
@@ -117,3 +166,144 @@ class BaseProcessor(object):
     def avatars(self, msg, **config):
         """ Return a dict of avatar URLs associated with a message. """
         return dict()
+
+
+class BaseConglomerator(object):
+    """ Base Conglomerator.  This abstract base class must be extended.
+
+    fedmsg.meta "conglomerators" are similar to but different from the
+    fedmsg.meta "processors".  Where processors take a single message are
+    return metadata about them (subtitle, a list of usernames, etc..),
+    conglomerators take multiple messages and return a reduced subset of
+    "conglomerate" messages.  Think: there are 100 messages where pbrobinson
+    built 100 different packages in koji -- we can just represent those in a UI
+    somewhere as a single message "pbrobinson built 100 different packages
+    (click for details)".
+
+    This BaseConglomerator is meant to be extended many times over to provide
+    plugins that know how to conglomerate different combinations of messages.
+    """
+    __metaclass__ = abc.ABCMeta
+
+    def __init__(self, processor, internationalization_callable, **conf):
+        self.processor = processor
+        self._ = internationalization_callable
+
+    def conglomerate(self, messages, **conf):
+        """ Top-level API entry point.  Given a list of messages, transform it
+        into a list of conglomerates where possible.
+        """
+        indices, constituents = self.select_constituents(messages, **conf)
+        while constituents:
+            for idx in reversed(indices):
+                messages.pop(idx)
+            messages.insert(idx, self.merge(constituents, **conf))
+            indices, constituents = self.select_constituents(messages, **conf)
+
+        return messages
+
+    def skip(self, message, **config):
+        # Skip ones that have already been squashed.
+        if 'msg_ids' in message:
+            return True
+        # Skip ones we have no idea about
+        if not self.can_handle(message, **config):
+            return True
+        return False
+
+    def select_constituents(self, messages, **config):
+        """ From a list of messages, return a subset that can be merged """
+        for i, primary in enumerate(messages):
+            if self.skip(primary, **config):
+                continue
+
+            # If we have one that looks good, find its siblings further down
+            constituents = []
+            base = i + 1
+            for j, secondary in list(enumerate(messages))[base:]:
+                if self.skip(secondary, **config):
+                    continue
+                if self.matches(primary, secondary, **config):
+                    constituents.append((j, secondary))
+
+            # If we found any, then return them and expect to be called afresh
+            if constituents:
+                return zip(*[(i, primary)] + constituents)
+
+        # If we're done, we're done.
+        return None, None
+
+    def produce_template(self, constituents, **config):
+        """ Helper function used by `merge`.
+        Produces the beginnings of a merged conglomerate message that needs to
+        be later filled out by a subclass.
+        """
+        def _extract_timestamp(msg):
+            value = msg['timestamp']
+            if hasattr(value, 'timetuple'):
+                value = time.mktime(value.timetuple())
+            return value
+        N = len(constituents)
+        timestamps = [_extract_timestamp(msg) for msg in constituents]
+        average_timestamp = sum(timestamps) / N
+
+        usernames = set(sum([
+            list(self.processor.usernames(msg, **config))
+            for msg in constituents], []))
+        packages = set(sum([
+            list(self.processor.packages(msg, **config))
+            for msg in constituents], []))
+
+        return {
+            'start_time': min(timestamps),
+            'end_time': max(timestamps),
+            'timestamp': average_timestamp,
+            'human_time': arrow.get(average_timestamp).humanize(),
+            'msg_ids': [msg['msg_id'] for msg in constituents],
+            'usernames': usernames,
+            'packages': packages,
+            'icon': self.processor.__icon__,
+        }
+
+    @staticmethod
+    def list_to_series(items, N=3, oxford_comma=True):
+        """ Convert a list of things into a comma-separated string.
+
+        >>> list_to_series(['a', 'b', 'c', 'd'])
+        'a, b, and 2 others'
+        >>> list_to_series(['a', 'b', 'c', 'd'], N=4, oxford_comma=False)
+        'a, b, c and d'
+
+        """
+
+        if not items:
+            return "(nothing)"
+
+        if len(items) == 1:
+            return items[0]
+
+        if len(items) > N:
+            items[N - 1:] = ["%i others" % (len(items) - N + 1)]
+
+        first = ", ".join(items[:-1])
+
+        conjunction = " and "
+        if oxford_comma and len(items) > 2:
+            conjunction = "," + conjunction
+
+        return first + conjunction + items[-1]
+
+    @abc.abstractmethod
+    def can_handle(self, msg, **config):
+        """ Return true if we should begin to consider a given message. """
+        pass
+
+    @abc.abstractmethod
+    def matches(self, a, b, **config):
+        """ Return true if message a can be paired with message b. """
+        pass
+
+    @abc.abstractmethod
+    def merge(self, constituents, **config):
+        """ Given N presumably matching messages, return one merged message """
+        pass

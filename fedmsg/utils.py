@@ -22,6 +22,7 @@ import six
 import zmq
 import logging
 import inspect
+import subprocess
 
 try:
     from collections import OrderedDict
@@ -181,3 +182,13 @@ def dict_query(dic, query):
     return OrderedDict([
         ('.'.join(tokens), _browse(tokens, dic)) for tokens in keys
     ])
+
+def cowsay_output(message):
+    """ Invoke a shell command to print cowsay output. Primary replacement for
+    os.system calls.
+    """
+    command = 'cowsay "%s"' % message
+    ret = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    output, error = ret.communicate()
+    return output, error

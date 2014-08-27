@@ -157,7 +157,16 @@ def validate(message, ssldir=None, **config):
                        for line in crl.as_text().split('\n')
                        if 'Serial Number:' in line]
     if cert.get_serial_number() in revoked_serials:
-        return fail("X509 certificate is in the Revocation List (CRL)")
+        subject = cert.get_subject()
+
+        signer = '(no CN)'
+        if subject.nid.get('CN'):
+            entry = subject.get_entries_by_nid(subject.nid['CN'])[0]
+            if entry:
+                signer = entry.get_data().as_text()
+
+        return fail("X509 cert %r, %r is in the Revocation List (CRL)" % (
+            signer, cert.get_serial_number()))
 
     # If the cert is good, then test to see if the signature in the messages
     # matches up with the provided cert.
