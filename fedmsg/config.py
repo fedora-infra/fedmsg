@@ -145,7 +145,9 @@ def load_config(extra_args=None,
     # but read in that file instead.
     if not filenames and config.get('config_filename', None):
         return load_config(extra_args, doc,
-                           filenames=[config['config_filename']])
+                           filenames=[config['config_filename']],
+                           fedmsg_command=fedmsg_command,
+                           disable_defaults=disable_defaults)
 
     # Just a little debug option.  :)
     if config.get('print_config'):
