@@ -34,4 +34,7 @@ class AnnounceProcessor(BaseProcessor):
         return msg['msg']['link']
 
     def usernames(self, msg, **config):
-        return set([msg['username']])
+        users = set()
+        if 'username' in msg:
+            users.update(set([msg['username']]))
+        return users
