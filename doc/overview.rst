@@ -249,3 +249,20 @@ All 'fields' in a topic **should**:
  - Be `singular` (Use `package`, not `packages`)
  - Use existing fields as much as possible (since `complete` is already used
    by other topics, use that instead of using `finished`).
+
+**Furthermore**, the *body* of messages will contain the follow envelope:
+
+- A ``topic`` field indicating the topic of the message.
+- A ``timestamp`` indicating the seconds since the epoch when the message was
+  published.
+- A ``msg_id`` bearing a unique value distinguishing the message.  It is
+  typically of the form <YEAR>-<UUID>.  These can be used to uniquely query for
+  messages in the datagrepper web services.
+- A ``crypto`` field indicating if the message is signed with the ``X509``
+  method or the ``gpg`` method.
+- A ``i`` field indicating the sequence of the message if it comes from a
+  permanent service.
+- A ``username`` field indicating the username of the process that published
+  the message (sometimes, ``apache`` or ``fedmsg`` or something else).
+- Lastly, the application-specific body of the message will be contained in a
+  nested ``msg`` dictionary.
