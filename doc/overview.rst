@@ -250,7 +250,7 @@ All 'fields' in a topic **should**:
  - Use existing fields as much as possible (since `complete` is already used
    by other topics, use that instead of using `finished`).
 
-**Furthermore**, the *body* of messages will contain the follow envelope:
+**Furthermore**, the *body* of messages will contain the following envelope:
 
 - A ``topic`` field indicating the topic of the message.
 - A ``timestamp`` indicating the seconds since the epoch when the message was
