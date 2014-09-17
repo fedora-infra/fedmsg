@@ -17,6 +17,8 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
+import json
+
 from fedmsg.meta.base import BaseProcessor
 
 
@@ -36,6 +38,16 @@ class LoggerProcessor(BaseProcessor):
             return result + " (%s)" % msg.get('username', 'none')
         else:
             return self._("<unhandled log message>")
+
+    def long_form(self, msg, **config):
+        if 'logger.log' in msg['topic'] and 'log' not in msg['msg']:
+            result = self._(
+                'A custom JSON message was logged by {user}::\n\n{body}')
+            user = msg.get('username', '(None)')
+            body = '\n'.join(
+                json.dumps(dict(msg=msg['msg']), indent=4).split('\n')[1:-1]
+            )
+            return result.format(user=user, body=body)
 
     def usernames(self, msg, **config):
         if 'username' in msg:

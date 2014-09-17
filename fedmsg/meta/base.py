@@ -136,6 +136,10 @@ class BaseProcessor(object):
         """ Return a "subtitle" for the message. """
         return ""
 
+    def long_form(self, msg, **config):
+        """ Return some paragraphs of text about a message. """
+        return ""
+
     def link(self, msg, **config):
         """ Return a "link" for the message. """
         return ""

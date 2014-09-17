@@ -21,6 +21,7 @@
 
 import os
 import unittest
+import textwrap
 
 from nose import SkipTest
 from nose.tools import eq_
@@ -154,6 +155,7 @@ class Base(unittest.TestCase):
     expected_objects = None
     expected_emails = None
     expected_avatars = None
+    expected_long_form = None
 
     def setUp(self):
         dirname = os.path.abspath(os.path.dirname(__file__))
@@ -177,6 +179,12 @@ class Base(unittest.TestCase):
         actual_markup = fedmsg.meta.msg2subtitle(
             self.msg, markup=True, **self.config)
         eq_(actual_markup, self.expected_markup)
+
+    @skip_on(['msg', 'expected_long_form'])
+    def test_long_form(self):
+        """ Does fedmsg.meta produce the expected long form text? """
+        actual_long_form = fedmsg.meta.msg2long_form(self.msg, **self.config)
+        eq_(actual_long_form, self.expected_long_form)
 
     @skip_on(['msg', 'expected_subti'])
     def test_subtitle(self):
@@ -244,6 +252,7 @@ class TestUnhandled(Base):
 class TestAnnouncement(Base):
     expected_title = "announce.announcement"
     expected_subti = 'hello, world.'
+    expected_long_form = 'hello, world.'
     expected_link = 'foo'
     expected_usernames = set(['ralph'])
 
@@ -262,6 +271,7 @@ class TestAnnouncement(Base):
 class TestLoggerNormal(Base):
     expected_title = "logger.log"
     expected_subti = 'hello, world. (ralph)'
+    expected_long_form = 'hello, world. (ralph)'
     expected_usernames = set(['ralph'])
 
     msg = {
@@ -278,6 +288,13 @@ class TestLoggerNormal(Base):
 class TestLoggerJSON(Base):
     expected_title = "logger.log"
     expected_subti = '<custom JSON message> (root)'
+    expected_long_form = textwrap.dedent("""
+    A custom JSON message was logged by root::
+
+        "msg": {
+            "foo": "bar"
+        }
+    """).strip()
     expected_usernames = set(['root'])
 
     msg = {

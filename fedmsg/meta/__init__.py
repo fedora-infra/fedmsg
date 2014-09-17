@@ -229,6 +229,20 @@ def msg2subtitle(msg, processor, **config):
 
 @legacy_condition(six.text_type)
 @with_processor()
+def msg2long_form(msg, processor, **config):
+    """ Return a 'long form' text representation of a message.
+
+    For most message, this will just default to the terse subtitle, but for
+    some messages a long paragraph-structured block of text may be returned.
+    """
+    result = processor.long_form(msg, **config)
+    if not result:
+        result = processor.subtitle(msg, **config)
+    return result
+
+
+@legacy_condition(six.text_type)
+@with_processor()
 def msg2link(msg, processor, **config):
     """ Return a URL associated with a message. """
     return processor.link(msg, **config)
