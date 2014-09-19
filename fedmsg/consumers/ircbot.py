@@ -154,12 +154,22 @@ class FedMsngrFactory(protocol.ClientFactory):
         self.log = logging.getLogger("moksha.hub")
 
     def clientConnectionLost(self, connector, reason):
+        if self.parent_consumer.die:
+            self.log.info("Lost connection.  Not reconnecting to IRC.")
+            return
+
         self.log.warning("Lost connection (%s), reconnecting." % (reason,))
         self.parent_consumer.del_irc_clients(factory=self)
         connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
-        self.log.error("Could not connect: %s" % (reason,))
+        if self.parent_consumer.die:
+            self.log.info("Failed connection.  Not reconnecting to IRC.")
+            return
+
+        self.log.error("Could not connect: %s, retry in 60s" % (reason,))
+        self.parent_consumer.del_irc_clients(factory=self)
+        reactor.callLater(60, connector.connect)
 
 
 class IRCBotConsumer(FedmsgConsumer):
@@ -170,6 +180,7 @@ class IRCBotConsumer(FedmsgConsumer):
         self.hub = hub
         self.DBSession = None
         self.irc_clients = []
+        self.die = False
 
         # The consumer should pick up *all* messages.
         self.topic = self.hub.config.get('topic_prefix', 'org.fedoraproject')
@@ -306,3 +317,7 @@ class IRCBotConsumer(FedmsgConsumer):
                     warning = "* backlogged by %i messages" % backlog
                     self.log.warning(warning)
                     send(client.factory.channel, warning.encode('utf-8'))
+
+    def stop(self):
+        self.die = True  # Signal to not reconnect to IRC
+        super(IRCBotConsumer, self).stop()
