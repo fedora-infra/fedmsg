@@ -28,5 +28,8 @@ config = dict(
             "tcp://hub.fedoraproject.org:9940",
             #"tcp://stg.fedoraproject.org:9940",
         ],
+        #"debian-infrastructure": [
+        #    "tcp://fedmsg.olasd.eu:9940",
+        #],
     },
 )
