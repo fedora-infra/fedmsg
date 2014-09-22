@@ -3,7 +3,6 @@ python:
  - "2.6"
  - "2.7"
  - "3.3"
- - "pep8"
 
 install:
  - python setup.py install
