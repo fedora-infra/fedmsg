@@ -175,7 +175,7 @@ class FedMsgContext(object):
 
         return self.publish(topic, msg, modname)
 
-    def publish(self, topic=None, msg=None, modname=None):
+    def publish(self, topic=None, msg=None, modname=None, **kw):
         """ Send a message over the publishing zeromq socket.
 
           >>> import fedmsg
