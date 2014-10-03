@@ -32,14 +32,10 @@ from moksha.hub.api import PollingProducer
 class CollectdConsumer(FedmsgConsumer):
     config_key = "fedmsg.commands.collectd.enabled"
     validate_messages = False
+    topic = '*'
 
     def __init__(self, hub):
         self.hub = hub
-
-        # The consumer should pick up *all* messages.
-        self.topic = self.hub.config.get('topic_prefix', 'org.fedoraproject')
-        if not self.topic.endswith('*'):
-            self.topic += '*'
 
         super(CollectdConsumer, self).__init__(hub)
         self._dict = dict([
