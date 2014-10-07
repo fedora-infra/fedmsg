@@ -31,5 +31,8 @@ config = dict(
         #"debian-infrastructure": [
         #    "tcp://fedmsg.olasd.eu:9940",
         #],
+        #"anitya-public-relay": [
+        #    "tcp://release-monitoring.org:9940",
+        #],
     },
 )
