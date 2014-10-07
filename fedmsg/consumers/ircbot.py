@@ -84,7 +84,7 @@ def ircprettify(title, subtitle, link="", config=None):
     return fmt.format(title=title, subtitle=subtitle, link=link)
 
 
-class FedMsngr(irc.IRCClient):
+class Fedmsg2IRC(irc.IRCClient):
     # The 0.6 seconds here is empircally guessed so we don't get dropped by
     # freenode.  FIXME - this should be pulled from the config.
     lineRate = 0.6
@@ -137,8 +137,8 @@ class FedMsngr(irc.IRCClient):
         del self._modecallback[channel]
 
 
-class FedMsngrFactory(protocol.ClientFactory):
-    protocol = FedMsngr
+class Fedmsg2IRCFactory(protocol.ClientFactory):
+    protocol = Fedmsg2IRC
 
     def __init__(self, channel, nickname, filters,
                  pretty, terse, parent_consumer):
@@ -205,7 +205,7 @@ class IRCBotConsumer(FedmsgConsumer):
 
             filters = self.compile_filters(settings.get('filters', None))
 
-            factory = FedMsngrFactory(channel, nickname, filters,
+            factory = Fedmsg2IRCFactory(channel, nickname, filters,
                                       pretty, terse, self)
             reactor.connectTCP(network, port, factory, timeout=timeout)
 
