@@ -33,6 +33,7 @@ import time
 import pygments
 import pygments.lexers
 import pygments.formatters
+import requests
 
 from fedmsg.consumers import FedmsgConsumer
 
@@ -145,12 +146,13 @@ class Fedmsg2IRCFactory(protocol.ClientFactory):
     protocol = make_irc_client
 
     def __init__(self, channel, nickname, filters,
-                 pretty, terse, parent_consumer):
+                 pretty, terse, short, parent_consumer):
         self.channel = channel
         self.nickname = nickname
         self.filters = filters
         self.pretty = pretty
         self.terse = terse
+        self.short = short
         self.parent_consumer = parent_consumer
         self.log = logging.getLogger("moksha.hub")
 
@@ -205,12 +207,13 @@ class IRCBotConsumer(FedmsgConsumer):
             nickname = settings.get('nickname', "fedmsg-bot")
             pretty = settings.get('make_pretty', False)
             terse = settings.get('make_terse', False)
+            short = settings.get('make_short', False)
             timeout = settings.get('timeout', 120)
 
             filters = self.compile_filters(settings.get('filters', None))
 
             factory = Fedmsg2IRCFactory(
-                channel, nickname, filters, pretty, terse, self)
+                channel, nickname, filters, pretty, terse, short, self)
             reactor.connectTCP(network, port, factory, timeout=timeout)
 
     def add_irc_client(self, client):
@@ -244,7 +247,7 @@ class IRCBotConsumer(FedmsgConsumer):
                 return False
         return True
 
-    def prettify(self, topic, msg, pretty=False, terse=False):
+    def prettify(self, topic, msg, pretty=False, terse=False, short=False):
         if terse:
             if pretty:
                 if (self.hub.config.get('validate_signatures') and
@@ -263,6 +266,11 @@ class IRCBotConsumer(FedmsgConsumer):
                     title = fedmsg.meta.msg2title(msg, **self.hub.config)
                     subtitle = fedmsg.meta.msg2subtitle(msg, **self.hub.config)
                     link = fedmsg.meta.msg2link(msg, **self.hub.config)
+
+                if link and short:
+                    dagd = 'http://da.gd/s'
+                    resp = requests.get(dagd, params=dict(url=link))
+                    link = resp.text.strip()
 
                 return ircprettify(
                     title=title,
@@ -305,6 +313,7 @@ class IRCBotConsumer(FedmsgConsumer):
                     msg=body,
                     pretty=client.factory.pretty,
                     terse=client.factory.terse,
+                    short=client.factory.short,
                 )
                 send = getattr(client, self.hub.config['irc_method'], 'notice')
                 send(client.factory.channel, raw_msg.encode('utf-8'))

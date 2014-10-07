@@ -27,6 +27,7 @@ config = dict(
             timeout=120,
             make_pretty=True,
             make_terse=True,
+            make_short=True,
             # Don't show the heartbeat... gross.
             filters=dict(
                 topic=[],
