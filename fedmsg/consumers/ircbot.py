@@ -90,15 +90,12 @@ class FedMsngr(irc.IRCClient):
     lineRate = 0.6
     sourceURL = "https://github.com/fedora-infra/fedmsg"
 
-    def __init__(self, *args, **kw):
-        super(FedMsgnr, self).__init__(*args, **kw)
+    def __init__(self, *args, **kwargs):
+        self._modecallback = {}
 
     def _get_nickname(self):
         return self.factory.nickname
     nickname = property(_get_nickname)
-
-    def __init__(self, *args, **kwargs):
-        self._modecallback = {}
 
     def signedOn(self):
         self.join(self.factory.channel)
