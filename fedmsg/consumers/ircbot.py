@@ -36,7 +36,6 @@ import pygments.formatters
 
 from fedmsg.consumers import FedmsgConsumer
 
-from twisted.words.protocols import irc
 from twisted.internet import protocol
 from twisted.internet import reactor
 from twisted.internet import defer
@@ -84,64 +83,66 @@ def ircprettify(title, subtitle, link="", config=None):
     return fmt.format(title=title, subtitle=subtitle, link=link)
 
 
-class FedMsngr(irc.IRCClient):
-    # The 0.6 seconds here is empircally guessed so we don't get dropped by
-    # freenode.  FIXME - this should be pulled from the config.
-    lineRate = 0.6
-    sourceURL = "https://github.com/fedora-infra/fedmsg"
+def make_irc_client(factory):
+    from twisted.words.protocols import irc
 
-    def __init__(self, *args, **kw):
-        super(FedMsgnr, self).__init__(*args, **kw)
+    class Fedmsg2IRCClient(irc.IRCClient):
+        # The 0.6 seconds here is empircally guessed so we don't get dropped by
+        # freenode.  FIXME - this should be pulled from the config.
+        lineRate = 0.6
+        sourceURL = "https://github.com/fedora-infra/fedmsg"
 
-    def _get_nickname(self):
-        return self.factory.nickname
-    nickname = property(_get_nickname)
+        def __init__(self, *args, **kwargs):
+            self._modecallback = {}
 
-    def __init__(self, *args, **kwargs):
-        self._modecallback = {}
+        def _get_nickname(self):
+            return self.factory.nickname
+        nickname = property(_get_nickname)
 
-    def signedOn(self):
-        self.join(self.factory.channel)
-        log.info("Signed on as %s." % (self.nickname,))
+        def signedOn(self):
+            self.join(self.factory.channel)
+            log.info("Signed on as %s." % (self.nickname,))
 
-    def joined(self, channel):
-        log.info("Joined %s." % (channel,))
-        self.factory.parent_consumer.add_irc_client(self)
+        def joined(self, channel):
+            log.info("Joined %s." % (channel,))
+            self.factory.parent_consumer.add_irc_client(self)
 
-        def got_modes(modelist):
-            modes = ''.join(modelist)
-            if 'c' in modes:
-                log.info("%s has +c is on. No prettiness" % channel)
-                self.factory.pretty = False
-        self.modes(channel).addCallback(got_modes)
+            def got_modes(modelist):
+                modes = ''.join(modelist)
+                if 'c' in modes:
+                    log.info("%s has +c is on. No prettiness" % channel)
+                    self.factory.pretty = False
+            self.modes(channel).addCallback(got_modes)
 
-    def modes(self, channel):
-        channel = channel.lower()
-        d = defer.Deferred()
-        if channel not in self._modecallback:
-            self._modecallback[channel] = ([], [])
-        self._modecallback[channel][0].append(d)
-        self.sendLine("MODE %s" % channel)
-        return d
+        def modes(self, channel):
+            channel = channel.lower()
+            d = defer.Deferred()
+            if channel not in self._modecallback:
+                self._modecallback[channel] = ([], [])
+            self._modecallback[channel][0].append(d)
+            self.sendLine("MODE %s" % channel)
+            return d
 
-    def irc_RPL_CHANNELMODEIS(self, prefix, params):
-        """ Handy reference for IRC mnemonics
-        www.irchelp.org/irchelp/rfc/chapter4.html#c4_2_3 """
-        channel = params[1].lower()
-        modes = params[2]
-        if channel not in self._modecallback:
-            return
-        n = self._modecallback[channel][1]
-        n.append(modes)
-        callbacks, modelist = self._modecallback[channel]
+        def irc_RPL_CHANNELMODEIS(self, prefix, params):
+            """ Handy reference for IRC mnemonics
+            www.irchelp.org/irchelp/rfc/chapter4.html#c4_2_3 """
+            channel = params[1].lower()
+            modes = params[2]
+            if channel not in self._modecallback:
+                return
+            n = self._modecallback[channel][1]
+            n.append(modes)
+            callbacks, modelist = self._modecallback[channel]
 
-        for cb in callbacks:
-            cb.callback(modelist)
-        del self._modecallback[channel]
+            for cb in callbacks:
+                cb.callback(modelist)
+            del self._modecallback[channel]
+
+    return Fedmsg2IRCClient(factory)
 
 
-class FedMsngrFactory(protocol.ClientFactory):
-    protocol = FedMsngr
+class Fedmsg2IRCFactory(protocol.ClientFactory):
+    protocol = make_irc_client
 
     def __init__(self, channel, nickname, filters,
                  pretty, terse, parent_consumer):
@@ -208,8 +209,8 @@ class IRCBotConsumer(FedmsgConsumer):
 
             filters = self.compile_filters(settings.get('filters', None))
 
-            factory = FedMsngrFactory(channel, nickname, filters,
-                                      pretty, terse, self)
+            factory = Fedmsg2IRCFactory(
+                channel, nickname, filters, pretty, terse, self)
             reactor.connectTCP(network, port, factory, timeout=timeout)
 
     def add_irc_client(self, client):
