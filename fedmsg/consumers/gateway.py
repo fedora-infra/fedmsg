@@ -28,14 +28,10 @@ from fedmsg.consumers import FedmsgConsumer
 class GatewayConsumer(FedmsgConsumer):
     config_key = 'fedmsg.consumers.gateway.enabled'
     jsonify = False
+    topic = '*'
 
     def __init__(self, hub):
         self.hub = hub
-
-        # The consumer should pick up *all* messages.
-        self.topic = self.hub.config.get('topic_prefix', 'org.fedoraproject')
-        if not self.topic.endswith('*'):
-            self.topic += '*'
 
         super(GatewayConsumer, self).__init__(hub)
 

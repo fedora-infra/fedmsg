@@ -17,9 +17,6 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import socket
-hostname = socket.gethostname().split('.', 1)[0]
-
 config = dict(
     # This is a dict of possible addresses from which fedmsg can send
     # messages.  fedmsg.init(...) requires that a 'name' argument be passed
@@ -31,13 +28,11 @@ config = dict(
             "tcp://hub.fedoraproject.org:9940",
             #"tcp://stg.fedoraproject.org:9940",
         ],
-
-        # For other, more 'normal' services, fedmsg will try to guess the
-        # name of it's calling module to determine which endpoint definition
-        # to use.  This can be overridden by explicitly providing the name in
-        # the initial call to fedmsg.init(...).
-        #"bodhi.%s" % hostname: ["tcp://127.0.0.1:3001"],
-        #"fas.%s" % hostname: ["tcp://127.0.0.1:3002"],
-        #"fedoratagger.%s" % hostname: ["tcp://127.0.0.1:3003"],
+        #"debian-infrastructure": [
+        #    "tcp://fedmsg.olasd.eu:9940",
+        #],
+        #"anitya-public-relay": [
+        #    "tcp://release-monitoring.org:9940",
+        #],
     },
 )
