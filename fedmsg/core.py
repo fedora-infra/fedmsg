@@ -317,6 +317,13 @@ class FedMsgContext(object):
         subs = {}
         watched_names = {}
         for _name, endpoint_list in self.c['endpoints'].iteritems():
+
+            # You never want to actually subscribe to this thing, but sometimes
+            # it appears in the endpoints list due to a hack where it gets
+            # added in __init__ above.
+            if _name == 'relay_inbound':
+                continue
+
             # Listify endpoint_list in case it is a single string
             endpoint_list = iterate(endpoint_list)
             for endpoint in endpoint_list:
