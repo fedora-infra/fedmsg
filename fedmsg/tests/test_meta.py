@@ -34,8 +34,6 @@ except ImportError:
 
 import fedmsg.meta
 
-from fedmsg.tests.common import load_config
-
 
 def skip_on(attributes):
     """ A test decorator that will skip if any of the named attributes
