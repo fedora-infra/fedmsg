@@ -333,5 +333,38 @@ class ConglomerateBase(unittest.TestCase):
         self.assertEquals(actual, self.expected)
 
 
+class TestConglomeratorExtras(unittest.TestCase):
+    def setUp(self):
+        dirname = os.path.abspath(os.path.dirname(__file__))
+        self.config = fedmsg.config.load_config(
+            filenames=[os.path.join(dirname, "fedmsg-test-config.py")],
+            invalidate_cache=True,
+        )
+        self.config['topic_prefix'] = 'org.fedoraproject'
+        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+
+        self.conglomerator = fedmsg.meta.base.BaseConglomerator
+
+    def test_list_to_series_simple(self):
+        original, expected = ['a', 'b', 'c'], "a, c, and b"
+        result = self.conglomerator.list_to_series(original)
+        eq_(result, expected)
+
+    def test_list_to_series_single_duplicate(self):
+        original, expected = ['a', 'a', 'a'], "a"
+        result = self.conglomerator.list_to_series(original)
+        eq_(result, expected)
+
+    def test_list_to_series_double_duplicate(self):
+        original, expected = ['a', 'a', 'b', 'b'], "a and b"
+        result = self.conglomerator.list_to_series(original)
+        eq_(result, expected)
+
+    def test_list_to_series_backheavy_duplicate(self):
+        original, expected = ['a', 'b', 'b', 'b'], "a and b"
+        result = self.conglomerator.list_to_series(original)
+        eq_(result, expected)
+
+
 if __name__ == '__main__':
     unittest.main()
