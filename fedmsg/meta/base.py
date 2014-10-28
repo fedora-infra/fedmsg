@@ -283,6 +283,8 @@ class BaseConglomerator(object):
         if not items:
             return "(nothing)"
 
+        items = list(set(items))
+
         if len(items) == 1:
             return items[0]
 
