@@ -8,6 +8,7 @@ ExecStart=/usr/bin/fedmsg-irc
 Type=simple
 User=fedmsg
 Group=fedmsg
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
