@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.11.0
+0.11.1
 ------
 
 - add support for cowsay command `578826834 <https://github.com/fedora-infra/fedmsg/commit/5788268342c1186507c7fc36db986814e9a8c198>`_
@@ -66,6 +66,15 @@ Changelog
 - Merge pull request #292 from fedora-infra/feature/anitya `5bac060f8 <https://github.com/fedora-infra/fedmsg/commit/5bac060f8dccde683f6c493ffd609765d40e4631>`_
 - Optionally shorten links in IRC. `fadf61383 <https://github.com/fedora-infra/fedmsg/commit/fadf61383b03caed73199e6a995a77f6f53b3134>`_
 - Merge pull request #291 from fedora-infra/feature/optional-shortening `162c9b845 <https://github.com/fedora-infra/fedmsg/commit/162c9b845ab33a66196a702787536a76f5f74d27>`_
+- 0.11.0 `0894a5b35 <https://github.com/fedora-infra/fedmsg/commit/0894a5b3572475ec4964f53b51b2238d9b4a0a55>`_
+- Handle koschei use case for tailing while in active mode. `8b7f2ee61 <https://github.com/fedora-infra/fedmsg/commit/8b7f2ee61d3ff2d5eef1ec61b66be5085972f710>`_
+- Merge pull request #294 from fedora-infra/feature/koschei-use-case `31945e1f4 <https://github.com/fedora-infra/fedmsg/commit/31945e1f4cb2f556d9700259359c180295c195cf>`_
+- BugFix #150 : de-duplicate items in bodhi conglomerator `a1b1ee054 <https://github.com/fedora-infra/fedmsg/commit/a1b1ee0548aa32fb2dadb59fe6cd29d2667c9214>`_
+- Merge pull request #296 from Ghost-script/develop `0a9052931 <https://github.com/fedora-infra/fedmsg/commit/0a9052931d96b1bc4e9f1679f15b5e2c291321f2>`_
+- Remove unused import. `b860c87e8 <https://github.com/fedora-infra/fedmsg/commit/b860c87e8af1764ca0583ad3c8effb81a240f9b8>`_
+- Add some passing test cases. `52c4d40d5 <https://github.com/fedora-infra/fedmsg/commit/52c4d40d52af1276c7fe1a10cba1689b964f8b09>`_
+- Restart services on failure (systemd). `f42861fc9 <https://github.com/fedora-infra/fedmsg/commit/f42861fc93c074408ae96c1b797d4e1f0cab6a7a>`_
+- Merge pull request #297 from fedora-infra/feature/restart-on-failure `d175c5479 <https://github.com/fedora-infra/fedmsg/commit/d175c5479e61d9feaf7c73463b8f83ebdf462985>`_
 
 0.9.3
 -----
@@ -1584,3 +1593,72 @@ Changelog
 - Handle datetime objects. `2573ace8e <https://github.com/fedora-infra/fedmsg/commit/2573ace8e0919bf8ad2ed70bedc452e2d986329b>`_
 - Consolidate skipping logic for conglomeration. `1f8d26831 <https://github.com/fedora-infra/fedmsg/commit/1f8d2683194ea3c629542d6c852fbc900a2d1670>`_
 - Merge pull request #281 from fedora-infra/feature/conglomerate-fixes `bf767127b <https://github.com/fedora-infra/fedmsg/commit/bf767127bb7e6fca8a50b32dc36500c9637ff65d>`_
+- 0.10.0 `189768940 <https://github.com/fedora-infra/fedmsg/commit/1897689401885337c4698b7ff2db7857825ce25d>`_
+- Pass arguments fedmsg_command and disable_defaults to load_config `7f1ce6dd0 <https://github.com/fedora-infra/fedmsg/commit/7f1ce6dd099b54d3c575d39eff65ad6b74851b0b>`_
+- Merge pull request #284 from olasd/bugfix/config-filename-override-w-cli-args `f04cba93c <https://github.com/fedora-infra/fedmsg/commit/f04cba93c4c21bd027cbadb6b728182a4625361d>`_
+- Handle the situation where in old message the 'username' key does not exists `ebb5a2f56 <https://github.com/fedora-infra/fedmsg/commit/ebb5a2f56c691456b5b65b9448d11b113c4efa46>`_
+- Merge pull request #285 from fedora-infra/fix_announce `4f1197433 <https://github.com/fedora-infra/fedmsg/commit/4f119743343824bbfcdec7877066eb59ccd55d96>`_
+- Discuss the envelope of a message in the docs. `d62656246 <https://github.com/fedora-infra/fedmsg/commit/d6265624695442ce32ed0859b449c457bbb6ed7b>`_
+- Start of the msg2long_form API. `6cfbc8042 <https://github.com/fedora-infra/fedmsg/commit/6cfbc80422eeb3e0e90c3b4446ad94d43926ffb3>`_
+- Use assertEquals for nicer output. `ff09cbe5e <https://github.com/fedora-infra/fedmsg/commit/ff09cbe5e4fdb4451b80a20359d82506ba9227f0>`_
+- Even better. `c45012d67 <https://github.com/fedora-infra/fedmsg/commit/c45012d67a0e60c1360bb3ca5aabfeed4bf4d99d>`_
+- Merge pull request #287 from fedora-infra/feature/long-form `2af59899d <https://github.com/fedora-infra/fedmsg/commit/2af59899df6e2c121b085f868e0412ced6994ed3>`_
+- s/follow/following/ `f67750ccf <https://github.com/fedora-infra/fedmsg/commit/f67750ccfded6583e27a8df4f2ede9e97916608a>`_
+- Merge pull request #286 from fedora-infra/feature/message-body-docs `b9b313798 <https://github.com/fedora-infra/fedmsg/commit/b9b313798c4200d25c8fe42862c28830562c4365>`_
+- Make the ircbot reconnect on failure. `b4aced35f <https://github.com/fedora-infra/fedmsg/commit/b4aced35f3431d272f44e52798a6b22d82eb57f7>`_
+- Merge pull request #288 from fedora-infra/feature/irc-reconnect `4086a0ba1 <https://github.com/fedora-infra/fedmsg/commit/4086a0ba113a8468c39d35ccb0105e02b0413713>`_
+- Remove comments primarily for development. `61f125681 <https://github.com/fedora-infra/fedmsg/commit/61f125681f8664354778c69c53773ba089c23c52>`_
+- Add debian endpoint as comment to file. `cde822bc8 <https://github.com/fedora-infra/fedmsg/commit/cde822bc87efa47cc3fae6fbb9462ae6a362afbc>`_
+- Merge pull request #289 from fedora-infra/feature/whittle-down-config `3122f7314 <https://github.com/fedora-infra/fedmsg/commit/3122f731439a9aa2fabd64dbeeb8d3fb78227741>`_
+- Make sure this works. `dca5cfcc6 <https://github.com/fedora-infra/fedmsg/commit/dca5cfcc6ffada7afc162bf93f90e681be043181>`_
+- No, it does not work. `2002e4445 <https://github.com/fedora-infra/fedmsg/commit/2002e44451660aff2120655ca223c1d448ad3484>`_
+- Accept arbitrarily more arguments here... `094543508 <https://github.com/fedora-infra/fedmsg/commit/094543508a7a671d34759de57af676de071e39c3>`_
+- Let the irc bot relay all messages for real (allow anitya through). `6db9d4f0b <https://github.com/fedora-infra/fedmsg/commit/6db9d4f0b2c078ba52fc0f5acdbba24ecf566340>`_
+- Do the same for other services. `e1430edcb <https://github.com/fedora-infra/fedmsg/commit/e1430edcb6d3dc6878d419ea7cb09eafafe35829>`_
+- Merge pull request #290 from fedora-infra/feature/allow-anitya `22aa914c7 <https://github.com/fedora-infra/fedmsg/commit/22aa914c744e7a23e21cc367007c1cdbc5391959>`_
+- Add anitya to the comments. `3f1e4f228 <https://github.com/fedora-infra/fedmsg/commit/3f1e4f2282f9a6dc2e7f92b5bf2ab061bbcd17fb>`_
+- Delete duplicate (and typoed) __init__. `a1a19f064 <https://github.com/fedora-infra/fedmsg/commit/a1a19f06478c2e65b37541f48b3f1c859b78b76b>`_
+- "Msngr" is hard to type. `b49547656 <https://github.com/fedora-infra/fedmsg/commit/b49547656317e7d103cd519160f5be52a08c5cc5>`_
+- Hide the irc client inside a function to get around top-level imports. `199abc6ae <https://github.com/fedora-infra/fedmsg/commit/199abc6aefa6490e88f2c9b961089d4fdfe175a9>`_
+- PEP8. `d807a8911 <https://github.com/fedora-infra/fedmsg/commit/d807a891143e510d331e14fe9a3ea22a1115dc56>`_
+- Fix pep8. `31b1792d3 <https://github.com/fedora-infra/fedmsg/commit/31b1792d39d2221f092533dfaf462fc930e2459a>`_
+- Merge pull request #293 from fedora-infra/feature/twisted-words `1beec2a55 <https://github.com/fedora-infra/fedmsg/commit/1beec2a5518f659913bb0fc8624abd0df9eef435>`_
+- Merge pull request #292 from fedora-infra/feature/anitya `5bac060f8 <https://github.com/fedora-infra/fedmsg/commit/5bac060f8dccde683f6c493ffd609765d40e4631>`_
+- Optionally shorten links in IRC. `fadf61383 <https://github.com/fedora-infra/fedmsg/commit/fadf61383b03caed73199e6a995a77f6f53b3134>`_
+- Merge pull request #291 from fedora-infra/feature/optional-shortening `162c9b845 <https://github.com/fedora-infra/fedmsg/commit/162c9b845ab33a66196a702787536a76f5f74d27>`_
+
+0.11.0
+------
+
+- Pass arguments fedmsg_command and disable_defaults to load_config `7f1ce6dd0 <https://github.com/fedora-infra/fedmsg/commit/7f1ce6dd099b54d3c575d39eff65ad6b74851b0b>`_
+- Merge pull request #284 from olasd/bugfix/config-filename-override-w-cli-args `f04cba93c <https://github.com/fedora-infra/fedmsg/commit/f04cba93c4c21bd027cbadb6b728182a4625361d>`_
+- Handle the situation where in old message the 'username' key does not exists `ebb5a2f56 <https://github.com/fedora-infra/fedmsg/commit/ebb5a2f56c691456b5b65b9448d11b113c4efa46>`_
+- Merge pull request #285 from fedora-infra/fix_announce `4f1197433 <https://github.com/fedora-infra/fedmsg/commit/4f119743343824bbfcdec7877066eb59ccd55d96>`_
+- Discuss the envelope of a message in the docs. `d62656246 <https://github.com/fedora-infra/fedmsg/commit/d6265624695442ce32ed0859b449c457bbb6ed7b>`_
+- Start of the msg2long_form API. `6cfbc8042 <https://github.com/fedora-infra/fedmsg/commit/6cfbc80422eeb3e0e90c3b4446ad94d43926ffb3>`_
+- Use assertEquals for nicer output. `ff09cbe5e <https://github.com/fedora-infra/fedmsg/commit/ff09cbe5e4fdb4451b80a20359d82506ba9227f0>`_
+- Even better. `c45012d67 <https://github.com/fedora-infra/fedmsg/commit/c45012d67a0e60c1360bb3ca5aabfeed4bf4d99d>`_
+- Merge pull request #287 from fedora-infra/feature/long-form `2af59899d <https://github.com/fedora-infra/fedmsg/commit/2af59899df6e2c121b085f868e0412ced6994ed3>`_
+- s/follow/following/ `f67750ccf <https://github.com/fedora-infra/fedmsg/commit/f67750ccfded6583e27a8df4f2ede9e97916608a>`_
+- Merge pull request #286 from fedora-infra/feature/message-body-docs `b9b313798 <https://github.com/fedora-infra/fedmsg/commit/b9b313798c4200d25c8fe42862c28830562c4365>`_
+- Make the ircbot reconnect on failure. `b4aced35f <https://github.com/fedora-infra/fedmsg/commit/b4aced35f3431d272f44e52798a6b22d82eb57f7>`_
+- Merge pull request #288 from fedora-infra/feature/irc-reconnect `4086a0ba1 <https://github.com/fedora-infra/fedmsg/commit/4086a0ba113a8468c39d35ccb0105e02b0413713>`_
+- Remove comments primarily for development. `61f125681 <https://github.com/fedora-infra/fedmsg/commit/61f125681f8664354778c69c53773ba089c23c52>`_
+- Add debian endpoint as comment to file. `cde822bc8 <https://github.com/fedora-infra/fedmsg/commit/cde822bc87efa47cc3fae6fbb9462ae6a362afbc>`_
+- Merge pull request #289 from fedora-infra/feature/whittle-down-config `3122f7314 <https://github.com/fedora-infra/fedmsg/commit/3122f731439a9aa2fabd64dbeeb8d3fb78227741>`_
+- Make sure this works. `dca5cfcc6 <https://github.com/fedora-infra/fedmsg/commit/dca5cfcc6ffada7afc162bf93f90e681be043181>`_
+- No, it does not work. `2002e4445 <https://github.com/fedora-infra/fedmsg/commit/2002e44451660aff2120655ca223c1d448ad3484>`_
+- Accept arbitrarily more arguments here... `094543508 <https://github.com/fedora-infra/fedmsg/commit/094543508a7a671d34759de57af676de071e39c3>`_
+- Let the irc bot relay all messages for real (allow anitya through). `6db9d4f0b <https://github.com/fedora-infra/fedmsg/commit/6db9d4f0b2c078ba52fc0f5acdbba24ecf566340>`_
+- Do the same for other services. `e1430edcb <https://github.com/fedora-infra/fedmsg/commit/e1430edcb6d3dc6878d419ea7cb09eafafe35829>`_
+- Merge pull request #290 from fedora-infra/feature/allow-anitya `22aa914c7 <https://github.com/fedora-infra/fedmsg/commit/22aa914c744e7a23e21cc367007c1cdbc5391959>`_
+- Add anitya to the comments. `3f1e4f228 <https://github.com/fedora-infra/fedmsg/commit/3f1e4f2282f9a6dc2e7f92b5bf2ab061bbcd17fb>`_
+- Delete duplicate (and typoed) __init__. `a1a19f064 <https://github.com/fedora-infra/fedmsg/commit/a1a19f06478c2e65b37541f48b3f1c859b78b76b>`_
+- "Msngr" is hard to type. `b49547656 <https://github.com/fedora-infra/fedmsg/commit/b49547656317e7d103cd519160f5be52a08c5cc5>`_
+- Hide the irc client inside a function to get around top-level imports. `199abc6ae <https://github.com/fedora-infra/fedmsg/commit/199abc6aefa6490e88f2c9b961089d4fdfe175a9>`_
+- PEP8. `d807a8911 <https://github.com/fedora-infra/fedmsg/commit/d807a891143e510d331e14fe9a3ea22a1115dc56>`_
+- Fix pep8. `31b1792d3 <https://github.com/fedora-infra/fedmsg/commit/31b1792d39d2221f092533dfaf462fc930e2459a>`_
+- Merge pull request #293 from fedora-infra/feature/twisted-words `1beec2a55 <https://github.com/fedora-infra/fedmsg/commit/1beec2a5518f659913bb0fc8624abd0df9eef435>`_
+- Merge pull request #292 from fedora-infra/feature/anitya `5bac060f8 <https://github.com/fedora-infra/fedmsg/commit/5bac060f8dccde683f6c493ffd609765d40e4631>`_
+- Optionally shorten links in IRC. `fadf61383 <https://github.com/fedora-infra/fedmsg/commit/fadf61383b03caed73199e6a995a77f6f53b3134>`_
+- Merge pull request #291 from fedora-infra/feature/optional-shortening `162c9b845 <https://github.com/fedora-infra/fedmsg/commit/162c9b845ab33a66196a702787536a76f5f74d27>`_
