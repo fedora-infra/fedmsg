@@ -8,6 +8,7 @@ ExecStart=/usr/bin/fedmsg-hub
 Type=simple
 User=fedmsg
 Group=fedmsg
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
