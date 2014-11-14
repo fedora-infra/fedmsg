@@ -90,7 +90,7 @@ def make_irc_client(factory):
     class Fedmsg2IRCClient(irc.IRCClient):
         # The 0.6 seconds here is empircally guessed so we don't get dropped by
         # freenode.  FIXME - this should be pulled from the config.
-        lineRate = 0.6
+        lineRate = 1.0
         sourceURL = "https://github.com/fedora-infra/fedmsg"
 
         def __init__(self, *args, **kwargs):
