@@ -48,13 +48,6 @@ try:
 except ImportError:
     pass
 
-try:
-    # py2.7
-    from collections import OrderedDict
-except ImportError:
-    # py2.4, 2.5, 2.6
-    from ordereddict import OrderedDict
-
 import json
 import json.encoder
 
