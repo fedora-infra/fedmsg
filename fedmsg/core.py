@@ -63,8 +63,9 @@ class FedMsgContext(object):
         method = ['bind', 'connect'][config['active']]
 
         # If no name is provided, use the calling module's __name__ to decide
-        # which publishing endpoint to use.
-        if not config.get("name", None):
+        # which publishing endpoint to use (unless active=True, in which case
+        # we use "relay_inbound" as set in the subsequent code block).
+        if not config.get("name", None) and not config.get('active', False):
             module_name = guess_calling_module(default="fedmsg")
             config["name"] = module_name + '.' + self.hostname
 
@@ -77,10 +78,8 @@ class FedMsgContext(object):
         # the code below where we "Actually set up our publisher" can be
         # simplified.  See Issue #37 - https://bit.ly/KN6dEK
         if config.get('active', False):
-            # If the user has called us with "active=True" then presumably they
-            # have given us a "name" as well.
             try:
-                name = config.get("name", "relay_inbound")
+                name = config['name'] = config.get("name", "relay_inbound")
                 config['endpoints'][name] = config[name]
             except KeyError:
                 raise KeyError("Could not find endpoint for fedmsg-relay."
