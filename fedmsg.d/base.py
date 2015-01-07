@@ -34,7 +34,7 @@ config = dict(
     #status_directory=os.getcwd() + "/status",
     #status_directory='/var/run/fedmsg/status',
 
-    # This is the URL of a datagrepper isntance that we can query for backlog.
+    # This is the URL of a datagrepper instance that we can query for backlog.
     #datagrepper_url="https://apps.fedoraproject.org/datagrepper/raw",
 
     # We almost always want the fedmsg-hub to be sending messages with zmq as
@@ -61,6 +61,10 @@ config = dict(
     zmq_tcp_keepalive_idle=60,
     zmq_tcp_keepalive_intvl=5,
 
+    # Number of miliseconds that zeromq will wait to reconnect until it gets 
+    # a connection if an endpoint is unavailable.
     zmq_reconnect_ivl=100,
+    # Max delay that you can reconfigure to reduce reconnect storm spam. This
+    # is in miliseconds.
     zmq_reconnect_ivl_max=1000,
 )
