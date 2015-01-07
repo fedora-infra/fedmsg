@@ -4,6 +4,8 @@ import getpass
 import os
 import sys
 
+from collections import defaultdict
+
 import pygit2
 
 import fedmsg
@@ -38,6 +40,32 @@ def revs_between(head, base):
             for rev in revs_between(parent, base):
                 yield rev
 
+
+def build_stats(commit):
+    files = defaultdict(lambda: defaultdict(int))
+
+    # Calculate diffs against all parent commits
+    diffs = [repo.diff(parent, commit) for parent in commit.parents]
+    # Unless this is the first commit, with no parents.
+    diffs = diffs or [commit.tree.diff_to_tree(swap=True)]
+
+    for diff in diffs:
+        for patch in diff:
+            path = patch.new_file_path
+            files[path]['additions'] += patch.additions
+            files[path]['deletions'] += patch.deletions
+            files[path]['lines'] += patch.additions + patch.deletions
+
+    total = defaultdict(int)
+    for name, stats in files.items():
+        total['additions'] += stats['additions']
+        total['deletions'] += stats['deletions']
+        total['lines'] += stats['lines']
+        total['files'] += 1
+
+    return files, total
+
+
 # Read in all the rev information git-receive-pack hands us.
 lines = [line.split() for line in sys.stdin.readlines()]
 for line in lines:
@@ -60,6 +88,8 @@ for line in lines:
     def _build_commit(rev):
         commit = repo.revparse_single(rev)
 
+        files, total = build_stats(commit)
+
         return dict(
             name=commit.author.name,
             email=commit.author.email,
@@ -67,10 +97,8 @@ for line in lines:
             summary=commit.message.split('\n')[0],
             message=commit.message,
             stats=dict(
-                # pygit2 doesn't support this yet
-                # https://github.com/libgit2/pygit2/issues/406
-                files=[],   # commit.stats.files,
-                total=None, # commit.stats.total,
+                files=files,
+                total=total,
             ),
             rev=rev,
             path=abspath,
