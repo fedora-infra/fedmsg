@@ -216,7 +216,7 @@ def validate(message, **config):
 
     cfg = copy.deepcopy(config)
     if 'gpg_home' not in cfg:
-        cfg['gpg_honme'] = os.path.expanduser('~/.gnupg/')
+        cfg['gpg_home'] = os.path.expanduser('~/.gnupg/')
 
     if 'ssldir' not in cfg:
         cfg['ssldir'] = '/etc/pki/fedmsg'
