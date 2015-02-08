@@ -107,6 +107,8 @@ class BaseProcessor(object):
             'human_time': '5 minutes ago',
             'usernames': ['relrod'],
             'packages': ['ghc', 'nethack', ... ],
+            'topics': ['org.fedoraproject.prod.git.receive'],
+            'categories': ['git'],
             'msg_ids': ['2014-abcde', '2014-bcdef', '2014-cdefg', ... ],
           },
 
@@ -257,6 +259,8 @@ class BaseConglomerator(object):
         packages = set(sum([
             list(self.processor.packages(msg, **config))
             for msg in constituents], []))
+        topics = set([msg['topic'] for msg in constituents])
+        categories = set([t.split('.')[3] for t in topics])
 
         return {
             'start_time': min(timestamps),
@@ -266,6 +270,8 @@ class BaseConglomerator(object):
             'msg_ids': [msg['msg_id'] for msg in constituents],
             'usernames': usernames,
             'packages': packages,
+            'topics': topics,
+            'categories': categories,
             'icon': self.processor.__icon__,
         }
 
