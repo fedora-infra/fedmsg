@@ -223,7 +223,7 @@ def validate(message, **config):
 
     if 'crypto' in message:
         if not message['crypto'] in _possible_backends:
-            log.warn("Message specified an unpossible crypto backend")
+            log.warn("Message specified an impossible crypto backend")
             return False
         try:
             backend = _possible_backends[message['crypto']]
