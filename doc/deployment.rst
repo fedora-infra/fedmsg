@@ -92,8 +92,61 @@ terminal.  It should look something like this.
 These are two handy tools for debugging the configuration of your
 bus.
 
+Branching out to two machines
+-----------------------------
+
+Everything is tied together in fedmsg by the :term:`endpoints` dict.  It lets
+
+- A publishing service know what port it should be publishing on.
+- A consuming service know where the publisher is so it can connect there.
+
+Let's say you have two machines ``hostA`` and ``hostB``.  If you installed that
+fedmsg-relay on ``hostA`` as discussed above, then the config file in
+``/etc/fedmsg.d/relay.py`` is going to have values like
+``tcp://127.0.0.1:4001``.  That address will only work for local connectivity.
+Try changing *all* occurences of ``127.0.0.1`` in that file to ``hostA`` so
+that it looks something like this:
+
+.. code-block:: python
+
+    config = dict(
+        endpoints={
+            "relay_outbound": [
+                "tcp://hostA:4001",
+            ],
+        },
+        relay_inbound=[
+            "tcp://hostA:2003",
+        ],
+    )
+
+To confirm that something's not immediately broken, you can go through the
+tests of doing ``fedmsg-logger`` and ``fedmsg-tail`` on ``hostA`` again (all
+"local").
+
+Copy that relay.py file over to ``hostB`` with ``scp /etc/fedmsg.d/relay.py
+hostB:/etc/fedmsg.d/relay.py``
+
+You should now be able to run ``fedmsg-tail`` on ``hostA`` and have it receive
+a message from ``fedmsg-logger`` on ``hostB`` and vice versa have a
+``fedmsg-tail`` session on ``hostB`` receive a ``fedmsg-logger`` statement from
+``hostA``.
+
+The key here is that fedmsg works by having a **shared configuration** that is
+distributed to all machines.  ``hostA`` only knows where to publish by reading in
+the config and ``hostB`` only knows where to consume by reading in the config.  If
+the configs are not the same, then there's going to be a mis-match and your
+messages won't arrive... anywhere.
+
+It's a far leap ahead, but you're welcome to browse the `configuration we're
+using in production for Fedora Infrastructure
+<https://infrastructure.fedoraproject.org/cgit/ansible.git/tree/roles/fedmsg/base>`_.
+
+
 Store all messages
 ------------------
+
+And now for a different topic.
 
 We use a tool called `datanommer <https://github.com/fedora-infra/datanommer>`_
 to store all the messages that come across the bus in a postgres database.

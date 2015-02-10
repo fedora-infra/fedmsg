@@ -361,6 +361,17 @@ Glossary of Configuration Values
         for compatibility/interoperability with `moksha
         <http://mokshaproject.net>`_.
 
+    zmq_reconnect_ivl
+        ``int`` - Number of miliseconds that zeromq will wait to reconnect
+        until it gets a connection if an endpoint is unavailable. This is in
+        miliseconds. See upstream `zmq options
+        <http://api.zeromq.org/3-2:zmq-setsockopt>`_ for more information.
+
+    zmq_reconnect_ivl_max
+        ``int`` - Max delay that you can reconfigure to reduce reconnect storm
+        spam.  This is in miliseconds. See upstream `zmq options
+        <http://api.zeromq.org/3-2:zmq-setsockopt>`_ for more information.
+
     zmq_strict
         ``bool`` - When false, allow splats ('*') in topic names when
         subscribing.  When true, disallow splats and accept only strict matches

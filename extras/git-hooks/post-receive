@@ -1,48 +1,24 @@
 #!/usr/bin/env python
 
 import getpass
-import git
-import itertools
 import os
 import sys
+
+from collections import defaultdict
+
+import pygit2
 
 import fedmsg
 import fedmsg.config
 
-# Read in all the rev information git-receive-pack hands us.
-lines = [line.split() for line in sys.stdin.readlines()]
-
 # Use $GIT_DIR to determine where this repo is.
 abspath = os.path.abspath(os.environ['GIT_DIR'])
+# This assumes git root dir is named "repo_name.git"
 repo_name = '.'.join(abspath.split(os.path.sep)[-1].split('.')[:-1])
 
 username = getpass.getuser()
 
-repo = git.repo.Repo(abspath)
-
-def _build_commit(rev):
-    old, new, branch = rev
-    branch = '/'.join(branch.split('/')[2:])
-    commits = repo.iter_commits('{0}..{1}'.format(old, new))
-
-    return [dict(
-        name=commit.author.name,
-        email=commit.author.email,
-        username=username,
-        summary=commit.summary,
-        message=commit.message,
-        stats=dict(
-            files=commit.stats.files,
-            total=commit.stats.total,
-        ),
-        rev=rev,
-        path=abspath,
-        repo=repo_name,
-        branch=branch,
-        agent=os.getlogin(),
-    ) for commit in commits if not isinstance(commit, git.TagObject)]
-
-commits = map(_build_commit, lines)
+repo = pygit2.Repository(abspath)
 
 print "Emitting a message to the fedmsg bus."
 config = fedmsg.config.load_config([], None)
@@ -50,14 +26,96 @@ config['active'] = True
 config['endpoints']['relay_inbound'] = config['relay_inbound']
 fedmsg.init(name='relay_inbound', cert_prefix='scm', **config)
 
-for commit in itertools.chain(*commits):
+def revs_between(head, base):
+    bail = False
 
-    if commit is None:
+    yield unicode(head.id)
+
+    for parent in head.parents:
+        if parent.id == base.id:
+            bail = True
+
+    if not bail:
+        for parent in head.parents:
+            for rev in revs_between(parent, base):
+                yield rev
+
+
+def build_stats(commit):
+    files = defaultdict(lambda: defaultdict(int))
+
+    # Calculate diffs against all parent commits
+    diffs = [repo.diff(parent, commit) for parent in commit.parents]
+    # Unless this is the first commit, with no parents.
+    diffs = diffs or [commit.tree.diff_to_tree(swap=True)]
+
+    for diff in diffs:
+        for patch in diff:
+            path = patch.new_file_path
+            files[path]['additions'] += patch.additions
+            files[path]['deletions'] += patch.deletions
+            files[path]['lines'] += patch.additions + patch.deletions
+
+    total = defaultdict(int)
+    for name, stats in files.items():
+        total['additions'] += stats['additions']
+        total['deletions'] += stats['deletions']
+        total['lines'] += stats['lines']
+        total['files'] += 1
+
+    return files, total
+
+
+# Read in all the rev information git-receive-pack hands us.
+lines = [line.split() for line in sys.stdin.readlines()]
+for line in lines:
+    base, head, branch = line
+    branch = '/'.join(branch.split('/')[2:])
+
+    try:
+        head = repo.revparse_single(head)
+    except KeyError:
+        # This means they are deleting this branch.. and we don't have a fedmsg
+        # for that (yet?).  It is disallowed by dist-git in Fedora anyways.
         continue
 
-    fedmsg.publish(
-        # Expect this to change to just "receive" in the future.
-        topic="receive",
-        msg=dict(commit=commit),
-        modname="git",
-    )
+    try:
+        base = repo.revparse_single(base)
+        revs = revs_between(head, base)
+    except KeyError:
+        revs = [unicode(head.id)]
+
+    def _build_commit(rev):
+        commit = repo.revparse_single(rev)
+
+        files, total = build_stats(commit)
+
+        return dict(
+            name=commit.author.name,
+            email=commit.author.email,
+            username=username,
+            summary=commit.message.split('\n')[0],
+            message=commit.message,
+            stats=dict(
+                files=files,
+                total=total,
+            ),
+            rev=rev,
+            path=abspath,
+            repo=repo_name,
+            branch=branch,
+            agent=os.getlogin(),
+        )
+
+    commits = map(_build_commit, revs)
+
+    for commit in commits:
+
+        if commit is None:
+            continue
+
+        fedmsg.publish(
+            topic="receive",
+            msg=dict(commit=commit),
+            modname="git",
+        )

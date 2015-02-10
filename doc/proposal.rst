@@ -357,12 +357,13 @@ The scheme
 
 Event topics will follow the rule::
 
- org.fedoraproject.ENV.SERVICE.OBJECT[.SUBOBJECT].EVENT
+ org.fedoraproject.ENV.CATEGORY.OBJECT[.SUBOBJECT].EVENT
 
 Where:
 
  - ``ENV`` is one of `dev`, `stg`, or `production`.
- - ``SERVICE`` is something like `koji`, `bodhi`, or `fedoratagger`
+ - ``CATEGORY`` is the name of the service emitting the message -- something
+   like `koji`, `bodhi`, or `fedoratagger`
  - ``OBJECT`` is something like `package`, `user`, or `tag`
  - ``SUBOBJECT`` is something like `owner` or `build` (in the case where
    ``OBJECT`` is `package`, for instance)

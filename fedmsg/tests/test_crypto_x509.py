@@ -20,13 +20,15 @@
 import os
 import shutil
 import six
+import sys
 
 import nose.tools.nontrivial
 
-try:
+major, minor = sys.version_info[:2]
+if major == 2 and minor <= 6:
     # For python-2.6, so we can do skipTest
     import unittest2 as unittest
-except ImportError:
+else:
     import unittest
 
 import fedmsg.crypto

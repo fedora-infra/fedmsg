@@ -17,7 +17,7 @@ config = dict(
                 "formatter": "bare",
                 "level": "INFO",
                 "stream": "ext://sys.stdout",
-            }
+            },
         ),
         loggers=dict(
             fedmsg={

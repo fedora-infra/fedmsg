@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.11.1
+0.12.0
 ------
 
 - add support for cowsay command `578826834 <https://github.com/fedora-infra/fedmsg/commit/5788268342c1186507c7fc36db986814e9a8c198>`_
@@ -75,6 +75,35 @@ Changelog
 - Add some passing test cases. `52c4d40d5 <https://github.com/fedora-infra/fedmsg/commit/52c4d40d52af1276c7fe1a10cba1689b964f8b09>`_
 - Restart services on failure (systemd). `f42861fc9 <https://github.com/fedora-infra/fedmsg/commit/f42861fc93c074408ae96c1b797d4e1f0cab6a7a>`_
 - Merge pull request #297 from fedora-infra/feature/restart-on-failure `d175c5479 <https://github.com/fedora-infra/fedmsg/commit/d175c5479e61d9feaf7c73463b8f83ebdf462985>`_
+- 0.11.1 `d245335bd <https://github.com/fedora-infra/fedmsg/commit/d245335bd06340d22a6d4ae99b5437b6919a935e>`_
+- Try to get tests passing in koji again. `261bf1fcb <https://github.com/fedora-infra/fedmsg/commit/261bf1fcb2ae393e3ef96805e7d7b2f93884f90d>`_
+- Merge pull request #298 from fedora-infra/feature/kojifix `23cb93b30 <https://github.com/fedora-infra/fedmsg/commit/23cb93b304d2bcfab637d888e698c9c9d9e0115c>`_
+- Remove unused imports. `a662519d4 <https://github.com/fedora-infra/fedmsg/commit/a662519d42507673e91f82c8250eafc88dbb8d27>`_
+- Increase the lineRate value to 1.0 `b1d916afc <https://github.com/fedora-infra/fedmsg/commit/b1d916afcf864dd972f6e3567fbf59db1aef3138>`_
+- Merge pull request #301 from ampotty/develop `9dd647091 <https://github.com/fedora-infra/fedmsg/commit/9dd647091995536818a9f9c65ac2a3d977a0753f>`_
+- Merge pull request #300 from fedora-infra/feature/remove-unused `7dcec4973 <https://github.com/fedora-infra/fedmsg/commit/7dcec49735826a68ca7be87364d7546c66e42ad7>`_
+- Docs - rename SERVICE to CATEGORY. `230ecfea5 <https://github.com/fedora-infra/fedmsg/commit/230ecfea5004ef90f386c205a89e72fea4040733>`_
+- Merge pull request #303 from fedora-infra/feature/doc-consistency `4762aa4e3 <https://github.com/fedora-infra/fedmsg/commit/4762aa4e37ea832bb20515f8c084e25d61cea75c>`_
+- Simplify fedmsg-relay usage. `43cfcce75 <https://github.com/fedora-infra/fedmsg/commit/43cfcce75e3ac9e315c32faa8c60fe0487144e81>`_
+- Merge pull request #306 from fedora-infra/feature/simplify-relay-usage `be86874e3 <https://github.com/fedora-infra/fedmsg/commit/be86874e33fa258100bf5ac1eb22e3c386f3168a>`_
+- Documentation for reconnect interval options `036286c6b <https://github.com/fedora-infra/fedmsg/commit/036286c6b131e8c6de22cb233412836b0cbdfaad>`_
+- add comment about repo_name `029beca9b <https://github.com/fedora-infra/fedmsg/commit/029beca9b951b24b8101cecb9e65d21a9d7fc0d4>`_
+- Merge pull request #308 from glensc/fix1 `efd1a282d <https://github.com/fedora-infra/fedmsg/commit/efd1a282d68e8cb6139e8507675bc0f4d5e42934>`_
+- Use the much more awesome pygit2. `c3070966d <https://github.com/fedora-infra/fedmsg/commit/c3070966d71192f811a7d867bbfa4ad136a6eec3>`_
+- Calculate diff stats for fedmsg git hook (pygit2!) `3a0169538 <https://github.com/fedora-infra/fedmsg/commit/3a0169538dd4163a58947bc49117be41d54ec0bd>`_
+- Merge branch 'develop' of git://github.com/ampotty/fedmsg into develop `351e868ce <https://github.com/fedora-infra/fedmsg/commit/351e868cea885721a32c400ab403d394494ef5dc>`_
+- Add reconnect interval options to the glossary for #307. `bda6d860c <https://github.com/fedora-infra/fedmsg/commit/bda6d860c7a97ac020c3381a44f53258275a5562>`_
+- Merge pull request #310 from fedora-infra/feature/pygit2 `b4aafee9f <https://github.com/fedora-infra/fedmsg/commit/b4aafee9fe70c1d4e04c84f11d64d3bd00b7dd75>`_
+- Add a comma here to help out people who modify this file. `ded110e23 <https://github.com/fedora-infra/fedmsg/commit/ded110e2357ea400a64d90822efd43213374cfd4>`_
+- Update the status doc. `40650bdfc <https://github.com/fedora-infra/fedmsg/commit/40650bdfce59bd6d31283fc4624ec548470edfa0>`_
+- Start some more deployment docs. `f548ee135 <https://github.com/fedora-infra/fedmsg/commit/f548ee1351be88152ed754c7f2c45a75ff701fb7>`_
+- Merge pull request #311 from fedora-infra/feature/more-deployment-docs `d1611e2b4 <https://github.com/fedora-infra/fedmsg/commit/d1611e2b40cef2760313b532d053699d457f600b>`_
+- Fix ValueError when using gpg and gpg_home is not set `c1db9c55e <https://github.com/fedora-infra/fedmsg/commit/c1db9c55ee41a92773caf332ff4e8852f966fff1>`_
+- Merge pull request #313 from mbooth101/gpg_home_fix `1ae494016 <https://github.com/fedora-infra/fedmsg/commit/1ae4940162670c2493033406be56a06668fad10b>`_
+- Add list of topics and categories to grouped messages. `9a12837fb <https://github.com/fedora-infra/fedmsg/commit/9a12837fb1a4c1a8a368d621dc4018545e8e1e8f>`_
+- Merge pull request #315 from fedora-infra/feature/more-grouped-attrs `a120d3615 <https://github.com/fedora-infra/fedmsg/commit/a120d361593d50af3223674493256633221d53d1>`_
+- Surface CRL errors. `8399e7ba6 <https://github.com/fedora-infra/fedmsg/commit/8399e7ba621440af78cf40f7ab333014fc1f78ee>`_
+- Merge pull request #316 from fedora-infra/feature/surface-crl-error `25bea70c6 <https://github.com/fedora-infra/fedmsg/commit/25bea70c651971fb22cfe7e2997c0dcd12fe8f5b>`_
 
 0.9.3
 -----
@@ -1626,6 +1655,27 @@ Changelog
 - Merge pull request #292 from fedora-infra/feature/anitya `5bac060f8 <https://github.com/fedora-infra/fedmsg/commit/5bac060f8dccde683f6c493ffd609765d40e4631>`_
 - Optionally shorten links in IRC. `fadf61383 <https://github.com/fedora-infra/fedmsg/commit/fadf61383b03caed73199e6a995a77f6f53b3134>`_
 - Merge pull request #291 from fedora-infra/feature/optional-shortening `162c9b845 <https://github.com/fedora-infra/fedmsg/commit/162c9b845ab33a66196a702787536a76f5f74d27>`_
+- 0.11.0 `0894a5b35 <https://github.com/fedora-infra/fedmsg/commit/0894a5b3572475ec4964f53b51b2238d9b4a0a55>`_
+- Handle koschei use case for tailing while in active mode. `8b7f2ee61 <https://github.com/fedora-infra/fedmsg/commit/8b7f2ee61d3ff2d5eef1ec61b66be5085972f710>`_
+- Merge pull request #294 from fedora-infra/feature/koschei-use-case `31945e1f4 <https://github.com/fedora-infra/fedmsg/commit/31945e1f4cb2f556d9700259359c180295c195cf>`_
+- BugFix #150 : de-duplicate items in bodhi conglomerator `a1b1ee054 <https://github.com/fedora-infra/fedmsg/commit/a1b1ee0548aa32fb2dadb59fe6cd29d2667c9214>`_
+- Merge pull request #296 from Ghost-script/develop `0a9052931 <https://github.com/fedora-infra/fedmsg/commit/0a9052931d96b1bc4e9f1679f15b5e2c291321f2>`_
+- Remove unused import. `b860c87e8 <https://github.com/fedora-infra/fedmsg/commit/b860c87e8af1764ca0583ad3c8effb81a240f9b8>`_
+- Add some passing test cases. `52c4d40d5 <https://github.com/fedora-infra/fedmsg/commit/52c4d40d52af1276c7fe1a10cba1689b964f8b09>`_
+- Restart services on failure (systemd). `f42861fc9 <https://github.com/fedora-infra/fedmsg/commit/f42861fc93c074408ae96c1b797d4e1f0cab6a7a>`_
+- Merge pull request #297 from fedora-infra/feature/restart-on-failure `d175c5479 <https://github.com/fedora-infra/fedmsg/commit/d175c5479e61d9feaf7c73463b8f83ebdf462985>`_
+
+0.11.1
+------
+
+- Handle koschei use case for tailing while in active mode. `8b7f2ee61 <https://github.com/fedora-infra/fedmsg/commit/8b7f2ee61d3ff2d5eef1ec61b66be5085972f710>`_
+- Merge pull request #294 from fedora-infra/feature/koschei-use-case `31945e1f4 <https://github.com/fedora-infra/fedmsg/commit/31945e1f4cb2f556d9700259359c180295c195cf>`_
+- BugFix #150 : de-duplicate items in bodhi conglomerator `a1b1ee054 <https://github.com/fedora-infra/fedmsg/commit/a1b1ee0548aa32fb2dadb59fe6cd29d2667c9214>`_
+- Merge pull request #296 from Ghost-script/develop `0a9052931 <https://github.com/fedora-infra/fedmsg/commit/0a9052931d96b1bc4e9f1679f15b5e2c291321f2>`_
+- Remove unused import. `b860c87e8 <https://github.com/fedora-infra/fedmsg/commit/b860c87e8af1764ca0583ad3c8effb81a240f9b8>`_
+- Add some passing test cases. `52c4d40d5 <https://github.com/fedora-infra/fedmsg/commit/52c4d40d52af1276c7fe1a10cba1689b964f8b09>`_
+- Restart services on failure (systemd). `f42861fc9 <https://github.com/fedora-infra/fedmsg/commit/f42861fc93c074408ae96c1b797d4e1f0cab6a7a>`_
+- Merge pull request #297 from fedora-infra/feature/restart-on-failure `d175c5479 <https://github.com/fedora-infra/fedmsg/commit/d175c5479e61d9feaf7c73463b8f83ebdf462985>`_
 
 0.11.0
 ------
