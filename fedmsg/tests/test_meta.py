@@ -326,10 +326,25 @@ class ConglomerateBase(unittest.TestCase):
         self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
         fedmsg.meta.make_processors(**self.config)
 
+        # Delete the msg_ids field because it is bulky and I don't want to
+        # bother with testing it (copying and pasting it).
+        if self.expected:
+            for item in self.expected:
+                if 'msg_ids' in item:
+                    del item['msg_ids']
+
     @skip_on(['originals', 'expected'])
     def test_conglomerate(self):
         """ Does fedmsg.meta produce the expected conglomeration? """
         actual = fedmsg.meta.conglomerate(self.originals, **self.config)
+
+        # Delete the msg_ids field because it is bulky and I don't want to
+        # bother with testing it (copying and pasting it).
+        if actual:
+            for item in actual:
+                if 'msg_ids' in item:
+                    del item['msg_ids']
+
         self.assertEquals(actual, self.expected)
 
 
