@@ -185,17 +185,22 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
         # Grab the first page of results
         data = _make_query()
-        messages = data['raw_messages']
 
         # Grab and smash subsequent pages if there are any
+        interesting_topics = self.topic
+        if not isinstance(interesting_topics, list):
+            interesting_topics = [interesting_topics]
+
         for page in range(1, data['pages'] + 1):
             self.log.info("Retrieving datagrepper page %i of %i" % (
                 page, data['pages']))
             data = _make_query(page=page)
 
             for message in data['raw_messages']:
-                if message['topic'].startswith(self.topic[:-1]):
-                    yield message
+                for topic in interesting_topics:
+                    if message['topic'].startswith(topic[:-1]):
+                        yield message
+                        break
 
     def validate(self, message):
         """ This needs to raise an exception, caught by moksha. """
