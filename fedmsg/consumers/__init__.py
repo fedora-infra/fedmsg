@@ -185,7 +185,6 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
         # Grab the first page of results
         data = _make_query()
-        messages = data['raw_messages']
 
         # Grab and smash subsequent pages if there are any
         for page in range(1, data['pages'] + 1):
