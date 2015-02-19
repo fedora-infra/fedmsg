@@ -67,13 +67,13 @@ def API_function(doc=None):
 
         def _wrapper(*args, **kw):
             if not hasattr(__local, '__context'):
-                kw = kw.copy()
+                config_overrides = kw.copy()
 
                 for arg in scrub:
-                    if arg in kw:
-                        del kw[arg]
+                    if arg in config_overrides:
+                        del config_overrides[arg]
 
-                init(**kw)
+                init(**config_overrides)
                 assert(__local.__context)
 
             return func(*args, **kw)
