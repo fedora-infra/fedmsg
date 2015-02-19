@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.12.1
+0.12.2
 ------
 
 - add support for cowsay command `578826834 <https://github.com/fedora-infra/fedmsg/commit/5788268342c1186507c7fc36db986814e9a8c198>`_
@@ -119,6 +119,8 @@ Changelog
 - Merge pull request #319 from fedora-infra/feature/handle-multiple-topics `4013d5707 <https://github.com/fedora-infra/fedmsg/commit/4013d57074e38400a76d6251ad96f1ebcd5c7310>`_
 - Scrub args from keywords before initializing. `97e0a0d4e <https://github.com/fedora-infra/fedmsg/commit/97e0a0d4e31e9a541faab3a59bc222837b2ffa7b>`_
 - Merge pull request #321 from fedora-infra/feature/scrub-api-args `06212349a <https://github.com/fedora-infra/fedmsg/commit/06212349a8002bd5fe791efc5a4f4ba9f8078b50>`_
+- 0.12.1 `dd7d48e84 <https://github.com/fedora-infra/fedmsg/commit/dd7d48e840890f86d48e009206e0e5d4feb8924a>`_
+- Typofix.  Don't scrub args from the original call to func. `0e3bc165a <https://github.com/fedora-infra/fedmsg/commit/0e3bc165ad0667f7cc3f42bbcc3f140537100fb0>`_
 
 0.9.3
 -----
@@ -1704,10 +1706,43 @@ Changelog
 - Merge pull request #311 from fedora-infra/feature/more-deployment-docs `d1611e2b4 <https://github.com/fedora-infra/fedmsg/commit/d1611e2b40cef2760313b532d053699d457f600b>`_
 - Fix ValueError when using gpg and gpg_home is not set `c1db9c55e <https://github.com/fedora-infra/fedmsg/commit/c1db9c55ee41a92773caf332ff4e8852f966fff1>`_
 - Merge pull request #313 from mbooth101/gpg_home_fix `1ae494016 <https://github.com/fedora-infra/fedmsg/commit/1ae4940162670c2493033406be56a06668fad10b>`_
+- Typo fix `923f688ab <https://github.com/fedora-infra/fedmsg/commit/923f688ab1c419c31fa9047ad782cdfef3eea5d8>`_
+- Merge pull request #314 from lewiscowper/patch-1 `fdacb00ad <https://github.com/fedora-infra/fedmsg/commit/fdacb00ad313850917ebe47bef641211f9834a46>`_
 - Add list of topics and categories to grouped messages. `9a12837fb <https://github.com/fedora-infra/fedmsg/commit/9a12837fb1a4c1a8a368d621dc4018545e8e1e8f>`_
 - Merge pull request #315 from fedora-infra/feature/more-grouped-attrs `a120d3615 <https://github.com/fedora-infra/fedmsg/commit/a120d361593d50af3223674493256633221d53d1>`_
 - Surface CRL errors. `8399e7ba6 <https://github.com/fedora-infra/fedmsg/commit/8399e7ba621440af78cf40f7ab333014fc1f78ee>`_
 - Merge pull request #316 from fedora-infra/feature/surface-crl-error `25bea70c6 <https://github.com/fedora-infra/fedmsg/commit/25bea70c651971fb22cfe7e2997c0dcd12fe8f5b>`_
+- 0.12.0 `5610f0b0d <https://github.com/fedora-infra/fedmsg/commit/5610f0b0ddb488a1e74fc259d17b66bc5a532c67>`_
+- Merge branch 'master' of github.com:fedora-infra/fedmsg `bc7622f10 <https://github.com/fedora-infra/fedmsg/commit/bc7622f1020b35d11a3f8b69ca0c0247eb9e999a>`_
+- Merge branch 'master' into develop `c70bed8b2 <https://github.com/fedora-infra/fedmsg/commit/c70bed8b26312334601fcfb2a597cbbe496a94e2>`_
+- Make IRC lineRate configurable. `785fb7889 <https://github.com/fedora-infra/fedmsg/commit/785fb7889669f16d2ea92a22287fbe0df40ce409>`_
+- Merge pull request #317 from fedora-infra/feature/configurable-linerate `cc8e37fff <https://github.com/fedora-infra/fedmsg/commit/cc8e37fffc8b1122f6bf9bd17defa01516317a57>`_
+- Include constituent metadata in the conglomerate message. `a792a6f53 <https://github.com/fedora-infra/fedmsg/commit/a792a6f53c57e5f6ace0dbfc2df9ca195a0bbce5>`_
+- Delete the msg_ids field during tests. `8f307f0c4 <https://github.com/fedora-infra/fedmsg/commit/8f307f0c48e7ed7b69064a32cb4b9ca45eda8c38>`_
+- Merge pull request #318 from fedora-infra/feature/include-consituents `e84928a44 <https://github.com/fedora-infra/fedmsg/commit/e84928a4436c2747dc82c6b0f204a12a60979625>`_
+- Remove unused statement. `57a97d929 <https://github.com/fedora-infra/fedmsg/commit/57a97d9290bf39b47ea3c759ef41479ac39d8ce5>`_
+- Handle multiple topics. `b0dc6632a <https://github.com/fedora-infra/fedmsg/commit/b0dc6632ac207ad2d6a4456630494fee35967069>`_
+- Merge pull request #319 from fedora-infra/feature/handle-multiple-topics `4013d5707 <https://github.com/fedora-infra/fedmsg/commit/4013d57074e38400a76d6251ad96f1ebcd5c7310>`_
+- Scrub args from keywords before initializing. `97e0a0d4e <https://github.com/fedora-infra/fedmsg/commit/97e0a0d4e31e9a541faab3a59bc222837b2ffa7b>`_
+- Merge pull request #321 from fedora-infra/feature/scrub-api-args `06212349a <https://github.com/fedora-infra/fedmsg/commit/06212349a8002bd5fe791efc5a4f4ba9f8078b50>`_
+
+0.12.1
+------
+
+- Typo fix `923f688ab <https://github.com/fedora-infra/fedmsg/commit/923f688ab1c419c31fa9047ad782cdfef3eea5d8>`_
+- Merge pull request #314 from lewiscowper/patch-1 `fdacb00ad <https://github.com/fedora-infra/fedmsg/commit/fdacb00ad313850917ebe47bef641211f9834a46>`_
+- Merge branch 'master' of github.com:fedora-infra/fedmsg `bc7622f10 <https://github.com/fedora-infra/fedmsg/commit/bc7622f1020b35d11a3f8b69ca0c0247eb9e999a>`_
+- Merge branch 'master' into develop `c70bed8b2 <https://github.com/fedora-infra/fedmsg/commit/c70bed8b26312334601fcfb2a597cbbe496a94e2>`_
+- Make IRC lineRate configurable. `785fb7889 <https://github.com/fedora-infra/fedmsg/commit/785fb7889669f16d2ea92a22287fbe0df40ce409>`_
+- Merge pull request #317 from fedora-infra/feature/configurable-linerate `cc8e37fff <https://github.com/fedora-infra/fedmsg/commit/cc8e37fffc8b1122f6bf9bd17defa01516317a57>`_
+- Include constituent metadata in the conglomerate message. `a792a6f53 <https://github.com/fedora-infra/fedmsg/commit/a792a6f53c57e5f6ace0dbfc2df9ca195a0bbce5>`_
+- Delete the msg_ids field during tests. `8f307f0c4 <https://github.com/fedora-infra/fedmsg/commit/8f307f0c48e7ed7b69064a32cb4b9ca45eda8c38>`_
+- Merge pull request #318 from fedora-infra/feature/include-consituents `e84928a44 <https://github.com/fedora-infra/fedmsg/commit/e84928a4436c2747dc82c6b0f204a12a60979625>`_
+- Remove unused statement. `57a97d929 <https://github.com/fedora-infra/fedmsg/commit/57a97d9290bf39b47ea3c759ef41479ac39d8ce5>`_
+- Handle multiple topics. `b0dc6632a <https://github.com/fedora-infra/fedmsg/commit/b0dc6632ac207ad2d6a4456630494fee35967069>`_
+- Merge pull request #319 from fedora-infra/feature/handle-multiple-topics `4013d5707 <https://github.com/fedora-infra/fedmsg/commit/4013d57074e38400a76d6251ad96f1ebcd5c7310>`_
+- Scrub args from keywords before initializing. `97e0a0d4e <https://github.com/fedora-infra/fedmsg/commit/97e0a0d4e31e9a541faab3a59bc222837b2ffa7b>`_
+- Merge pull request #321 from fedora-infra/feature/scrub-api-args `06212349a <https://github.com/fedora-infra/fedmsg/commit/06212349a8002bd5fe791efc5a4f4ba9f8078b50>`_
 
 0.12.0
 ------
