@@ -109,8 +109,21 @@ class BaseProcessor(object):
             'packages': ['ghc', 'nethack', ... ],
             'topics': ['org.fedoraproject.prod.git.receive'],
             'categories': ['git'],
-            'msg_ids': ['2014-abcde', '2014-bcdef', '2014-cdefg', ... ],
-          },
+            'msg_ids': {
+                '2014-abcde': {
+                    'subtitle': 'relrod pushed some commits to ghc',
+                    'title': 'git.receive',
+                    'link': 'http://...',
+                    'icon': 'http://...',
+                },
+                '2014-bcdef': {
+                    'subtitle': 'relrod pushed some commits to nethack',
+                    'title': 'git.receive',
+                    'link': 'http://...',
+                    'icon': 'http://...',
+                },
+            },
+          }
 
         The telltale sign that an entry in a list of messages represents a
         conglomerate message is the presence of the plural ``msg_ids`` field.
@@ -262,12 +275,29 @@ class BaseConglomerator(object):
         topics = set([msg['topic'] for msg in constituents])
         categories = set([t.split('.')[3] for t in topics])
 
+        # Avoid circular import
+        import fedmsg.meta as fm
+
+        # Include metadata about constituent messages in the aggregate
+        # http://da.gd/12Eso
+        msg_ids = dict([
+            (msg['msg_id'], {
+                'title': fm.msg2title(msg, **config),
+                'subtitle': fm.msg2subtitle(msg, **config),
+                'link': fm.msg2link(msg, **config),
+                'icon': fm.msg2icon(msg, **config),
+                'secondary_icon': fm.msg2secondary_icon(msg, **config),
+                'usernames': fm.msg2usernames(msg, **config),
+                'packages': fm.msg2packages(msg, **config),
+                'objects': fm.msg2objects(msg, **config),
+            }) for msg in constituents])
+
         return {
             'start_time': min(timestamps),
             'end_time': max(timestamps),
             'timestamp': average_timestamp,
             'human_time': arrow.get(average_timestamp).humanize(),
-            'msg_ids': [msg['msg_id'] for msg in constituents],
+            'msg_ids': msg_ids,
             'usernames': usernames,
             'packages': packages,
             'topics': topics,

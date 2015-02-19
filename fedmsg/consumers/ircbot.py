@@ -90,11 +90,12 @@ def make_irc_client(factory):
     class Fedmsg2IRCClient(irc.IRCClient):
         # The 0.6 seconds here is empircally guessed so we don't get dropped by
         # freenode.  FIXME - this should be pulled from the config.
-        lineRate = 1.0
+        lineRate = factory.rate
         sourceURL = "https://github.com/fedora-infra/fedmsg"
 
         def __init__(self, *args, **kwargs):
             self._modecallback = {}
+            log.info("Client initialized with lineRate %r" % self.lineRate)
 
         def _get_nickname(self):
             return self.factory.nickname
@@ -146,13 +147,14 @@ class Fedmsg2IRCFactory(protocol.ClientFactory):
     protocol = make_irc_client
 
     def __init__(self, channel, nickname, filters,
-                 pretty, terse, short, parent_consumer):
+                 pretty, terse, short, rate, parent_consumer):
         self.channel = channel
         self.nickname = nickname
         self.filters = filters
         self.pretty = pretty
         self.terse = terse
         self.short = short
+        self.rate = rate
         self.parent_consumer = parent_consumer
         self.log = logging.getLogger("moksha.hub")
 
@@ -208,12 +210,13 @@ class IRCBotConsumer(FedmsgConsumer):
             pretty = settings.get('make_pretty', False)
             terse = settings.get('make_terse', False)
             short = settings.get('make_short', False)
+            rate = settings.get('line_rate', 1.0)
             timeout = settings.get('timeout', 120)
 
             filters = self.compile_filters(settings.get('filters', None))
 
             factory = Fedmsg2IRCFactory(
-                channel, nickname, filters, pretty, terse, short, self)
+                channel, nickname, filters, pretty, terse, short, rate, self)
             reactor.connectTCP(network, port, factory, timeout=timeout)
 
     def add_irc_client(self, client):

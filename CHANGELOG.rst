@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.12.0
+0.12.1
 ------
 
 - add support for cowsay command `578826834 <https://github.com/fedora-infra/fedmsg/commit/5788268342c1186507c7fc36db986814e9a8c198>`_
@@ -100,10 +100,25 @@ Changelog
 - Merge pull request #311 from fedora-infra/feature/more-deployment-docs `d1611e2b4 <https://github.com/fedora-infra/fedmsg/commit/d1611e2b40cef2760313b532d053699d457f600b>`_
 - Fix ValueError when using gpg and gpg_home is not set `c1db9c55e <https://github.com/fedora-infra/fedmsg/commit/c1db9c55ee41a92773caf332ff4e8852f966fff1>`_
 - Merge pull request #313 from mbooth101/gpg_home_fix `1ae494016 <https://github.com/fedora-infra/fedmsg/commit/1ae4940162670c2493033406be56a06668fad10b>`_
+- Typo fix `923f688ab <https://github.com/fedora-infra/fedmsg/commit/923f688ab1c419c31fa9047ad782cdfef3eea5d8>`_
+- Merge pull request #314 from lewiscowper/patch-1 `fdacb00ad <https://github.com/fedora-infra/fedmsg/commit/fdacb00ad313850917ebe47bef641211f9834a46>`_
 - Add list of topics and categories to grouped messages. `9a12837fb <https://github.com/fedora-infra/fedmsg/commit/9a12837fb1a4c1a8a368d621dc4018545e8e1e8f>`_
 - Merge pull request #315 from fedora-infra/feature/more-grouped-attrs `a120d3615 <https://github.com/fedora-infra/fedmsg/commit/a120d361593d50af3223674493256633221d53d1>`_
 - Surface CRL errors. `8399e7ba6 <https://github.com/fedora-infra/fedmsg/commit/8399e7ba621440af78cf40f7ab333014fc1f78ee>`_
 - Merge pull request #316 from fedora-infra/feature/surface-crl-error `25bea70c6 <https://github.com/fedora-infra/fedmsg/commit/25bea70c651971fb22cfe7e2997c0dcd12fe8f5b>`_
+- 0.12.0 `5610f0b0d <https://github.com/fedora-infra/fedmsg/commit/5610f0b0ddb488a1e74fc259d17b66bc5a532c67>`_
+- Merge branch 'master' of github.com:fedora-infra/fedmsg `bc7622f10 <https://github.com/fedora-infra/fedmsg/commit/bc7622f1020b35d11a3f8b69ca0c0247eb9e999a>`_
+- Merge branch 'master' into develop `c70bed8b2 <https://github.com/fedora-infra/fedmsg/commit/c70bed8b26312334601fcfb2a597cbbe496a94e2>`_
+- Make IRC lineRate configurable. `785fb7889 <https://github.com/fedora-infra/fedmsg/commit/785fb7889669f16d2ea92a22287fbe0df40ce409>`_
+- Merge pull request #317 from fedora-infra/feature/configurable-linerate `cc8e37fff <https://github.com/fedora-infra/fedmsg/commit/cc8e37fffc8b1122f6bf9bd17defa01516317a57>`_
+- Include constituent metadata in the conglomerate message. `a792a6f53 <https://github.com/fedora-infra/fedmsg/commit/a792a6f53c57e5f6ace0dbfc2df9ca195a0bbce5>`_
+- Delete the msg_ids field during tests. `8f307f0c4 <https://github.com/fedora-infra/fedmsg/commit/8f307f0c48e7ed7b69064a32cb4b9ca45eda8c38>`_
+- Merge pull request #318 from fedora-infra/feature/include-consituents `e84928a44 <https://github.com/fedora-infra/fedmsg/commit/e84928a4436c2747dc82c6b0f204a12a60979625>`_
+- Remove unused statement. `57a97d929 <https://github.com/fedora-infra/fedmsg/commit/57a97d9290bf39b47ea3c759ef41479ac39d8ce5>`_
+- Handle multiple topics. `b0dc6632a <https://github.com/fedora-infra/fedmsg/commit/b0dc6632ac207ad2d6a4456630494fee35967069>`_
+- Merge pull request #319 from fedora-infra/feature/handle-multiple-topics `4013d5707 <https://github.com/fedora-infra/fedmsg/commit/4013d57074e38400a76d6251ad96f1ebcd5c7310>`_
+- Scrub args from keywords before initializing. `97e0a0d4e <https://github.com/fedora-infra/fedmsg/commit/97e0a0d4e31e9a541faab3a59bc222837b2ffa7b>`_
+- Merge pull request #321 from fedora-infra/feature/scrub-api-args `06212349a <https://github.com/fedora-infra/fedmsg/commit/06212349a8002bd5fe791efc5a4f4ba9f8078b50>`_
 
 0.9.3
 -----
@@ -1664,6 +1679,67 @@ Changelog
 - Add some passing test cases. `52c4d40d5 <https://github.com/fedora-infra/fedmsg/commit/52c4d40d52af1276c7fe1a10cba1689b964f8b09>`_
 - Restart services on failure (systemd). `f42861fc9 <https://github.com/fedora-infra/fedmsg/commit/f42861fc93c074408ae96c1b797d4e1f0cab6a7a>`_
 - Merge pull request #297 from fedora-infra/feature/restart-on-failure `d175c5479 <https://github.com/fedora-infra/fedmsg/commit/d175c5479e61d9feaf7c73463b8f83ebdf462985>`_
+- 0.11.1 `d245335bd <https://github.com/fedora-infra/fedmsg/commit/d245335bd06340d22a6d4ae99b5437b6919a935e>`_
+- Try to get tests passing in koji again. `261bf1fcb <https://github.com/fedora-infra/fedmsg/commit/261bf1fcb2ae393e3ef96805e7d7b2f93884f90d>`_
+- Merge pull request #298 from fedora-infra/feature/kojifix `23cb93b30 <https://github.com/fedora-infra/fedmsg/commit/23cb93b304d2bcfab637d888e698c9c9d9e0115c>`_
+- Remove unused imports. `a662519d4 <https://github.com/fedora-infra/fedmsg/commit/a662519d42507673e91f82c8250eafc88dbb8d27>`_
+- Increase the lineRate value to 1.0 `b1d916afc <https://github.com/fedora-infra/fedmsg/commit/b1d916afcf864dd972f6e3567fbf59db1aef3138>`_
+- Merge pull request #301 from ampotty/develop `9dd647091 <https://github.com/fedora-infra/fedmsg/commit/9dd647091995536818a9f9c65ac2a3d977a0753f>`_
+- Merge pull request #300 from fedora-infra/feature/remove-unused `7dcec4973 <https://github.com/fedora-infra/fedmsg/commit/7dcec49735826a68ca7be87364d7546c66e42ad7>`_
+- Docs - rename SERVICE to CATEGORY. `230ecfea5 <https://github.com/fedora-infra/fedmsg/commit/230ecfea5004ef90f386c205a89e72fea4040733>`_
+- Merge pull request #303 from fedora-infra/feature/doc-consistency `4762aa4e3 <https://github.com/fedora-infra/fedmsg/commit/4762aa4e37ea832bb20515f8c084e25d61cea75c>`_
+- Simplify fedmsg-relay usage. `43cfcce75 <https://github.com/fedora-infra/fedmsg/commit/43cfcce75e3ac9e315c32faa8c60fe0487144e81>`_
+- Merge pull request #306 from fedora-infra/feature/simplify-relay-usage `be86874e3 <https://github.com/fedora-infra/fedmsg/commit/be86874e33fa258100bf5ac1eb22e3c386f3168a>`_
+- Documentation for reconnect interval options `036286c6b <https://github.com/fedora-infra/fedmsg/commit/036286c6b131e8c6de22cb233412836b0cbdfaad>`_
+- add comment about repo_name `029beca9b <https://github.com/fedora-infra/fedmsg/commit/029beca9b951b24b8101cecb9e65d21a9d7fc0d4>`_
+- Merge pull request #308 from glensc/fix1 `efd1a282d <https://github.com/fedora-infra/fedmsg/commit/efd1a282d68e8cb6139e8507675bc0f4d5e42934>`_
+- Use the much more awesome pygit2. `c3070966d <https://github.com/fedora-infra/fedmsg/commit/c3070966d71192f811a7d867bbfa4ad136a6eec3>`_
+- Calculate diff stats for fedmsg git hook (pygit2!) `3a0169538 <https://github.com/fedora-infra/fedmsg/commit/3a0169538dd4163a58947bc49117be41d54ec0bd>`_
+- Merge branch 'develop' of git://github.com/ampotty/fedmsg into develop `351e868ce <https://github.com/fedora-infra/fedmsg/commit/351e868cea885721a32c400ab403d394494ef5dc>`_
+- Add reconnect interval options to the glossary for #307. `bda6d860c <https://github.com/fedora-infra/fedmsg/commit/bda6d860c7a97ac020c3381a44f53258275a5562>`_
+- Merge pull request #310 from fedora-infra/feature/pygit2 `b4aafee9f <https://github.com/fedora-infra/fedmsg/commit/b4aafee9fe70c1d4e04c84f11d64d3bd00b7dd75>`_
+- Add a comma here to help out people who modify this file. `ded110e23 <https://github.com/fedora-infra/fedmsg/commit/ded110e2357ea400a64d90822efd43213374cfd4>`_
+- Update the status doc. `40650bdfc <https://github.com/fedora-infra/fedmsg/commit/40650bdfce59bd6d31283fc4624ec548470edfa0>`_
+- Start some more deployment docs. `f548ee135 <https://github.com/fedora-infra/fedmsg/commit/f548ee1351be88152ed754c7f2c45a75ff701fb7>`_
+- Merge pull request #311 from fedora-infra/feature/more-deployment-docs `d1611e2b4 <https://github.com/fedora-infra/fedmsg/commit/d1611e2b40cef2760313b532d053699d457f600b>`_
+- Fix ValueError when using gpg and gpg_home is not set `c1db9c55e <https://github.com/fedora-infra/fedmsg/commit/c1db9c55ee41a92773caf332ff4e8852f966fff1>`_
+- Merge pull request #313 from mbooth101/gpg_home_fix `1ae494016 <https://github.com/fedora-infra/fedmsg/commit/1ae4940162670c2493033406be56a06668fad10b>`_
+- Add list of topics and categories to grouped messages. `9a12837fb <https://github.com/fedora-infra/fedmsg/commit/9a12837fb1a4c1a8a368d621dc4018545e8e1e8f>`_
+- Merge pull request #315 from fedora-infra/feature/more-grouped-attrs `a120d3615 <https://github.com/fedora-infra/fedmsg/commit/a120d361593d50af3223674493256633221d53d1>`_
+- Surface CRL errors. `8399e7ba6 <https://github.com/fedora-infra/fedmsg/commit/8399e7ba621440af78cf40f7ab333014fc1f78ee>`_
+- Merge pull request #316 from fedora-infra/feature/surface-crl-error `25bea70c6 <https://github.com/fedora-infra/fedmsg/commit/25bea70c651971fb22cfe7e2997c0dcd12fe8f5b>`_
+
+0.12.0
+------
+
+- Try to get tests passing in koji again. `261bf1fcb <https://github.com/fedora-infra/fedmsg/commit/261bf1fcb2ae393e3ef96805e7d7b2f93884f90d>`_
+- Merge pull request #298 from fedora-infra/feature/kojifix `23cb93b30 <https://github.com/fedora-infra/fedmsg/commit/23cb93b304d2bcfab637d888e698c9c9d9e0115c>`_
+- Remove unused imports. `a662519d4 <https://github.com/fedora-infra/fedmsg/commit/a662519d42507673e91f82c8250eafc88dbb8d27>`_
+- Increase the lineRate value to 1.0 `b1d916afc <https://github.com/fedora-infra/fedmsg/commit/b1d916afcf864dd972f6e3567fbf59db1aef3138>`_
+- Merge pull request #301 from ampotty/develop `9dd647091 <https://github.com/fedora-infra/fedmsg/commit/9dd647091995536818a9f9c65ac2a3d977a0753f>`_
+- Merge pull request #300 from fedora-infra/feature/remove-unused `7dcec4973 <https://github.com/fedora-infra/fedmsg/commit/7dcec49735826a68ca7be87364d7546c66e42ad7>`_
+- Docs - rename SERVICE to CATEGORY. `230ecfea5 <https://github.com/fedora-infra/fedmsg/commit/230ecfea5004ef90f386c205a89e72fea4040733>`_
+- Merge pull request #303 from fedora-infra/feature/doc-consistency `4762aa4e3 <https://github.com/fedora-infra/fedmsg/commit/4762aa4e37ea832bb20515f8c084e25d61cea75c>`_
+- Simplify fedmsg-relay usage. `43cfcce75 <https://github.com/fedora-infra/fedmsg/commit/43cfcce75e3ac9e315c32faa8c60fe0487144e81>`_
+- Merge pull request #306 from fedora-infra/feature/simplify-relay-usage `be86874e3 <https://github.com/fedora-infra/fedmsg/commit/be86874e33fa258100bf5ac1eb22e3c386f3168a>`_
+- Documentation for reconnect interval options `036286c6b <https://github.com/fedora-infra/fedmsg/commit/036286c6b131e8c6de22cb233412836b0cbdfaad>`_
+- add comment about repo_name `029beca9b <https://github.com/fedora-infra/fedmsg/commit/029beca9b951b24b8101cecb9e65d21a9d7fc0d4>`_
+- Merge pull request #308 from glensc/fix1 `efd1a282d <https://github.com/fedora-infra/fedmsg/commit/efd1a282d68e8cb6139e8507675bc0f4d5e42934>`_
+- Use the much more awesome pygit2. `c3070966d <https://github.com/fedora-infra/fedmsg/commit/c3070966d71192f811a7d867bbfa4ad136a6eec3>`_
+- Calculate diff stats for fedmsg git hook (pygit2!) `3a0169538 <https://github.com/fedora-infra/fedmsg/commit/3a0169538dd4163a58947bc49117be41d54ec0bd>`_
+- Merge branch 'develop' of git://github.com/ampotty/fedmsg into develop `351e868ce <https://github.com/fedora-infra/fedmsg/commit/351e868cea885721a32c400ab403d394494ef5dc>`_
+- Add reconnect interval options to the glossary for #307. `bda6d860c <https://github.com/fedora-infra/fedmsg/commit/bda6d860c7a97ac020c3381a44f53258275a5562>`_
+- Merge pull request #310 from fedora-infra/feature/pygit2 `b4aafee9f <https://github.com/fedora-infra/fedmsg/commit/b4aafee9fe70c1d4e04c84f11d64d3bd00b7dd75>`_
+- Add a comma here to help out people who modify this file. `ded110e23 <https://github.com/fedora-infra/fedmsg/commit/ded110e2357ea400a64d90822efd43213374cfd4>`_
+- Update the status doc. `40650bdfc <https://github.com/fedora-infra/fedmsg/commit/40650bdfce59bd6d31283fc4624ec548470edfa0>`_
+- Start some more deployment docs. `f548ee135 <https://github.com/fedora-infra/fedmsg/commit/f548ee1351be88152ed754c7f2c45a75ff701fb7>`_
+- Merge pull request #311 from fedora-infra/feature/more-deployment-docs `d1611e2b4 <https://github.com/fedora-infra/fedmsg/commit/d1611e2b40cef2760313b532d053699d457f600b>`_
+- Fix ValueError when using gpg and gpg_home is not set `c1db9c55e <https://github.com/fedora-infra/fedmsg/commit/c1db9c55ee41a92773caf332ff4e8852f966fff1>`_
+- Merge pull request #313 from mbooth101/gpg_home_fix `1ae494016 <https://github.com/fedora-infra/fedmsg/commit/1ae4940162670c2493033406be56a06668fad10b>`_
+- Add list of topics and categories to grouped messages. `9a12837fb <https://github.com/fedora-infra/fedmsg/commit/9a12837fb1a4c1a8a368d621dc4018545e8e1e8f>`_
+- Merge pull request #315 from fedora-infra/feature/more-grouped-attrs `a120d3615 <https://github.com/fedora-infra/fedmsg/commit/a120d361593d50af3223674493256633221d53d1>`_
+- Surface CRL errors. `8399e7ba6 <https://github.com/fedora-infra/fedmsg/commit/8399e7ba621440af78cf40f7ab333014fc1f78ee>`_
+- Merge pull request #316 from fedora-infra/feature/surface-crl-error `25bea70c6 <https://github.com/fedora-infra/fedmsg/commit/25bea70c651971fb22cfe7e2997c0dcd12fe8f5b>`_
 
 0.11.1
 ------
