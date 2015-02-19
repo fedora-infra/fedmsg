@@ -19,6 +19,7 @@
 #
 """ Fedora Messaging Client API """
 
+import inspect
 import threading
 
 import fedmsg.core
@@ -62,9 +63,16 @@ def init(**kw):
 
 def API_function(doc=None):
     def api_function(func):
+        scrub = inspect.getargspec(func).args
 
         def _wrapper(*args, **kw):
             if not hasattr(__local, '__context'):
+                kw = kw.copy()
+
+                for arg in scrub:
+                    if arg in kw:
+                        del kw[arg]
+
                 init(**kw)
                 assert(__local.__context)
 
