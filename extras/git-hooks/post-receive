@@ -26,18 +26,29 @@ config['active'] = True
 config['endpoints']['relay_inbound'] = config['relay_inbound']
 fedmsg.init(name='relay_inbound', cert_prefix='scm', **config)
 
-def revs_between(head, base):
+def revs_between(head, base, seen=None):
+    """ Yield revisions between HEAD and BASE.
+
+    Detect if a revision appears multiple times and stop recursion.
+    """
+
+    seen = seen or []
+    rev = unicode(head.id)
+
     bail = False
+    if not rev in seen:
+        seen.append(rev)
+        yield rev
 
-    yield unicode(head.id)
-
-    for parent in head.parents:
-        if parent.id == base.id:
-            bail = True
+        for parent in head.parents:
+            if parent.id == base.id:
+                bail = True
+    else:
+        bail = True
 
     if not bail:
         for parent in head.parents:
-            for rev in revs_between(parent, base):
+            for rev in revs_between(parent, base, seen=seen):
                 yield rev
 
 
