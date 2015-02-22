@@ -88,6 +88,11 @@ for line in lines:
     def _build_commit(rev):
         commit = repo.revparse_single(rev)
 
+        # Tags are a little funny, and vary between versions of pygit2, so we'll
+        # just ignore them as far as fedmsg is concerned.
+        if isinstance(commit, pygit2.Tag):
+            return None
+
         files, total = build_stats(commit)
 
         return dict(
