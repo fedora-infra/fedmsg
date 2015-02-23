@@ -41,22 +41,6 @@ def revs_between(head, ancestors):
         yield head.id
 
 
-def gather_ancestors(commit, seen=None):
-    """ Yield all ancestors commits of a given commit. """
-
-    seen = seen or []
-    idx = commit.id
-
-    if not idx in seen:
-        seen.append(idx)
-
-        for parent in commit.parents:
-            for revid in gather_ancestors(parent, seen=seen):
-                yield revid
-
-        yield idx
-
-
 def build_stats(commit):
     files = defaultdict(lambda: defaultdict(int))
 
@@ -97,7 +81,7 @@ for line in lines:
 
     try:
         base = repo.revparse_single(base)
-        ancestors = list(gather_ancestors(base))
+        ancestors = [commit.id for commit in repo.walk(base.id)]
         revs = revs_between(head, ancestors)
     except KeyError:
         revs = [head.id]
