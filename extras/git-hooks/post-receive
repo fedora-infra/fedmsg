@@ -26,19 +26,35 @@ config['active'] = True
 config['endpoints']['relay_inbound'] = config['relay_inbound']
 fedmsg.init(name='relay_inbound', cert_prefix='scm', **config)
 
-def revs_between(head, base):
-    bail = False
+def revs_between(head, ancestors):
+    """ Yield revisions between HEAD and any of the ancestors. """
 
-    yield unicode(head.id)
-
+    # For each of my parents
     for parent in head.parents:
-        if parent.id == base.id:
-            bail = True
-
-    if not bail:
-        for parent in head.parents:
-            for rev in revs_between(parent, base):
+        # If it is not one of the known ancestors
+        if not parent.id in ancestors:
+            # Then yield all of its history, meeting the same conditions
+            for rev in revs_between(parent, ancestors):
                 yield rev
+
+    if not head.id in ancestors:
+        yield head.id
+
+
+def gather_ancestors(commit, seen=None):
+    """ Yield all ancestors commits of a given commit. """
+
+    seen = seen or []
+    idx = commit.id
+
+    if not idx in seen:
+        seen.append(idx)
+
+        for parent in commit.parents:
+            for revid in gather_ancestors(parent, seen=seen):
+                yield revid
+
+        yield idx
 
 
 def build_stats(commit):
@@ -81,12 +97,18 @@ for line in lines:
 
     try:
         base = repo.revparse_single(base)
-        revs = revs_between(head, base)
+        ancestors = list(gather_ancestors(base))
+        revs = revs_between(head, ancestors)
     except KeyError:
-        revs = [unicode(head.id)]
+        revs = [head.id]
 
     def _build_commit(rev):
-        commit = repo.revparse_single(rev)
+        commit = repo.revparse_single(unicode(rev))
+
+        # Tags are a little funny, and vary between versions of pygit2, so we'll
+        # just ignore them as far as fedmsg is concerned.
+        if isinstance(commit, pygit2.Tag):
+            return None
 
         files, total = build_stats(commit)
 
@@ -100,7 +122,7 @@ for line in lines:
                 files=files,
                 total=total,
             ),
-            rev=rev,
+            rev=unicode(rev),
             path=abspath,
             repo=repo_name,
             branch=branch,
@@ -109,6 +131,7 @@ for line in lines:
 
     commits = map(_build_commit, revs)
 
+    print "* Publishing information for %i commits" % len(commits)
     for commit in commits:
 
         if commit is None:
