@@ -131,6 +131,7 @@ for line in lines:
 
     commits = map(_build_commit, revs)
 
+    print "* Publishing information for %i commits" % len(commits)
     for commit in commits:
 
         if commit is None:
