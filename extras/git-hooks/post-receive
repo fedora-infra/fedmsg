@@ -26,30 +26,35 @@ config['active'] = True
 config['endpoints']['relay_inbound'] = config['relay_inbound']
 fedmsg.init(name='relay_inbound', cert_prefix='scm', **config)
 
-def revs_between(head, base, seen=None):
-    """ Yield revisions between HEAD and BASE.
+def revs_between(head, ancestors):
+    """ Yield revisions between HEAD and any of the ancestors. """
 
-    Detect if a revision appears multiple times and stop recursion.
-    """
+    # For each of my parents
+    for parent in head.parents:
+        # If it is not one of the known ancestors
+        if not parent.id in ancestors:
+            # Then yield all of its history, meeting the same conditions
+            for rev in revs_between(parent, ancestors):
+                yield rev
+
+    if not head.id in ancestors:
+        yield unicode(head.id)
+
+
+def gather_ancestors(commit, seen=None):
+    """ Yield all ancestors commits of a given commit. """
 
     seen = seen or []
-    rev = unicode(head.id)
+    idx = unicode(commit.id)
 
-    bail = False
-    if not rev in seen:
-        seen.append(rev)
-        yield rev
+    if not idx in seen:
+        seen.append(idx)
 
-        for parent in head.parents:
-            if parent.id == base.id:
-                bail = True
-    else:
-        bail = True
+        for parent in commit.parents:
+            for rev in gather_ancestors(parent, seen=seen):
+                yield rev.id
 
-    if not bail:
-        for parent in head.parents:
-            for rev in revs_between(parent, base, seen=seen):
-                yield rev
+        yield commit.id
 
 
 def build_stats(commit):
@@ -92,7 +97,8 @@ for line in lines:
 
     try:
         base = repo.revparse_single(base)
-        revs = revs_between(head, base)
+        ancestors = gather_ancestors(base)
+        revs = revs_between(head, ancestors)
     except KeyError:
         revs = [unicode(head.id)]
 
