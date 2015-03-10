@@ -19,6 +19,7 @@
 #
 """ Tests for fedmsg.meta """
 
+import inspect
 import os
 import unittest
 import textwrap
@@ -170,78 +171,91 @@ class Base(unittest.TestCase):
         if not hasattr(self, 'assertMultiLineEqual'):
             self.assertMultiLineEqual = self.assertEqual
 
+    def _equals(self, actual, expected, multiline=False):
+        try:
+            if multiline:
+                self.assertMultiLineEquals(actual, self.expected)
+            else:
+                self.assertEquals(actual, self.expected)
+        except:
+            print "Failed at:"
+            print " ", self
+            print " ", os.path.relpath(inspect.getfile(type(self))[:-1])
+            print "  Line: ", inspect.getsourcelines(type(self))[-1]
+            raise
+
     @skip_on(['msg', 'expected_title'])
     def test_title(self):
         """ Does fedmsg.meta produce the expected title? """
         actual_title = fedmsg.meta.msg2title(self.msg, **self.config)
-        eq_(actual_title, self.expected_title)
+        self._equals(actual_title, self.expected_title)
 
     @skip_on(['msg', 'expected_markup'])
     def test_markup(self):
         """ Does fedmsg.meta produce the right html when markup=True? """
         actual_markup = fedmsg.meta.msg2subtitle(
             self.msg, markup=True, **self.config)
-        eq_(actual_markup, self.expected_markup)
+        self._equals(actual_markup, self.expected_markup)
 
     @skip_on(['msg', 'expected_long_form'])
     def test_long_form(self):
         """ Does fedmsg.meta produce the expected long form text? """
         actual_long_form = fedmsg.meta.msg2long_form(self.msg, **self.config)
-        self.assertMultiLineEqual(actual_long_form, self.expected_long_form)
+        self._equals(actual_long_form, self.expected_long_form, multiline=True)
 
     @skip_on(['msg', 'expected_subti'])
     def test_subtitle(self):
         """ Does fedmsg.meta produce the expected subtitle? """
         actual_subti = fedmsg.meta.msg2subtitle(self.msg, **self.config)
-        eq_(actual_subti, self.expected_subti)
+        self._equals(actual_subti, self.expected_subti)
 
     @skip_on(['msg', 'expected_link'])
     def test_link(self):
         """ Does fedmsg.meta produce the expected link? """
         actual_link = fedmsg.meta.msg2link(self.msg, **self.config)
-        eq_(actual_link, self.expected_link)
+        self._equals(actual_link, self.expected_link)
 
     @skip_on(['msg', 'expected_icon'])
     def test_icon(self):
         """ Does fedmsg.meta produce the expected icon? """
         actual_icon = fedmsg.meta.msg2icon(self.msg, **self.config)
-        eq_(actual_icon, self.expected_icon)
+        self._equals(actual_icon, self.expected_icon)
 
     @skip_on(['msg', 'expected_secondary_icon'])
     def test_secondary_icon(self):
         """ Does fedmsg.meta produce the expected secondary icon? """
         actual_icon = fedmsg.meta.msg2secondary_icon(self.msg, **self.config)
-        eq_(actual_icon, self.expected_secondary_icon)
+        self._equals(actual_icon, self.expected_secondary_icon)
 
     @skip_on(['msg', 'expected_usernames'])
     def test_usernames(self):
         """ Does fedmsg.meta produce the expected list of usernames? """
         actual_usernames = fedmsg.meta.msg2usernames(self.msg, **self.config)
-        eq_(actual_usernames, self.expected_usernames)
+        self._equals(actual_usernames, self.expected_usernames)
 
     @skip_on(['msg', 'expected_packages'])
     def test_packages(self):
         """ Does fedmsg.meta produce the expected list of packages? """
         actual_packages = fedmsg.meta.msg2packages(self.msg, **self.config)
-        eq_(actual_packages, self.expected_packages)
+        self._equals(actual_packages, self.expected_packages)
 
     @skip_on(['msg', 'expected_objects'])
     def test_objects(self):
         """ Does fedmsg.meta produce the expected list of objects? """
         actual_objects = fedmsg.meta.msg2objects(self.msg, **self.config)
-        eq_(actual_objects, self.expected_objects)
+        self._equals(actual_objects, self.expected_objects)
 
     @skip_on(['msg', 'expected_emails'])
     def test_emails(self):
         """ Does fedmsg.meta produce the expected list of emails? """
         actual_emails = fedmsg.meta.msg2emails(self.msg, **self.config)
-        eq_(actual_emails, self.expected_emails)
+        self._equals(actual_emails, self.expected_emails)
 
     @skip_on(['msg', 'expected_avatars'])
     def test_avatars(self):
         """ Does fedmsg.meta produce the expected list of avatars? """
         actual_avatars = fedmsg.meta.msg2avatars(self.msg, **self.config)
-        eq_(actual_avatars, self.expected_avatars)
+        self._equals(actual_avatars, self.expected_avatars)
 
 
 class TestUnhandled(Base):
@@ -345,7 +359,14 @@ class ConglomerateBase(unittest.TestCase):
                 if 'msg_ids' in item:
                     del item['msg_ids']
 
-        self.assertEquals(actual, self.expected)
+        try:
+            self.assertEquals(actual, self.expected)
+        except:
+            print "Failed at:"
+            print " ", self
+            print " ", os.path.relpath(inspect.getfile(type(self))[:-1])
+            print "  Line: ", inspect.getsourcelines(type(self))[-1]
+            raise
 
 
 class TestConglomeratorExtras(unittest.TestCase):
