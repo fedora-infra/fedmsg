@@ -181,7 +181,6 @@ class Base(unittest.TestCase):
             print "Failed at:"
             print " ", self
             print " ", os.path.relpath(inspect.getfile(type(self))[:-1])
-            print "  Line: ", inspect.getsourcelines(type(self))[-1]
             raise
 
     @skip_on(['msg', 'expected_title'])
@@ -365,7 +364,6 @@ class ConglomerateBase(unittest.TestCase):
             print "Failed at:"
             print " ", self
             print " ", os.path.relpath(inspect.getfile(type(self))[:-1])
-            print "  Line: ", inspect.getsourcelines(type(self))[-1]
             raise
 
 
