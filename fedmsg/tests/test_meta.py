@@ -174,9 +174,9 @@ class Base(unittest.TestCase):
     def _equals(self, actual, expected, multiline=False):
         try:
             if multiline:
-                self.assertMultiLineEquals(actual, self.expected)
+                self.assertMultiLineEquals(actual, expected)
             else:
-                self.assertEquals(actual, self.expected)
+                self.assertEquals(actual, expected)
         except:
             print "Failed at:"
             print " ", self
