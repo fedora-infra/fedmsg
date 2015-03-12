@@ -26,19 +26,15 @@ config['active'] = True
 config['endpoints']['relay_inbound'] = config['relay_inbound']
 fedmsg.init(name='relay_inbound', cert_prefix='scm', **config)
 
-def revs_between(head, ancestors):
-    """ Yield revisions between HEAD and any of the ancestors. """
+def revs_between(head, base):
+    """ Yield revisions between HEAD and BASE. """
 
-    # For each of my parents
-    for parent in head.parents:
-        # If it is not one of the known ancestors
-        if not parent.id in ancestors:
-            # Then yield all of its history, meeting the same conditions
-            for rev in revs_between(parent, ancestors):
-                yield rev
-
-    if not head.id in ancestors:
-        yield head.id
+    # XXX REALLY, just yield head.
+    # We used to try to navigate the git history and return all the commits in
+    # between, but we got into infinite loops more than once because git.
+    # We could shell out to 'git rev-list head...base', but I'm just not ready
+    # to do that yet.
+    yield head.id
 
 
 def build_stats(commit):
@@ -81,8 +77,7 @@ for line in lines:
 
     try:
         base = repo.revparse_single(base)
-        ancestors = [commit.id for commit in repo.walk(base.id)]
-        revs = revs_between(head, ancestors)
+        revs = revs_between(head, base)
     except KeyError:
         revs = [head.id]
 
