@@ -252,7 +252,8 @@ class BaseConglomerator(object):
         # If we're done, we're done.
         return None, None
 
-    def produce_template(self, constituents, **config):
+    @classmethod
+    def produce_template(cls, constituents, **config):
         """ Helper function used by `merge`.
         Produces the beginnings of a merged conglomerate message that needs to
         be later filled out by a subclass.
@@ -266,17 +267,17 @@ class BaseConglomerator(object):
         timestamps = [_extract_timestamp(msg) for msg in constituents]
         average_timestamp = sum(timestamps) / N
 
+        # Avoid circular import
+        import fedmsg.meta as fm
+
         usernames = set(sum([
-            list(self.processor.usernames(msg, **config))
+            list(fm.msg2usernames(msg, **config))
             for msg in constituents], []))
         packages = set(sum([
-            list(self.processor.packages(msg, **config))
+            list(fm.msg2packages(msg, **config))
             for msg in constituents], []))
         topics = set([msg['topic'] for msg in constituents])
         categories = set([t.split('.')[3] for t in topics])
-
-        # Avoid circular import
-        import fedmsg.meta as fm
 
         # Include metadata about constituent messages in the aggregate
         # http://da.gd/12Eso
@@ -302,7 +303,7 @@ class BaseConglomerator(object):
             'packages': packages,
             'topics': topics,
             'categories': categories,
-            'icon': self.processor.__icon__,
+            'icon': fm.msg2icon(constituents[0], **config),
         }
 
     @staticmethod
