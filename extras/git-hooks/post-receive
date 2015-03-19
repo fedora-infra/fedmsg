@@ -2,6 +2,7 @@
 
 import getpass
 import os
+import subprocess as sp
 import sys
 
 from collections import defaultdict
@@ -26,15 +27,19 @@ config['active'] = True
 config['endpoints']['relay_inbound'] = config['relay_inbound']
 fedmsg.init(name='relay_inbound', cert_prefix='scm', **config)
 
+
 def revs_between(head, base):
     """ Yield revisions between HEAD and BASE. """
 
-    # XXX REALLY, just yield head.
-    # We used to try to navigate the git history and return all the commits in
-    # between, but we got into infinite loops more than once because git.
-    # We could shell out to 'git rev-list head...base', but I'm just not ready
-    # to do that yet.
-    yield head.id
+    # pygit2 can't do a rev-list yet, so we have to shell out.. silly.
+    cmd = '/usr/bin/git rev-list %s...%s' % (head.id, base.id)
+    proc = sp.Popen(cmd.split(), stdout=sp.PIPE, stderr=sp.PIPE, cwd=abspath)
+    stdout, stderr = proc.communicate()
+    if proc.returncode != 0:
+        raise IOError('git rev-list failed: %r, err: %r' % (stdout, stderr))
+
+    for line in stdout.strip().split('\n'):
+        yield line.strip()
 
 
 def build_stats(commit):
@@ -61,6 +66,8 @@ def build_stats(commit):
 
     return files, total
 
+
+seen = []
 
 # Read in all the rev information git-receive-pack hands us.
 lines = [line.split() for line in sys.stdin.readlines()]
@@ -112,6 +119,16 @@ for line in lines:
 
     print "* Publishing information for %i commits" % len(commits)
     for commit in commits:
+        # Keep track of whether or not we have already published this commit on
+        # another branch or not.  It is conceivable that someone could make a
+        # commit to a number of branches, and push them all at the same time.
+        # Make a note in the fedmsg payload so we can try to reduce spam at a
+        # later stage.
+        if commit['rev'] in seen:
+            commit['seen'] = True
+        else:
+            commit['seen'] = False
+            seen.append(commit['rev'])
 
         if commit is None:
             continue
