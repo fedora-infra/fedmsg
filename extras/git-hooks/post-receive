@@ -67,6 +67,8 @@ def build_stats(commit):
     return files, total
 
 
+seen = []
+
 # Read in all the rev information git-receive-pack hands us.
 lines = [line.split() for line in sys.stdin.readlines()]
 for line in lines:
@@ -117,6 +119,16 @@ for line in lines:
 
     print "* Publishing information for %i commits" % len(commits)
     for commit in commits:
+        # Keep track of whether or not we have already published this commit on
+        # another branch or not.  It is conceivable that someone could make a
+        # commit to a number of branches, and push them all at the same time.
+        # Make a note in the fedmsg payload so we can try to reduce spam at a
+        # later stage.
+        if commit['rev'] in seen:
+            commit['seen'] = True
+        else:
+            commit['seen'] = False
+            seen.append(commit['rev'])
 
         if commit is None:
             continue
