@@ -2,6 +2,7 @@
 
 import getpass
 import os
+import subprocess as sp
 import sys
 
 from collections import defaultdict
@@ -26,19 +27,19 @@ config['active'] = True
 config['endpoints']['relay_inbound'] = config['relay_inbound']
 fedmsg.init(name='relay_inbound', cert_prefix='scm', **config)
 
+
 def revs_between(head, base):
-    bail = False
+    """ Yield revisions between HEAD and BASE. """
 
-    yield unicode(head.id)
+    # pygit2 can't do a rev-list yet, so we have to shell out.. silly.
+    cmd = '/usr/bin/git rev-list %s...%s' % (head.id, base.id)
+    proc = sp.Popen(cmd.split(), stdout=sp.PIPE, stderr=sp.PIPE, cwd=abspath)
+    stdout, stderr = proc.communicate()
+    if proc.returncode != 0:
+        raise IOError('git rev-list failed: %r, err: %r' % (stdout, stderr))
 
-    for parent in head.parents:
-        if parent.id == base.id:
-            bail = True
-
-    if not bail:
-        for parent in head.parents:
-            for rev in revs_between(parent, base):
-                yield rev
+    for line in stdout.strip().split('\n'):
+        yield line.strip()
 
 
 def build_stats(commit):
@@ -66,6 +67,8 @@ def build_stats(commit):
     return files, total
 
 
+seen = []
+
 # Read in all the rev information git-receive-pack hands us.
 lines = [line.split() for line in sys.stdin.readlines()]
 for line in lines:
@@ -83,10 +86,15 @@ for line in lines:
         base = repo.revparse_single(base)
         revs = revs_between(head, base)
     except KeyError:
-        revs = [unicode(head.id)]
+        revs = [head.id]
 
     def _build_commit(rev):
-        commit = repo.revparse_single(rev)
+        commit = repo.revparse_single(unicode(rev))
+
+        # Tags are a little funny, and vary between versions of pygit2, so we'll
+        # just ignore them as far as fedmsg is concerned.
+        if isinstance(commit, pygit2.Tag):
+            return None
 
         files, total = build_stats(commit)
 
@@ -100,7 +108,7 @@ for line in lines:
                 files=files,
                 total=total,
             ),
-            rev=rev,
+            rev=unicode(rev),
             path=abspath,
             repo=repo_name,
             branch=branch,
@@ -109,7 +117,18 @@ for line in lines:
 
     commits = map(_build_commit, revs)
 
+    print "* Publishing information for %i commits" % len(commits)
     for commit in commits:
+        # Keep track of whether or not we have already published this commit on
+        # another branch or not.  It is conceivable that someone could make a
+        # commit to a number of branches, and push them all at the same time.
+        # Make a note in the fedmsg payload so we can try to reduce spam at a
+        # later stage.
+        if commit['rev'] in seen:
+            commit['seen'] = True
+        else:
+            commit['seen'] = False
+            seen.append(commit['rev'])
 
         if commit is None:
             continue

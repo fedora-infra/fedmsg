@@ -50,7 +50,6 @@ End users can have multiple plugin sets installed simultaneously.
 
 """
 
-import arrow
 import six
 
 # gettext is used for internationalization.  I have tested that it can produce
@@ -65,6 +64,7 @@ else:
 
 
 from fedmsg.meta.default import DefaultProcessor
+from fedmsg.meta.base import BaseConglomerator
 
 import logging
 log = logging.getLogger("fedmsg")
@@ -181,19 +181,14 @@ def conglomerate(messages, **config):
             continue
 
         # For ungrouped ones, replace them with a fake conglomerate
-        messages[i] = {
-            'subtitle': msg2subtitle(message, **config),
+        messages[i] = BaseConglomerator.produce_template([message], **config)
+        # And fill out the fields that fully-implemented conglomerators would
+        # normally fill out.
+        messages[i].update({
             'link': msg2link(message, **config),
-            'icon': msg2icon(message, **config),
+            'subtitle': msg2subtitle(message, **config),
             'secondary_icon': msg2secondary_icon(message, **config),
-            'start_time': message['timestamp'],
-            'end_time': message['timestamp'],
-            'timestamp': message['timestamp'],
-            'human_time': arrow.get(message['timestamp']).humanize(),
-            'usernames': msg2usernames(message, **config),
-            'packages': msg2packages(message, **config),
-            'msg_ids': [message['msg_id']],
-        }
+        })
 
     return messages
 
