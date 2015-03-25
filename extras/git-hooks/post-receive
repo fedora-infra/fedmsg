@@ -119,6 +119,9 @@ for line in lines:
 
     print "* Publishing information for %i commits" % len(commits)
     for commit in commits:
+        if commit is None:
+            continue
+
         # Keep track of whether or not we have already published this commit on
         # another branch or not.  It is conceivable that someone could make a
         # commit to a number of branches, and push them all at the same time.
@@ -129,9 +132,6 @@ for line in lines:
         else:
             commit['seen'] = False
             seen.append(commit['rev'])
-
-        if commit is None:
-            continue
 
         fedmsg.publish(
             topic="receive",
