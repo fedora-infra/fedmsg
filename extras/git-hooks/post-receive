@@ -118,7 +118,7 @@ for line in lines:
     commits = map(_build_commit, revs)
 
     print "* Publishing information for %i commits" % len(commits)
-    for commit in commits:
+    for commit in reversed(commits):
         if commit is None:
             continue
 
