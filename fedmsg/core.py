@@ -114,7 +114,7 @@ class FedMsgContext(object):
             # endpoint.
             _established = False
             for endpoint in config['endpoints'][config['name']]:
-
+                self.log.debug("Trying to %s to %s" % (method, endpoint))
                 if method == 'bind':
                     endpoint = "tcp://*:{port}".format(
                         port=endpoint.rsplit(':')[-1]
@@ -162,6 +162,7 @@ class FedMsgContext(object):
         """ Destroy a fedmsg context """
 
         if getattr(self, 'publisher', None):
+            self.log.debug("closing fedmsg publisher")
             self.publisher.close()
             self.publisher = None
 
