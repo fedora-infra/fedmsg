@@ -13,7 +13,7 @@ import time
 import fedmsg.config
 config = fedmsg.config.load_config()
 
-timeout = 0.1
+timeout = 0.2
 expected = '/wAAAAAAAAABfw=='
 
 active = collections.defaultdict(list)
@@ -21,10 +21,12 @@ inactive = collections.defaultdict(list)
 
 for_collectd = 'collectd' in sys.argv
 
+
 def info(content="\n"):
     if not for_collectd:
         sys.stdout.write(content)
         sys.stdout.flush()
+
 
 def do_scan():
     for i, item in enumerate(config['endpoints'].items()):
@@ -51,6 +53,11 @@ def do_scan():
                     connection.close()
 
     info()
+
+    if 'verbose' in sys.argv:
+        import pprint;
+        pprint.pprint(dict(active))
+        pprint.pprint(dict(inactive))
 
     header = "".join([
         "name".center(29),
