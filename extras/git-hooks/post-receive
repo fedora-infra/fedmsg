@@ -8,6 +8,7 @@ import sys
 from collections import defaultdict
 
 import pygit2
+import six
 
 import fedmsg
 import fedmsg.config
@@ -21,7 +22,7 @@ username = getpass.getuser()
 
 repo = pygit2.Repository(abspath)
 
-print "Emitting a message to the fedmsg bus."
+print("Emitting a message to the fedmsg bus.")
 config = fedmsg.config.load_config([], None)
 config['active'] = True
 config['endpoints']['relay_inbound'] = config['relay_inbound']
@@ -89,7 +90,7 @@ for line in lines:
         revs = [head.id]
 
     def _build_commit(rev):
-        commit = repo.revparse_single(unicode(rev))
+        commit = repo.revparse_single(six.text_type(rev))
 
         # Tags are a little funny, and vary between versions of pygit2, so we'll
         # just ignore them as far as fedmsg is concerned.
@@ -108,7 +109,7 @@ for line in lines:
                 files=files,
                 total=total,
             ),
-            rev=unicode(rev),
+            rev=six.text_type(rev),
             path=abspath,
             repo=repo_name,
             branch=branch,
@@ -117,7 +118,7 @@ for line in lines:
 
     commits = map(_build_commit, revs)
 
-    print "* Publishing information for %i commits" % len(commits)
+    print("* Publishing information for %i commits" % len(commits))
     for commit in reversed(commits):
         if commit is None:
             continue

@@ -42,17 +42,17 @@ for thread in threads:
     thread.start()
 
 pid = os.getpid()
-print prefix, "Checking pid", pid
+print(prefix, "Checking pid", pid)
 target = 200
 length = 0
 while length <= target:
     length = len(os.listdir("/proc/%i/fd/" % os.getpid()))
-    print prefix, length, "is less than", target
+    print(prefix, length, "is less than", target)
     time.sleep(1)
 
-print prefix, "ready to receive..."
+print(prefix, "ready to receive...")
 
 for thread in threads:
     thread.join()
 
-print prefix, "Done."
+print(prefix, "Done.")

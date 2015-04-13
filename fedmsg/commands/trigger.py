@@ -21,7 +21,7 @@ import re
 import subprocess
 import sys
 import threading
-import Queue
+from six.moves import queue
 
 import fedmsg
 import fedmsg.encoding
@@ -110,11 +110,11 @@ class TriggerCommand(BaseCommand):
         max_queue_size = int(self.config['max_queue_size'])
 
         timer = None
-        queue = Queue.Queue()
+        que = queue.Queue()
 
         def execute_queue():
-            while not queue.empty():
-                message = queue.get()
+            while not que.empty():
+                message = que.get()
 
                 result = self.run_command(self.config['command'], message)
 
@@ -129,7 +129,7 @@ class TriggerCommand(BaseCommand):
                 if not inclusive_regexp.search(topic):
                     continue
 
-                queue.put(message)
+                que.put(message)
 
                 if timer is not None:
                     # Try to cancel it
@@ -138,8 +138,8 @@ class TriggerCommand(BaseCommand):
                     # Either there was no timer yet, or it was still waiting
                     # -> Let's start a new one
                     if (max_queue_size > 0 and
-                            queue.qsize() > max_queue_size):
-                        # If the queue is too big, let's just run it NOW
+                            que.qsize() > max_queue_size):
+                        # If the que is too big, let's just run it NOW
                         timer = threading.Timer(0, execute_queue)
                     else:
                         timer = threading.Timer(wait_for,

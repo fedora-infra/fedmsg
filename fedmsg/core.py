@@ -316,7 +316,7 @@ class FedMsgContext(object):
         failed_hostnames = []
         subs = {}
         watched_names = {}
-        for _name, endpoint_list in self.c['endpoints'].iteritems():
+        for _name, endpoint_list in six.iteritems(self.c['endpoints']):
 
             # You never want to actually subscribe to this thing, but sometimes
             # it appears in the endpoints list due to a hack where it gets

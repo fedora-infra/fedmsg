@@ -23,6 +23,7 @@ import re
 import time
 
 import arrow
+import six
 
 
 class BaseProcessor(object):
@@ -187,6 +188,7 @@ class BaseProcessor(object):
         return dict()
 
 
+@six.add_metaclass(abc.ABCMeta)
 class BaseConglomerator(object):
     """ Base Conglomerator.  This abstract base class must be extended.
 
@@ -202,8 +204,6 @@ class BaseConglomerator(object):
     This BaseConglomerator is meant to be extended many times over to provide
     plugins that know how to conglomerate different combinations of messages.
     """
-    __metaclass__ = abc.ABCMeta
-
     def __init__(self, processor, internationalization_callable, **conf):
         self.processor = processor
         self._ = internationalization_callable
@@ -320,7 +320,12 @@ class BaseConglomerator(object):
         if not items:
             return "(nothing)"
 
-        items = list(set(items))
+        # uniqify items while preserving the order
+        olditems = items
+        items = []
+        for i in olditems:
+            if i not in items:
+                items.append(i)
 
         if len(items) == 1:
             return items[0]

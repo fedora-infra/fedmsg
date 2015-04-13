@@ -41,6 +41,11 @@ except ImportError as e:
     log.warn("Crypto disabled %r" % e)
     disabled = True
 
+import six
+
+if six.PY3:
+    long = int
+
 
 def sign(message, ssldir=None, certname=None, **config):
     """ Insert two new fields into the message dict and return it.

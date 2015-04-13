@@ -27,7 +27,6 @@ else:
     import unittest
 
 from nose.tools import raises
-from mock import Mock, call
 
 import json
 import time
@@ -37,6 +36,7 @@ import socket
 from threading import Thread, Event
 
 from fedmsg.tests.common import load_config
+from fedmsg.tests.test_utils import mock
 
 from fedmsg.replay import ReplayContext, get_replay
 
@@ -52,7 +52,7 @@ local_name = '{0}.{1}'.format(unittest.__name__, hostname)
 def test_init_missing_endpoint():
     """ Try to initialize the context with a nonexistant service name. """
     config = load_config()
-    config['persistent_store'] = Mock()
+    config['persistent_store'] = mock.Mock()
     config['name'] = "failboat"
     context = ReplayContext(**config)
 
@@ -68,7 +68,7 @@ def test_init_invalid_endpoint():
     try:
         config = load_config()
         config['name'] = local_name
-        config['persistent_store'] = Mock()
+        config['persistent_store'] = mock.Mock()
         tmp = zmq.Context()
         placeholder = tmp.socket(zmq.REP)
         placeholder.bind('tcp://*:{0}'.format(
@@ -83,7 +83,7 @@ class TestReplayContext(unittest.TestCase):
     def setUp(self):
         self.config = load_config()
         self.config['name'] = local_name
-        self.config['persistent_store'] = Mock()
+        self.config['persistent_store'] = mock.Mock()
         self.replay_context = ReplayContext(**self.config)
         self.request_context = zmq.Context()
         self.request_socket = self.request_context.socket(zmq.REQ)
@@ -97,7 +97,7 @@ class TestReplayContext(unittest.TestCase):
     def test_get_replay(self):
         # Setup the store to return what we ask.
         answer = [{'foo': 'bar'}]
-        self.config['persistent_store'].get = Mock(side_effect=[answer])
+        self.config['persistent_store'].get = mock.Mock(side_effect=[answer])
         # Doesn't matter what we send as long as it is legit JSON,
         # since the store is mocked
         self.request_socket.send(u'{"id": 1}'.encode('utf-8'))
@@ -114,7 +114,7 @@ class TestReplayContext(unittest.TestCase):
     def test_get_error(self):
         # Setup the store to return what we ask.
         answer = ValueError('No luck!')
-        self.config['persistent_store'].get = Mock(side_effect=[answer])
+        self.config['persistent_store'].get = mock.Mock(side_effect=[answer])
         # Doesn't matter what we send as long as it is legit JSON,
         # since the store is mocked
         self.request_socket.send(u'{"id": 1}'.encode('utf-8'))
@@ -216,7 +216,7 @@ class TestGetReplay(unittest.TestCase):
         self.config = load_config()
         self.config['name'] = local_name
         self.config['mute'] = True
-        self.config['persistent_store'] = Mock()
+        self.config['persistent_store'] = mock.Mock()
         self.replay_context = ReplayContext(**self.config)
         self.replay_thread = ReplayThread(self.replay_context)
         self.context = zmq.Context()
@@ -235,7 +235,7 @@ class TestGetReplay(unittest.TestCase):
     def test_get_replay_wrong_query(self):
         # We don't actually test with a wrong query, we just throw back an
         # error from the store.
-        self.config['persistent_store'].get = Mock(
+        self.config['persistent_store'].get = mock.Mock(
             side_effect=[ValueError("this is an error")])
         self.replay_thread.start()
         msgs = list(get_replay(
@@ -253,7 +253,7 @@ class TestGetReplay(unittest.TestCase):
             "timestamp": 20,
             "msg": {"foo": "foo"}
         }
-        self.config['persistent_store'].get = Mock(side_effect=[[orig_msg]])
+        self.config['persistent_store'].get = mock.Mock(side_effect=[[orig_msg]])
         self.replay_thread.start()
         msgs = list(get_replay(
             local_name, {"seq_id": 3}, self.config, self.context

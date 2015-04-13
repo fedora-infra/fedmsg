@@ -103,4 +103,4 @@ class BaseCommand(object):
             try:
                 return self.run()
             except KeyboardInterrupt:
-                print
+                print()
