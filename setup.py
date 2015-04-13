@@ -74,10 +74,9 @@ install_requires = [
     #'daemon',
     'psutil',
     'arrow',
-
-    # These are "optional" for now to make installation from pypi easier.
-    #'M2Crypto',
-    #'m2ext',
+    'M2Crypto',
+    'm2ext',
+    'cryptography',
 ]
 tests_require = [
     'nose',
