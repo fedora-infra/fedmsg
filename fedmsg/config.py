@@ -39,7 +39,6 @@ You can print the runtime configuration to the terminal by using the
 """
 
 import argparse
-import collections
 import copy
 import os
 import sys
