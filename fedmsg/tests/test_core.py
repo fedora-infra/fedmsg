@@ -1,9 +1,9 @@
 import unittest
 
-import mock
 import warnings
 from fedmsg.core import FedMsgContext
 from fedmsg.tests.common import load_config
+from fedmsg.tests.test_utils import mock
 
 
 class TestCore(unittest.TestCase):

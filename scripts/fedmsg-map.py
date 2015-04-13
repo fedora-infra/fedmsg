@@ -120,6 +120,6 @@ else:
             interval=interval,
             timestamp=int(timestamp),
             value=int(value))
-        print output
+        print(output)
         if interval - delta > 0:
             time.sleep(interval - delta)

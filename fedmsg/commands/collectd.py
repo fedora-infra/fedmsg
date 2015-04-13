@@ -54,7 +54,7 @@ class CollectdConsumer(FedmsgConsumer):
         # Print out the collectd feedback.
         # This is sent to stdout while other log messages are sent to stderr.
         for k, v in sorted(self._dict.items()):
-            print self.formatter(k, v)
+            print(self.formatter(k, v))
 
         # Reset each entry to zero
         for k, v in sorted(self._dict.items()):
