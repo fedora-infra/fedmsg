@@ -320,12 +320,8 @@ class BaseConglomerator(object):
         if not items:
             return "(nothing)"
 
-        # uniqify items while preserving the order
-        olditems = items
-        items = []
-        for i in olditems:
-            if i not in items:
-                items.append(i)
+        # uniqify items + sort them to have predictable (==testable) ordering
+        items = list(sorted(set(items)))
 
         if len(items) == 1:
             return items[0]
