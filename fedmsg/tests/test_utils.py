@@ -1,6 +1,11 @@
 from nose.tools import raises, eq_
 from fedmsg.utils import load_class, dict_query
 
+try:
+    import mock
+except ImportError:
+    from unittest import mock
+
 
 def test_load_class_succeed():
     cls = load_class("shelve:Shelf")

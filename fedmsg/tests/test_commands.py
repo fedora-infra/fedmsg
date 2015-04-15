@@ -1,6 +1,4 @@
 import unittest
-from mock import Mock
-from mock import patch
 from datetime import datetime
 import time
 import json
@@ -16,6 +14,7 @@ from fedmsg.commands.tail import TailCommand
 from fedmsg.commands.relay import RelayCommand
 from fedmsg.commands.config import config as config_command
 import fedmsg.consumers.relay
+from fedmsg.tests.test_utils import mock
 
 from nose.tools import eq_
 
@@ -38,8 +37,8 @@ class TestCommands(unittest.TestCase):
         del self.local
         self.local = None
 
-    @patch("sys.argv", new_callable=lambda: ["fedmsg-logger"])
-    @patch("sys.stdout", new_callable=six.StringIO)
+    @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-logger"])
+    @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_logger_basic(self, stdout, argv):
 
         test_input = "a message for you"
@@ -55,17 +54,17 @@ class TestCommands(unittest.TestCase):
             msgs.append(msg)
 
         config = {}
-        with patch("fedmsg.__local", self.local):
-            with patch("fedmsg.config.__cache", config):
-                with patch("fedmsg.core.FedMsgContext.publish", mock_publish):
-                    with patch("sys.stdin", new_callable=stdin):
+        with mock.patch("fedmsg.__local", self.local):
+            with mock.patch("fedmsg.config.__cache", config):
+                with mock.patch("fedmsg.core.FedMsgContext.publish", mock_publish):
+                    with mock.patch("sys.stdin", new_callable=stdin):
                         command = LoggerCommand()
                         command.execute()
 
         eq_(msgs, [{'log': test_input}])
 
-    @patch("sys.argv", new_callable=lambda: ["fedmsg-logger", "--json-input"])
-    @patch("sys.stdout", new_callable=six.StringIO)
+    @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-logger", "--json-input"])
+    @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_logger_json(self, stdout, argv):
 
         test_input_dict = {"hello": "world"}
@@ -82,25 +81,25 @@ class TestCommands(unittest.TestCase):
             msgs.append(msg)
 
         config = {}
-        with patch("fedmsg.__local", self.local):
-            with patch("fedmsg.config.__cache", config):
-                with patch("fedmsg.core.FedMsgContext.publish", mock_publish):
-                    with patch("sys.stdin", new_callable=stdin):
+        with mock.patch("fedmsg.__local", self.local):
+            with mock.patch("fedmsg.config.__cache", config):
+                with mock.patch("fedmsg.core.FedMsgContext.publish", mock_publish):
+                    with mock.patch("sys.stdin", new_callable=stdin):
                         command = LoggerCommand()
                         command.execute()
 
         eq_(msgs, [test_input_dict])
 
-    @patch("sys.argv", new_callable=lambda: ["fedmsg-tail"])
-    @patch("sys.stdout", new_callable=six.StringIO)
+    @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-tail"])
+    @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_tail_basic(self, stdout, argv):
         def mock_tail(self, topic="", passive=False, **kw):
             yield ("name", "endpoint", "topic", dict(topic="topic"))
 
         config = {}
-        with patch("fedmsg.__local", self.local):
-            with patch("fedmsg.config.__cache", config):
-                with patch("fedmsg.core.FedMsgContext.tail_messages",
+        with mock.patch("fedmsg.__local", self.local):
+            with mock.patch("fedmsg.config.__cache", config):
+                with mock.patch("fedmsg.core.FedMsgContext.tail_messages",
                            mock_tail):
                     command = fedmsg.commands.tail.TailCommand()
                     command.execute()
@@ -109,8 +108,8 @@ class TestCommands(unittest.TestCase):
         expected = "{'topic': 'topic'}\n"
         assert(output.endswith(expected))
 
-    @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--pretty"])
-    @patch("sys.stdout", new_callable=six.StringIO)
+    @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--pretty"])
+    @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_tail_pretty(self, stdout, argv):
         msgs = []
 
@@ -125,9 +124,9 @@ class TestCommands(unittest.TestCase):
             yield ("name", "endpoint", "topic", msg)
 
         config = {}
-        with patch("fedmsg.__local", self.local):
-            with patch("fedmsg.config.__cache", config):
-                with patch("fedmsg.core.FedMsgContext.tail_messages",
+        with mock.patch("fedmsg.__local", self.local):
+            with mock.patch("fedmsg.config.__cache", config):
+                with mock.patch("fedmsg.core.FedMsgContext.tail_messages",
                            mock_tail):
                     command = fedmsg.commands.tail.TailCommand()
                     command.execute()
@@ -136,8 +135,8 @@ class TestCommands(unittest.TestCase):
         expected = "{'msg': {'hello': 'world'},"
         assert(expected in output)
 
-    @patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--really-pretty"])
-    @patch("sys.stdout", new_callable=six.StringIO)
+    @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--really-pretty"])
+    @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_tail_really_pretty(self, stdout, argv):
         msgs = []
 
@@ -152,9 +151,9 @@ class TestCommands(unittest.TestCase):
             yield ("name", "endpoint", "topic", msg)
 
         config = {}
-        with patch("fedmsg.__local", self.local):
-            with patch("fedmsg.config.__cache", config):
-                with patch("fedmsg.core.FedMsgContext.tail_messages",
+        with mock.patch("fedmsg.__local", self.local):
+            with mock.patch("fedmsg.config.__cache", config):
+                with mock.patch("fedmsg.core.FedMsgContext.tail_messages",
                            mock_tail):
                     command = fedmsg.commands.tail.TailCommand()
                     command.execute()
@@ -166,7 +165,7 @@ class TestCommands(unittest.TestCase):
 
         assert(expected in output)
 
-    @patch("sys.argv", new_callable=lambda: ["fedmsg-relay"])
+    @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-relay"])
     def test_relay(self, argv):
         actual_options = []
 
@@ -174,9 +173,9 @@ class TestCommands(unittest.TestCase):
             actual_options.append(options)
 
         config = {}
-        with patch("fedmsg.__local", self.local):
-            with patch("fedmsg.config.__cache", config):
-                with patch("moksha.hub.main", mock_main):
+        with mock.patch("fedmsg.__local", self.local):
+            with mock.patch("fedmsg.config.__cache", config):
+                with mock.patch("moksha.hub.main", mock_main):
                     command = fedmsg.commands.relay.RelayCommand()
                     command.execute()
 
@@ -188,44 +187,44 @@ class TestCommands(unittest.TestCase):
             actual_options[fedmsg.consumers.relay.RelayConsumer.config_key]
         )
 
-    @patch("sys.argv", new_callable=lambda: ["fedmsg-config"])
-    @patch("sys.stdout", new_callable=six.StringIO)
+    @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-config"])
+    @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_config_basic(self, stdout, argv):
-        with patch('fedmsg.config.__cache', {}):
+        with mock.patch('fedmsg.config.__cache', {}):
             config_command()
 
         output = stdout.getvalue()
         output_conf = json.loads(output)
 
-        with patch('fedmsg.config.__cache', {}):
+        with mock.patch('fedmsg.config.__cache', {}):
             fedmsg_conf = fedmsg.config.load_config()
 
         eq_(output_conf, fedmsg_conf)
 
-    @patch("sys.argv", new_callable=lambda: [
+    @mock.patch("sys.argv", new_callable=lambda: [
         "fedmsg-config", "--query", "endpoints",
     ])
-    @patch("sys.stdout", new_callable=six.StringIO)
+    @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_config_query(self, stdout, argv):
-        with patch('fedmsg.config.__cache', {}):
+        with mock.patch('fedmsg.config.__cache', {}):
             config_command()
 
         output = stdout.getvalue()
         output_conf = json.loads(output)
 
-        with patch('fedmsg.config.__cache', {}):
+        with mock.patch('fedmsg.config.__cache', {}):
             fedmsg_conf = fedmsg.config.load_config()
 
         eq_(output_conf, fedmsg_conf["endpoints"])
 
-    @patch("sys.argv", new_callable=lambda: [
+    @mock.patch("sys.argv", new_callable=lambda: [
         "fedmsg-config", "--query", "endpoints.broken",
     ])
-    @patch("sys.stdout", new_callable=six.StringIO)
-    @patch("sys.stderr", new_callable=six.StringIO)
+    @mock.patch("sys.stdout", new_callable=six.StringIO)
+    @mock.patch("sys.stderr", new_callable=six.StringIO)
     def test_config_query_broken(self, stderr, stdout, argv):
         try:
-            with patch('fedmsg.config.__cache', {}):
+            with mock.patch('fedmsg.config.__cache', {}):
                 config_command()
         except SystemExit as exc:
             eq_(exc.code, 1)
@@ -240,18 +239,18 @@ class TestCommands(unittest.TestCase):
         eq_(output.strip(), "")
         eq_(error.strip(), "Key `endpoints.broken` does not exist in config")
 
-    @patch("sys.argv", new_callable=lambda: [
+    @mock.patch("sys.argv", new_callable=lambda: [
         "fedmsg-config", "--disable-defaults", "--config-filename", CONF_FILE,
     ])
-    @patch("sys.stdout", new_callable=six.StringIO)
+    @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_config_single_file(self, stdout, argv):
-        with patch('fedmsg.config.__cache', {}):
+        with mock.patch('fedmsg.config.__cache', {}):
             config_command()
 
         output = stdout.getvalue()
         output_conf = json.loads(output)
 
-        with patch('fedmsg.config.__cache', {}):
+        with mock.patch('fedmsg.config.__cache', {}):
             fedmsg_conf = fedmsg.config.load_config(
                 filenames=[CONF_FILE],
                 disable_defaults=True,

@@ -114,7 +114,7 @@ class FedMsgContext(object):
             # endpoint.
             _established = False
             for endpoint in config['endpoints'][config['name']]:
-
+                self.log.debug("Trying to %s to %s" % (method, endpoint))
                 if method == 'bind':
                     endpoint = "tcp://*:{port}".format(
                         port=endpoint.rsplit(':')[-1]
@@ -162,6 +162,7 @@ class FedMsgContext(object):
         """ Destroy a fedmsg context """
 
         if getattr(self, 'publisher', None):
+            self.log.debug("closing fedmsg publisher")
             self.publisher.close()
             self.publisher = None
 
@@ -315,7 +316,7 @@ class FedMsgContext(object):
         failed_hostnames = []
         subs = {}
         watched_names = {}
-        for _name, endpoint_list in self.c['endpoints'].iteritems():
+        for _name, endpoint_list in six.iteritems(self.c['endpoints']):
 
             # You never want to actually subscribe to this thing, but sometimes
             # it appears in the endpoints list due to a hack where it gets

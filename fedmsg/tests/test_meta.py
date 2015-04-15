@@ -178,9 +178,9 @@ class Base(unittest.TestCase):
             else:
                 self.assertEquals(actual, expected)
         except:
-            print "Failed at:"
-            print " ", self
-            print " ", os.path.relpath(inspect.getfile(type(self))[:-1])
+            print("Failed at:")
+            print(" ", self)
+            print(" ", os.path.relpath(inspect.getfile(type(self))[:-1]))
             raise
 
     @skip_on(['msg', 'expected_title'])
@@ -361,9 +361,9 @@ class ConglomerateBase(unittest.TestCase):
         try:
             self.assertEquals(actual, self.expected)
         except:
-            print "Failed at:"
-            print " ", self
-            print " ", os.path.relpath(inspect.getfile(type(self))[:-1])
+            print("Failed at:")
+            print(" ", self)
+            print(" ", os.path.relpath(inspect.getfile(type(self))[:-1]))
             raise
 
 
@@ -380,7 +380,7 @@ class TestConglomeratorExtras(unittest.TestCase):
         self.conglomerator = fedmsg.meta.base.BaseConglomerator
 
     def test_list_to_series_simple(self):
-        original, expected = ['a', 'b', 'c'], "a, c, and b"
+        original, expected = ['a', 'b', 'c'], "a, b, and c"
         result = self.conglomerator.list_to_series(original)
         eq_(result, expected)
 

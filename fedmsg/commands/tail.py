@@ -25,6 +25,7 @@ import sys
 import pygments
 import pygments.lexers
 import pygments.formatters
+import six
 
 import fedmsg
 import fedmsg.encoding
@@ -139,7 +140,7 @@ class TailCommand(BaseCommand):
         if self.config['query']:
             def formatter(d):
                 result = fedmsg.utils.dict_query(d, self.config['query'])
-                return ", ".join([unicode(value) for value in result.values()])
+                return ", ".join([six.text_type(value) for value in result.values()])
 
         if self.config['terse']:
             formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)

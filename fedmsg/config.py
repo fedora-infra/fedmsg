@@ -24,7 +24,8 @@ The configuration values used at runtime are determined by checking in
 the following order
 
     - Built-in defaults
-    - Config file (/etc/fedmsg-config.py)
+    - Config file (/etc/fedmsg.d/*.py)
+    - Config file (./fedmsg.d/*.py)
     - Command line arguments
 
 For example, if a config value does not appear in either the config file or on
@@ -38,7 +39,6 @@ You can print the runtime configuration to the terminal by using the
 """
 
 import argparse
-import collections
 import copy
 import os
 import sys

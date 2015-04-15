@@ -81,23 +81,24 @@ install_requires = [
 ]
 tests_require = [
     'nose',
-    'mock',
     'sqlalchemy',  # For the persistent-store test(s).
 ]
 
-if sys.version_info[0] == 2 and sys.version_info[1] <= 6:
-    install_requires.extend([
-        'argparse',
-        'ordereddict',
-        'logutils',
-    ])
-    tests_require.extend([
-        'unittest2',
-    ])
+if sys.version_info[0] == 2:
+    tests_require.append('mock')
+    if sys.version_info[1] <= 6:
+        install_requires.extend([
+            'argparse',
+            'ordereddict',
+            'logutils',
+        ])
+        tests_require.extend([
+            'unittest2',
+        ])
 
 setup(
     name='fedmsg',
-    version='0.12.3',
+    version='0.13.0',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
