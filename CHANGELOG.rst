@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.12.3
+0.13.0
 ------
 
 - add support for cowsay command `578826834 <https://github.com/fedora-infra/fedmsg/commit/5788268342c1186507c7fc36db986814e9a8c198>`_
@@ -142,6 +142,23 @@ Changelog
 - Shell out to rev-list to get the list of commits. `81d2c7d85 <https://github.com/fedora-infra/fedmsg/commit/81d2c7d85545906cb5bf6415fcb499a729a0c851>`_
 - Keep track of duplicate git messages. `5e66ea633 <https://github.com/fedora-infra/fedmsg/commit/5e66ea633a9cf775ea94e1520b39575d89e5deb8>`_
 - Merge pull request #327 from fedora-infra/feature/git-hook-improvements `108be6b6e <https://github.com/fedora-infra/fedmsg/commit/108be6b6e8ae2b75f25d664dce1b4560b286f092>`_
+- 0.12.3 `25ff1415a <https://github.com/fedora-infra/fedmsg/commit/25ff1415a217694396827d6e7a804d83630c92ca>`_
+- Obviously, this should come first. `5107143a0 <https://github.com/fedora-infra/fedmsg/commit/5107143a00e0634ccd6eaa07a16c53768674e490>`_
+- Publish git commits in chronological order. `5b3d7548b <https://github.com/fedora-infra/fedmsg/commit/5b3d7548b5dd2470142565daaece5b91ea2efd94>`_
+- Merge pull request #328 from fedora-infra/feature/git-hook-in-order `5d1c585dd <https://github.com/fedora-infra/fedmsg/commit/5d1c585dd17ea4ef14deaee38c6c59e7da26fd08>`_
+- Add some debug statements. `a54c2e9cf <https://github.com/fedora-infra/fedmsg/commit/a54c2e9cfa1bd3c5ecb9f945ecc618d549bc0b4c>`_
+- Merge pull request #329 from fedora-infra/feature/debug-statement `90e6a82b8 <https://github.com/fedora-infra/fedmsg/commit/90e6a82b85b3df562d7cecb780270e1ece7308b8>`_
+- First draft of a script to scan a fedmsg installation. `289adc887 <https://github.com/fedora-infra/fedmsg/commit/289adc8874bb0988f1ecd67fbf3bae152a3e432c>`_
+- Enhance fedmsg-map to produce output for collectd. `d5089110f <https://github.com/fedora-infra/fedmsg/commit/d5089110f141aa7a1009215407f3d60d46d1e885>`_
+- Add a verbose mode and bump up the timeout setting. `00c11646f <https://github.com/fedora-infra/fedmsg/commit/00c11646f4b6298a3451686a04c99ff8f532b56f>`_
+- Merge pull request #331 from fedora-infra/feature/fedmsg-map `1b01533aa <https://github.com/fedora-infra/fedmsg/commit/1b01533aaa60f8986c20392b95d88a9e6885cb74>`_
+- Initial shot at Python 3 support `05a7a4789 <https://github.com/fedora-infra/fedmsg/commit/05a7a4789ca65c3e0b974570c59c4ad2f6db15da>`_
+- Merge pull request #332 from bkabrda/develop `bfb49e9ef <https://github.com/fedora-infra/fedmsg/commit/bfb49e9ef9af3e27e32e23f3715f9abafd0002a8>`_
+- correct config file locations `5d549b004 <https://github.com/fedora-infra/fedmsg/commit/5d549b00402fa7959ab43bae18a4f8597714ae8d>`_
+- removed unsused import `f2a9350f1 <https://github.com/fedora-infra/fedmsg/commit/f2a9350f1e69f8dbd7d13860b90fbdce7aa9dc51>`_
+- Merge pull request #333 from Nolski/develop `30b4f1c15 <https://github.com/fedora-infra/fedmsg/commit/30b4f1c15850172ceba4af2e31ffe50c97b26964>`_
+- Make list_to_series return uniqified items in predictable order. `ec250e096 <https://github.com/fedora-infra/fedmsg/commit/ec250e096a84164ab45a93424530285ec39583af>`_
+- Merge pull request #334 from bkabrda/develop `f661df461 <https://github.com/fedora-infra/fedmsg/commit/f661df461359606d4c6f32b890d9ed173185b592>`_
 
 0.9.3
 -----
@@ -1748,6 +1765,51 @@ Changelog
 - Merge pull request #321 from fedora-infra/feature/scrub-api-args `06212349a <https://github.com/fedora-infra/fedmsg/commit/06212349a8002bd5fe791efc5a4f4ba9f8078b50>`_
 - 0.12.1 `dd7d48e84 <https://github.com/fedora-infra/fedmsg/commit/dd7d48e840890f86d48e009206e0e5d4feb8924a>`_
 - Typofix.  Don't scrub args from the original call to func. `0e3bc165a <https://github.com/fedora-infra/fedmsg/commit/0e3bc165ad0667f7cc3f42bbcc3f140537100fb0>`_
+- 0.12.2 `a1b7d920f <https://github.com/fedora-infra/fedmsg/commit/a1b7d920f133f8b24ced6e2682ea81e254dffee6>`_
+- Bail on git objects if they are a tag. `892db3116 <https://github.com/fedora-infra/fedmsg/commit/892db3116f250fae4427219b6890b61a61de081b>`_
+- Attempt to avoid infinite recursion when finding the list of new revs. `3182fe460 <https://github.com/fedora-infra/fedmsg/commit/3182fe46043848c66e287b671e5e352192c535fe>`_
+- Improve git hook to only report on new commits `c0ef2bed7 <https://github.com/fedora-infra/fedmsg/commit/c0ef2bed70aa75bdbb3ca79dd8d544467d5de901>`_
+- Fix up some type errors. `f860757fc <https://github.com/fedora-infra/fedmsg/commit/f860757fc4a04d5d92a2859d3c22e9e01e069ce3>`_
+- Add a print statement. `1e256ff30 <https://github.com/fedora-infra/fedmsg/commit/1e256ff30c4b0e960441840ea14c17fc13cad547>`_
+- Merge pull request #322 from fedora-infra/feature/git-hook-updates `6c9df7f45 <https://github.com/fedora-infra/fedmsg/commit/6c9df7f45f8e258723d9421a4f86499e81b24074>`_
+- Avoid recursively walking the entire git history. `e4dd3ddff <https://github.com/fedora-infra/fedmsg/commit/e4dd3ddff802ebd1c733ab1bbe48313b9e72e3f8>`_
+- Merge pull request #323 from fedora-infra/feature/avoid-recursion `3410233f1 <https://github.com/fedora-infra/fedmsg/commit/3410233f154bce9f7303bf058439af92a2d2288e>`_
+- Add more debug info to test suite failures. `fcaea0e25 <https://github.com/fedora-infra/fedmsg/commit/fcaea0e259ae7d54e90f04189fdc7ccc4705ba0a>`_
+- Typofix. `01b1e84a8 <https://github.com/fedora-infra/fedmsg/commit/01b1e84a82ba68efda42be67bb378885c12290e5>`_
+- Getting the source lines is error prone.  No need. `3a66314be <https://github.com/fedora-infra/fedmsg/commit/3a66314be7a9b32b8f735e4bd2e372d75ca6d9af>`_
+- Another typofix. `b9aade39b <https://github.com/fedora-infra/fedmsg/commit/b9aade39ba31383a9bbcf801dda1c64eb7936f40>`_
+- Re-use the produce_template function for consistency. `bacb42c21 <https://github.com/fedora-infra/fedmsg/commit/bacb42c21181fadc13aa9b8a32f2a80a8a7bc308>`_
+- No more infinite loops. `4d9e9ac2d <https://github.com/fedora-infra/fedmsg/commit/4d9e9ac2d0024443f7faafb07917d5e11d3f16c8>`_
+- Merge pull request #326 from fedora-infra/feature/FFFFFFUUUUUUUU `c2e96ecd0 <https://github.com/fedora-infra/fedmsg/commit/c2e96ecd01ff101685c4ba08d126998f447fbce7>`_
+- Merge pull request #325 from fedora-infra/feature/conglomerate-consistency `3c1318c6a <https://github.com/fedora-infra/fedmsg/commit/3c1318c6a792363f6fd5bb6fd6e05f16091c7a90>`_
+- Merge pull request #324 from fedora-infra/feature/more-test-debuginfo `ba4da5fcc <https://github.com/fedora-infra/fedmsg/commit/ba4da5fccea2354877bf0e3585bfad8197c3ce71>`_
+- Shell out to rev-list to get the list of commits. `81d2c7d85 <https://github.com/fedora-infra/fedmsg/commit/81d2c7d85545906cb5bf6415fcb499a729a0c851>`_
+- Keep track of duplicate git messages. `5e66ea633 <https://github.com/fedora-infra/fedmsg/commit/5e66ea633a9cf775ea94e1520b39575d89e5deb8>`_
+- Merge pull request #327 from fedora-infra/feature/git-hook-improvements `108be6b6e <https://github.com/fedora-infra/fedmsg/commit/108be6b6e8ae2b75f25d664dce1b4560b286f092>`_
+
+0.12.3
+------
+
+- Bail on git objects if they are a tag. `892db3116 <https://github.com/fedora-infra/fedmsg/commit/892db3116f250fae4427219b6890b61a61de081b>`_
+- Attempt to avoid infinite recursion when finding the list of new revs. `3182fe460 <https://github.com/fedora-infra/fedmsg/commit/3182fe46043848c66e287b671e5e352192c535fe>`_
+- Improve git hook to only report on new commits `c0ef2bed7 <https://github.com/fedora-infra/fedmsg/commit/c0ef2bed70aa75bdbb3ca79dd8d544467d5de901>`_
+- Fix up some type errors. `f860757fc <https://github.com/fedora-infra/fedmsg/commit/f860757fc4a04d5d92a2859d3c22e9e01e069ce3>`_
+- Add a print statement. `1e256ff30 <https://github.com/fedora-infra/fedmsg/commit/1e256ff30c4b0e960441840ea14c17fc13cad547>`_
+- Merge pull request #322 from fedora-infra/feature/git-hook-updates `6c9df7f45 <https://github.com/fedora-infra/fedmsg/commit/6c9df7f45f8e258723d9421a4f86499e81b24074>`_
+- Avoid recursively walking the entire git history. `e4dd3ddff <https://github.com/fedora-infra/fedmsg/commit/e4dd3ddff802ebd1c733ab1bbe48313b9e72e3f8>`_
+- Merge pull request #323 from fedora-infra/feature/avoid-recursion `3410233f1 <https://github.com/fedora-infra/fedmsg/commit/3410233f154bce9f7303bf058439af92a2d2288e>`_
+- Add more debug info to test suite failures. `fcaea0e25 <https://github.com/fedora-infra/fedmsg/commit/fcaea0e259ae7d54e90f04189fdc7ccc4705ba0a>`_
+- Typofix. `01b1e84a8 <https://github.com/fedora-infra/fedmsg/commit/01b1e84a82ba68efda42be67bb378885c12290e5>`_
+- Getting the source lines is error prone.  No need. `3a66314be <https://github.com/fedora-infra/fedmsg/commit/3a66314be7a9b32b8f735e4bd2e372d75ca6d9af>`_
+- Another typofix. `b9aade39b <https://github.com/fedora-infra/fedmsg/commit/b9aade39ba31383a9bbcf801dda1c64eb7936f40>`_
+- Re-use the produce_template function for consistency. `bacb42c21 <https://github.com/fedora-infra/fedmsg/commit/bacb42c21181fadc13aa9b8a32f2a80a8a7bc308>`_
+- No more infinite loops. `4d9e9ac2d <https://github.com/fedora-infra/fedmsg/commit/4d9e9ac2d0024443f7faafb07917d5e11d3f16c8>`_
+- Merge pull request #326 from fedora-infra/feature/FFFFFFUUUUUUUU `c2e96ecd0 <https://github.com/fedora-infra/fedmsg/commit/c2e96ecd01ff101685c4ba08d126998f447fbce7>`_
+- Merge pull request #325 from fedora-infra/feature/conglomerate-consistency `3c1318c6a <https://github.com/fedora-infra/fedmsg/commit/3c1318c6a792363f6fd5bb6fd6e05f16091c7a90>`_
+- Merge pull request #324 from fedora-infra/feature/more-test-debuginfo `ba4da5fcc <https://github.com/fedora-infra/fedmsg/commit/ba4da5fccea2354877bf0e3585bfad8197c3ce71>`_
+- Shell out to rev-list to get the list of commits. `81d2c7d85 <https://github.com/fedora-infra/fedmsg/commit/81d2c7d85545906cb5bf6415fcb499a729a0c851>`_
+- Keep track of duplicate git messages. `5e66ea633 <https://github.com/fedora-infra/fedmsg/commit/5e66ea633a9cf775ea94e1520b39575d89e5deb8>`_
+- Merge pull request #327 from fedora-infra/feature/git-hook-improvements `108be6b6e <https://github.com/fedora-infra/fedmsg/commit/108be6b6e8ae2b75f25d664dce1b4560b286f092>`_
 
 0.12.2
 ------
