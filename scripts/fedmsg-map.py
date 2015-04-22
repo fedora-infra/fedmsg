@@ -19,7 +19,7 @@ expected = '/wAAAAAAAAABfw=='
 active = collections.defaultdict(list)
 inactive = collections.defaultdict(list)
 
-for_collectd = 'collectd' in sys.argv
+for_collectd = 'verbose' not in sys.argv
 
 
 def info(content="\n"):
@@ -112,14 +112,14 @@ else:
         delta = stop - start
         output = (
             "PUTVAL "
-            "{host}/fedmsg/activity "
+            "{host}/fedmsg/percent "
             "interval={interval} "
             "{timestamp}:{value}"
         ).format(
             host=host,
             interval=interval,
             timestamp=int(timestamp),
-            value=int(value))
+            value=value)
         print(output)
         if interval - delta > 0:
             time.sleep(interval - delta)
