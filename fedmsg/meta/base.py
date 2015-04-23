@@ -26,6 +26,15 @@ import arrow
 import six
 
 
+def add_metaclass(metaclass):
+    """ Compat shim for el7. """
+    if hasattr(six, 'add_metaclass'):
+        return six.add_metaclass(metaclass)
+    else:
+        # Do nothing.  It's not worth it.
+        return lambda klass: klass
+
+
 class BaseProcessor(object):
     """ Base Processor.  Without being extended, this doesn't actually handle
     any messages.
@@ -188,7 +197,7 @@ class BaseProcessor(object):
         return dict()
 
 
-@six.add_metaclass(abc.ABCMeta)
+@add_metaclass(abc.ABCMeta)
 class BaseConglomerator(object):
     """ Base Conglomerator.  This abstract base class must be extended.
 
