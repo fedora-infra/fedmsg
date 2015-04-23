@@ -14,3 +14,4 @@ htmldocs
 fedmsg/tests/test_certs/gpg/random_seed
 html-docs
 status
+.tox
