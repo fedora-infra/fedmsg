@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.13.0
+0.13.1
 ------
 
 - add support for cowsay command `578826834 <https://github.com/fedora-infra/fedmsg/commit/5788268342c1186507c7fc36db986814e9a8c198>`_
@@ -159,6 +159,12 @@ Changelog
 - Merge pull request #333 from Nolski/develop `30b4f1c15 <https://github.com/fedora-infra/fedmsg/commit/30b4f1c15850172ceba4af2e31ffe50c97b26964>`_
 - Make list_to_series return uniqified items in predictable order. `ec250e096 <https://github.com/fedora-infra/fedmsg/commit/ec250e096a84164ab45a93424530285ec39583af>`_
 - Merge pull request #334 from bkabrda/develop `f661df461 <https://github.com/fedora-infra/fedmsg/commit/f661df461359606d4c6f32b890d9ed173185b592>`_
+- 0.13.0 `af47379b6 <https://github.com/fedora-infra/fedmsg/commit/af47379b66124f250cc2979e1a69437439d3f9e9>`_
+- Some collectd tweaks. `a282cd0f6 <https://github.com/fedora-infra/fedmsg/commit/a282cd0f62b90f401a36535860d1ebb946c8b6dd>`_
+- Start testing with tox. `8b06ec046 <https://github.com/fedora-infra/fedmsg/commit/8b06ec0466fd9204b859089e55f9b3eed45218b6>`_
+- Dodge the metaclass if on an ancient python-six. `3f2cf80a7 <https://github.com/fedora-infra/fedmsg/commit/3f2cf80a789a295514a3d2379a52ef61caa0dd09>`_
+- Make "arrow" optional to avoid version anger with python-six. `1de8cf72f <https://github.com/fedora-infra/fedmsg/commit/1de8cf72f327e966a38fe0b39e89f007cdb31c0b>`_
+- Merge pull request #335 from fedora-infra/feature/six-careful `6573ed7a6 <https://github.com/fedora-infra/fedmsg/commit/6573ed7a6fb75bad081ea9fe0733c5c383dacada>`_
 
 0.9.3
 -----
@@ -1786,6 +1792,43 @@ Changelog
 - Shell out to rev-list to get the list of commits. `81d2c7d85 <https://github.com/fedora-infra/fedmsg/commit/81d2c7d85545906cb5bf6415fcb499a729a0c851>`_
 - Keep track of duplicate git messages. `5e66ea633 <https://github.com/fedora-infra/fedmsg/commit/5e66ea633a9cf775ea94e1520b39575d89e5deb8>`_
 - Merge pull request #327 from fedora-infra/feature/git-hook-improvements `108be6b6e <https://github.com/fedora-infra/fedmsg/commit/108be6b6e8ae2b75f25d664dce1b4560b286f092>`_
+- 0.12.3 `25ff1415a <https://github.com/fedora-infra/fedmsg/commit/25ff1415a217694396827d6e7a804d83630c92ca>`_
+- Obviously, this should come first. `5107143a0 <https://github.com/fedora-infra/fedmsg/commit/5107143a00e0634ccd6eaa07a16c53768674e490>`_
+- Publish git commits in chronological order. `5b3d7548b <https://github.com/fedora-infra/fedmsg/commit/5b3d7548b5dd2470142565daaece5b91ea2efd94>`_
+- Merge pull request #328 from fedora-infra/feature/git-hook-in-order `5d1c585dd <https://github.com/fedora-infra/fedmsg/commit/5d1c585dd17ea4ef14deaee38c6c59e7da26fd08>`_
+- Add some debug statements. `a54c2e9cf <https://github.com/fedora-infra/fedmsg/commit/a54c2e9cfa1bd3c5ecb9f945ecc618d549bc0b4c>`_
+- Merge pull request #329 from fedora-infra/feature/debug-statement `90e6a82b8 <https://github.com/fedora-infra/fedmsg/commit/90e6a82b85b3df562d7cecb780270e1ece7308b8>`_
+- First draft of a script to scan a fedmsg installation. `289adc887 <https://github.com/fedora-infra/fedmsg/commit/289adc8874bb0988f1ecd67fbf3bae152a3e432c>`_
+- Enhance fedmsg-map to produce output for collectd. `d5089110f <https://github.com/fedora-infra/fedmsg/commit/d5089110f141aa7a1009215407f3d60d46d1e885>`_
+- Add a verbose mode and bump up the timeout setting. `00c11646f <https://github.com/fedora-infra/fedmsg/commit/00c11646f4b6298a3451686a04c99ff8f532b56f>`_
+- Merge pull request #331 from fedora-infra/feature/fedmsg-map `1b01533aa <https://github.com/fedora-infra/fedmsg/commit/1b01533aaa60f8986c20392b95d88a9e6885cb74>`_
+- Initial shot at Python 3 support `05a7a4789 <https://github.com/fedora-infra/fedmsg/commit/05a7a4789ca65c3e0b974570c59c4ad2f6db15da>`_
+- Merge pull request #332 from bkabrda/develop `bfb49e9ef <https://github.com/fedora-infra/fedmsg/commit/bfb49e9ef9af3e27e32e23f3715f9abafd0002a8>`_
+- correct config file locations `5d549b004 <https://github.com/fedora-infra/fedmsg/commit/5d549b00402fa7959ab43bae18a4f8597714ae8d>`_
+- removed unsused import `f2a9350f1 <https://github.com/fedora-infra/fedmsg/commit/f2a9350f1e69f8dbd7d13860b90fbdce7aa9dc51>`_
+- Merge pull request #333 from Nolski/develop `30b4f1c15 <https://github.com/fedora-infra/fedmsg/commit/30b4f1c15850172ceba4af2e31ffe50c97b26964>`_
+- Make list_to_series return uniqified items in predictable order. `ec250e096 <https://github.com/fedora-infra/fedmsg/commit/ec250e096a84164ab45a93424530285ec39583af>`_
+- Merge pull request #334 from bkabrda/develop `f661df461 <https://github.com/fedora-infra/fedmsg/commit/f661df461359606d4c6f32b890d9ed173185b592>`_
+
+0.13.0
+------
+
+- Obviously, this should come first. `5107143a0 <https://github.com/fedora-infra/fedmsg/commit/5107143a00e0634ccd6eaa07a16c53768674e490>`_
+- Publish git commits in chronological order. `5b3d7548b <https://github.com/fedora-infra/fedmsg/commit/5b3d7548b5dd2470142565daaece5b91ea2efd94>`_
+- Merge pull request #328 from fedora-infra/feature/git-hook-in-order `5d1c585dd <https://github.com/fedora-infra/fedmsg/commit/5d1c585dd17ea4ef14deaee38c6c59e7da26fd08>`_
+- Add some debug statements. `a54c2e9cf <https://github.com/fedora-infra/fedmsg/commit/a54c2e9cfa1bd3c5ecb9f945ecc618d549bc0b4c>`_
+- Merge pull request #329 from fedora-infra/feature/debug-statement `90e6a82b8 <https://github.com/fedora-infra/fedmsg/commit/90e6a82b85b3df562d7cecb780270e1ece7308b8>`_
+- First draft of a script to scan a fedmsg installation. `289adc887 <https://github.com/fedora-infra/fedmsg/commit/289adc8874bb0988f1ecd67fbf3bae152a3e432c>`_
+- Enhance fedmsg-map to produce output for collectd. `d5089110f <https://github.com/fedora-infra/fedmsg/commit/d5089110f141aa7a1009215407f3d60d46d1e885>`_
+- Add a verbose mode and bump up the timeout setting. `00c11646f <https://github.com/fedora-infra/fedmsg/commit/00c11646f4b6298a3451686a04c99ff8f532b56f>`_
+- Merge pull request #331 from fedora-infra/feature/fedmsg-map `1b01533aa <https://github.com/fedora-infra/fedmsg/commit/1b01533aaa60f8986c20392b95d88a9e6885cb74>`_
+- Initial shot at Python 3 support `05a7a4789 <https://github.com/fedora-infra/fedmsg/commit/05a7a4789ca65c3e0b974570c59c4ad2f6db15da>`_
+- Merge pull request #332 from bkabrda/develop `bfb49e9ef <https://github.com/fedora-infra/fedmsg/commit/bfb49e9ef9af3e27e32e23f3715f9abafd0002a8>`_
+- correct config file locations `5d549b004 <https://github.com/fedora-infra/fedmsg/commit/5d549b00402fa7959ab43bae18a4f8597714ae8d>`_
+- removed unsused import `f2a9350f1 <https://github.com/fedora-infra/fedmsg/commit/f2a9350f1e69f8dbd7d13860b90fbdce7aa9dc51>`_
+- Merge pull request #333 from Nolski/develop `30b4f1c15 <https://github.com/fedora-infra/fedmsg/commit/30b4f1c15850172ceba4af2e31ffe50c97b26964>`_
+- Make list_to_series return uniqified items in predictable order. `ec250e096 <https://github.com/fedora-infra/fedmsg/commit/ec250e096a84164ab45a93424530285ec39583af>`_
+- Merge pull request #334 from bkabrda/develop `f661df461 <https://github.com/fedora-infra/fedmsg/commit/f661df461359606d4c6f32b890d9ed173185b592>`_
 
 0.12.3
 ------
