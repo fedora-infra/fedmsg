@@ -22,7 +22,6 @@ import abc
 import re
 import time
 
-import arrow
 import six
 
 
@@ -278,6 +277,8 @@ class BaseConglomerator(object):
 
         # Avoid circular import
         import fedmsg.meta as fm
+        # Optional, so, avoid importing it at the topmost level
+        import arrow
 
         usernames = set(sum([
             list(fm.msg2usernames(msg, **config))

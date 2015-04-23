@@ -73,7 +73,7 @@ install_requires = [
     'six',
     #'daemon',
     'psutil',
-    'arrow',
+    #'arrow',  # This is actually optional.
 
     # These are "optional" for now to make installation from pypi easier.
     #'M2Crypto',
