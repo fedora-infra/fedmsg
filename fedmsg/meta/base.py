@@ -22,8 +22,16 @@ import abc
 import re
 import time
 
-import arrow
 import six
+
+
+def add_metaclass(metaclass):
+    """ Compat shim for el7. """
+    if hasattr(six, 'add_metaclass'):
+        return six.add_metaclass(metaclass)
+    else:
+        # Do nothing.  It's not worth it.
+        return lambda klass: klass
 
 
 class BaseProcessor(object):
@@ -188,7 +196,7 @@ class BaseProcessor(object):
         return dict()
 
 
-@six.add_metaclass(abc.ABCMeta)
+@add_metaclass(abc.ABCMeta)
 class BaseConglomerator(object):
     """ Base Conglomerator.  This abstract base class must be extended.
 
@@ -269,6 +277,8 @@ class BaseConglomerator(object):
 
         # Avoid circular import
         import fedmsg.meta as fm
+        # Optional, so, avoid importing it at the topmost level
+        import arrow
 
         usernames = set(sum([
             list(fm.msg2usernames(msg, **config))

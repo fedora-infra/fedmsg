@@ -73,7 +73,7 @@ install_requires = [
     'six',
     #'daemon',
     'psutil',
-    'arrow',
+    #'arrow',  # This is actually optional.
 
     # These are "optional" for now to make installation from pypi easier.
     #'M2Crypto',
@@ -98,7 +98,7 @@ if sys.version_info[0] == 2:
 
 setup(
     name='fedmsg',
-    version='0.13.0',
+    version='0.13.1',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
