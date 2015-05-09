@@ -16,9 +16,6 @@ config = fedmsg.config.load_config()
 timeout = 0.2
 expected = '/wAAAAAAAAABfw=='
 
-active = collections.defaultdict(list)
-inactive = collections.defaultdict(list)
-
 for_collectd = 'verbose' not in sys.argv
 
 
@@ -29,6 +26,9 @@ def info(content="\n"):
 
 
 def do_scan():
+    active = collections.defaultdict(list)
+    inactive = collections.defaultdict(list)
+
     for i, item in enumerate(config['endpoints'].items()):
         name, endpoints = item
         for endpoint in endpoints:
@@ -106,9 +106,9 @@ else:
     interval = 10
     host = socket.getfqdn()
     while True:
-        start = timestamp = time.time()
+        start = time.time()
         value = do_scan()
-        stop = time.time()
+        stop = timestamp = time.time()
         delta = stop - start
         output = (
             "PUTVAL "
@@ -119,7 +119,7 @@ else:
             host=host,
             interval=interval,
             timestamp=int(timestamp),
-            value=value)
+            value="%0.1f" % value)
         print(output)
         if interval - delta > 0:
             time.sleep(interval - delta)
