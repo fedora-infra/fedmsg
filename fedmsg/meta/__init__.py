@@ -312,5 +312,7 @@ def msg2subjective(msg, processor, subject, **config):
     #174". """
     fmt = u"{text} {link}"
     text = processor.subjective(msg, **config)
+    if not text:
+        text = processor.subtitle(msg, **config)
     link = processor.link(msg, **config) or ''
     return fmt.format(**locals())
