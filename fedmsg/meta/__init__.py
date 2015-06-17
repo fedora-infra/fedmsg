@@ -298,3 +298,19 @@ def msg2emails(msg, processor, **config):
 def msg2avatars(msg, processor, **config):
     """ Return a dict mapping of usernames to avatar URLs. """
     return processor.avatars(msg, **config)
+
+
+@legacy_condition(six.text_type)
+@with_processor()
+def msg2subjective(msg, processor, subject, **config):
+    """ Return a human-readable text representation of a dict-like
+    fedmsg message from the subjective perspective of a user.
+
+    For example, if the subject viewing the message is "oddshocks"
+    and the message would normally translate into "oddshocks commented on
+    ticket #174", it would instead translate into "you commented on ticket
+    #174". """
+    fmt = u"{text} {link}"
+    text = processor.subjective(msg, **config)
+    link = processor.link(msg, **config) or ''
+    return fmt.format(**locals())
