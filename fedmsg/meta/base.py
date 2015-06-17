@@ -160,6 +160,10 @@ class BaseProcessor(object):
         """ Return a "subtitle" for the message. """
         return ""
 
+    def subjective(self, msg, subject, **config):
+        """ Return a "subjective" subtitle for the message. """
+        return ""
+
     def long_form(self, msg, **config):
         """ Return some paragraphs of text about a message. """
         return ""
