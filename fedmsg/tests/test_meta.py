@@ -212,7 +212,9 @@ class Base(unittest.TestCase):
     @skip_on(['msg', 'expected_subjective'])
     def test_subjective(self):
         """ Does fedmsg.meta produce the expected subjective message? """
-        actual_subjective = fedmsg.meta.msg2subjective(self.msg, **self.config)
+        subject = self.msg['msg']['user']['username']
+        actual_subjective = fedmsg.meta.msg2subjective(self.msg,
+                                                       subject, **self.config)
         self._equals(actual_subjective, self.expected_subjective)
 
     @skip_on(['msg', 'expected_link'])
