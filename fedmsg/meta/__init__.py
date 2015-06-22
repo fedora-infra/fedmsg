@@ -302,7 +302,7 @@ def msg2avatars(msg, processor, **config):
 
 @legacy_condition(six.text_type)
 @with_processor()
-def msg2subjective(msg, processor, subject="", **config):
+def msg2subjective(msg, processor, subject, **config):
     """ Return a human-readable text representation of a dict-like
     fedmsg message from the subjective perspective of a user.
 
