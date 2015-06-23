@@ -62,7 +62,7 @@ class TestHub(unittest.TestCase):
         self.context = FedMsgContext(**config)
 
         # fully qualified
-        self.fq_topic = "com.test_prefix.dev.%s.foo" % unittest.__name__
+        self.fq_topic = "org.fedoraproject.dev.%s.foo" % unittest.__name__
         # short version
         self.topic = "foo"
 
