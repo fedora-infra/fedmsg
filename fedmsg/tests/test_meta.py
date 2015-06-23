@@ -91,7 +91,6 @@ class TestForWarning(unittest.TestCase):
         original = fedmsg.meta.log.warn
         try:
             fedmsg.meta.log.warn = mocked_warning
-            fedmsg.meta.processors = []
             fedmsg.meta.make_processors(**self.config)
             eq_(messages, [expected])
         finally:
@@ -165,7 +164,6 @@ class Base(unittest.TestCase):
         )
         self.config['topic_prefix'] = 'org.fedoraproject'
         self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
-        fedmsg.meta.processors = []
         fedmsg.meta.make_processors(**self.config)
 
         self.maxDiff = None
@@ -339,7 +337,6 @@ class ConglomerateBase(unittest.TestCase):
         )
         self.config['topic_prefix'] = 'org.fedoraproject'
         self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
-        fedmsg.meta.processors = []
         fedmsg.meta.make_processors(**self.config)
 
         # Delete the msg_ids field because it is bulky and I don't want to
