@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.13.1
+0.13.2
 ------
 
 - add support for cowsay command `578826834 <https://github.com/fedora-infra/fedmsg/commit/5788268342c1186507c7fc36db986814e9a8c198>`_
@@ -165,6 +165,19 @@ Changelog
 - Dodge the metaclass if on an ancient python-six. `3f2cf80a7 <https://github.com/fedora-infra/fedmsg/commit/3f2cf80a789a295514a3d2379a52ef61caa0dd09>`_
 - Make "arrow" optional to avoid version anger with python-six. `1de8cf72f <https://github.com/fedora-infra/fedmsg/commit/1de8cf72f327e966a38fe0b39e89f007cdb31c0b>`_
 - Merge pull request #335 from fedora-infra/feature/six-careful `6573ed7a6 <https://github.com/fedora-infra/fedmsg/commit/6573ed7a6fb75bad081ea9fe0733c5c383dacada>`_
+- 0.13.1 `e293b2da5 <https://github.com/fedora-infra/fedmsg/commit/e293b2da56a876ada0c81beefc52f7bcd96379db>`_
+- Make order of configuration files predictable `bb3fa15ac <https://github.com/fedora-infra/fedmsg/commit/bb3fa15ac6e39cf0f8b11672262303d69eaddd72>`_
+- Merge pull request #336 from msimacek/develop `5f0f7c972 <https://github.com/fedora-infra/fedmsg/commit/5f0f7c9726835034897919805fd774104a4019cb>`_
+- Include changes from our ansible repo. `e33630f29 <https://github.com/fedora-infra/fedmsg/commit/e33630f29b7b93f2388d1a85d595eec937479d1f>`_
+- Merge branch 'develop' of github.com:fedora-infra/fedmsg into develop `1d82d2a02 <https://github.com/fedora-infra/fedmsg/commit/1d82d2a02eae375b2492bc8054cfbbcb71f01609>`_
+- Use a threadpool to speed this up. `79aa516ea <https://github.com/fedora-infra/fedmsg/commit/79aa516ea175428eee3a51cacba72b891a91725a>`_
+- Merge pull request #337 from fedora-infra/feature/fedmsg-map-threadpool `47c2e5e45 <https://github.com/fedora-infra/fedmsg/commit/47c2e5e456e178ee53de2d0998ab28fd1683e68c>`_
+- Flatten the threadpool workload. `e54f4357b <https://github.com/fedora-infra/fedmsg/commit/e54f4357b364f783b49c8bb3ce0579c96dd22369>`_
+- Merge pull request #338 from fedora-infra/feature/more-threads `f84dbab4f <https://github.com/fedora-infra/fedmsg/commit/f84dbab4f319f8e62e8e60e5d68b24033367543b>`_
+- No need to rebuild fedmsg.meta processors `f9e064883 <https://github.com/fedora-infra/fedmsg/commit/f9e0648834336d814b467995dc789ab04f204060>`_
+- Move global declaration to the top. `c6c0c19a7 <https://github.com/fedora-infra/fedmsg/commit/c6c0c19a749850a2ed7d4dd677a0578e543ff257>`_
+- Fix a couple tests which try to reinitialize the processors with mocked config. `06ecdb5cd <https://github.com/fedora-infra/fedmsg/commit/06ecdb5cdf348aec6113d0ec96e32d534f80af03>`_
+- Merge pull request #341 from fedora-infra/feature/no-need-to-rebuild `4d4126775 <https://github.com/fedora-infra/fedmsg/commit/4d4126775f900bc21446d9965ff90e7c4920fbc8>`_
 
 0.9.3
 -----
@@ -1809,6 +1822,21 @@ Changelog
 - Merge pull request #333 from Nolski/develop `30b4f1c15 <https://github.com/fedora-infra/fedmsg/commit/30b4f1c15850172ceba4af2e31ffe50c97b26964>`_
 - Make list_to_series return uniqified items in predictable order. `ec250e096 <https://github.com/fedora-infra/fedmsg/commit/ec250e096a84164ab45a93424530285ec39583af>`_
 - Merge pull request #334 from bkabrda/develop `f661df461 <https://github.com/fedora-infra/fedmsg/commit/f661df461359606d4c6f32b890d9ed173185b592>`_
+- 0.13.0 `af47379b6 <https://github.com/fedora-infra/fedmsg/commit/af47379b66124f250cc2979e1a69437439d3f9e9>`_
+- Some collectd tweaks. `a282cd0f6 <https://github.com/fedora-infra/fedmsg/commit/a282cd0f62b90f401a36535860d1ebb946c8b6dd>`_
+- Start testing with tox. `8b06ec046 <https://github.com/fedora-infra/fedmsg/commit/8b06ec0466fd9204b859089e55f9b3eed45218b6>`_
+- Dodge the metaclass if on an ancient python-six. `3f2cf80a7 <https://github.com/fedora-infra/fedmsg/commit/3f2cf80a789a295514a3d2379a52ef61caa0dd09>`_
+- Make "arrow" optional to avoid version anger with python-six. `1de8cf72f <https://github.com/fedora-infra/fedmsg/commit/1de8cf72f327e966a38fe0b39e89f007cdb31c0b>`_
+- Merge pull request #335 from fedora-infra/feature/six-careful `6573ed7a6 <https://github.com/fedora-infra/fedmsg/commit/6573ed7a6fb75bad081ea9fe0733c5c383dacada>`_
+
+0.13.1
+------
+
+- Some collectd tweaks. `a282cd0f6 <https://github.com/fedora-infra/fedmsg/commit/a282cd0f62b90f401a36535860d1ebb946c8b6dd>`_
+- Start testing with tox. `8b06ec046 <https://github.com/fedora-infra/fedmsg/commit/8b06ec0466fd9204b859089e55f9b3eed45218b6>`_
+- Dodge the metaclass if on an ancient python-six. `3f2cf80a7 <https://github.com/fedora-infra/fedmsg/commit/3f2cf80a789a295514a3d2379a52ef61caa0dd09>`_
+- Make "arrow" optional to avoid version anger with python-six. `1de8cf72f <https://github.com/fedora-infra/fedmsg/commit/1de8cf72f327e966a38fe0b39e89f007cdb31c0b>`_
+- Merge pull request #335 from fedora-infra/feature/six-careful `6573ed7a6 <https://github.com/fedora-infra/fedmsg/commit/6573ed7a6fb75bad081ea9fe0733c5c383dacada>`_
 
 0.13.0
 ------
