@@ -6,6 +6,7 @@ Reports what percentage of fedmsg endpoints are bound and ready.
 
 import base64
 import collections
+import multiprocessing.pool
 import socket
 import sys
 import time
@@ -16,41 +17,46 @@ config = fedmsg.config.load_config()
 timeout = 0.2
 expected = '/wAAAAAAAAABfw=='
 
+for_collectd = 'verbose' not in sys.argv
+
 active = collections.defaultdict(list)
 inactive = collections.defaultdict(list)
 
-for_collectd = 'verbose' not in sys.argv
-
+pool = multiprocessing.pool.ThreadPool(25)
 
 def info(content="\n"):
     if not for_collectd:
         sys.stdout.write(content)
         sys.stdout.flush()
 
+def scan_one(item):
+    name, endpoint = item
+    if not endpoint.startswith('tcp://'):
+        raise ValueError("Don't know how to deal with %r" % endpoint)
+    endpoint = endpoint[len('tcp://'):].split(':')
+    connection = None
+    try:
+        connection = socket.create_connection(endpoint, timeout)
+        actual = base64.b64encode(connection.recv(10))
+        if actual != expected:
+            inactive[name].append((
+                endpoint, "%r is not %r" % (actual, expected)))
+            info("F")
+        else:
+            active[name].append((endpoint, "all active"))
+            info(".")
+    except socket.error as e:
+        inactive[name].append((endpoint, str(e)))
+        info("F")
+        if connection:
+            connection.close()
 
-def do_scan():
-    for i, item in enumerate(config['endpoints'].items()):
-        name, endpoints = item
-        for endpoint in endpoints:
-            if not endpoint.startswith('tcp://'):
-                raise ValueError("Don't know how to deal with %r" % endpoint)
-            endpoint = endpoint[len('tcp://'):].split(':')
-            connection = None
-            try:
-                connection = socket.create_connection(endpoint, timeout)
-                actual = base64.b64encode(connection.recv(10))
-                if actual != expected:
-                    inactive[name].append((
-                        endpoint, "%r is not %r" % (actual, expected)))
-                    info("F")
-                else:
-                    active[name].append((endpoint, "all active"))
-                    info(".")
-            except socket.error as e:
-                inactive[name].append((endpoint, str(e)))
-                info("F")
-                if connection:
-                    connection.close()
+
+def scan_all():
+    items = [(name, addr)
+             for name, endpoints in config['endpoints'].items()
+             for addr in endpoints]
+    pool.map(scan_one, items)
 
     info()
 
@@ -101,14 +107,14 @@ def do_scan():
     return value
 
 if not for_collectd:
-    do_scan()
+    scan_all()
 else:
-    interval = 10
+    interval = 5
     host = socket.getfqdn()
     while True:
-        start = timestamp = time.time()
-        value = do_scan()
-        stop = time.time()
+        start = time.time()
+        value = scan_all()
+        stop = timestamp = time.time()
         delta = stop - start
         output = (
             "PUTVAL "
@@ -119,7 +125,9 @@ else:
             host=host,
             interval=interval,
             timestamp=int(timestamp),
-            value=value)
+            value="%0.1f" % value)
         print(output)
         if interval - delta > 0:
             time.sleep(interval - delta)
+
+pool.close()

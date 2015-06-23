@@ -75,6 +75,10 @@ class ProcessorsNotInitialized(Exception):
         raise self
     __len__ = __iter__
 
+    def __nonzero__(self):
+        return False
+    __bool__ = __nonzero__
+
 processors = ProcessorsNotInitialized("You must first call "
                                       "fedmsg.meta.make_processors(**config)")
 
@@ -92,8 +96,13 @@ def make_processors(**config):
         >>> text = fedmsg.meta.msg2repr(some_message_dict, **config)
 
     """
-    import pkg_resources
     global processors
+
+    # If they're already initialized, then fine.
+    if processors:
+        return
+
+    import pkg_resources
     processors = []
     for processor in pkg_resources.iter_entry_points('fedmsg.meta'):
         try:
