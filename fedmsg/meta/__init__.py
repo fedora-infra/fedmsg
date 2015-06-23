@@ -96,13 +96,13 @@ def make_processors(**config):
         >>> text = fedmsg.meta.msg2repr(some_message_dict, **config)
 
     """
+    global processors
 
     # If they're already initialized, then fine.
     if processors:
         return
 
     import pkg_resources
-    global processors
     processors = []
     for processor in pkg_resources.iter_entry_points('fedmsg.meta'):
         try:
