@@ -36,7 +36,7 @@ import fedmsg.config
 import fedmsg.consumers
 import fedmsg.encoding
 
-from fedmsg.tests.common import load_config
+from fedmsg.tests.common import load_config, requires_network
 
 
 # Some constants used throughout the hub tests
@@ -70,6 +70,7 @@ class TestHub(unittest.TestCase):
         self.context.destroy()
         self.hub.close()
 
+    @requires_network
     def test_send_recv(self):
         """ Send a message and receive it.
 
@@ -111,6 +112,7 @@ class TestHub(unittest.TestCase):
         self.hub.topics[cons.topic].append(cons(self.hub).consume)
         sleep(sleep_duration)
 
+    @requires_network
     def test_consumer(self):
         """ Check that a consumer can get messages. """
         obj = {'secret': secret}
@@ -139,6 +141,7 @@ class TestHub(unittest.TestCase):
         eq_(len(messages_received), 1)
         eq_(messages_received[0], obj)
 
+    @requires_network
     def test_double_consumers(self):
         """ Check that two consumers can get messages. """
         obj = {'secret': secret}
@@ -176,6 +179,7 @@ class TestHub(unittest.TestCase):
         eq_(messages_received[0], obj)
         eq_(messages_received[1], obj)
 
+    @requires_network
     def test_consumer_failed_validation(self):
         """ Check that a consumer won't consume invalid message. """
 
