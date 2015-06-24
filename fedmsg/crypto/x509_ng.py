@@ -30,16 +30,9 @@ import fedmsg.encoding
 import logging
 log = logging.getLogger(__name__)
 
-try:
-    import M2Crypto
-    # FIXME - m2ext will be unnecessary once the following bug is closed.
-    # https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
-    import m2ext
-    disabled = False
-except ImportError as e:
-    logging.basicConfig()
-    log.warn("Crypto disabled %r" % e)
-    disabled = True
+import cryptography.x509
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import asymmetric, hashes, serialization
 
 import six
 
@@ -56,31 +49,41 @@ def sign(message, ssldir=None, certname=None, **config):
         - 'certificate' - the base64 X509 certificate of the sending host.
     """
 
-    if disabled:
-        return message
-
     if ssldir is None or certname is None:
         error = "You must set the ssldir and certname keyword arguments."
         raise ValueError(error)
 
     message['crypto'] = 'x509'
 
-    certificate = M2Crypto.X509.load_cert(
-        "%s/%s.crt" % (ssldir, certname)).as_pem()
+    with open("%s/%s.crt" % (ssldir, certname), "rb") as f:
+        data = f.read()
+        certificate = cryptography.x509.load_pem_x509_certificate(
+            data,
+            default_backend()
+        )
+        # TODO: it seems that there's no way in cryptography to
+        #  get back the PEM block of loaded certificate
+        cert_pem = data[data.find('-----BEGIN'):]
     # Opening this file requires elevated privileges in stg/prod.
-    rsa_private = M2Crypto.RSA.load_key(
-        "%s/%s.key" % (ssldir, certname))
+    with open("%s/%s.key" % (ssldir, certname), "rb") as f:
+        rsa_private = serialization.load_pem_private_key(
+            data=f.read(),
+            password=None,
+            backend=default_backend()
+        )
 
-    digest = M2Crypto.EVP.MessageDigest('sha1')
-    digest.update(fedmsg.encoding.dumps(message))
-
-    signature = rsa_private.sign(digest.digest())
+    signer = rsa_private.signer(
+        asymmetric.padding.PKCS1v15(),
+        hashes.SHA1()
+    )
+    signer.update(fedmsg.encoding.dumps(message))
+    signature = signer.finalize()
 
     # Return a new dict containing the pairs in the original message as well
     # as the new authn fields.
     return dict(message.items() + [
         ('signature', signature.encode('base64')),
-        ('certificate', certificate.encode('base64')),
+        ('certificate', cert_pem.encode('base64')),
     ])
 
 
@@ -98,6 +101,9 @@ def validate(message, ssldir=None, **config):
 
     """
 
+    import M2Crypto
+    import m2ext
+
     if ssldir is None:
         raise ValueError("You must set the ssldir keyword argument.")
 
@@ -105,14 +111,12 @@ def validate(message, ssldir=None, **config):
         log.warn("Failed validation.  %s" % reason)
         return False
 
-    if disabled:
-        fail("M2Crypto and/or m2ext missing!")
-
     # Some sanity checking
     for field in ['signature', 'certificate']:
         if not field in message:
             return fail("No %r field found." % field)
-        if not isinstance(message[field], basestring):
+        # TODO: should this be six.binary_type?
+        if not isinstance(message[field], six.binary_type):
             return fail("msg[%r] is not a string" % field)
 
     # Peal off the auth datums
@@ -253,7 +257,7 @@ def _load_remote_cert(location, cache, cache_expiry, **config):
         except requests.exceptions.ConnectionError:
             log.error("Could not access %r" % location)
             raise
-        except IOError as e:
+        except IOError:
             # If we couldn't write to the specified cache location, try a
             # similar place but inside our home directory instead.
             cache = os.path.expanduser("~/.local" + cache)

@@ -76,9 +76,9 @@ install_requires = [
     #'arrow',  # This is actually optional.
 
     # These are "optional" for now to make installation from pypi easier.
-    #'M2Crypto',
-    #'m2ext',
-    'cryptography',
+    #'M2Crypto',        # for message validation
+    #'m2ext',           # for message validation
+    #'cryptography',    # for message signing
 ]
 tests_require = [
     'nose',
