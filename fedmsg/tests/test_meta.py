@@ -90,6 +90,7 @@ class TestForWarning(unittest.TestCase):
         expected = 'No fedmsg.meta plugins found.  fedmsg.meta.msg2* crippled'
         original = fedmsg.meta.log.warn
         try:
+            fedmsg.meta.processors = []
             fedmsg.meta.log.warn = mocked_warning
             fedmsg.meta.make_processors(**self.config)
             eq_(messages, [expected])
