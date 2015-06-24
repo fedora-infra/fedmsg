@@ -24,15 +24,13 @@ import copy
 import os
 import socket
 
-from time import sleep, time
-from uuid import uuid4
+from time import sleep
 
 from moksha.hub.tests.test_hub import simulate_reactor
-from moksha.hub.hub import MokshaHub
 from moksha.hub import CentralMokshaHub
-from fedmsg.core import FedMsgContext
+from fedmsg.tests.common import requires_network
 
-from nose.tools import eq_, assert_true, assert_false, raises
+from nose.tools import eq_
 
 import fedmsg.config
 import fedmsg.consumers

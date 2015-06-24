@@ -29,7 +29,6 @@ else:
 from nose.tools import raises
 
 import json
-import time
 from datetime import datetime
 import zmq
 import socket
@@ -41,7 +40,6 @@ from fedmsg.tests.test_utils import mock
 from fedmsg.replay import ReplayContext, get_replay
 
 from fedmsg.replay.sqlstore import SqlStore, SqlMessage
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
 hostname = socket.gethostname().split('.', 1)[0]
@@ -54,13 +52,13 @@ def test_init_missing_endpoint():
     config = load_config()
     config['persistent_store'] = mock.Mock()
     config['name'] = "failboat"
-    context = ReplayContext(**config)
+    ReplayContext(**config)
 
 
 @raises(ValueError)
 def test_init_missing_store():
     config = load_config()
-    context = ReplayContext(**config)
+    ReplayContext(**config)
 
 
 @raises(IOError)
@@ -74,7 +72,7 @@ def test_init_invalid_endpoint():
         placeholder.bind('tcp://*:{0}'.format(
             config["replay_endpoints"][local_name].rsplit(':')[-1]
         ))
-        context = ReplayContext(**config)
+        ReplayContext(**config)
     finally:
         placeholder.close()
 
@@ -190,7 +188,7 @@ class TestSqlStore(unittest.TestCase):
 
     @raises(ValueError)
     def test_get_wrong_seq_id(self):
-        first = self.store.get({"seq_id": 18})
+        self.store.get({"seq_id": 18})
 
     @raises(ValueError)
     def test_get_illformed_time(self):
@@ -227,7 +225,7 @@ class TestGetReplay(unittest.TestCase):
     @raises(IOError)
     def test_get_replay_no_available_endpoint(self):
         #self.replay_thread.start()
-        msgs = list(get_replay(
+        list(get_replay(
             "phony", {"seq_ids": [1, 2]}, self.config, self.context
         ))
 
@@ -238,7 +236,7 @@ class TestGetReplay(unittest.TestCase):
         self.config['persistent_store'].get = mock.Mock(
             side_effect=[ValueError("this is an error")])
         self.replay_thread.start()
-        msgs = list(get_replay(
+        list(get_replay(
             local_name, {"seq_ids": [1, 2]}, self.config, self.context
         ))
 
