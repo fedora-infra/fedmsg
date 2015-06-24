@@ -34,7 +34,7 @@ import zmq
 import socket
 from threading import Thread, Event
 
-from fedmsg.tests.common import load_config
+from fedmsg.tests.common import load_config, requires_network
 from fedmsg.tests.test_utils import mock
 
 from fedmsg.replay import ReplayContext, get_replay
@@ -92,6 +92,7 @@ class TestReplayContext(unittest.TestCase):
         self.request_socket.close()
         self.replay_context.publisher.close()
 
+    @requires_network
     def test_get_replay(self):
         # Setup the store to return what we ask.
         answer = [{'foo': 'bar'}]
@@ -109,6 +110,7 @@ class TestReplayContext(unittest.TestCase):
         for r, a in zip(rep, answer):
             self.assertDictEqual(json.loads(r.decode('utf-8')), a)
 
+    @requires_network
     def test_get_error(self):
         # Setup the store to return what we ask.
         answer = ValueError('No luck!')
@@ -222,6 +224,7 @@ class TestGetReplay(unittest.TestCase):
     def tearDown(self):
         self.replay_thread.stop.set()
 
+    @requires_network
     @raises(IOError)
     def test_get_replay_no_available_endpoint(self):
         #self.replay_thread.start()
@@ -229,6 +232,7 @@ class TestGetReplay(unittest.TestCase):
             "phony", {"seq_ids": [1, 2]}, self.config, self.context
         ))
 
+    @requires_network
     @raises(ValueError)
     def test_get_replay_wrong_query(self):
         # We don't actually test with a wrong query, we just throw back an
@@ -240,6 +244,7 @@ class TestGetReplay(unittest.TestCase):
             local_name, {"seq_ids": [1, 2]}, self.config, self.context
         ))
 
+    @requires_network
     def test_get_replay(self):
         # As before, the correctness of the query doesn't matter much
         # since it is taken care of on the server side.

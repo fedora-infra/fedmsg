@@ -83,6 +83,7 @@ class TestHub(unittest.TestCase):
     def tearDown(self):
         self.hub.close()
 
+    @requires_network
     def test_multi_threaded(self):
         """ Send messages from 5 concurrent threads. """
         messages_received = []
