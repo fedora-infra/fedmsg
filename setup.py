@@ -78,6 +78,7 @@ install_requires = [
     # These are "optional" for now to make installation from pypi easier.
     #'M2Crypto',
     #'m2ext',
+    'cryptography',
 ]
 tests_require = [
     'nose',
