@@ -30,7 +30,7 @@ ssl_enabled_for_tests = True
 try:
     import M2Crypto
     import m2ext
-except ImportError:
+except:
     ssl_enabled_for_tests = False
 
 # Pick random ports for the tests so travis-ci doesn't flip out.

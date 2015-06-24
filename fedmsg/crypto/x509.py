@@ -257,7 +257,7 @@ def _load_remote_cert(location, cache, cache_expiry, **config):
         except requests.exceptions.ConnectionError:
             log.error("Could not access %r" % location)
             raise
-        except IOError as e:
+        except IOError:
             # If we couldn't write to the specified cache location, try a
             # similar place but inside our home directory instead.
             cache = os.path.expanduser("~/.local" + cache)
