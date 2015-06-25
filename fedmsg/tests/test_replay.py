@@ -19,11 +19,9 @@
 #
 ''' Tests for fedmsg.replay '''
 
-import sys
-
-if sys.version_info[0] == 2 and sys.version_info[1] < 7:
+try:
     import unittest2 as unittest
-else:
+except ImportError:
     import unittest
 
 from nose.tools import raises

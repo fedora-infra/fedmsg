@@ -39,8 +39,11 @@ here = SEP.join(__file__.split(SEP)[:-1])
 def skip_if_missing_x509_libs(f):
     def _wrapper(self, *args, **kw):
         try:
-            import M2Crypto
-            import m2ext
+            if six.PY3:
+                import cryptography
+            else:
+                import M2Crypto
+                import m2ext
         except ImportError as e:
             self.skipTest(six.text_type(e))
 
