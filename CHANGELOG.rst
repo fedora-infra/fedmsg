@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.13.3
+0.14.0
 ------
 
 - add support for cowsay command `578826834 <https://github.com/fedora-infra/fedmsg/commit/5788268342c1186507c7fc36db986814e9a8c198>`_
@@ -157,6 +157,7 @@ Changelog
 - correct config file locations `5d549b004 <https://github.com/fedora-infra/fedmsg/commit/5d549b00402fa7959ab43bae18a4f8597714ae8d>`_
 - removed unsused import `f2a9350f1 <https://github.com/fedora-infra/fedmsg/commit/f2a9350f1e69f8dbd7d13860b90fbdce7aa9dc51>`_
 - Merge pull request #333 from Nolski/develop `30b4f1c15 <https://github.com/fedora-infra/fedmsg/commit/30b4f1c15850172ceba4af2e31ffe50c97b26964>`_
+- Rewrite 'sign' function using cryptography `55af2a831 <https://github.com/fedora-infra/fedmsg/commit/55af2a83157c06a04af9b00e9700ad6ea9630286>`_
 - Make list_to_series return uniqified items in predictable order. `ec250e096 <https://github.com/fedora-infra/fedmsg/commit/ec250e096a84164ab45a93424530285ec39583af>`_
 - Merge pull request #334 from bkabrda/develop `f661df461 <https://github.com/fedora-infra/fedmsg/commit/f661df461359606d4c6f32b890d9ed173185b592>`_
 - 0.13.0 `af47379b6 <https://github.com/fedora-infra/fedmsg/commit/af47379b66124f250cc2979e1a69437439d3f9e9>`_
@@ -180,6 +181,19 @@ Changelog
 - Merge pull request #341 from fedora-infra/feature/no-need-to-rebuild `4d4126775 <https://github.com/fedora-infra/fedmsg/commit/4d4126775f900bc21446d9965ff90e7c4920fbc8>`_
 - 0.13.2 `6674a1686 <https://github.com/fedora-infra/fedmsg/commit/6674a1686aa354458faf2758ddc7f8d55458cc1e>`_
 - Don't overwrite processors in the tests to keep things faster. `b104fac57 <https://github.com/fedora-infra/fedmsg/commit/b104fac570796967fe124268b925c6230c0bdfce>`_
+- 0.13.3 `75cdf2648 <https://github.com/fedora-infra/fedmsg/commit/75cdf2648e3b7ea17f61f1f40baefa799174ac30>`_
+- These tests require network.. so don\'t fail without a special env var set. `e6601d6e3 <https://github.com/fedora-infra/fedmsg/commit/e6601d6e30b569ee46f7da59e6b2d2ec140e79ee>`_
+- Need to reset processors for this test to pass.  It only works the first time. `dcfee1e2f <https://github.com/fedora-infra/fedmsg/commit/dcfee1e2f8bd7d0abc6db042bbd801d84bb80a81>`_
+- pylint cleanup of some test files. `9cc3ff5ef <https://github.com/fedora-infra/fedmsg/commit/9cc3ff5ef291e7ba04e40a47139677e7d845ecf2>`_
+- Markup some other tests that require network. `259fd3cdd <https://github.com/fedora-infra/fedmsg/commit/259fd3cdd83904b4aacfcbf777f400100500e2e2>`_
+- Merge branch 'cryptography' into feature/py34-finish `302df19c4 <https://github.com/fedora-infra/fedmsg/commit/302df19c4c47ab73cadac478b3f020908da35e56>`_
+- Merge pull request #342 from fedora-infra/feature/fix-tests `3a5d9e6c7 <https://github.com/fedora-infra/fedmsg/commit/3a5d9e6c76a9b31b701363a40e7a03e20ac412ed>`_
+- A little more cleanup. `c8353faa2 <https://github.com/fedora-infra/fedmsg/commit/c8353faa27c0805da37ac159d12602130c7c2731>`_
+- Split x509 into two modules.  One for py2 and one for py3. `136a42000 <https://github.com/fedora-infra/fedmsg/commit/136a42000f47abe8ff01593297cfe07128801970>`_
+- Switch between the two module accordingly. `22fa72c40 <https://github.com/fedora-infra/fedmsg/commit/22fa72c40ee999fd5b27e25ad85c2be9dbd56eba>`_
+- Restore functionality removed on accident. `16a38eb64 <https://github.com/fedora-infra/fedmsg/commit/16a38eb6477ef45a9e7cad459c4d1f46840a960c>`_
+- Conditionalize skippable imports in for the x509 tests. `6bb5fd0c4 <https://github.com/fedora-infra/fedmsg/commit/6bb5fd0c4e0d6adf38de72a59948fdf690d145d9>`_
+- Merge pull request #343 from fedora-infra/feature/py34-finish `c4808d8ce <https://github.com/fedora-infra/fedmsg/commit/c4808d8ce35c9982e38bee61942559984cad9421>`_
 
 0.9.3
 -----
@@ -1843,6 +1857,13 @@ Changelog
 - Move global declaration to the top. `c6c0c19a7 <https://github.com/fedora-infra/fedmsg/commit/c6c0c19a749850a2ed7d4dd677a0578e543ff257>`_
 - Fix a couple tests which try to reinitialize the processors with mocked config. `06ecdb5cd <https://github.com/fedora-infra/fedmsg/commit/06ecdb5cdf348aec6113d0ec96e32d534f80af03>`_
 - Merge pull request #341 from fedora-infra/feature/no-need-to-rebuild `4d4126775 <https://github.com/fedora-infra/fedmsg/commit/4d4126775f900bc21446d9965ff90e7c4920fbc8>`_
+- 0.13.2 `6674a1686 <https://github.com/fedora-infra/fedmsg/commit/6674a1686aa354458faf2758ddc7f8d55458cc1e>`_
+- Don't overwrite processors in the tests to keep things faster. `b104fac57 <https://github.com/fedora-infra/fedmsg/commit/b104fac570796967fe124268b925c6230c0bdfce>`_
+
+0.13.3
+------
+
+- Don't overwrite processors in the tests to keep things faster. `b104fac57 <https://github.com/fedora-infra/fedmsg/commit/b104fac570796967fe124268b925c6230c0bdfce>`_
 
 0.13.2
 ------
