@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with fedmsg; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110.13.3 USA
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110.14.0 USA
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
@@ -76,8 +76,9 @@ install_requires = [
     #'arrow',  # This is actually optional.
 
     # These are "optional" for now to make installation from pypi easier.
-    #'M2Crypto',
-    #'m2ext',
+    #'M2Crypto',        # for message validation
+    #'m2ext',           # for message validation
+    #'cryptography',    # for message signing
 ]
 tests_require = [
     'nose',
@@ -98,7 +99,7 @@ if sys.version_info[0] == 2:
 
 setup(
     name='fedmsg',
-    version='0.13.3',
+    version='0.14.0',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
