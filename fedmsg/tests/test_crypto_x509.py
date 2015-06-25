@@ -37,6 +37,19 @@ SEP = os.path.sep
 here = SEP.join(__file__.split(SEP)[:-1])
 
 
+def skip_if_missing_libs(f):
+    def _wrapper(self, *args, **kw):
+        try:
+            import M2Crypto
+            import m2ext
+        except ImportError as e:
+            self.skipTest(six.text_type(e))
+
+        return f(self, *args, **kw)
+
+    return nose.tools.nontrivial.make_decorator(f)(_wrapper)
+
+
 class TestCryptoX509(unittest.TestCase):
 
     def setUp(self):
@@ -72,12 +85,14 @@ class TestCryptoX509(unittest.TestCase):
         # Need to reset this global
         fedmsg.crypto._validate_implementations = None
 
+    @skip_if_missing_libs
     def test_full_circle(self):
         """ Try to sign and validate a message. """
         message = dict(msg='awesome')
         signed = fedmsg.crypto.sign(message, **self.config)
         assert fedmsg.crypto.validate(signed, **self.config)
 
+    @skip_if_missing_libs
     def test_failed_validation(self):
         """ Try to fail validation. """
         message = dict(msg='awesome')
@@ -86,6 +101,7 @@ class TestCryptoX509(unittest.TestCase):
         signed['msg'] = "eve wuz here"
         assert not fedmsg.crypto.validate(signed, **self.config)
 
+    @skip_if_missing_libs
     def test_signed_by_true(self):
         """ Try to succeed at specific-signer validation. """
         message = dict(topic='biz.bar', msg='awesome')
@@ -94,6 +110,7 @@ class TestCryptoX509(unittest.TestCase):
         res = fedmsg.crypto.validate_signed_by(signed, signer, **self.config)
         assert res
 
+    @skip_if_missing_libs
     def test_signed_by_false(self):
         """ Try to fail at specific-signer validation. """
         message = dict(topic='biz.bar', msg='awesome')
