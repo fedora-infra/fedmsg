@@ -20,6 +20,7 @@
 """ ``fedmsg.crypto.x509`` - X.509 backend for :mod:`fedmsg.crypto`.  """
 
 
+import base64
 import os
 import requests
 import time
@@ -82,9 +83,9 @@ def sign(message, ssldir=None, certname=None, **config):
 
     # Return a new dict containing the pairs in the original message as well
     # as the new authn fields.
-    return dict(message.items() + [
-        ('signature', signature.encode('base64')),
-        ('certificate', cert_pem.encode('base64')),
+    return dict(list(message.items()) + [
+        ('signature', base64.b64encode(signature).decode('utf-8')),
+        ('certificate', base64.b64encode(cert_pem).decode('utf-8')),
     ])
 
 
