@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with fedmsg; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110.14.0 USA
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110.14.1 USA
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
@@ -99,7 +99,7 @@ if sys.version_info[0] == 2:
 
 setup(
     name='fedmsg',
-    version='0.14.0',
+    version='0.14.1',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
