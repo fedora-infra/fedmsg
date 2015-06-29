@@ -63,7 +63,8 @@ def sign(message, ssldir=None, certname=None, **config):
         )
         # TODO: it seems that there's no way in cryptography to
         #  get back the PEM block of loaded certificate
-        cert_pem = data[data.find('-----BEGIN'):]
+        cert_pem = data[data.decode('utf-8').find('-----BEGIN'):]
+
     # Opening this file requires elevated privileges in stg/prod.
     with open("%s/%s.key" % (ssldir, certname), "rb") as f:
         rsa_private = serialization.load_pem_private_key(
@@ -76,7 +77,7 @@ def sign(message, ssldir=None, certname=None, **config):
         asymmetric.padding.PKCS1v15(),
         hashes.SHA1()
     )
-    signer.update(fedmsg.encoding.dumps(message))
+    signer.update(fedmsg.encoding.dumps(message).encode('utf-8'))
     signature = signer.finalize()
 
     # Return a new dict containing the pairs in the original message as well
