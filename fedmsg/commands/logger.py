@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2012 - 2014 Red Hat, Inc.
+# Copyright (C) 2012 - 2015 Red Hat, Inc.
 #
 # fedmsg is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,7 @@ class LoggerCommand(BaseCommand):
 
     Some examples::
 
-        $ echo '{"a": 1}; | fedmsg-logger --json-input
+        $ echo '{"a": 1}' | fedmsg-logger --json-input
         $ echo "Hai there." | fedmsg-logger --modname=git --topic=repo.update
         $ fedmsg-logger --message="This is a message."
         $ fedmsg-logger --message='{"a": 1}' --json-input
