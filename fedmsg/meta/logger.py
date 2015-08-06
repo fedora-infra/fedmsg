@@ -60,4 +60,4 @@ class LoggerProcessor(BaseProcessor):
         if msg['username'] == subject:
             tmpl = self._('you logged "{log}"')
             return tmpl.format(**msg['msg'])
-        return self.subtitle(msg, **config)
+        return None  # This causes our caller to default to using self.subtitle
