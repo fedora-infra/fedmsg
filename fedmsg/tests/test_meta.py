@@ -212,10 +212,10 @@ class Base(unittest.TestCase):
     @skip_on(['msg', 'expected_subjective'])
     def test_subjective(self):
         """ Does fedmsg.meta produce the expected subjective message? """
-        subject = self.msg['msg']['user']['username']
-        actual_subjective = fedmsg.meta.msg2subjective(self.msg,
-                                                       subject, **self.config)
-        self._equals(actual_subjective, self.expected_subjective)
+        for subject, expected in self.expected_subjective.items():
+            actual_subjective = fedmsg.meta.msg2subjective(
+                self.msg, subject=subject, **self.config)
+            self._equals(actual_subjective, expected)
 
     @skip_on(['msg', 'expected_link'])
     def test_link(self):
@@ -297,6 +297,10 @@ class TestLoggerNormal(Base):
     expected_title = "logger.log"
     expected_subti = 'hello, world. (ralph)'
     expected_long_form = 'hello, world. (ralph)'
+    expected_subjective = {
+        'ralph': 'you logged "hello, world."',
+        'lmacken': expected_subti,
+    }
     expected_usernames = set(['ralph'])
 
     msg = {

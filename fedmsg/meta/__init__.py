@@ -310,9 +310,7 @@ def msg2subjective(msg, processor, subject, **config):
     and the message would normally translate into "oddshocks commented on
     ticket #174", it would instead translate into "you commented on ticket
     #174". """
-    fmt = u"{text} {link}"
     text = processor.subjective(msg, subject, **config)
     if not text:
         text = processor.subtitle(msg, **config)
-    link = processor.link(msg, **config) or ''
-    return fmt.format(**locals())
+    return text
