@@ -146,6 +146,7 @@ class Base(unittest.TestCase):
     msg = None
     expected_title = None
     expected_subti = None
+    expected_subjective = None
     expected_markup = None
     expected_link = None
     expected_icon = None
@@ -208,6 +209,14 @@ class Base(unittest.TestCase):
         """ Does fedmsg.meta produce the expected subtitle? """
         actual_subti = fedmsg.meta.msg2subtitle(self.msg, **self.config)
         self._equals(actual_subti, self.expected_subti)
+
+    @skip_on(['msg', 'expected_subjective'])
+    def test_subjective(self):
+        """ Does fedmsg.meta produce the expected subjective message? """
+        for subject, expected in self.expected_subjective.items():
+            actual_subjective = fedmsg.meta.msg2subjective(
+                self.msg, subject=subject, **self.config)
+            self._equals(actual_subjective, expected)
 
     @skip_on(['msg', 'expected_link'])
     def test_link(self):
@@ -289,6 +298,10 @@ class TestLoggerNormal(Base):
     expected_title = "logger.log"
     expected_subti = 'hello, world. (ralph)'
     expected_long_form = 'hello, world. (ralph)'
+    expected_subjective = {
+        'ralph': 'you logged "hello, world."',
+        'lmacken': expected_subti,
+    }
     expected_usernames = set(['ralph'])
 
     msg = {
