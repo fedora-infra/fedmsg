@@ -157,7 +157,7 @@ def with_processor():
     return _wrapper
 
 
-def conglomerate(messages, **config):
+def conglomerate(messages, subject=None, **config):
     """ Return a list of messages with some of them grouped into conglomerate
     messages.  Conglomerate messages represent several other messages.
 
@@ -167,12 +167,15 @@ def conglomerate(messages, **config):
     messages, one representing the 38 git commit messages, one representing the
     bodhi.update message, and one representing the badge.award message.
 
+    The ``subject`` argument is optional and will return "subjective"
+    representations if possible (see msg2subjective(...)).
+
     Functionality is provided by fedmsg.meta plugins on a "best effort" basis.
     """
 
     # First, give every registered processor a chance to do its work
     for processor in processors:
-        messages = processor.conglomerate(messages, **config)
+        messages = processor.conglomerate(messages, subject=subject, **config)
 
     # Then, just fake it for every other ungrouped message.
     for i, message in enumerate(messages):
@@ -181,12 +184,14 @@ def conglomerate(messages, **config):
             continue
 
         # For ungrouped ones, replace them with a fake conglomerate
-        messages[i] = BaseConglomerator.produce_template([message], **config)
+        messages[i] = BaseConglomerator.produce_template(
+            [message], subject=subject, **config)
         # And fill out the fields that fully-implemented conglomerators would
         # normally fill out.
         messages[i].update({
             'link': msg2link(message, **config),
             'subtitle': msg2subtitle(message, **config),
+            'subjective': msg2subjective(message, subject=subject, **config),
             'secondary_icon': msg2secondary_icon(message, **config),
         })
 
