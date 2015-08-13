@@ -363,7 +363,9 @@ class ConglomerateBase(unittest.TestCase):
     @skip_on(['originals', 'expected'])
     def test_conglomerate(self):
         """ Does fedmsg.meta produce the expected conglomeration? """
-        actual = fedmsg.meta.conglomerate(self.originals, **self.config)
+        subject = getattr(self, 'subject', None)
+        actual = fedmsg.meta.conglomerate(
+            self.originals, subject, **self.config)
 
         # Delete the msg_ids field because it is bulky and I don't want to
         # bother with testing it (copying and pasting it).
