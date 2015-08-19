@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.14.1
+0.15.0
 ------
 
 - add support for cowsay command `578826834 <https://github.com/fedora-infra/fedmsg/commit/5788268342c1186507c7fc36db986814e9a8c198>`_
@@ -175,6 +175,14 @@ Changelog
 - Merge pull request #337 from fedora-infra/feature/fedmsg-map-threadpool `47c2e5e45 <https://github.com/fedora-infra/fedmsg/commit/47c2e5e456e178ee53de2d0998ab28fd1683e68c>`_
 - Flatten the threadpool workload. `e54f4357b <https://github.com/fedora-infra/fedmsg/commit/e54f4357b364f783b49c8bb3ce0579c96dd22369>`_
 - Merge pull request #338 from fedora-infra/feature/more-threads `f84dbab4f <https://github.com/fedora-infra/fedmsg/commit/f84dbab4f319f8e62e8e60e5d68b24033367543b>`_
+- add a msg2subjective method to fedmsg.meta `b21c26fa8 <https://github.com/fedora-infra/fedmsg/commit/b21c26fa89f737a0eee057be988224cbc2172787>`_
+- add a subjective() method to the BaseProcessor `bcca93046 <https://github.com/fedora-infra/fedmsg/commit/bcca930468b316b024758cc25d034cf57f089142>`_
+- test subjective messages in base test class `1b24093db <https://github.com/fedora-infra/fedmsg/commit/1b24093db674cb54abcaa9e7923a38ed3838c3a2>`_
+- if a processor doesn't have a subjective method, fall back to subtitle `ec464eb30 <https://github.com/fedora-infra/fedmsg/commit/ec464eb30685ab6a6cd61575536401bda549cb6a>`_
+- need to pass the subject to the processor `38235830a <https://github.com/fedora-infra/fedmsg/commit/38235830a65041dce1eff13ea3e31673ad3f29a6>`_
+- I suppose we could give this a default value `71e5a7eda <https://github.com/fedora-infra/fedmsg/commit/71e5a7edac0daae245aa1e3c411a58d5e4a1b935>`_
+- I believe we have to pass a username here for the subject `ad2f646ee <https://github.com/fedora-infra/fedmsg/commit/ad2f646ee422e4c477e57c481d954355092e223b>`_
+- we don't need a default for this, since there's no point in a subjective message without a subject `c9e4a522b <https://github.com/fedora-infra/fedmsg/commit/c9e4a522b8c55b0883021aa33d07e0c50c7c980e>`_
 - No need to rebuild fedmsg.meta processors `f9e064883 <https://github.com/fedora-infra/fedmsg/commit/f9e0648834336d814b467995dc789ab04f204060>`_
 - Move global declaration to the top. `c6c0c19a7 <https://github.com/fedora-infra/fedmsg/commit/c6c0c19a749850a2ed7d4dd677a0578e543ff257>`_
 - Fix a couple tests which try to reinitialize the processors with mocked config. `06ecdb5cd <https://github.com/fedora-infra/fedmsg/commit/06ecdb5cdf348aec6113d0ec96e32d534f80af03>`_
@@ -197,6 +205,13 @@ Changelog
 - 0.14.0 `bb527e15b <https://github.com/fedora-infra/fedmsg/commit/bb527e15b46c9ebcf127240022736362aadc2aad>`_
 - Fix two py3 encoding oversights. `6ac68cf46 <https://github.com/fedora-infra/fedmsg/commit/6ac68cf46269000f6be31bac88a119c9126b72ad>`_
 - Get the encoding story straight here. `f317544ce <https://github.com/fedora-infra/fedmsg/commit/f317544ce9591f78cc04f0db38d7861d97e6ca4a>`_
+- 0.14.1 `07e8e11ef <https://github.com/fedora-infra/fedmsg/commit/07e8e11ef7e787628c830d28d72ca08f1f173ca5>`_
+- Fix small typo in doc. `acc233196 <https://github.com/fedora-infra/fedmsg/commit/acc233196cf27598071e87d8d641c59e1899b5aa>`_
+- Fix up and test new subjective api. `adb1d1c53 <https://github.com/fedora-infra/fedmsg/commit/adb1d1c53e07b86bb9a8007dc7f11c94e68aae32>`_
+- This isn't necessary. `9da11d8fd <https://github.com/fedora-infra/fedmsg/commit/9da11d8fd673419f04bb925adadafea30392b713>`_
+- Merge pull request #344 from fedora-infra/feature/subjective-api `bf7d79745 <https://github.com/fedora-infra/fedmsg/commit/bf7d797451ce17c4ec27e16b94b01770d8bdde3f>`_
+- Reconcile the subjective API with the conglomerate API. `a268a2033 <https://github.com/fedora-infra/fedmsg/commit/a268a20338f89d5aeef83c2486b54e8be73a67bb>`_
+- Merge pull request #345 from fedora-infra/feature/subjective-conglomeration `ba62c92b8 <https://github.com/fedora-infra/fedmsg/commit/ba62c92b8f8a0d4d36cc9e31a70977b57cdd0421>`_
 
 0.9.3
 -----
@@ -1876,6 +1891,15 @@ Changelog
 - Restore functionality removed on accident. `16a38eb64 <https://github.com/fedora-infra/fedmsg/commit/16a38eb6477ef45a9e7cad459c4d1f46840a960c>`_
 - Conditionalize skippable imports in for the x509 tests. `6bb5fd0c4 <https://github.com/fedora-infra/fedmsg/commit/6bb5fd0c4e0d6adf38de72a59948fdf690d145d9>`_
 - Merge pull request #343 from fedora-infra/feature/py34-finish `c4808d8ce <https://github.com/fedora-infra/fedmsg/commit/c4808d8ce35c9982e38bee61942559984cad9421>`_
+- 0.14.0 `bb527e15b <https://github.com/fedora-infra/fedmsg/commit/bb527e15b46c9ebcf127240022736362aadc2aad>`_
+- Fix two py3 encoding oversights. `6ac68cf46 <https://github.com/fedora-infra/fedmsg/commit/6ac68cf46269000f6be31bac88a119c9126b72ad>`_
+- Get the encoding story straight here. `f317544ce <https://github.com/fedora-infra/fedmsg/commit/f317544ce9591f78cc04f0db38d7861d97e6ca4a>`_
+
+0.14.1
+------
+
+- Fix two py3 encoding oversights. `6ac68cf46 <https://github.com/fedora-infra/fedmsg/commit/6ac68cf46269000f6be31bac88a119c9126b72ad>`_
+- Get the encoding story straight here. `f317544ce <https://github.com/fedora-infra/fedmsg/commit/f317544ce9591f78cc04f0db38d7861d97e6ca4a>`_
 
 0.14.0
 ------
