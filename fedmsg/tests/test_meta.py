@@ -146,6 +146,7 @@ class Base(unittest.TestCase):
     msg = None
     expected_title = None
     expected_subti = None
+    expected_subjective = None
     expected_markup = None
     expected_link = None
     expected_icon = None
@@ -208,6 +209,14 @@ class Base(unittest.TestCase):
         """ Does fedmsg.meta produce the expected subtitle? """
         actual_subti = fedmsg.meta.msg2subtitle(self.msg, **self.config)
         self._equals(actual_subti, self.expected_subti)
+
+    @skip_on(['msg', 'expected_subjective'])
+    def test_subjective(self):
+        """ Does fedmsg.meta produce the expected subjective message? """
+        for subject, expected in self.expected_subjective.items():
+            actual_subjective = fedmsg.meta.msg2subjective(
+                self.msg, subject=subject, **self.config)
+            self._equals(actual_subjective, expected)
 
     @skip_on(['msg', 'expected_link'])
     def test_link(self):
@@ -289,6 +298,10 @@ class TestLoggerNormal(Base):
     expected_title = "logger.log"
     expected_subti = 'hello, world. (ralph)'
     expected_long_form = 'hello, world. (ralph)'
+    expected_subjective = {
+        'ralph': 'you logged "hello, world."',
+        'lmacken': expected_subti,
+    }
     expected_usernames = set(['ralph'])
 
     msg = {
@@ -350,7 +363,9 @@ class ConglomerateBase(unittest.TestCase):
     @skip_on(['originals', 'expected'])
     def test_conglomerate(self):
         """ Does fedmsg.meta produce the expected conglomeration? """
-        actual = fedmsg.meta.conglomerate(self.originals, **self.config)
+        subject = getattr(self, 'subject', None)
+        actual = fedmsg.meta.conglomerate(
+            self.originals, subject, **self.config)
 
         # Delete the msg_ids field because it is bulky and I don't want to
         # bother with testing it (copying and pasting it).

@@ -160,6 +160,10 @@ class BaseProcessor(object):
         """ Return a "subtitle" for the message. """
         return ""
 
+    def subjective(self, msg, subject, **config):
+        """ Return a "subjective" subtitle for the message. """
+        return ""
+
     def long_form(self, msg, **config):
         """ Return some paragraphs of text about a message. """
         return ""
@@ -216,7 +220,7 @@ class BaseConglomerator(object):
         self.processor = processor
         self._ = internationalization_callable
 
-    def conglomerate(self, messages, **conf):
+    def conglomerate(self, messages, subject=None, **conf):
         """ Top-level API entry point.  Given a list of messages, transform it
         into a list of conglomerates where possible.
         """
@@ -224,7 +228,7 @@ class BaseConglomerator(object):
         while constituents:
             for idx in reversed(indices):
                 messages.pop(idx)
-            messages.insert(idx, self.merge(constituents, **conf))
+            messages.insert(idx, self.merge(constituents, subject, **conf))
             indices, constituents = self.select_constituents(messages, **conf)
 
         return messages
@@ -261,7 +265,7 @@ class BaseConglomerator(object):
         return None, None
 
     @classmethod
-    def produce_template(cls, constituents, **config):
+    def produce_template(cls, constituents, subject, **config):
         """ Helper function used by `merge`.
         Produces the beginnings of a merged conglomerate message that needs to
         be later filled out by a subclass.
@@ -295,6 +299,7 @@ class BaseConglomerator(object):
             (msg['msg_id'], {
                 'title': fm.msg2title(msg, **config),
                 'subtitle': fm.msg2subtitle(msg, **config),
+                'subjective': fm.msg2subjective(msg, subject=subject, **config),
                 'link': fm.msg2link(msg, **config),
                 'icon': fm.msg2icon(msg, **config),
                 'secondary_icon': fm.msg2secondary_icon(msg, **config),
@@ -358,6 +363,6 @@ class BaseConglomerator(object):
         pass
 
     @abc.abstractmethod
-    def merge(self, constituents, **config):
+    def merge(self, constituents, subject, **config):
         """ Given N presumably matching messages, return one merged message """
         pass

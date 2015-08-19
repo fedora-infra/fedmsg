@@ -55,3 +55,9 @@ class LoggerProcessor(BaseProcessor):
         else:
             # *OLD* messages in datanommer's db don't have a username.
             return set()
+
+    def subjective(self, msg, subject, **config):
+        if msg['username'] == subject:
+            tmpl = self._('you logged "{log}"')
+            return tmpl.format(**msg['msg'])
+        return None  # This causes our caller to default to using self.subtitle
