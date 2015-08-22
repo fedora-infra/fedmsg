@@ -283,7 +283,8 @@ class FedMsgContext(object):
 
                 self.c['certname'] = self.c['certnames'][cert_index]
             else:
-                self.c['gpg_signing_key'] = self.c['gpg_keys'][cert_index]
+                if 'gpg_signing_key' not in self.c:
+                    self.c['gpg_signing_key'] = self.c['gpg_keys'][self.hostname]
 
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)
