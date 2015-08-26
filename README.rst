@@ -4,7 +4,10 @@ fedmsg -- Fedora Messaging Client API
 .. split here
 
 Utilities used around Fedora Infrastructure to send and receive messages.
-Please see ``doc/`` or https://fedmsg.readthedocs.org/ for more info.
+Please see ``doc/`` or https://fedmsg.readthedocs.org/ for more info. Advanced
+functionality utilizes the Moksha framework, which is not included as a
+dependency by default. To install it along with all the commands which require
+it, install the 'full' extra (e.g., ``pip install fedmsg[full]``).
 
 Build Status
 ------------
