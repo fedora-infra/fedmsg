@@ -70,12 +70,10 @@ install_requires = [
     'requests',
     'pygments',
     'six',
-    #'daemon',
     'psutil',
-    #'arrow',  # This is actually optional.
 ]
 extras_require = {
-    'full': [
+    'hub': [
         'moksha.hub>=1.3.0',
     ],
     'crypto': [
@@ -148,23 +146,23 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            "fedmsg-logger=fedmsg.commands.logger:logger [full]",
+            "fedmsg-logger=fedmsg.commands.logger:logger [hub]",
             "fedmsg-tail=fedmsg.commands.tail:tail",
-            "fedmsg-hub=fedmsg.commands.hub:hub [full]",
-            "fedmsg-relay=fedmsg.commands.relay:relay [full]",
-            "fedmsg-gateway=fedmsg.commands.gateway:gateway [full]",
+            "fedmsg-hub=fedmsg.commands.hub:hub [hub]",
+            "fedmsg-relay=fedmsg.commands.relay:relay [hub]",
+            "fedmsg-gateway=fedmsg.commands.gateway:gateway [hub]",
             #"fedmsg-config=fedmsg.commands.config:config",
-            "fedmsg-irc=fedmsg.commands.ircbot:ircbot [full]",
-            "fedmsg-collectd=fedmsg.commands.collectd:collectd [full]",
+            "fedmsg-irc=fedmsg.commands.ircbot:ircbot [hub]",
+            "fedmsg-collectd=fedmsg.commands.collectd:collectd [hub]",
             "fedmsg-announce=fedmsg.commands.announce:announce",
             "fedmsg-trigger=fedmsg.commands.trigger:trigger",
             "fedmsg-dg-replay=fedmsg.commands.replay:replay",
         ],
         'moksha.consumer': [
-            "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer [full]",
-            "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer [full]",
-            "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer [full]",
-            "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer [full]",
+            "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer [hub]",
+            "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer [hub]",
+            "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer [hub]",
+            "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer [hub]",
         ],
         'moksha.producer': [
         ],
