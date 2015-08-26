@@ -73,15 +73,16 @@ install_requires = [
     #'daemon',
     'psutil',
     #'arrow',  # This is actually optional.
-
-    # These are "optional" for now to make installation from pypi easier.
-    #'M2Crypto',        # for message validation
-    #'m2ext',           # for message validation
-    #'cryptography',    # for message signing
 ]
 extras_require = {
     'full': [
         'moksha.hub>=1.3.0',
+    ],
+    'crypto': [
+        # These are "optional" for now to make installation from pypi easier.
+        'M2Crypto',        # for message validation
+        'm2ext',           # for message validation
+        'cryptography',    # for message signing
     ],
 }
 tests_require = [
