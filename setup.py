@@ -67,7 +67,6 @@ except Exception:
 install_requires = [
     'pyzmq',
     'kitchen',
-    'moksha.hub>=1.3.0',
     'requests',
     'pygments',
     'six',
@@ -80,6 +79,11 @@ install_requires = [
     #'m2ext',           # for message validation
     #'cryptography',    # for message signing
 ]
+extras_require = {
+    'full': [
+        'moksha.hub>=1.3.0',
+    ],
+}
 tests_require = [
     'nose',
     'sqlalchemy',  # For the persistent-store test(s).
@@ -107,6 +111,7 @@ setup(
     url='https://github.com/fedora-infra/fedmsg/',
     license='LGPLv2+',
     install_requires=install_requires,
+    extras_require=extras_require,
     tests_require=tests_require,
     test_suite='nose.collector',
     packages=[
@@ -142,30 +147,30 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            "fedmsg-logger=fedmsg.commands.logger:logger",
+            "fedmsg-logger=fedmsg.commands.logger:logger [full]",
             "fedmsg-tail=fedmsg.commands.tail:tail",
-            "fedmsg-hub=fedmsg.commands.hub:hub",
-            "fedmsg-relay=fedmsg.commands.relay:relay",
-            "fedmsg-gateway=fedmsg.commands.gateway:gateway",
+            "fedmsg-hub=fedmsg.commands.hub:hub [full]",
+            "fedmsg-relay=fedmsg.commands.relay:relay [full]",
+            "fedmsg-gateway=fedmsg.commands.gateway:gateway [full]",
             #"fedmsg-config=fedmsg.commands.config:config",
-            "fedmsg-irc=fedmsg.commands.ircbot:ircbot",
-            "fedmsg-collectd=fedmsg.commands.collectd:collectd",
+            "fedmsg-irc=fedmsg.commands.ircbot:ircbot [full]",
+            "fedmsg-collectd=fedmsg.commands.collectd:collectd [full]",
             "fedmsg-announce=fedmsg.commands.announce:announce",
             "fedmsg-trigger=fedmsg.commands.trigger:trigger",
             "fedmsg-dg-replay=fedmsg.commands.replay:replay",
         ],
         'moksha.consumer': [
-            "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",
-            "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer",
-            "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer",
-            "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer",
+            "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer [full]",
+            "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer [full]",
+            "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer [full]",
+            "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer [full]",
         ],
         'moksha.producer': [
         ],
         # fedmsg core only provides one metadata provider.
         'fedmsg.meta': [
-            "logger=fedmsg.meta.logger:LoggerProcessor",
-            "announce=fedmsg.meta.announce:AnnounceProcessor",
+            "logger=fedmsg.meta.logger:LoggerProcessor [full]",
+            "announce=fedmsg.meta.announce:AnnounceProcessor [full]",
         ],
     },
     **data_config
