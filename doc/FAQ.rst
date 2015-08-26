@@ -43,7 +43,7 @@ Frequently Asked Questions
     <https://github.com/fedora-infra/fedmsg/issues/new>`_.
 
 - I tried installing the ``crypto`` extra but got an error about
-  something called "swig" during the ``M2Crypto`` installation.
+  something called "swig" during the M2Crypto installation.
 
   - If you try to install fedmsg from the Python sources (including
     PyPI), then installation may fail with an error message resembling
@@ -53,24 +53,22 @@ Frequently Asked Questions
         error: command 'swig' failed with exit status 1
         ...
 
-    This happens because the ``M2Crypto`` dependency of fedmsg requires
-    the non-Python package ``swig`` during it's compilation process.
-    Since this can't be readily expressed from within the Python
-    ecosystem, the setup script (unfortunately) just assumes that it's
-    present.
+    This happens because the M2Crypto dependency of fedmsg requires the
+    non-Python package "swig" during it's compilation process.  Since
+    this can't be readily expressed from within the Python ecosystem,
+    the setup script (unfortunately) just assumes that it's present.
 
     The easiest way to avoid this problem is to install fedmsg using
     your system package manager (*e.g.*, ``dnf install fedmsg``). This
     is the recommended way to get fedmsg and has a much higher chance
-    of working (if it doesn't, then the package is likely broken, and
-    the maintainer(s) will want to know about that).
+    of working. (If it doesn't, then the package is likely broken, and
+    the maintainer(s) will want to know about that.)
 
     If you have a specific reason to want to install fedmsg from
-    source, then installing ``M2Crypto`` with you system package
-    manager (the package is likely called something along the lines of
+    source, then installing M2Crypto with you system package manager
+    (the package is likely called something along the lines of
     ``python-m2crypto``) should satisfy the requirement and allow
     fedmsg to successfully install.  If you're unlucky and your distro
-    doesn't have a packaged version of ``M2Crypto``, then installing
-    ``swig`` (which is just called plain ``swig`` in most package
-    repositories) should allow ``pip`` to successfully build
-    ``M2Crypto`` itself during the installation of fedmsg.
+    doesn't have a packaged version of M2Crypto, then installing swig
+    (which is just called plain ``swig`` in most package repositories)
+    should allow M2Crypto to build successfully.
