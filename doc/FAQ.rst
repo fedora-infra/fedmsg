@@ -27,7 +27,7 @@ Frequently Asked Questions
   - Is the formatting just different?  Try the following to get those "nice"
     messages::
 
-        $ sudo yum install python-fedmsg-meta-fedora-infrastructure
+        $ sudo dnf install python-fedmsg-meta-fedora-infrastructure
         $ fedmsg-tail --terse
 
   - What you were seeing before was the raw JSON content of the messages.
