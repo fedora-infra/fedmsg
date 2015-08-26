@@ -60,6 +60,17 @@ You should also run the tests, just to make sure everything is sane::
 
     (fedmsg)$ python setup.py test
 
+If you'd like to install the extra dependencies (recommended for development;
+otherwise, not all commands will be functional), then you can use this
+command::
+
+    (fedmsg)$ pip install -e .[all]
+
+.. note::  As discussed in the FAQ, M2Crypto requires the swig command to be
+   available in order to build successfully.  It's recommended that you
+   install M2Crypto using your system package manager, which can be done with
+   ``dnf install python-m2crypto`` on Fedora.
+
 Try out the shell commands
 --------------------------
 
