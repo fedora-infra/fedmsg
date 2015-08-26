@@ -83,6 +83,15 @@ extras_require = {
         'cryptography',    # for message signing
     ],
 }
+extras_require['all'] = [
+    requirement
+    for requirements in extras_require.values()
+    for requirement in requirements
+]
+extras_require['all'].extend([
+    'daemon',
+    'arrow',
+])
 tests_require = [
     'nose',
     'sqlalchemy',  # For the persistent-store test(s).
