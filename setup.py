@@ -68,30 +68,32 @@ install_requires = [
     'pyzmq',
     'kitchen',
     'requests',
-    'pygments',
     'six',
-    'psutil',
+    'arrow',           # not *necessarily* required
+    'cryptography',    # for message signing
 ]
 extras_require = {
-    'hub': [
-        'moksha.hub>=1.3.0',
-    ],
     'crypto': [
         # These are "optional" for now to make installation from pypi easier.
-        'M2Crypto',        # for message validation
-        'm2ext',           # for message validation
-        'cryptography',    # for message signing
+        'M2Crypto',    # for message validation
+        'm2ext',       # for message validation
+    ],
+    'commands': [
+        'daemon',      # not *necessarily* required
+        'pygments',
+        'psutil',
+    ],
+    'consumers': [
+        'moksha.hub>=1.3.0',
+        'pygments',
+        'psutil',
     ],
 }
-extras_require['all'] = [
+extras_require['all'] = list({
     requirement
     for requirements in extras_require.values()
     for requirement in requirements
-]
-extras_require['all'].extend([
-    'daemon',
-    'arrow',
-])
+})
 tests_require = [
     'nose',
     'sqlalchemy',  # For the persistent-store test(s).
@@ -155,23 +157,23 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            "fedmsg-logger=fedmsg.commands.logger:logger [hub]",
-            "fedmsg-tail=fedmsg.commands.tail:tail",
-            "fedmsg-hub=fedmsg.commands.hub:hub [hub]",
-            "fedmsg-relay=fedmsg.commands.relay:relay [hub]",
-            "fedmsg-gateway=fedmsg.commands.gateway:gateway [hub]",
-            #"fedmsg-config=fedmsg.commands.config:config",
-            "fedmsg-irc=fedmsg.commands.ircbot:ircbot [hub]",
-            "fedmsg-collectd=fedmsg.commands.collectd:collectd [hub]",
-            "fedmsg-announce=fedmsg.commands.announce:announce",
-            "fedmsg-trigger=fedmsg.commands.trigger:trigger",
-            "fedmsg-dg-replay=fedmsg.commands.replay:replay",
+            "fedmsg-logger=fedmsg.commands.logger:logger [commands]",
+            "fedmsg-tail=fedmsg.commands.tail:tail [commands]",
+            "fedmsg-collectd=fedmsg.commands.collectd:collectd [commands]",
+            "fedmsg-announce=fedmsg.commands.announce:announce [commands]",
+            "fedmsg-trigger=fedmsg.commands.trigger:trigger [commands]",
+            "fedmsg-dg-replay=fedmsg.commands.replay:replay [commands]",
+            #"fedmsg-config=fedmsg.commands.config:config [commands]",
+            "fedmsg-hub=fedmsg.commands.hub:hub [consumers]",
+            "fedmsg-relay=fedmsg.commands.relay:relay [consumers]",
+            "fedmsg-gateway=fedmsg.commands.gateway:gateway [consumers]",
+            "fedmsg-irc=fedmsg.commands.ircbot:ircbot [consumers]",
         ],
         'moksha.consumer': [
-            "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer [hub]",
-            "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer [hub]",
-            "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer [hub]",
-            "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer [hub]",
+            "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer [consumers]", # require moksha.hub
+            "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer [consumers]", # require moksha.hub
+            "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer [consumers]", # require moksha.hub
+            "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer [consumers]", # require moksha.hub
         ],
         'moksha.producer': [
         ],
