@@ -170,10 +170,10 @@ setup(
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot [consumers]",
         ],
         'moksha.consumer': [
-            "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer [consumers]", # require moksha.hub
-            "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer [consumers]", # require moksha.hub
-            "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer [consumers]", # require moksha.hub
-            "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer [consumers]", # require moksha.hub
+            "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer [consumers]",
+            "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer [consumers]",
+            "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer [consumers]",
+            "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer [consumers]",
         ],
         'moksha.producer': [
         ],
