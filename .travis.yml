@@ -6,7 +6,7 @@ python:
  - "3.4"
 
 install:
- - pip install -e .[hub]
+ - pip install -e .[all]
  - pip install nose mock sqlalchemy unittest2
 script: nosetests -v
 notifications:
