@@ -89,11 +89,11 @@ extras_require = {
         'psutil',
     ],
 }
-extras_require['all'] = list({
+extras_require['all'] = list(set(
     requirement
     for requirements in extras_require.values()
     for requirement in requirements
-})
+))
 tests_require = [
     'nose',
     'sqlalchemy',  # For the persistent-store test(s).
