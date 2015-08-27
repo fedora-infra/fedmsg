@@ -79,12 +79,12 @@ extras_require = {
         'm2ext',       # for message validation
     ],
     'commands': [
-        'daemon',      # not *necessarily* required
         'pygments',
         'psutil',
     ],
     'consumers': [
         'moksha.hub>=1.3.0',
+        'daemon',      # not *necessarily* required
         'pygments',
         'psutil',
     ],
