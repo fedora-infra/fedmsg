@@ -14,19 +14,19 @@ using that.
 
 You can install it with::
 
-    $ sudo yum install python-virtualenvwrapper
+    $ sudo dnf install python-virtualenvwrapper
 
 .. note:: If you decide not to use python-virtualenvwrapper, you can always use
    latest update of fedmsg in fedora.  If you are doing this, simply ignore all
    ``mkvirtualenv`` and ``workon`` commands in these instructions.  You can
-   install fedmsg with ``sudo yum install fedmsg``.
+   install fedmsg with ``sudo dnf install fedmsg``.
 
 Development Dependencies
 ------------------------
 
 Get::
 
-    $ sudo yum install python-virtualenv openssl-devel zeromq-devel gcc
+    $ sudo dnf install python-virtualenv openssl-devel zeromq-devel gcc
 
 Cloning the Upstream Git Repo
 -----------------------------
@@ -50,11 +50,16 @@ Create a new, empty virtualenv and install all the dependencies from `pypi
 
     $ cd fedmsg
     $ mkvirtualenv fedmsg
-    (fedmsg)$ python setup.py develop
+    (fedmsg)$ pip install -e .[all]
 
 .. note::  If the mkvirtualenv command is unavailable try
    ``source /usr/bin/virtualenvwrapper.sh`` on Fedora (if you do not run Fedora
    you might have to adjust the command a little).
+
+.. note::  As discussed in the FAQ, M2Crypto requires the swig command to be
+   available in order to build successfully.  It's recommended that you
+   install M2Crypto using your system package manager, which can be done with
+   ``dnf install python-m2crypto`` on Fedora.
 
 You should also run the tests, just to make sure everything is sane::
 

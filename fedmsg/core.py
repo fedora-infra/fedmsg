@@ -361,7 +361,6 @@ class FedMsgContext(object):
         for subscriber in subs:
             poller.register(subscriber, zmq.POLLIN)
 
-        # TODO -- what if user wants to pass in validate_signatures in **kw?
         validate = self.c.get('validate_signatures', False)
 
         # Poll that poller.  This is much more efficient than it used to be.
