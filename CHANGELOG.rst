@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.15.0
+0.16.0
 ------
 
 - add support for cowsay command `578826834 <https://github.com/fedora-infra/fedmsg/commit/5788268342c1186507c7fc36db986814e9a8c198>`_
@@ -212,6 +212,35 @@ Changelog
 - Merge pull request #344 from fedora-infra/feature/subjective-api `bf7d79745 <https://github.com/fedora-infra/fedmsg/commit/bf7d797451ce17c4ec27e16b94b01770d8bdde3f>`_
 - Reconcile the subjective API with the conglomerate API. `a268a2033 <https://github.com/fedora-infra/fedmsg/commit/a268a20338f89d5aeef83c2486b54e8be73a67bb>`_
 - Merge pull request #345 from fedora-infra/feature/subjective-conglomeration `ba62c92b8 <https://github.com/fedora-infra/fedmsg/commit/ba62c92b8f8a0d4d36cc9e31a70977b57cdd0421>`_
+- 0.15.0 `c17a04b20 <https://github.com/fedora-infra/fedmsg/commit/c17a04b20f814cd391cdb8d1904f0e0e7c4ceb97>`_
+- core: fix gpg signing `3e98dabce <https://github.com/fedora-infra/fedmsg/commit/3e98dabce2d203e713f3df0986e7b949b6b7dcc0>`_
+- Merge pull request #347 from mathstuf/config-parse-gpg-key `3c65e7b11 <https://github.com/fedora-infra/fedmsg/commit/3c65e7b117d34197df6e2ce2b3ff0aec8f79cd6f>`_
+- Flag moksha as an extra requirement `4677e38bc <https://github.com/fedora-infra/fedmsg/commit/4677e38bca946a3b8e15dd836b5bc9a60adf257b>`_
+- Update README to note Moksha as extra dependency `a299512aa <https://github.com/fedora-infra/fedmsg/commit/a299512aae12468d33bb83cc2c27c7cf17b302b1>`_
+- Remove Moksha unncessary Moksha requirements `428d4fcc6 <https://github.com/fedora-infra/fedmsg/commit/428d4fcc65de1cd23b61e2ddd149cac4d491d222>`_
+- Provide argument to configure signature validation `e223b09ef <https://github.com/fedora-infra/fedmsg/commit/e223b09ef35df1ab3d421e4f14a182187e692414>`_
+- Specify cryptographic dependencies as an extra `457577ba8 <https://github.com/fedora-infra/fedmsg/commit/457577ba8a128265bce4f508b7cbf78e7437d70e>`_
+- Rename 'full' extra to 'hub' `bc922b991 <https://github.com/fedora-infra/fedmsg/commit/bc922b9911f72addc140bff4fb1dac39446910d9>`_
+- Add an 'all' extra to setup.py `3874a66ee <https://github.com/fedora-infra/fedmsg/commit/3874a66ee11c522f5d4dd0683297cc4d3803d798>`_
+- Update FAQ with M2Crypto help `938320ca4 <https://github.com/fedora-infra/fedmsg/commit/938320ca41493d719f780138f28ae9d3abf95e14>`_
+- Revise phrasing and syntax of M2Crypto FAQ `00ac71406 <https://github.com/fedora-infra/fedmsg/commit/00ac71406224dcc4003b75cd2fd780985e513cde>`_
+- Update Development documentation `8704d95cb <https://github.com/fedora-infra/fedmsg/commit/8704d95cb8d3d5e823df54f16a906a5788f6ab44>`_
+- Bump up version number `cd3f13e67 <https://github.com/fedora-infra/fedmsg/commit/cd3f13e674841ae346960cda5b238b68e720de07>`_
+- Update Travis CI configuration `4fa4bf840 <https://github.com/fedora-infra/fedmsg/commit/4fa4bf840e6530e413e210945f23fc1a609b0a4a>`_
+- Restructure extras to (kind of) mirror RPMs `d4665699e <https://github.com/fedora-infra/fedmsg/commit/d4665699ec13f63c8d86caba597e060aadf03358>`_
+- Move the daemon dependency to the consumers extra `dfe594da6 <https://github.com/fedora-infra/fedmsg/commit/dfe594da616112066b9ad3147d269b24007ff44a>`_
+- Remove mention of extras from README `72f2f3f43 <https://github.com/fedora-infra/fedmsg/commit/72f2f3f43349f2c0c320db6745969a2920a0a787>`_
+- Update documentation `ca2da0df0 <https://github.com/fedora-infra/fedmsg/commit/ca2da0df02d36ce0bb5f73adfa957efdb34ff94b>`_
+- Require full set of dependencies for Travis CI `70846b6ee <https://github.com/fedora-infra/fedmsg/commit/70846b6eec812847f2f9111506b91a2b931970b8>`_
+- Don't require 'crypto' dependencies for Travis CI `993ee182d <https://github.com/fedora-infra/fedmsg/commit/993ee182dbfe97a9ebccb101c9f0853ce0f0efa7>`_
+- Python 2.6 compatibility fix `b988931ab <https://github.com/fedora-infra/fedmsg/commit/b988931ab4c32ce72c9a646ce749fef263db5c3a>`_
+- Remove development notes `30869a954 <https://github.com/fedora-infra/fedmsg/commit/30869a9543a4164e4e7d70cd8ee1f3e036c56cd0>`_
+- Replace references to yum with dnf `770465baf <https://github.com/fedora-infra/fedmsg/commit/770465bafff56cf20ad21d0b84061da750d97c31>`_
+- Merge pull request #349 from yazman/extra_deps `d4f010814 <https://github.com/fedora-infra/fedmsg/commit/d4f0108140194f9c46b419f8e1d233d5effe1524>`_
+- core: split tail_message `89fd036c7 <https://github.com/fedora-infra/fedmsg/commit/89fd036c7cc54f7c684de5b505fbb773b958814f>`_
+- Merge pull request #348 from mathstuf/support-external-polling `f61289920 <https://github.com/fedora-infra/fedmsg/commit/f612899209caa503f6360ee65060388e75a10415>`_
+- Add a pre_fire_hook callback to fedmsg.publish. `3acd9a2b8 <https://github.com/fedora-infra/fedmsg/commit/3acd9a2b878d3db18b1dbe71e60178054b045d07>`_
+- Merge pull request #350 from fedora-infra/feature/pre-fire-hook `4d1a4b07b <https://github.com/fedora-infra/fedmsg/commit/4d1a4b07b170225b4c62932e9bcf331de29373ac>`_
 
 0.9.3
 -----
@@ -1872,6 +1901,14 @@ Changelog
 - Merge pull request #337 from fedora-infra/feature/fedmsg-map-threadpool `47c2e5e45 <https://github.com/fedora-infra/fedmsg/commit/47c2e5e456e178ee53de2d0998ab28fd1683e68c>`_
 - Flatten the threadpool workload. `e54f4357b <https://github.com/fedora-infra/fedmsg/commit/e54f4357b364f783b49c8bb3ce0579c96dd22369>`_
 - Merge pull request #338 from fedora-infra/feature/more-threads `f84dbab4f <https://github.com/fedora-infra/fedmsg/commit/f84dbab4f319f8e62e8e60e5d68b24033367543b>`_
+- add a msg2subjective method to fedmsg.meta `b21c26fa8 <https://github.com/fedora-infra/fedmsg/commit/b21c26fa89f737a0eee057be988224cbc2172787>`_
+- add a subjective() method to the BaseProcessor `bcca93046 <https://github.com/fedora-infra/fedmsg/commit/bcca930468b316b024758cc25d034cf57f089142>`_
+- test subjective messages in base test class `1b24093db <https://github.com/fedora-infra/fedmsg/commit/1b24093db674cb54abcaa9e7923a38ed3838c3a2>`_
+- if a processor doesn't have a subjective method, fall back to subtitle `ec464eb30 <https://github.com/fedora-infra/fedmsg/commit/ec464eb30685ab6a6cd61575536401bda549cb6a>`_
+- need to pass the subject to the processor `38235830a <https://github.com/fedora-infra/fedmsg/commit/38235830a65041dce1eff13ea3e31673ad3f29a6>`_
+- I suppose we could give this a default value `71e5a7eda <https://github.com/fedora-infra/fedmsg/commit/71e5a7edac0daae245aa1e3c411a58d5e4a1b935>`_
+- I believe we have to pass a username here for the subject `ad2f646ee <https://github.com/fedora-infra/fedmsg/commit/ad2f646ee422e4c477e57c481d954355092e223b>`_
+- we don't need a default for this, since there's no point in a subjective message without a subject `c9e4a522b <https://github.com/fedora-infra/fedmsg/commit/c9e4a522b8c55b0883021aa33d07e0c50c7c980e>`_
 - No need to rebuild fedmsg.meta processors `f9e064883 <https://github.com/fedora-infra/fedmsg/commit/f9e0648834336d814b467995dc789ab04f204060>`_
 - Move global declaration to the top. `c6c0c19a7 <https://github.com/fedora-infra/fedmsg/commit/c6c0c19a749850a2ed7d4dd677a0578e543ff257>`_
 - Fix a couple tests which try to reinitialize the processors with mocked config. `06ecdb5cd <https://github.com/fedora-infra/fedmsg/commit/06ecdb5cdf348aec6113d0ec96e32d534f80af03>`_
@@ -1894,6 +1931,31 @@ Changelog
 - 0.14.0 `bb527e15b <https://github.com/fedora-infra/fedmsg/commit/bb527e15b46c9ebcf127240022736362aadc2aad>`_
 - Fix two py3 encoding oversights. `6ac68cf46 <https://github.com/fedora-infra/fedmsg/commit/6ac68cf46269000f6be31bac88a119c9126b72ad>`_
 - Get the encoding story straight here. `f317544ce <https://github.com/fedora-infra/fedmsg/commit/f317544ce9591f78cc04f0db38d7861d97e6ca4a>`_
+- 0.14.1 `07e8e11ef <https://github.com/fedora-infra/fedmsg/commit/07e8e11ef7e787628c830d28d72ca08f1f173ca5>`_
+- Fix small typo in doc. `acc233196 <https://github.com/fedora-infra/fedmsg/commit/acc233196cf27598071e87d8d641c59e1899b5aa>`_
+- Fix up and test new subjective api. `adb1d1c53 <https://github.com/fedora-infra/fedmsg/commit/adb1d1c53e07b86bb9a8007dc7f11c94e68aae32>`_
+- This isn't necessary. `9da11d8fd <https://github.com/fedora-infra/fedmsg/commit/9da11d8fd673419f04bb925adadafea30392b713>`_
+- Merge pull request #344 from fedora-infra/feature/subjective-api `bf7d79745 <https://github.com/fedora-infra/fedmsg/commit/bf7d797451ce17c4ec27e16b94b01770d8bdde3f>`_
+- Reconcile the subjective API with the conglomerate API. `a268a2033 <https://github.com/fedora-infra/fedmsg/commit/a268a20338f89d5aeef83c2486b54e8be73a67bb>`_
+- Merge pull request #345 from fedora-infra/feature/subjective-conglomeration `ba62c92b8 <https://github.com/fedora-infra/fedmsg/commit/ba62c92b8f8a0d4d36cc9e31a70977b57cdd0421>`_
+
+0.15.0
+------
+
+- add a msg2subjective method to fedmsg.meta `b21c26fa8 <https://github.com/fedora-infra/fedmsg/commit/b21c26fa89f737a0eee057be988224cbc2172787>`_
+- add a subjective() method to the BaseProcessor `bcca93046 <https://github.com/fedora-infra/fedmsg/commit/bcca930468b316b024758cc25d034cf57f089142>`_
+- test subjective messages in base test class `1b24093db <https://github.com/fedora-infra/fedmsg/commit/1b24093db674cb54abcaa9e7923a38ed3838c3a2>`_
+- if a processor doesn't have a subjective method, fall back to subtitle `ec464eb30 <https://github.com/fedora-infra/fedmsg/commit/ec464eb30685ab6a6cd61575536401bda549cb6a>`_
+- need to pass the subject to the processor `38235830a <https://github.com/fedora-infra/fedmsg/commit/38235830a65041dce1eff13ea3e31673ad3f29a6>`_
+- I suppose we could give this a default value `71e5a7eda <https://github.com/fedora-infra/fedmsg/commit/71e5a7edac0daae245aa1e3c411a58d5e4a1b935>`_
+- I believe we have to pass a username here for the subject `ad2f646ee <https://github.com/fedora-infra/fedmsg/commit/ad2f646ee422e4c477e57c481d954355092e223b>`_
+- we don't need a default for this, since there's no point in a subjective message without a subject `c9e4a522b <https://github.com/fedora-infra/fedmsg/commit/c9e4a522b8c55b0883021aa33d07e0c50c7c980e>`_
+- Fix small typo in doc. `acc233196 <https://github.com/fedora-infra/fedmsg/commit/acc233196cf27598071e87d8d641c59e1899b5aa>`_
+- Fix up and test new subjective api. `adb1d1c53 <https://github.com/fedora-infra/fedmsg/commit/adb1d1c53e07b86bb9a8007dc7f11c94e68aae32>`_
+- This isn't necessary. `9da11d8fd <https://github.com/fedora-infra/fedmsg/commit/9da11d8fd673419f04bb925adadafea30392b713>`_
+- Merge pull request #344 from fedora-infra/feature/subjective-api `bf7d79745 <https://github.com/fedora-infra/fedmsg/commit/bf7d797451ce17c4ec27e16b94b01770d8bdde3f>`_
+- Reconcile the subjective API with the conglomerate API. `a268a2033 <https://github.com/fedora-infra/fedmsg/commit/a268a20338f89d5aeef83c2486b54e8be73a67bb>`_
+- Merge pull request #345 from fedora-infra/feature/subjective-conglomeration `ba62c92b8 <https://github.com/fedora-infra/fedmsg/commit/ba62c92b8f8a0d4d36cc9e31a70977b57cdd0421>`_
 
 0.14.1
 ------
