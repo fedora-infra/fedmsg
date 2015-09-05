@@ -67,19 +67,33 @@ except Exception:
 install_requires = [
     'pyzmq',
     'kitchen',
-    'moksha.hub>=1.3.0',
     'requests',
-    'pygments',
     'six',
-    #'daemon',
-    'psutil',
-    #'arrow',  # This is actually optional.
-
-    # These are "optional" for now to make installation from pypi easier.
-    #'M2Crypto',        # for message validation
-    #'m2ext',           # for message validation
-    #'cryptography',    # for message signing
+    'arrow',           # not *necessarily* required
+    'cryptography',    # for message signing
 ]
+extras_require = {
+    'crypto': [
+        # These are "optional" for now to make installation from pypi easier.
+        'M2Crypto',    # for message validation
+        'm2ext',       # for message validation
+    ],
+    'commands': [
+        'pygments',
+        'psutil',
+    ],
+    'consumers': [
+        'moksha.hub>=1.3.0',
+        'daemon',      # not *necessarily* required
+        'pygments',
+        'psutil',
+    ],
+}
+extras_require['all'] = list(set(
+    requirement
+    for requirements in extras_require.values()
+    for requirement in requirements
+))
 tests_require = [
     'nose',
     'sqlalchemy',  # For the persistent-store test(s).
@@ -99,7 +113,7 @@ if sys.version_info[0] == 2:
 
 setup(
     name='fedmsg',
-    version='0.15.0',
+    version='0.16.0',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -107,6 +121,7 @@ setup(
     url='https://github.com/fedora-infra/fedmsg/',
     license='LGPLv2+',
     install_requires=install_requires,
+    extras_require=extras_require,
     tests_require=tests_require,
     test_suite='nose.collector',
     packages=[
@@ -142,23 +157,23 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            "fedmsg-logger=fedmsg.commands.logger:logger",
-            "fedmsg-tail=fedmsg.commands.tail:tail",
-            "fedmsg-hub=fedmsg.commands.hub:hub",
-            "fedmsg-relay=fedmsg.commands.relay:relay",
-            "fedmsg-gateway=fedmsg.commands.gateway:gateway",
-            #"fedmsg-config=fedmsg.commands.config:config",
-            "fedmsg-irc=fedmsg.commands.ircbot:ircbot",
-            "fedmsg-collectd=fedmsg.commands.collectd:collectd",
-            "fedmsg-announce=fedmsg.commands.announce:announce",
-            "fedmsg-trigger=fedmsg.commands.trigger:trigger",
-            "fedmsg-dg-replay=fedmsg.commands.replay:replay",
+            "fedmsg-logger=fedmsg.commands.logger:logger [commands]",
+            "fedmsg-tail=fedmsg.commands.tail:tail [commands]",
+            "fedmsg-collectd=fedmsg.commands.collectd:collectd [commands]",
+            "fedmsg-announce=fedmsg.commands.announce:announce [commands]",
+            "fedmsg-trigger=fedmsg.commands.trigger:trigger [commands]",
+            "fedmsg-dg-replay=fedmsg.commands.replay:replay [commands]",
+            #"fedmsg-config=fedmsg.commands.config:config [commands]",
+            "fedmsg-hub=fedmsg.commands.hub:hub [consumers]",
+            "fedmsg-relay=fedmsg.commands.relay:relay [consumers]",
+            "fedmsg-gateway=fedmsg.commands.gateway:gateway [consumers]",
+            "fedmsg-irc=fedmsg.commands.ircbot:ircbot [consumers]",
         ],
         'moksha.consumer': [
-            "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer",
-            "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer",
-            "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer",
-            "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer",
+            "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer [consumers]",
+            "fedmsg-relay=fedmsg.consumers.relay:RelayConsumer [consumers]",
+            "fedmsg-gateway=fedmsg.consumers.gateway:GatewayConsumer [consumers]",
+            "fedmsg-ircbot=fedmsg.consumers.ircbot:IRCBotConsumer [consumers]",
         ],
         'moksha.producer': [
         ],

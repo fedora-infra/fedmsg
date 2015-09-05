@@ -28,7 +28,7 @@ The basics
 
 First install fedmsg::
 
-    $ sudo yum install fedmsg
+    $ sudo dnf install fedmsg
 
 Now you have some ``fedmsg-*`` cli tools like ``fedmsg-tail`` and
 ``fedmsg-logger``.
@@ -53,7 +53,7 @@ terminal does.
 
 Install fedmsg-relay and start it::
 
-    $ sudo yum install fedmsg-relay
+    $ sudo dnf install fedmsg-relay
     $ sudo systemctl restart fedmsg-relay
     $ sudo systemctl enable fedmsg-relay
 
@@ -158,7 +158,7 @@ Setting up postgres
 
 Here, set up a postgres database::
 
-    $ sudo yum install postgresql-server python-psycopg2
+    $ sudo dnf install postgresql-server python-psycopg2
     $ postgresql-setup initdb
 
 Edit the ``/var/lib/pgsql/data/pg_hba.conf`` as the user postgres. You might
@@ -193,7 +193,7 @@ Setting up datanommer
 
 Install it::
 
-    $ sudo yum install fedmsg-hub python-datanommer-consumer datanommer-commands
+    $ sudo dnf install fedmsg-hub python-datanommer-consumer datanommer-commands
 
 Edit the configuration to 1) be enabled, 2) point at your newly created
 postgres db.  Edit ``/etc/fedmsg.d/datanommer.py`` and change the whole thing
@@ -234,7 +234,7 @@ You can, of course, query datanommer with SQL yourself (and there's a python
 API for directly querying in the ``datanommer.models`` module).  For the rest
 here is the HTTP API we have called "datagrepper".  Let's set it up::
 
-    $ sudo yum install datagrepper mod_wsgi
+    $ sudo dnf install datagrepper mod_wsgi
 
 Add a config file for it in ``/etc/httpd/conf.d/datagrepper.conf`` with these contents::
 
@@ -268,7 +268,7 @@ And it should just work.  Open a web browser and try to visit
 The whole point of datagrepper is its API, which you might experiment with
 using the httpie tool::
 
-    $ sudo yum install httpie
+    $ sudo dnf install httpie
     $ http get http://localhost/datagrepper/raw/ order==desc
 
 Outro

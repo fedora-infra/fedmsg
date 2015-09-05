@@ -45,6 +45,10 @@ and maintain.
 For production services, you will want to use the hub-consumer approach
 described further below.
 
+.. note:: If you installed fedmsg from PyPI (or source), make sure that
+   you've installed the 'consumers' extra, which may be done like so:
+   ``pip install fedmsg[consumers]``.
+
 Note that the :func:`fedmsg.tail_messages` used to be quite inefficient;
 it spun in a sleep, listen, yield loop that was quite costly in IO and CPU
 terms.  Typically, a script that used :func:`fedmsg.tail_messages` would

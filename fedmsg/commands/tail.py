@@ -100,6 +100,21 @@ class TailCommand(BaseCommand):
             'help': 'A comma-separated list of packages.  Show only messages'
             'related to these packages.',
         }),
+        (['--validate'], {
+            'dest': 'validate_signatures',
+            'default': None,
+            'help': 'Override the \'validate_signatures\' configuration value'
+            'to be True so that X509 certificates in messages are validated.',
+            'action': 'store_true',
+        }),
+        (['--no-validate'], {
+            'dest': 'validate_signatures',
+            'default': None,
+            'help': 'Override the \'validate_signatures\' configuration value'
+            'to be False so that X509 certificates in messages are ignored.',
+            'action': 'store_false',
+        }),
+
     ]
 
     def run(self):

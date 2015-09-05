@@ -175,7 +175,8 @@ class FedMsgContext(object):
 
         return self.publish(topic, msg, modname)
 
-    def publish(self, topic=None, msg=None, modname=None, **kw):
+    def publish(self, topic=None, msg=None, modname=None,
+                pre_fire_hook=None, **kw):
         """ Send a message over the publishing zeromq socket.
 
           >>> import fedmsg
@@ -196,6 +197,10 @@ class FedMsgContext(object):
         default, ``fedmsg`` will try to guess the name of the module that
         called it and use that to produce an intelligent topic.  Specifying
         ``modname`` explicitly overrides this behavior.
+
+        The ``pre_fire_hook`` argument may be a callable that will be called
+        with a single argument -- the dict of the constructed message -- just
+        before it is handed off to ZeroMQ for publication.
 
         The fully qualified topic of a message is constructed out of the
         following pieces:
@@ -283,7 +288,8 @@ class FedMsgContext(object):
 
                 self.c['certname'] = self.c['certnames'][cert_index]
             else:
-                self.c['gpg_signing_key'] = self.c['gpg_keys'][cert_index]
+                if 'gpg_signing_key' not in self.c:
+                    self.c['gpg_signing_key'] = self.c['gpg_keys'][self.hostname]
 
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)
@@ -292,6 +298,9 @@ class FedMsgContext(object):
         if store:
             # Add the seq_id field
             msg = store.add(msg)
+
+        if pre_fire_hook:
+            pre_fire_hook(msg)
 
         self.publisher.send_multipart(
             [topic, fedmsg.encoding.dumps(msg).encode('utf-8')],
@@ -305,6 +314,14 @@ class FedMsgContext(object):
         ``(name, endpoint, topic, message)``
         """
 
+        poller, subs = self._create_poller(topic=topic, passive=False, **kw)
+        try:
+            for msg in self._poll(poller, subs):
+                yield msg
+        finally:
+            self._close_subs(subs)
+
+    def _create_poller(self, topic="", passive=False, **kw):
         # TODO -- do the zmq_strict logic dance with "topic" here.
         # It is buried in moksha.hub, but we need it to work the same way
         # here.
@@ -315,7 +332,6 @@ class FedMsgContext(object):
 
         failed_hostnames = []
         subs = {}
-        watched_names = {}
         for _name, endpoint_list in six.iteritems(self.c['endpoints']):
 
             # You never want to actually subscribe to this thing, but sometimes
@@ -351,50 +367,60 @@ class FedMsgContext(object):
 
                 getattr(subscriber, method)(endpoint)
                 subs[subscriber] = (_name, endpoint)
-            if _name in self.c.get("replay_endpoints", {}):
-                # At first we don't know where the sequence is at.
-                watched_names[_name] = -1
 
         # Register the sockets we just built with a zmq Poller.
         poller = zmq.Poller()
         for subscriber in subs:
             poller.register(subscriber, zmq.POLLIN)
 
-        # TODO -- what if user wants to pass in validate_signatures in **kw?
-        validate = self.c.get('validate_signatures', False)
+        return (poller, subs)
+
+    def _poll(self, poller, subs):
+        watched_names = {}
+        for name, _ in subs.values():
+            if name in self.c.get("replay_endpoints", {}):
+                # At first we don't know where the sequence is at.
+                watched_names[name] = -1
 
         # Poll that poller.  This is much more efficient than it used to be.
-        try:
-            while True:
-                sockets = dict(poller.poll())
-                for s in sockets:
-                    _name, ep = subs[s]
-                    _topic, message = s.recv_multipart()
-                    msg = fedmsg.encoding.loads(message)
-                    if not validate or fedmsg.crypto.validate(msg, **self.c):
-                        # If there is even a slight change of replay, use
-                        # check_for_replay
-                        if len(self.c.get('replay_endpoints', {})) > 0:
-                            for m in check_for_replay(
-                                    _name, watched_names,
-                                    msg, self.c, self.context):
+        while True:
+            sockets = dict(poller.poll())
+            for s in sockets:
+                name, ep = subs[s]
+                yield self._run_socket(s, name, ep, watched_names=watched_names)
 
-                                # Revalidate all the replayed messages.
-                                if not validate or \
-                                        fedmsg.crypto.validate(m, **self.c):
-                                    yield _name, ep, m['topic'], m
-                                else:
-                                    warnings.warn("!! invalid message " +
-                                                  "received: %r" % msg)
-                        else:
-                            yield _name, ep, _topic, msg
+    def _run_socket(self, sock, name, ep, watched_names=None):
+        if watched_names is None:
+            watched_names = {}
+
+        validate = self.c.get('validate_signatures', False)
+
+        _topic, message = sock.recv_multipart()
+        msg = fedmsg.encoding.loads(message)
+        if not validate or fedmsg.crypto.validate(msg, **self.c):
+            # If there is even a slight change of replay, use
+            # check_for_replay
+            if len(self.c.get('replay_endpoints', {})) > 0:
+                for m in check_for_replay(
+                        name, watched_names,
+                        msg, self.c, self.context):
+
+                    # Revalidate all the replayed messages.
+                    if not validate or \
+                            fedmsg.crypto.validate(m, **self.c):
+                        return name, ep, m['topic'], m
                     else:
-                        # Else.. we are supposed to be validating, but the
-                        # message failed validation.
+                        warnings.warn("!! invalid message " +
+                                      "received: %r" % msg)
+            else:
+                return name, ep, _topic, msg
+        else:
+            # Else.. we are supposed to be validating, but the
+            # message failed validation.
 
-                        # Warn, but don't throw an exception.  Keep tailing.
-                        warnings.warn("!! invalid message received: %r" % msg)
+            # Warn, but don't throw an exception.  Keep tailing.
+            warnings.warn("!! invalid message received: %r" % msg)
 
-        finally:
+    def _close_subs(self, subs):
             for subscriber in subs:
                 subscriber.close()
