@@ -175,7 +175,8 @@ class FedMsgContext(object):
 
         return self.publish(topic, msg, modname)
 
-    def publish(self, topic=None, msg=None, modname=None, **kw):
+    def publish(self, topic=None, msg=None, modname=None,
+                pre_fire_hook=None, **kw):
         """ Send a message over the publishing zeromq socket.
 
           >>> import fedmsg
@@ -196,6 +197,10 @@ class FedMsgContext(object):
         default, ``fedmsg`` will try to guess the name of the module that
         called it and use that to produce an intelligent topic.  Specifying
         ``modname`` explicitly overrides this behavior.
+
+        The ``pre_fire_hook`` argument may be a callable that will be called
+        with a single argument -- the dict of the constructed message -- just
+        before it is handed off to ZeroMQ for publication.
 
         The fully qualified topic of a message is constructed out of the
         following pieces:
@@ -293,6 +298,9 @@ class FedMsgContext(object):
         if store:
             # Add the seq_id field
             msg = store.add(msg)
+
+        if pre_fire_hook:
+            pre_fire_hook(msg)
 
         self.publisher.send_multipart(
             [topic, fedmsg.encoding.dumps(msg).encode('utf-8')],
