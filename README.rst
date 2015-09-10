@@ -4,7 +4,7 @@ fedmsg -- Fedora Messaging Client API
 .. split here
 
 Utilities used around Fedora Infrastructure to send and receive messages.
-Please see ``doc/`` or https://fedmsg.readthedocs.org/ for more info.
+Please see doc `here <https://github.com/fedora-infra/fedmsg/tree/develop/doc>`_ or `fedmsg online doc <https://fedmsg.readthedocs.org/>`_ for more info.
 
 Build Status
 ------------
