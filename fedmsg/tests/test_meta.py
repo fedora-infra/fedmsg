@@ -296,6 +296,7 @@ class TestAnnouncement(Base):
     expected_long_form = 'hello, world.'
     expected_link = 'foo'
     expected_usernames = set(['ralph'])
+    expected_agent = 'ralph'
 
     msg = {
         "i": 1,
@@ -318,6 +319,7 @@ class TestLoggerNormal(Base):
         'lmacken': expected_subti,
     }
     expected_usernames = set(['ralph'])
+    expected_agent = 'ralph'
 
     msg = {
         "i": 1,
@@ -341,6 +343,7 @@ class TestLoggerJSON(Base):
         }
     """).strip()
     expected_usernames = set(['root'])
+    expected_agent = 'root'
 
     msg = {
         "i": 1,
