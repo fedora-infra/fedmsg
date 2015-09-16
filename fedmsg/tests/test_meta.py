@@ -242,6 +242,12 @@ class Base(unittest.TestCase):
         actual_usernames = fedmsg.meta.msg2usernames(self.msg, **self.config)
         self._equals(actual_usernames, self.expected_usernames)
 
+    @skip_on(['msg', 'expected_agent'])
+    def test_agent(self):
+        """ Does fedmsg.meta produce the expected agent? """
+        actual_agent = fedmsg.meta.msg2agent(self.msg, **self.config)
+        self._equals(actual_agent, self.expected_agent)
+
     @skip_on(['msg', 'expected_packages'])
     def test_packages(self):
         """ Does fedmsg.meta produce the expected list of packages? """

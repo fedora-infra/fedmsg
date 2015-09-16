@@ -278,6 +278,36 @@ def msg2usernames(msg, processor=None, legacy=False, **config):
     return processor.usernames(msg, **config)
 
 
+@with_processor()
+def msg2agent(msg, processor=None, legacy=False, **config):
+    """ Return the single username who is the "agent" for an event.
+
+    An "agent" is the one responsible for the event taking place, for example,
+    if one person gives karma to another, then both usernames are returned by
+    msg2usernames, but only the one who gave the karma is returned by
+    msg2agent.
+
+    If the processor registered to handle the message does not provide an
+    agent method, then the *first* user returned by msg2usernames is returned
+    (whether that is correct or not).  Here we assume that if a processor
+    implements `agent`, then it knows what it is doing and we should trust
+    that.  But if it does not implement it, we'll try our best guess.
+
+    If there are no users returned by msg2usernames, then None is returned.
+    """
+
+    if not processor.agent is NotImplemented:
+        return processor.agent(msg, **config)
+    else:
+        usernames = processor.usernames(msg, **config)
+        # usernames is a set(), which doesn't support indexing.
+        if usernames:
+            return usernames.pop()
+
+    # default to None if we can't find anything
+    return None
+
+
 @legacy_condition(set)
 @with_processor()
 def msg2packages(msg, processor, **config):
