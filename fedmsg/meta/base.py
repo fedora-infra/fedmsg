@@ -183,6 +183,12 @@ class BaseProcessor(object):
         """ Return a set of FAS usernames associated with a message. """
         return set()
 
+    # XXX - this is intentionally not stubbed out at the 'base' level of the
+    # class inheritance hierarchy.  In fedmsg/meta/__init__.py, we check for
+    # the existance of this method on the subclass and do something special if
+    # it is absent (if it is unimplemented by the subclass).
+    agent = NotImplemented
+
     def packages(self, msg, **config):
         """ Return a set of package names associated with a message. """
         return set()
