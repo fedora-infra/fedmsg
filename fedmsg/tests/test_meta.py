@@ -38,7 +38,14 @@ import fedmsg.meta
 
 class UnspecifiedType(object):
     """ A sentinel used to identify which expectations are not specified. """
-    pass
+    def __str__(self):
+        return "Unspecified"
+
+    def __unicode__(self):
+        return u"Unspecified"
+
+    def __repr__(self):
+        return "Unspecified"
 
 
 Unspecified = UnspecifiedType()
