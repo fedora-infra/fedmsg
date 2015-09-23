@@ -1,5 +1,32 @@
-Changelog
-=========
+
+0.16.1
+------
+
+Pull Requests
+
+- (@vivekanand1101) Added links to doc in Readme `#352
+  <https://github.com/fedora-infra/fedmsg/pull/352>`_
+- (@ralphbean)      Add a new msg2agent API call to fedmsg.meta. `#353
+  <https://github.com/fedora-infra/fedmsg/pull/353>`_
+
+Commits
+
+- Update README.rst `9f394994c
+  <https://github.com/fedora-infra/fedmsg/commit/9f394994c>`_
+- Added link to doc in Readme #2 `9b046afc8
+  <https://github.com/fedora-infra/fedmsg/commit/9b046afc8>`_
+- Added link to doc in Readme #3 `857264af3
+  <https://github.com/fedora-infra/fedmsg/commit/857264af3>`_
+- Add a new msg2agent API call to fedmsg.meta. `a06d6f987
+  <https://github.com/fedora-infra/fedmsg/commit/a06d6f987>`_
+- Change test framework to allow testing None values. `69be0e960
+  <https://github.com/fedora-infra/fedmsg/commit/69be0e960>`_
+- Add agent tests for the handful of baked-in processors. `bc5d7cb89
+  <https://github.com/fedora-infra/fedmsg/commit/bc5d7cb89>`_
+- Some reprs for the UnspecifiedType. `b77448a12
+  <https://github.com/fedora-infra/fedmsg/commit/b77448a12>`_
+- Remove header from changelog file. `39a38b61f
+  <https://github.com/fedora-infra/fedmsg/commit/39a38b61f>`_
 
 0.16.0
 ------

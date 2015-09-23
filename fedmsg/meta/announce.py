@@ -38,3 +38,8 @@ class AnnounceProcessor(BaseProcessor):
         if 'username' in msg:
             users.update(set([msg['username']]))
         return users
+
+    def agent(self, msg, **config):
+        if 'username' in msg:
+            return msg['username']
+        return None

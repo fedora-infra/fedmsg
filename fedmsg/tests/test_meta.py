@@ -36,15 +36,30 @@ except ImportError:
 import fedmsg.meta
 
 
+class UnspecifiedType(object):
+    """ A sentinel used to identify which expectations are not specified. """
+    def __str__(self):
+        return "Unspecified"
+
+    def __unicode__(self):
+        return u"Unspecified"
+
+    def __repr__(self):
+        return "Unspecified"
+
+
+Unspecified = UnspecifiedType()
+
+
 def skip_on(attributes):
     """ A test decorator that will skip if any of the named attributes
-    are left unspecified (are None-valued).
+    are left unspecified.
     """
     def wrapper(func):
         @make_decorator(func)
         def inner(self):
             for attr in attributes:
-                if getattr(self, attr) is None:
+                if getattr(self, attr) is Unspecified:
                     raise SkipTest("%r left unspecified" % attr)
             return func(self)
         return inner
@@ -143,20 +158,21 @@ class TestProcessorRegex(unittest.TestCase):
 
 
 class Base(unittest.TestCase):
-    msg = None
-    expected_title = None
-    expected_subti = None
-    expected_subjective = None
-    expected_markup = None
-    expected_link = None
-    expected_icon = None
-    expected_secondary_icon = None
-    expected_usernames = None
-    expected_packages = None
-    expected_objects = None
-    expected_emails = None
-    expected_avatars = None
-    expected_long_form = None
+    msg = Unspecified
+    expected_title = Unspecified
+    expected_subti = Unspecified
+    expected_subjective = Unspecified
+    expected_markup = Unspecified
+    expected_link = Unspecified
+    expected_icon = Unspecified
+    expected_secondary_icon = Unspecified
+    expected_usernames = Unspecified
+    expected_agent = Unspecified
+    expected_packages = Unspecified
+    expected_objects = Unspecified
+    expected_emails = Unspecified
+    expected_avatars = Unspecified
+    expected_long_form = Unspecified
 
     def setUp(self):
         dirname = os.path.abspath(os.path.dirname(__file__))
@@ -242,6 +258,12 @@ class Base(unittest.TestCase):
         actual_usernames = fedmsg.meta.msg2usernames(self.msg, **self.config)
         self._equals(actual_usernames, self.expected_usernames)
 
+    @skip_on(['msg', 'expected_agent'])
+    def test_agent(self):
+        """ Does fedmsg.meta produce the expected agent? """
+        actual_agent = fedmsg.meta.msg2agent(self.msg, **self.config)
+        self._equals(actual_agent, self.expected_agent)
+
     @skip_on(['msg', 'expected_packages'])
     def test_packages(self):
         """ Does fedmsg.meta produce the expected list of packages? """
@@ -281,6 +303,7 @@ class TestAnnouncement(Base):
     expected_long_form = 'hello, world.'
     expected_link = 'foo'
     expected_usernames = set(['ralph'])
+    expected_agent = 'ralph'
 
     msg = {
         "i": 1,
@@ -303,6 +326,7 @@ class TestLoggerNormal(Base):
         'lmacken': expected_subti,
     }
     expected_usernames = set(['ralph'])
+    expected_agent = 'ralph'
 
     msg = {
         "i": 1,
@@ -326,6 +350,7 @@ class TestLoggerJSON(Base):
         }
     """).strip()
     expected_usernames = set(['root'])
+    expected_agent = 'root'
 
     msg = {
         "i": 1,
@@ -339,8 +364,8 @@ class TestLoggerJSON(Base):
 
 
 class ConglomerateBase(unittest.TestCase):
-    originals = None
-    expected = None
+    originals = Unspecified
+    expected = Unspecified
     maxDiff = None
 
     def setUp(self):
@@ -355,7 +380,7 @@ class ConglomerateBase(unittest.TestCase):
 
         # Delete the msg_ids field because it is bulky and I don't want to
         # bother with testing it (copying and pasting it).
-        if self.expected:
+        if not self.expected is Unspecified:
             for item in self.expected:
                 if 'msg_ids' in item:
                     del item['msg_ids']

@@ -56,6 +56,11 @@ class LoggerProcessor(BaseProcessor):
             # *OLD* messages in datanommer's db don't have a username.
             return set()
 
+    def agent(self, msg, **config):
+        if 'username' in msg:
+            return msg['username']
+        return None
+
     def subjective(self, msg, subject, **config):
         if msg['username'] == subject:
             tmpl = self._('you logged "{log}"')
