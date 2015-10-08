@@ -1,4 +1,24 @@
 
+0.16.2
+------
+
+This release fixes a couple of errors that periodically get raised from calls
+to `fedmsg.tail_messages(...)`.
+
+Pull Requests
+
+- (@ralphbean)      #354, Try three times to get the CRL.
+  https://github.com/fedora-infra/fedmsg/pull/354
+- (@ralphbean)      #356, Stop yielding None values from fedmsg.tail_messages.
+  https://github.com/fedora-infra/fedmsg/pull/356
+
+Commits
+
+- ecf7f30be Try three times to get the CRL.
+  https://github.com/fedora-infra/fedmsg/commit/ecf7f30be
+- 2bf4bfb6f Stop yielding None values from fedmsg.tail_messages.
+  https://github.com/fedora-infra/fedmsg/commit/2bf4bfb6f
+
 0.16.1
 ------
 
