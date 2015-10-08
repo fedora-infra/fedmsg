@@ -47,6 +47,12 @@ from fedmsg.replay import check_for_replay
 import logging
 
 
+class ValidationError(Exception):
+    """ Error used internally to represent a validation failure. """
+    def __init__(self, msg):
+        self.msg = msg
+
+
 class FedMsgContext(object):
     # A counter for messages sent.
     _i = 0
@@ -387,7 +393,10 @@ class FedMsgContext(object):
             sockets = dict(poller.poll())
             for s in sockets:
                 name, ep = subs[s]
-                yield self._run_socket(s, name, ep, watched_names=watched_names)
+                try:
+                    yield self._run_socket(s, name, ep, watched_names)
+                except ValidationError as e:
+                    warnings.warn("!! invalid message received: %r" % e.msg)
 
     def _run_socket(self, sock, name, ep, watched_names=None):
         if watched_names is None:
@@ -410,16 +419,11 @@ class FedMsgContext(object):
                             fedmsg.crypto.validate(m, **self.c):
                         return name, ep, m['topic'], m
                     else:
-                        warnings.warn("!! invalid message " +
-                                      "received: %r" % msg)
+                        raise ValidationError(msg)
             else:
                 return name, ep, _topic, msg
         else:
-            # Else.. we are supposed to be validating, but the
-            # message failed validation.
-
-            # Warn, but don't throw an exception.  Keep tailing.
-            warnings.warn("!! invalid message received: %r" % msg)
+            raise ValidationError(msg)
 
     def _close_subs(self, subs):
             for subscriber in subs:
