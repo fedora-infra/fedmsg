@@ -365,7 +365,7 @@ class FedMsgContext(object):
 
                 # OK, sanity checks pass.  Create the subscriber and connect.
                 subscriber = self.context.socket(zmq.SUB)
-                subscriber.setsockopt(zmq.SUBSCRIBE, topic)
+                subscriber.setsockopt_string(zmq.SUBSCRIBE, topic)
 
                 set_high_water_mark(subscriber, self.c)
                 set_tcp_keepalive(subscriber, self.c)
@@ -404,8 +404,15 @@ class FedMsgContext(object):
 
         validate = self.c.get('validate_signatures', False)
 
+        # Grab the data off the zeromq internal queue
         _topic, message = sock.recv_multipart()
+
+        # zmq hands us byte strings, so let's convert to unicode asap
+        _topic, message = _topic.decode('utf-8'), message.decode('utf-8')
+
+        # Now, decode the JSON body into a dict.
         msg = fedmsg.encoding.loads(message)
+
         if not validate or fedmsg.crypto.validate(msg, **self.c):
             # If there is even a slight change of replay, use
             # check_for_replay

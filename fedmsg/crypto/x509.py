@@ -235,12 +235,20 @@ def _load_remote_cert(location, cache, cache_expiry, tries=0, **config):
 
     Return the local filename.
     """
+    alternative_cache = os.path.expanduser("~/.local" + cache)
 
     try:
         modtime = os.stat(cache).st_mtime
     except OSError:
         # File does not exist yet.
-        modtime = 0
+        try:
+            # Try alternative location.
+            modtime = os.stat(alternative_cache).st_mtime
+            # It worked!  Use the alternative location
+            cache = alternative_cache
+        except OSError:
+            # Neither file exists
+            modtime = 0
 
     if (
         (not modtime and not cache_expiry) or
@@ -262,7 +270,7 @@ def _load_remote_cert(location, cache, cache_expiry, tries=0, **config):
         except IOError as e:
             # If we couldn't write to the specified cache location, try a
             # similar place but inside our home directory instead.
-            cache = os.path.expanduser("~/.local" + cache)
+            cache = alternative_cache
             usr_dir = '/'.join(cache.split('/')[:-1])
 
             if not os.path.isdir(usr_dir):

@@ -25,18 +25,12 @@ The most straightforward way, programmatically, to consume messages is to use
 form ``(name, endpoint, topic, message)``::
 
     >>> import fedmsg
+    >>> import fedmsg.config
 
     >>> # Read in the config from /etc/fedmsg.d/
-    >>> config = fedmsg.config.load_config([], None)
+    >>> config = fedmsg.config.load_config()
 
-    >>> # Disable a warning about not sending.  We know.  We only want to tail.
-    >>> config['mute'] = True
-
-    >>> # Disable timing out so that we can tail forever.  This is deprecated
-    >>> # and will disappear in future versions.
-    >>> config['timeout'] = 0
-
-    >>> for name, endpoint, topic, msg in fedmsg.tail_messages(**config):
+    >>> for name, endpoint, topic, msg in fedmsg.tail_messages(mute=True, **config):
     ...     print topic, msg  # or use fedmsg.encoding.pretty_dumps(msg)
 
 The API is easy to use and should hopefully make your scripts easy to understand

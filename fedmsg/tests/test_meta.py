@@ -162,7 +162,6 @@ class Base(unittest.TestCase):
     expected_title = Unspecified
     expected_subti = Unspecified
     expected_subjective = Unspecified
-    expected_markup = Unspecified
     expected_link = Unspecified
     expected_icon = Unspecified
     expected_secondary_icon = Unspecified
@@ -206,13 +205,6 @@ class Base(unittest.TestCase):
         """ Does fedmsg.meta produce the expected title? """
         actual_title = fedmsg.meta.msg2title(self.msg, **self.config)
         self._equals(actual_title, self.expected_title)
-
-    @skip_on(['msg', 'expected_markup'])
-    def test_markup(self):
-        """ Does fedmsg.meta produce the right html when markup=True? """
-        actual_markup = fedmsg.meta.msg2subtitle(
-            self.msg, markup=True, **self.config)
-        self._equals(actual_markup, self.expected_markup)
 
     @skip_on(['msg', 'expected_long_form'])
     def test_long_form(self):
