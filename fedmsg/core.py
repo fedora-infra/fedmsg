@@ -405,7 +405,7 @@ class FedMsgContext(object):
         validate = self.c.get('validate_signatures', False)
 
         _topic, message = sock.recv_multipart()
-        msg = fedmsg.encoding.loads(message)
+        msg = fedmsg.encoding.loads(message.decode('utf-8'))
         if not validate or fedmsg.crypto.validate(msg, **self.c):
             # If there is even a slight change of replay, use
             # check_for_replay
