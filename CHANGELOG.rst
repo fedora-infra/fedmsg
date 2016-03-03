@@ -1,4 +1,17 @@
 
+0.16.4
+------
+
+Pull Requests
+
+- (@AdamWill)       #364, instead of setsockopt_string, encode topic and use setsockopt
+  https://github.com/fedora-infra/fedmsg/pull/364
+
+Commits
+
+- 63f6c11c4 instead of setsockopt_string, encode topic and use setsockopt
+  https://github.com/fedora-infra/fedmsg/commit/63f6c11c4
+
 0.16.3
 ------
 
