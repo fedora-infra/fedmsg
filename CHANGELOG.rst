@@ -1,4 +1,35 @@
 
+0.16.3
+------
+
+Primarily, some python3 fixes for fedmsg.tail_messages() in here.
+
+Pull Requests
+
+- (@ralphbean)      #357, Stick with alternative cache location.
+  https://github.com/fedora-infra/fedmsg/pull/357
+- (@ralphbean)      #358, Remove markup stuff.
+  https://github.com/fedora-infra/fedmsg/pull/358
+- (@ralphbean)      #359, Simpler times call for simpler docs.
+  https://github.com/fedora-infra/fedmsg/pull/359
+- (@AdamWill)       #360, use setsockopt_string when setting a string as the option
+  https://github.com/fedora-infra/fedmsg/pull/360
+- (@ralphbean)      #363, Decode bytes as soon as we recv them.
+  https://github.com/fedora-infra/fedmsg/pull/363
+
+Commits
+
+- b10f8ea7e Stick with alternative cache location.
+  https://github.com/fedora-infra/fedmsg/commit/b10f8ea7e
+- bd881913a Remove markup stuff.
+  https://github.com/fedora-infra/fedmsg/commit/bd881913a
+- 0c773b133 Simpler times call for simpler docs.
+  https://github.com/fedora-infra/fedmsg/commit/0c773b133
+- 1f1db11f8 use setsockopt_string when setting a string as the option
+  https://github.com/fedora-infra/fedmsg/commit/1f1db11f8
+- 27617f55c Decode bytes as soon as we recv them.
+  https://github.com/fedora-infra/fedmsg/commit/27617f55c
+
 0.16.2
 ------
 
