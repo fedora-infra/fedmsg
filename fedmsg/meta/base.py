@@ -312,6 +312,7 @@ class BaseConglomerator(object):
                 'usernames': fm.msg2usernames(msg, **config),
                 'packages': fm.msg2packages(msg, **config),
                 'objects': fm.msg2objects(msg, **config),
+                'long_form': fm.msg2long_form(msg, **config),
             }) for msg in constituents])
 
         return {
