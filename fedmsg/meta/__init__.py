@@ -166,7 +166,7 @@ def with_processor():
     return _wrapper
 
 
-def conglomerate(messages, subject=None, **config):
+def conglomerate(messages, subject=None, lexers=False, **config):
     """ Return a list of messages with some of them grouped into conglomerate
     messages.  Conglomerate messages represent several other messages.
 
@@ -194,7 +194,7 @@ def conglomerate(messages, subject=None, **config):
 
         # For ungrouped ones, replace them with a fake conglomerate
         messages[i] = BaseConglomerator.produce_template(
-            [message], subject=subject, **config)
+            [message], subject=subject, lexers=lexers, **config)
         # And fill out the fields that fully-implemented conglomerators would
         # normally fill out.
         messages[i].update({
@@ -248,6 +248,13 @@ def msg2long_form(msg, processor, **config):
     if not result:
         result = processor.subtitle(msg, **config)
     return result
+
+
+@with_processor()
+def msg2lexer(msg, processor, **config):
+    """ Return a Pygments lexer able to parse the long_form of this message.
+    """
+    return processor.lexer(msg, **config)
 
 
 @legacy_condition(six.text_type)
