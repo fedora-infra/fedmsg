@@ -365,7 +365,7 @@ class FedMsgContext(object):
 
                 # OK, sanity checks pass.  Create the subscriber and connect.
                 subscriber = self.context.socket(zmq.SUB)
-                subscriber.setsockopt_string(zmq.SUBSCRIBE, topic)
+                subscriber.setsockopt(zmq.SUBSCRIBE, topic.encode('utf-8'))
 
                 set_high_water_mark(subscriber, self.c)
                 set_tcp_keepalive(subscriber, self.c)

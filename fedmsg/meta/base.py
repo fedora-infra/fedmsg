@@ -168,6 +168,13 @@ class BaseProcessor(object):
         """ Return some paragraphs of text about a message. """
         return ""
 
+    def lexer(self, msg, **config):
+        """ Return a pygments lexer that can be applied to the long_form.
+
+        Returns None if no lexer is associated.
+        """
+        return None
+
     def link(self, msg, **config):
         """ Return a "link" for the message. """
         return ""
@@ -226,7 +233,7 @@ class BaseConglomerator(object):
         self.processor = processor
         self._ = internationalization_callable
 
-    def conglomerate(self, messages, subject=None, **conf):
+    def conglomerate(self, messages, subject=None, lexers=False, **conf):
         """ Top-level API entry point.  Given a list of messages, transform it
         into a list of conglomerates where possible.
         """
@@ -234,7 +241,8 @@ class BaseConglomerator(object):
         while constituents:
             for idx in reversed(indices):
                 messages.pop(idx)
-            messages.insert(idx, self.merge(constituents, subject, **conf))
+            entry = self.merge(constituents, subject, lexers=lexers, **conf)
+            messages.insert(idx, entry)
             indices, constituents = self.select_constituents(messages, **conf)
 
         return messages
@@ -271,7 +279,7 @@ class BaseConglomerator(object):
         return None, None
 
     @classmethod
-    def produce_template(cls, constituents, subject, **config):
+    def produce_template(cls, constituents, subject, lexers=False, **config):
         """ Helper function used by `merge`.
         Produces the beginnings of a merged conglomerate message that needs to
         be later filled out by a subclass.
@@ -308,11 +316,18 @@ class BaseConglomerator(object):
                 'subjective': fm.msg2subjective(msg, subject=subject, **config),
                 'link': fm.msg2link(msg, **config),
                 'icon': fm.msg2icon(msg, **config),
+                '__icon__': getattr(fm.msg2processor(msg, **config), '__icon__', None),
                 'secondary_icon': fm.msg2secondary_icon(msg, **config),
                 'usernames': fm.msg2usernames(msg, **config),
                 'packages': fm.msg2packages(msg, **config),
                 'objects': fm.msg2objects(msg, **config),
+                'long_form': fm.msg2long_form(msg, **config),
             }) for msg in constituents])
+
+        # If the user asks for it, stuff in a pygments lexer too!
+        if lexers:
+            for msg in constituents:
+                msg_ids[msg['msg_id']]['lexer'] = fm.msg2lexer(msg, **config)
 
         return {
             'start_time': min(timestamps),
