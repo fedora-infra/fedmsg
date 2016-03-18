@@ -1,4 +1,27 @@
 
+0.17.0
+------
+
+Pull Requests
+
+- (@AdamWill)       #364, instead of setsockopt_string, encode topic and use setsockopt
+  https://github.com/fedora-infra/fedmsg/pull/364
+- (@ralphbean)      #366, Add long_form metadata to the constituents of a grouped event.
+  https://github.com/fedora-infra/fedmsg/pull/366
+- (@ralphbean)      #367, Add the possibility to associate a pygments lexer with a message.
+  https://github.com/fedora-infra/fedmsg/pull/367
+
+Commits
+
+- 63f6c11c4 instead of setsockopt_string, encode topic and use setsockopt
+  https://github.com/fedora-infra/fedmsg/commit/63f6c11c4
+- cd9dc763e 0.16.4
+  https://github.com/fedora-infra/fedmsg/commit/cd9dc763e
+- be00d8756 Add long_form metadata to the constituents of a grouped event.
+  https://github.com/fedora-infra/fedmsg/commit/be00d8756
+- 5bd72ffbe Add the possibility to associate a pygments lexer with a message.
+  https://github.com/fedora-infra/fedmsg/commit/5bd72ffbe
+
 0.16.4
 ------
 
