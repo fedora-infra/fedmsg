@@ -36,6 +36,8 @@ config = dict(
             ),
         ),
     ],
+    # the available colors can be looked up from here:
+    # https://github.com/fedora-infra/fedmsg/blob/0.16.4/fedmsg/consumers/ircbot.py#L48-L65
     irc_color_lookup={
         "fas": "light blue",
         "bodhi": "green",
