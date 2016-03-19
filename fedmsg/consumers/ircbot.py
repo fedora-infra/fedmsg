@@ -77,7 +77,8 @@ def ircprettify(title, subtitle, link="", config=None):
         link = ""
 
     color_lookup = config.get('irc_color_lookup', {})
-    title_color = color_lookup.get(title.split('.')[0], "light grey")
+    default_color = config.get('irc_default_color', 'light grey')
+    title_color = color_lookup.get(title.split('.')[0], default_color)
     title = markup(title, title_color)
 
     fmt = u"{title} -- {subtitle} {link}"
