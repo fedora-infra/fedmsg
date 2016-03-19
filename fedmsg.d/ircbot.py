@@ -47,5 +47,9 @@ config = dict(
         "buildsys": "yellow",
         "planet": "light green",
     },
+
+    # color for title if color lookup not defined
+    default_color='light grey',
+
     irc_method='notice',  # Either 'msg' or 'notice'
 )
