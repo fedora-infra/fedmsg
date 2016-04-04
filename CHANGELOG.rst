@@ -1,4 +1,27 @@
 
+0.17.2
+------
+
+Pull Requests
+
+- (@glensc)         #369, irc: default color configurable
+  https://github.com/fedora-infra/fedmsg/pull/369
+- (@glensc)         #368, Update ircbot.py
+  https://github.com/fedora-infra/fedmsg/pull/368
+
+Commits
+
+- b637e253a Update ircbot.py
+  https://github.com/fedora-infra/fedmsg/commit/b637e253a
+- 9b406fdfc irc: default color configurable
+  https://github.com/fedora-infra/fedmsg/commit/9b406fdfc
+- 2d6bf7c6c add default_color to sample config
+  https://github.com/fedora-infra/fedmsg/commit/2d6bf7c6c
+- c41199dcb fix key name
+  https://github.com/fedora-infra/fedmsg/commit/c41199dcb
+- 03ac8c4c3 Merge branch 'develop' of github.com:fedora-infra/fedmsg into develop
+  https://github.com/fedora-infra/fedmsg/commit/03ac8c4c3
+
 0.17.1
 ------
 
