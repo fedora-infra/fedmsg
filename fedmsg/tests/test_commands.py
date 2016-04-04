@@ -159,10 +159,7 @@ class TestCommands(unittest.TestCase):
                     command.execute()
 
         output = stdout.getvalue()
-        expected = \
-            '\x1b[33m"hello"\x1b[39;49;00m:\x1b[39;49;00m \x1b[39;49;00m' + \
-            '\x1b[33m"world"\x1b[39;49;00m'
-
+        expected = '\x1b[33m"hello"\x1b[39;49;00m'
         assert(expected in output)
 
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-relay"])
