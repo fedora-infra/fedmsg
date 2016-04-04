@@ -1,4 +1,12 @@
 
+0.17.1
+------
+
+Commits
+
+- a0e7530c8 Pygments changed output.. but thats okay.
+  https://github.com/fedora-infra/fedmsg/commit/a0e7530c8
+
 0.17.0
 ------
 
