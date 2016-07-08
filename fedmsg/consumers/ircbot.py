@@ -168,6 +168,8 @@ class Fedmsg2IRCFactory(protocol.ClientFactory):
             # one should trigger joining the third one...
             self.log.info("%s scheduling conn for next client" % self.nickname)
             reactor.callLater(1, self.ready)
+            # Un set this so we don't trigger it again later on a reconnect...
+            self.ready = None
 
     def clientConnectionLost(self, connector, reason):
         if self.parent_consumer.die:
