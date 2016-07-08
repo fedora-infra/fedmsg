@@ -28,6 +28,7 @@ import fedmsg.meta
 from fedmsg.meta import _
 
 import copy
+import functools
 import re
 import time
 import pygments
@@ -148,7 +149,7 @@ class Fedmsg2IRCFactory(protocol.ClientFactory):
     protocol = make_irc_client
 
     def __init__(self, channel, nickname, filters,
-                 pretty, terse, short, rate, parent_consumer):
+                 pretty, terse, short, rate, parent_consumer, ready):
         self.channel = channel
         self.nickname = nickname
         self.filters = filters
@@ -157,7 +158,15 @@ class Fedmsg2IRCFactory(protocol.ClientFactory):
         self.short = short
         self.rate = rate
         self.parent_consumer = parent_consumer
+        self.ready = ready
         self.log = logging.getLogger("moksha.hub")
+
+    def startedConnecting(self, connector):
+        if self.ready:
+            # If we're joining 12 channels, join one of them first.  Once
+            # joining, wait one second and start joining the second one.  That
+            # one should trigger joining the third one...
+            reactor.callLater(1, self.ready)
 
     def clientConnectionLost(self, connector, reason):
         if self.parent_consumer.die:
@@ -196,6 +205,7 @@ class IRCBotConsumer(FedmsgConsumer):
             return
 
         irc_settings = hub.config.get('irc')
+        callback = None  # Keep track of the last factory we created
         for settings in irc_settings:
             network = settings.get('network', 'irc.freenode.net')
             port = settings.get('port', 6667)
@@ -216,9 +226,22 @@ class IRCBotConsumer(FedmsgConsumer):
 
             filters = self.compile_filters(settings.get('filters', None))
 
+
             factory = Fedmsg2IRCFactory(
-                channel, nickname, filters, pretty, terse, short, rate, self)
-            reactor.connectTCP(network, port, factory, timeout=timeout)
+                channel, nickname, filters,
+                pretty, terse, short, rate,
+                self, ready=callback,
+            )
+            callback = functools.partial(
+                reactor.connectTCP,
+                network, port, factory,
+                timeout=timeout,
+            )
+
+        # Call only the very last one.
+        # When it is done, it will call the second to last one, which when it
+        # is done will call the third to last one, etc..
+        callback()
 
     def add_irc_client(self, client):
         self.irc_clients.append(client)
