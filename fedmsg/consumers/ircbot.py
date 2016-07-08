@@ -166,6 +166,7 @@ class Fedmsg2IRCFactory(protocol.ClientFactory):
             # If we're joining 12 channels, join one of them first.  Once
             # joining, wait one second and start joining the second one.  That
             # one should trigger joining the third one...
+            self.log.info("%s scheduling conn for next client" % self.nickname)
             reactor.callLater(1, self.ready)
 
     def clientConnectionLost(self, connector, reason):
