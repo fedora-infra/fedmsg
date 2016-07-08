@@ -164,10 +164,10 @@ class Fedmsg2IRCFactory(protocol.ClientFactory):
     def startedConnecting(self, connector):
         if self.ready:
             # If we're joining 12 channels, join one of them first.  Once
-            # joining, wait one second and start joining the second one.  That
-            # one should trigger joining the third one...
+            # joining, wait five seconds and start joining the second one.
+            # That one should trigger joining the third one...
             self.log.info("%s scheduling conn for next client" % self.nickname)
-            reactor.callLater(1, self.ready)
+            reactor.callLater(5, self.ready)
             # Un set this so we don't trigger it again later on a reconnect...
             self.ready = None
 
