@@ -1,20 +1,26 @@
-Fedora Infrastructure Message Bus
-=================================
+Federated Message Bus
+=====================
 
-We want to hook all the services in Fedora Infrastructure up to send messages to
-one another over a message bus instead of communicating with each other in
-the heterogenous, "Rube-Goldberg" ways they do now.
+Some time ago, the Fedora Infrastructure team wanted to hook all the services in
+Fedora Infrastructure up to send messages to one another over a message bus instead
+of communicating with each other in the heterogenous, "Rube-Goldberg" way they did
+previously.
 
-``fedmsg`` (Fedora-Messaging) is a python package and API used around
-Fedora Infrastructure to send and receive messages to and from applications.
+``fedmsg`` (FEDerated MeSsaGe bus) is a python package and API defining a brokerless
+messaging architecture to send and receive messages to and from applications.
 See :doc:`overview` for a thorough introduction.
+
+While originally specific to Fedora, the expansion of the project's name was
+changed away from the old "Fedora Messaging" to the current "Federated Message Bus"
+after it was also adopted for
+`use in Debian's infrastructure <https://wiki.debian.org/FedMsg>`_.
 
 `Click here to see a feed of the Fedora bus
 <https://apps.fedoraproject.org/datagrepper/raw>`_.  There's also a
 ``#fedora-fedmsg`` channel on the freenode network with a firehose bot echoing
 messages to channel to help give you a feel for what's going on.
 
-You can find the list of available topics in our infrastructure
+You can find the list of available topics in Fedora' sinfrastructure
 at https://fedora-fedmsg.readthedocs.io
 
 Receiving Messages with Python
