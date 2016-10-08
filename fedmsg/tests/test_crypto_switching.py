@@ -23,13 +23,7 @@ import os
 
 import nose.tools.nontrivial
 
-major, minor = sys.version_info[:2]
-if major == 2 and minor <= 6:
-    # For python-2.6, so we can do skipTest
-    import unittest2 as unittest
-else:
-    import unittest
-
+import unittest
 import fedmsg.crypto
 
 SEP = os.path.sep

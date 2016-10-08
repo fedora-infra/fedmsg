@@ -13,12 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-    # For python-2.6, so we can do skipTest
-    import unittest2 as unittest
-except ImportError:
-    import unittest
-
+import unittest
 import threading
 import copy
 import os
