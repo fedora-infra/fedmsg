@@ -3,6 +3,7 @@ python:
  - "2.7"
  - "3.3"
  - "3.4"
+ - "3.5"
 
 install:
  - pip install -e .[commands,consumers]
@@ -19,3 +20,4 @@ matrix:
   allow_failures:
     - python: "3.3"
     - python: "3.4"
+    - python: "3.5"
