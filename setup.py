@@ -96,6 +96,9 @@ extras_require['all'] = list(set(
 ))
 tests_require = [
     'nose',
+    'moksha.hub',
+    'pygments',
+    'psutil',
     'sqlalchemy',  # For the persistent-store test(s).
 ]
 

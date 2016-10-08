@@ -7,8 +7,8 @@ python:
 
 install:
  - pip install -e .[commands,consumers]
- - pip install nose mock sqlalchemy unittest2
-script: nosetests -v
+ - pip install nose
+script: python setup.py nosetests
 notifications:
     email: false
     irc:
