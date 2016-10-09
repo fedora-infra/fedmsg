@@ -41,6 +41,15 @@ config = dict(
     # opposed to amqp or stomp.
     zmq_enabled=True,
 
+    # On the other hand, if you wanted to use STOMP *instead* of zeromq, you
+    # could do the following...
+    #zmq_enabled=False,
+    #stomp_uri='localhost:59597,localhost:59598',
+    #stomp_user='username',
+    #stomp_pass='password',
+    #stomp_ssl_crt='/path/to/an/optional.crt',
+    #stomp_ssl_key='/path/to/an/optional.key',
+
     # When subscribing to messages, we want to allow splats ('*') so we tell
     # the hub to not be strict when comparing messages topics to subscription
     # topics.
