@@ -61,7 +61,7 @@ config = dict(
     zmq_tcp_keepalive_idle=60,
     zmq_tcp_keepalive_intvl=5,
 
-    # Number of miliseconds that zeromq will wait to reconnect until it gets 
+    # Number of miliseconds that zeromq will wait to reconnect until it gets
     # a connection if an endpoint is unavailable.
     zmq_reconnect_ivl=100,
     # Max delay that you can reconfigure to reduce reconnect storm spam. This

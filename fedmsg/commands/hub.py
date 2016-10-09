@@ -66,16 +66,20 @@ class HubCommand(BaseCommand):
             locations = self.config['explicit_hub_consumers'].split(',')
             locations = [load_class(location) for location in locations]
 
-        # Rephrase the fedmsg-config.py config as moksha *.ini format.
+        # Rephrase the fedmsg-config.py config as moksha *.ini format for
+        # zeromq. If we're not using zeromq (say, we're using STOMP), then just
+        # assume that the moksha configuration is specified correctly already
+        # in /etc/fedmsg.d/
+        if self.config.get('zmq_enabled', True):
+            moksha_options = dict(
+                zmq_subscribe_endpoints=','.join(
+                    ','.join(bunch) for bunch in self.config['endpoints'].values()
+                ),
+            )
+            self.config.update(moksha_options)
+
         # Note that the hub we kick off here cannot send any message.  You
         # should use fedmsg.publish(...) still for that.
-        moksha_options = dict(
-            zmq_subscribe_endpoints=','.join(
-                ','.join(bunch) for bunch in self.config['endpoints'].values()
-            ),
-        )
-        self.config.update(moksha_options)
-
         from moksha.hub import main
         main(
             # Pass in our config dict
