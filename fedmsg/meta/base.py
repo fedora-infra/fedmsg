@@ -154,7 +154,9 @@ class BaseProcessor(object):
             return match.groups()[-1] or ""
 
     def title(self, msg, **config):
-        return '.'.join(msg['topic'].split('.')[3:])
+        if msg['topic'][0].isalpha():
+            return '.'.join(msg['topic'].split('.')[3:])
+        return msg['topic']
 
     def subtitle(self, msg, **config):
         """ Return a "subtitle" for the message. """
