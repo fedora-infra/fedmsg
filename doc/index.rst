@@ -101,6 +101,7 @@ Table of Contents
    crypto
    replay
    meta
+   compatibility
    config
    topics
 
