@@ -38,8 +38,20 @@ config = dict(
     #datagrepper_url="https://apps.fedoraproject.org/datagrepper/raw",
 
     # We almost always want the fedmsg-hub to be sending messages with zmq as
-    # opposed to amqp or stomp.
+    # opposed to amqp or stomp.  You can send with only *one* of the messaging
+    # backends: zeromq or amqp or stomp.  You cannot send with two or more at
+    # the same time.  Here, zmq is either enabled, or it is not.  If it is not,
+    # see the options below for how to configure stomp or amqp.
     zmq_enabled=True,
+
+    # On the other hand, if you wanted to use STOMP *instead* of zeromq, you
+    # could do the following...
+    #zmq_enabled=False,
+    #stomp_uri='localhost:59597,localhost:59598',
+    #stomp_user='username',
+    #stomp_pass='password',
+    #stomp_ssl_crt='/path/to/an/optional.crt',
+    #stomp_ssl_key='/path/to/an/optional.key',
 
     # When subscribing to messages, we want to allow splats ('*') so we tell
     # the hub to not be strict when comparing messages topics to subscription
@@ -61,7 +73,7 @@ config = dict(
     zmq_tcp_keepalive_idle=60,
     zmq_tcp_keepalive_intvl=5,
 
-    # Number of miliseconds that zeromq will wait to reconnect until it gets 
+    # Number of miliseconds that zeromq will wait to reconnect until it gets
     # a connection if an endpoint is unavailable.
     zmq_reconnect_ivl=100,
     # Max delay that you can reconfigure to reduce reconnect storm spam. This

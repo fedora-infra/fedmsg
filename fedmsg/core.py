@@ -91,8 +91,9 @@ class FedMsgContext(object):
                 raise KeyError("Could not find endpoint for fedmsg-relay."
                               " Try installing fedmsg-relay.")
 
-        # Actually set up our publisher
+        # Actually set up our publisher, but only if we're configured for zmq.
         if (
+            config.get('zmq_enabled', True) and
             not config.get("mute", False) and
             config.get("name", None) and
             config.get("endpoints", None) and
@@ -151,11 +152,15 @@ class FedMsgContext(object):
         elif config.get('mute', False):
             # Our caller doesn't intend to send any messages.  Pass silently.
             pass
-        else:
+        elif config.get('zmq_enabled', True):
             # Something is wrong.
             warnings.warn(
-                "fedmsg is not configured to send any messages "
+                "fedmsg is not configured to send any zmq messages "
                 "for name %r" % config.get("name", None))
+        else:
+            # We're not configured to send zmq messages, but zmq_enabled is
+            # False, so no need to warn the user.
+            pass
 
         # Cleanup.  See https://bit.ly/SaGeOr for discussion.
         weakref.ref(threading.current_thread(), self.destroy)
@@ -308,10 +313,28 @@ class FedMsgContext(object):
         if pre_fire_hook:
             pre_fire_hook(msg)
 
-        self.publisher.send_multipart(
-            [topic, fedmsg.encoding.dumps(msg).encode('utf-8')],
-            flags=zmq.NOBLOCK,
-        )
+        # We handle zeromq publishing ourselves.  But, if that is disabled,
+        # defer to the moksha' hub's twisted reactor to send messages (if
+        # available).
+        if self.c.get('zmq_enabled', True):
+            self.publisher.send_multipart(
+                [topic, fedmsg.encoding.dumps(msg).encode('utf-8')],
+                flags=zmq.NOBLOCK,
+            )
+        else:
+            # Perhaps we're using STOMP or AMQP?  Let moksha handle it.
+            import moksha.hub
+            # First, a quick sanity check.
+            if not moksha.hub._hub:
+                raise AttributeError("Unable to publish non-zeromq msg"
+                                     "without moksha-hub initialization.")
+            # Let moksha.hub do our work.
+            moksha.hub._hub.send_message(
+                topic=topic,
+                message=fedmsg.encoding.dumps(msg).encode('utf-8'),
+                jsonify=False,
+            )
+
 
     def tail_messages(self, topic="", passive=False, **kw):
         """ Tail messages on the bus.
@@ -319,6 +342,11 @@ class FedMsgContext(object):
         Generator that yields tuples of the form:
         ``(name, endpoint, topic, message)``
         """
+
+        if not self.c.get('zmq_enabled', True):
+            raise ValueError("fedmsg.tail_messages() is only available for "
+                             "zeromq.  Use the hub-consumer approach for "
+                             "STOMP or AMQP support.")
 
         poller, subs = self._create_poller(topic=topic, passive=False, **kw)
         try:

@@ -223,6 +223,14 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
             raise RuntimeWarning("Failed to authn message.")
 
     def _consume(self, message):
+
+        # Massage STOMP messages into a more compatible format.
+        if 'topic' not in message['body']:
+            message['body'] = {
+                'topic': message.get('topic'),
+                'msg': message['body'],
+            }
+
         try:
             self.validate(message)
         except RuntimeWarning as e:
