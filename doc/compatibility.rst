@@ -33,7 +33,10 @@ In order to get a fedmsg-hub instance working with STOMP, you should add the
 following configuration to `/etc/fedmsg.d/base.py`::
 
     # We almost always want the fedmsg-hub to be sending messages with zmq as
-    # opposed to amqp or stomp.
+    # opposed to amqp or stomp.  You can send with only *one* of the messaging
+    # backends: zeromq or amqp or stomp.  You cannot send with two or more at
+    # the same time.  Here, zmq is either enabled, or it is not.  If it is not,
+    # see the options below for how to configure stomp or amqp.
     #zmq_enabled=True,
 
     # On the other hand, if you wanted to use STOMP *instead* of zeromq, you
