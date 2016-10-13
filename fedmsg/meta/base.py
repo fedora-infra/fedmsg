@@ -154,7 +154,7 @@ class BaseProcessor(object):
             return match.groups()[-1] or ""
 
     def title(self, msg, **config):
-        if msg['topic'][0].isalpha():
+        if not msg['topic'].startswith('/topic/'):
             return '.'.join(msg['topic'].split('.')[3:])
         return msg['topic']
 
