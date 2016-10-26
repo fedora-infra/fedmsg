@@ -1,14 +1,19 @@
-import unittest
 from datetime import datetime
+import resource
+import threading
+import unittest
 import time
 import json
 import os
+
+from nose.tools import eq_
+import six
 
 import fedmsg
 import fedmsg.core
 import fedmsg.config
 import fedmsg.commands
-
+from fedmsg.commands.hub import HubCommand
 from fedmsg.commands.logger import LoggerCommand
 from fedmsg.commands.tail import TailCommand
 from fedmsg.commands.relay import RelayCommand
@@ -16,11 +21,6 @@ from fedmsg.commands.config import config as config_command
 import fedmsg.consumers.relay
 from fedmsg.tests.test_utils import mock
 
-from nose.tools import eq_
-
-import threading
-
-import six
 
 CONF_FILE = os.path.join(os.path.dirname(__file__), "fedmsg.d", "ircbot.py")
 
@@ -254,3 +254,32 @@ class TestCommands(unittest.TestCase):
             )
 
         eq_(output_conf, fedmsg_conf)
+
+
+@mock.patch('fedmsg.commands.dictConfig', autospec=True)
+@mock.patch('fedmsg.config.load_config', autospec=True)
+@mock.patch('fedmsg.commands.hub.resource.setrlimit', autospec=True)
+class TestHubsCommand(unittest.TestCase):
+
+    def test_setting_nofile_limit(self, mock_setrlimit, *unused_mocks):
+        """Assert setting the default rlimit works."""
+        hub_command = HubCommand()
+        hub_command.set_rlimit_nofiles(limit=1)
+        mock_setrlimit.assert_called_once_with(
+            resource.RLIMIT_NOFILE, (1, 1))
+
+    def test_setting_bad_nofile_limit(self, mock_setrlimit, *unused_mocks):
+        """Assert that setting a rlimit greater than allow is handled well."""
+        mock_setrlimit.side_effect = ValueError('No files for you')
+        hub_command = HubCommand()
+        hub_command.log = mock.Mock()
+        hub_command.set_rlimit_nofiles(limit=1844674407370)
+        hub_command.log.warning.assert_called_once()
+
+    def test_setting_nofile_limit_os_fail(self, mock_setrlimit, *unused_mocks):
+        """Assert that setting a rlimit greater than allow is handled well."""
+        mock_setrlimit.side_effect = resource.error('No files for you')
+        hub_command = HubCommand()
+        hub_command.log = mock.Mock()
+        hub_command.set_rlimit_nofiles(limit=1844674407370)
+        hub_command.log.warning.assert_called_once()
