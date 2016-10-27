@@ -8,9 +8,9 @@ python:
 
 # Twisted dropped Python 2.6 support, so install a compatible version on 2.6
 install:
- - if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]]; then pip install Twisted==12.2; fi
+ - pip install --upgrade pip setuptools
+ - pip install -r test-requirements.txt
  - pip install -e .[commands,consumers]
- - pip install nose
 script: python setup.py nosetests
 notifications:
     email: false
