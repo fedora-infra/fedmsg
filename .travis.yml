@@ -1,11 +1,14 @@
 language: python
 python:
+ - "2.6"
  - "2.7"
  - "3.3"
  - "3.4"
  - "3.5"
 
+# Twisted dropped Python 2.6 support, so install a compatible version on 2.6
 install:
+ - if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]]; then pip install Twisted==12.2; fi
  - pip install -e .[commands,consumers]
  - pip install nose
 script: python setup.py nosetests
