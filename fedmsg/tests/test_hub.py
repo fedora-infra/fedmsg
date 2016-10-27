@@ -13,7 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+try:
+    # For python-2.6, so we can do skipTest
+    import unittest2 as unittest
+except ImportError:
+    import unittest
+
 import os
 import socket
 

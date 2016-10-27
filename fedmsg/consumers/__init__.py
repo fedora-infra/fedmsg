@@ -114,8 +114,10 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         self.status_filename, self.status_lock = None, None
         if self.status_directory:
 
-            # Extract proc name
-            proc_name = current_proc().name()
+            # Extract proc name and handle differences between py2.6 and py2.7
+            proc_name = current_proc().name
+            if callable(proc_name):
+                proc_name = proc_name()
 
             self.status_filename = os.path.join(
                 self.status_directory, proc_name, type(self).__name__)

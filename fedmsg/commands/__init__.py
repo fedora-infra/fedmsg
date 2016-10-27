@@ -24,7 +24,12 @@ import six
 import sys
 
 import logging
-from logging.config import dictConfig
+try:
+    # Python2.7 and later
+    from logging.config import dictConfig
+except ImportError:
+    # For Python2.6, we rely on a third party module.
+    from logutils.dictconfig import dictConfig
 
 
 class BaseCommand(object):
