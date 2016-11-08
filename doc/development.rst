@@ -26,7 +26,8 @@ Development Dependencies
 
 Get::
 
-    $ sudo dnf install python-virtualenv openssl-devel zeromq-devel gcc
+    $ sudo dnf install python-virtualenv libffi-deveil openssl-devel \
+      zeromq-devel gcc
 
 Cloning the Upstream Git Repo
 -----------------------------
@@ -59,7 +60,7 @@ Create a new, empty virtualenv and install all the dependencies from `pypi
 .. note::  As discussed in the FAQ, M2Crypto requires the swig command to be
    available in order to build successfully.  It's recommended that you
    install M2Crypto using your system package manager, which can be done with
-   ``dnf install python-m2crypto`` on Fedora.
+   ``dnf install m2crypto swig`` on Fedora.
 
 You should also run the tests, just to make sure everything is sane::
 
