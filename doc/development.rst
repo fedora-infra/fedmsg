@@ -26,7 +26,7 @@ Development Dependencies
 
 Get::
 
-    $ sudo dnf install python-virtualenv libffi-deveil openssl-devel \
+    $ sudo dnf install python-virtualenv libffi-devel openssl-devel \
       zeromq-devel gcc
 
 Cloning the Upstream Git Repo
