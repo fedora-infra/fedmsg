@@ -87,6 +87,9 @@ extras_require = {
         'daemon',      # not *necessarily* required
         'pygments',
         'psutil',
+        # only needed for irc ssl support
+        #'pyopenssl',
+        #'service_identity',
     ],
 }
 extras_require['all'] = list(set(

@@ -212,6 +212,7 @@ class IRCBotConsumer(FedmsgConsumer):
         for settings in irc_settings:
             network = settings.get('network', 'irc.freenode.net')
             port = settings.get('port', 6667)
+            use_ssl = settings.get('ssl', False)
             channel = settings.get('channel', None)
             if not channel:
                 self.log.error("No channel specified.  Ignoring entry.")
@@ -235,11 +236,20 @@ class IRCBotConsumer(FedmsgConsumer):
                 pretty, terse, short, rate,
                 self, ready=callback,
             )
-            callback = functools.partial(
-                reactor.connectTCP,
-                network, port, factory,
-                timeout=timeout,
-            )
+            if use_ssl:
+                from twisted.internet import ssl
+                callback = functools.partial(
+                    reactor.connectSSL,
+                    network, port, factory,
+                    ssl.ClientContextFactory(),
+                    timeout=timeout,
+                )
+            else:
+                callback = functools.partial(
+                    reactor.connectTCP,
+                    network, port, factory,
+                    timeout=timeout,
+                )
 
         # Call only the very last one.
         # When it is done, it will call the second to last one, which when it
