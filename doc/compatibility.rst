@@ -53,3 +53,9 @@ following configuration to `/etc/fedmsg.d/base.py`::
     # If present, the hub will listen only to this queue for all fedmsg consumers.
     # If absent, the hub will listen to all topics declared by all fedmsg consumers.
     #stomp_queue='/queue/Consumer.yourqueue',
+
+    # There's usually no point in cryptographically validating messages from
+    # other busses.  They likely won't bear message certificates and signatures.
+    # Other busses usually use TLS on the connection itself for authentication
+    # and authorization.
+    validate_signatures=False,
