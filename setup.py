@@ -87,6 +87,9 @@ extras_require = {
         'daemon',      # not *necessarily* required
         'pygments',
         'psutil',
+        # only needed for irc ssl support
+        #'pyopenssl',
+        #'service_identity',
     ],
 }
 extras_require['all'] = list(set(
@@ -96,6 +99,9 @@ extras_require['all'] = list(set(
 ))
 tests_require = [
     'nose',
+    'moksha.hub',
+    'pygments',
+    'psutil',
     'sqlalchemy',  # For the persistent-store test(s).
 ]
 
@@ -113,7 +119,7 @@ if sys.version_info[0] == 2:
 
 setup(
     name='fedmsg',
-    version='0.17.2',
+    version='0.18.0',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',

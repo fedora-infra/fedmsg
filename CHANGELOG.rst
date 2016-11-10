@@ -1,4 +1,89 @@
 
+0.18.0
+------
+
+Pull Requests
+
+- (@ralphbean)      #374, Cascade IRC connections.
+  https://github.com/fedora-infra/fedmsg/pull/374
+- (@ralphbean)      #375, Kill the status page...
+  https://github.com/fedora-infra/fedmsg/pull/375
+- (@ncoghlan)       #377, Make intro less Fedora specific
+  https://github.com/fedora-infra/fedmsg/pull/377
+- (@ralphbean)      #380, Get fedmsg-hub working on STOMP.
+  https://github.com/fedora-infra/fedmsg/pull/380
+- (@jeremycline)    #382, Turn testing Python 2.6 in Travis on
+  https://github.com/fedora-infra/fedmsg/pull/382
+- (@jeremycline)    #381, Raise the resource limit on open files for fedmsg-hub
+  https://github.com/fedora-infra/fedmsg/pull/381
+- (@mprahl)         #388, Return earlier when validate_signatures is turned off
+  https://github.com/fedora-infra/fedmsg/pull/388
+- (@ralphbean)      #387, Document turning off validation for other busses.
+  https://github.com/fedora-infra/fedmsg/pull/387
+- (@asdil12)        #386, Add SSL support to irc bot
+  https://github.com/fedora-infra/fedmsg/pull/386
+- (@tvieira)        #385, Updating dependencies on documentation
+  https://github.com/fedora-infra/fedmsg/pull/385
+
+Commits
+
+- 55d4ecdd5 Cascade IRC connections.
+  https://github.com/fedora-infra/fedmsg/commit/55d4ecdd5
+- ce5a19b25 Add some logging.
+  https://github.com/fedora-infra/fedmsg/commit/ce5a19b25
+- 917ad58fc Make sure we don't do this forever...
+  https://github.com/fedora-infra/fedmsg/commit/917ad58fc
+- b9ab4ffb6 Wait 5 seconds instead of 1.
+  https://github.com/fedora-infra/fedmsg/commit/b9ab4ffb6
+- e02633917 Kill the status page... it is old and hard to maintain.
+  https://github.com/fedora-infra/fedmsg/commit/e02633917
+- fb5190e24 Make intro less Fedora specific (#1)
+  https://github.com/fedora-infra/fedmsg/commit/fb5190e24
+- 10c0398a5 Add missing space
+  https://github.com/fedora-infra/fedmsg/commit/10c0398a5
+- d8b41ef35 Local and hosted test unification
+  https://github.com/fedora-infra/fedmsg/commit/d8b41ef35
+- 11a812feb Drop the support for Python 2.6
+  https://github.com/fedora-infra/fedmsg/commit/11a812feb
+- 37c5d2f8e Add support for Python 3.5
+  https://github.com/fedora-infra/fedmsg/commit/37c5d2f8e
+- f9d3bd74c Allow configuration for fedmsg-hub to listen to STOMP or AMQP instead of just zmq.
+  https://github.com/fedora-infra/fedmsg/commit/f9d3bd74c
+- 8e5e9d1b6 fedmsg.core modifications for STOMP/AMQP hand-off.
+  https://github.com/fedora-infra/fedmsg/commit/8e5e9d1b6
+- 3714777cc Some config comments about STOMP usage.
+  https://github.com/fedora-infra/fedmsg/commit/3714777cc
+- 7888c538e Massage STOMP messages into a more compatible format.
+  https://github.com/fedora-infra/fedmsg/commit/7888c538e
+- 2f8b4024f Let the ircbot handle weird topics (like from STOMP).
+  https://github.com/fedora-infra/fedmsg/commit/2f8b4024f
+- fa24f8c77 Add doc on enabling STOMP support.
+  https://github.com/fedora-infra/fedmsg/commit/fa24f8c77
+- 3c593e266 Be more precise in this comment.
+  https://github.com/fedora-infra/fedmsg/commit/3c593e266
+- 5df1e4831 Copy this docstring to the actual docs.
+  https://github.com/fedora-infra/fedmsg/commit/5df1e4831
+- 91594886c Use something more clear than .isalpha.
+  https://github.com/fedora-infra/fedmsg/commit/91594886c
+- fdee6e458 Turn testing Python 2.6 in Travis on
+  https://github.com/fedora-infra/fedmsg/commit/fdee6e458
+- 439383ab7 Revert "Drop the support for Python 2.6"
+  https://github.com/fedora-infra/fedmsg/commit/439383ab7
+- bd452112f Update pip before starting the Travis tests
+  https://github.com/fedora-infra/fedmsg/commit/bd452112f
+- 3651cfcdf Raise the resource limit on open files for fedmsg-hub
+  https://github.com/fedora-infra/fedmsg/commit/3651cfcdf
+- 004a2fc9c Updating dependencies on documentation
+  https://github.com/fedora-infra/fedmsg/commit/004a2fc9c
+- 8072a84e4 Fixing typo on library name
+  https://github.com/fedora-infra/fedmsg/commit/8072a84e4
+- 7cbc517a9 Add SSL support to ircbot
+  https://github.com/fedora-infra/fedmsg/commit/7cbc517a9
+- 69e382716 Document turning off validation for other busses.
+  https://github.com/fedora-infra/fedmsg/commit/69e382716
+- 0e1189c6a Return earlier when validate_signatures is turned off
+  https://github.com/fedora-infra/fedmsg/commit/0e1189c6a
+
 0.17.2
 ------
 

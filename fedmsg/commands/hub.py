@@ -17,9 +17,18 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import fedmsg
+from gettext import gettext as _
+import resource
+
 from fedmsg.utils import load_class
 from fedmsg.commands import BaseCommand
+
+
+# Since many services use fedmsg-hubs, processes can exceed their resource
+# limits on the number of open file descriptors. In the long term, apps should
+# stop listening to every service, but as a short term fix an attempt is made
+# to raise the resource limit here.
+MAX_NOFILE = 4096
 
 
 class HubCommand(BaseCommand):
@@ -66,16 +75,22 @@ class HubCommand(BaseCommand):
             locations = self.config['explicit_hub_consumers'].split(',')
             locations = [load_class(location) for location in locations]
 
-        # Rephrase the fedmsg-config.py config as moksha *.ini format.
+        # Rephrase the fedmsg-config.py config as moksha *.ini format for
+        # zeromq. If we're not using zeromq (say, we're using STOMP), then just
+        # assume that the moksha configuration is specified correctly already
+        # in /etc/fedmsg.d/
+        if self.config.get('zmq_enabled', True):
+            moksha_options = dict(
+                zmq_subscribe_endpoints=','.join(
+                    ','.join(bunch) for bunch in self.config['endpoints'].values()
+                ),
+            )
+            self.config.update(moksha_options)
+
+        self.set_rlimit_nofiles()
+
         # Note that the hub we kick off here cannot send any message.  You
         # should use fedmsg.publish(...) still for that.
-        moksha_options = dict(
-            zmq_subscribe_endpoints=','.join(
-                ','.join(bunch) for bunch in self.config['endpoints'].values()
-            ),
-        )
-        self.config.update(moksha_options)
-
         from moksha.hub import main
         main(
             # Pass in our config dict
@@ -85,6 +100,22 @@ class HubCommand(BaseCommand):
             # Tell moksha to quiet its logging.
             framework=False,
         )
+
+    def set_rlimit_nofiles(self, limit=MAX_NOFILE):
+        try:
+            msg = _(u'Setting RLIMIT_NOFILE to '
+                    u'{max_files}').format(max_files=limit)
+            self.log.info(msg)
+            resource.setrlimit(
+                resource.RLIMIT_NOFILE, (limit, limit))
+        except (resource.error, ValueError) as e:
+            msg = _(u'Failed to raise the limit on the maximum number of open '
+                    u'file descriptors to {max_files}: {err}')
+            self.log.warning(msg.format(max_files=limit, err=str(e)))
+        finally:
+            nofile = resource.getrlimit(resource.RLIMIT_NOFILE)
+            self.log.info(
+                _(u'RLIMIT_NOFILE is set to {nofile}').format(nofile=nofile))
 
 
 def hub():

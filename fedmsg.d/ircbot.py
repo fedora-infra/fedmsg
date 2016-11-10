@@ -22,6 +22,7 @@ config = dict(
         dict(
             network='irc.freenode.net',
             port=6667,
+            ssl=False,
             nickname='fedmsg-dev',
             channel='my-fedmsg-channel',
             timeout=120,

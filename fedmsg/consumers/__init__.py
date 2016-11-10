@@ -204,6 +204,10 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
     def validate(self, message):
         """ This needs to raise an exception, caught by moksha. """
+        # If we're not validating, then everything is valid.
+        # If this is turned on globally, our child class can override it.
+        if not self.validate_signatures:
+            return
 
         if hasattr(message, '__json__'):
             message = message.__json__()
@@ -214,15 +218,18 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         if not message['topic'] == message['body']['topic']:
             raise RuntimeWarning("Topic envelope mismatch.")
 
-        # If we're not validating, then everything is valid.
-        # If this is turned on globally, our child class can override it.
-        if not self.validate_signatures:
-            return
-
         if not fedmsg.crypto.validate(message['body'], **self.hub.config):
             raise RuntimeWarning("Failed to authn message.")
 
     def _consume(self, message):
+
+        # Massage STOMP messages into a more compatible format.
+        if 'topic' not in message['body']:
+            message['body'] = {
+                'topic': message.get('topic'),
+                'msg': message['body'],
+            }
+
         try:
             self.validate(message)
         except RuntimeWarning as e:

@@ -4,11 +4,14 @@ python:
  - "2.7"
  - "3.3"
  - "3.4"
+ - "3.5"
 
+# Twisted dropped Python 2.6 support, so install a compatible version on 2.6
 install:
+ - pip install --upgrade pip setuptools
+ - pip install -r test-requirements.txt
  - pip install -e .[commands,consumers]
- - pip install nose mock sqlalchemy unittest2
-script: nosetests -v
+script: python setup.py nosetests
 notifications:
     email: false
     irc:
@@ -20,3 +23,4 @@ matrix:
   allow_failures:
     - python: "3.3"
     - python: "3.4"
+    - python: "3.5"
