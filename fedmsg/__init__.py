@@ -17,7 +17,7 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-""" Fedora Messaging Client API """
+""" Federated Message Bus Client API """
 
 import inspect
 import threading

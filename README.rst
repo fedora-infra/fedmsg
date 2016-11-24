@@ -1,4 +1,4 @@
-fedmsg -- Fedora Messaging Client API
+fedmsg -- Federated Message Bus Client API
 =====================================
 
 .. split here
