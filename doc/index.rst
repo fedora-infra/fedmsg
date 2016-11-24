@@ -20,7 +20,7 @@ after it was also adopted for
 ``#fedora-fedmsg`` channel on the freenode network with a firehose bot echoing
 messages to channel to help give you a feel for what's going on.
 
-You can find the list of available topics in Fedora' s infrastructure
+You can find the list of available topics in Fedora's infrastructure
 at https://fedora-fedmsg.readthedocs.io
 
 Receiving Messages with Python
