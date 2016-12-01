@@ -1,5 +1,5 @@
 fedmsg -- Federated Message Bus Client API
-=====================================
+==========================================
 
 .. split here
 
