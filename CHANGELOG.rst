@@ -1,4 +1,21 @@
 
+0.18.1
+------
+
+Pull Requests
+
+- (@ralphbean)      #390, Drop old testcases against old python-six.
+  https://github.com/fedora-infra/fedmsg/pull/390
+- (@puiterwijk)     #393, Only check for stomp messages after we decoded any ZMQMessage
+  https://github.com/fedora-infra/fedmsg/pull/393
+
+Commits
+
+- 9fc0e1e61 Drop old testcases against old python-six.
+  https://github.com/fedora-infra/fedmsg/commit/9fc0e1e61
+- 922c6f390 Only check for stomp messages after we decoded any ZMQMessage
+  https://github.com/fedora-infra/fedmsg/commit/922c6f390
+
 0.18.0
 ------
 
