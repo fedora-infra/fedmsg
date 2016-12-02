@@ -3,8 +3,7 @@
  * fedmsg-emit.php
  * -------------------------
  *
- * A MediaWiki plugin that emits messages to the Fedora Infrastructure Message
- * Bus.
+ * A MediaWiki plugin that emits messages to the Federated Message Bus.
  *
  * Installation Instructions
  * -------------------------

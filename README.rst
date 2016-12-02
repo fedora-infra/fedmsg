@@ -1,9 +1,10 @@
-fedmsg -- Fedora Messaging Client API
-=====================================
+fedmsg -- Federated Message Bus Client API
+==========================================
 
 .. split here
 
-Utilities used around Fedora Infrastructure to send and receive messages.
+fedmsg (FEDerated MeSsaGe bus) is a python package and API defining a brokerless messaging architecture to send and receive messages to and from applications.
+
 Please see doc `here <https://github.com/fedora-infra/fedmsg/tree/develop/doc>`_ or `fedmsg online doc <https://fedmsg.readthedocs.org/>`_ for more info.
 
 Build Status
