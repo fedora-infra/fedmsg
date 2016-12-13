@@ -49,9 +49,11 @@ See :doc:`development` on setting up your environment and workflow.
 .. code-block:: python
 
    import fedmsg
-   fedmsg.publish(topic='testing', modname='test', msg={
+   fedmsg.publish(name='mybus', topic='testing', modname='test', msg={
        'test': "Hello World",
    })
+
+.. note:: The ``endpoints.py`` file should have an entry as ``"mybus": [ "tcp://127.0.0.1:4321", ]``
 
 Publishing Messages from the Shell
 ----------------------------------
