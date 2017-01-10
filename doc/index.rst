@@ -46,12 +46,30 @@ Publishing Messages with Python
 
 See :doc:`development` on setting up your environment and workflow.
 
+In a default configuration, sending a message looks like the following:
+
 .. code-block:: python
 
    import fedmsg
    fedmsg.publish(topic='testing', modname='test', msg={
        'test': "Hello World",
    })
+
+.. note:: The ``endpoints.py`` file should have an entry as ``"<myprogram>.<myhost>": [ ... ]`` where ``myprogram`` is
+   the name of the program sending the message (can be ``__main__`` if it is a simple script) and ``myhost`` is the
+   machine sending the program (corresponds to the output of ``hostname -s``).
+
+If you need to publish to a specific endpoint or need a consistent endpoint, you'll need to pass the ``name`` parameter
+and adjust the ``endpoints.py`` accordingly.
+
+.. code-block:: python
+
+   import fedmsg
+   fedmsg.publish(name='mybus', topic='testing', modname='test', msg={
+       'test': "Hello World",
+   })
+
+.. note:: The ``endpoints.py`` file should have an entry as ``"mybus": [ ... ]``
 
 Publishing Messages from the Shell
 ----------------------------------
