@@ -102,6 +102,8 @@ class LoggerCommand(BaseCommand):
 
         if self.config.get('logger_message'):
             self._log_message(self.config, self.config.get('logger_message'))
+        elif self.config['json_input']:
+            self._log_message(self.config, sys.stdin.read())
         else:
             line = sys.stdin.readline()
             while line:
