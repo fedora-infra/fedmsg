@@ -1,3 +1,10 @@
+0.18.2
+------
+
+Commits
+
+- 5c21cf88a Fix validation logic in the base consumer
+  https://github.com/fedora-infra/fedmsg/commit/5c21cf88a
 
 0.18.1
 ------
