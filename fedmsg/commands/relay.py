@@ -68,6 +68,8 @@ class RelayCommand(BaseCommand):
                     options=self.config,
                     # Only run this *one* consumer
                     consumers=[RelayConsumer],
+                    # And no producers.
+                    producers=[],
                     # Tell moksha to quiet its logging.
                     framework=False,
                 )
