@@ -288,7 +288,10 @@ class FedMsgContext(object):
 
         # Find my message-signing cert if I need one.
         if self.c.get('sign_messages', False):
-            if not self.c.get("crypto_backend") == "gpg":
+            if self.c.get("crypto_backend") == "gpg":
+                if 'gpg_signing_key' not in self.c:
+                    self.c['gpg_signing_key'] = self.c['gpg_keys'][self.hostname]
+            else:
                 if 'cert_prefix' in self.c:
                     cert_index = "%s.%s" % (self.c['cert_prefix'],
                                             self.hostname)
@@ -298,9 +301,6 @@ class FedMsgContext(object):
                         cert_index = "shell.%s" % self.hostname
 
                 self.c['certname'] = self.c['certnames'][cert_index]
-            else:
-                if 'gpg_signing_key' not in self.c:
-                    self.c['gpg_signing_key'] = self.c['gpg_keys'][self.hostname]
 
         if self.c.get('sign_messages', False):
             msg = fedmsg.crypto.sign(msg, **self.c)
