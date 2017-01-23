@@ -291,6 +291,9 @@ class FedMsgContext(object):
             if self.c.get("crypto_backend") == "gpg":
                 if 'gpg_signing_key' not in self.c:
                     self.c['gpg_signing_key'] = self.c['gpg_keys'][self.hostname]
+            elif self.c.get("crypto_backend") == "hmac":
+                # There isn't really anything to configure
+                pass
             else:
                 if 'cert_prefix' in self.c:
                     cert_index = "%s.%s" % (self.c['cert_prefix'],
