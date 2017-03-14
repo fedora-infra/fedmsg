@@ -169,6 +169,17 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
         retrieved = 0
         for message in self.get_datagrepper_results(then, now):
+
+            # Take the messages from datagrepper and remove any keys that were
+            # artificially added to the message.  The presence of these would
+            # otherwise cause message crypto validation to fail.
+            for artificial_key in ('source_name', 'source_version'):
+                if artificial_key in message:
+                    del message[artificial_key]
+
+            # Also, we expect the timestamp to be an 'int'
+            message['timestamp'] = int(message['timestamp'])
+
             if message['msg_id'] != last['msg_id']:
                 retrieved = retrieved + 1
                 self.incoming.put(dict(body=message, topic=message['topic']))
