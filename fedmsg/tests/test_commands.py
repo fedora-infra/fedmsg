@@ -166,7 +166,7 @@ class TestCommands(unittest.TestCase):
     def test_relay(self, argv):
         actual_options = []
 
-        def mock_main(options, consumers, framework):
+        def mock_main(options, consumers, producers, framework):
             actual_options.append(options)
 
         config = {}
