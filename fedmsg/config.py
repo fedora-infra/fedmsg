@@ -49,7 +49,6 @@ from kitchen.iterutils import iterate
 from fedmsg.encoding import pretty_dumps
 
 
-VALID_ENVIRONMENTS = ['dev', 'stg', 'prod']
 bare_format = "[%(asctime)s][%(name)10s %(levelname)7s] %(message)s"
 
 defaults = dict(
@@ -154,10 +153,6 @@ def load_config(extra_args=None,
         print(pretty_dumps(config))
         sys.exit(0)
 
-    if config.get('environment', 'prod') not in VALID_ENVIRONMENTS:
-        raise ValueError("%r not one of %r" % (
-            config['environment'], VALID_ENVIRONMENTS))
-
     if not disable_defaults and 'endpoints' not in config:
         raise ValueError("No config value 'endpoints' found.")
 
@@ -196,9 +191,9 @@ def load_config(extra_args=None,
             config['endpoints'][e] = list(iterate(urls))
 
     if 'topic_prefix_re' not in config and 'topic_prefix' in config:
-        # Turn "org.fedoraproject" into "org\.fedoraproject\.(dev|stg|prod)"
+        # Turn "org.fedoraproject" into "org\.fedoraproject\.[^\W\d_]+"
         config['topic_prefix_re'] = config['topic_prefix'].replace('.', '\.')\
-            + '\.(%s)' % '|'.join(VALID_ENVIRONMENTS)
+            + '\.[^\W\d_]+'
 
     __cache = config
     return config
