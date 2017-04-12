@@ -1,4 +1,62 @@
 
+0.18.3
+------
+
+Pull Requests
+
+-                   #391, Merge pull request #391 from sijis/fixes/library_branding
+  https://github.com/fedora-infra/fedmsg/pull/391
+-                   #394, Merge pull request #394 from sijis/doc/publish_messages
+  https://github.com/fedora-infra/fedmsg/pull/394
+-                   #392, Merge pull request #392 from sijis/fix/multiline_json
+  https://github.com/fedora-infra/fedmsg/pull/392
+-                   #395, Merge pull request #395 from fedora-infra/feature/no-relay-producers
+  https://github.com/fedora-infra/fedmsg/pull/395
+-                   #402, Merge pull request #402 from fedora-infra/feature/backlog-validation
+  https://github.com/fedora-infra/fedmsg/pull/402
+-                   #405, Merge pull request #405 from ralphbean/feature/fix-test-mock
+  https://github.com/fedora-infra/fedmsg/pull/405
+-                   #406, Merge pull request #406 from ralphbean/feature/no-env-validation
+  https://github.com/fedora-infra/fedmsg/pull/406
+
+Commits
+
+- de36911cb Handle multiline json
+  https://github.com/fedora-infra/fedmsg/commit/de36911cb
+- d86302b93 Fix spacing in text
+  https://github.com/fedora-infra/fedmsg/commit/d86302b93
+- 05347ffb0 Use a neutral definition for fedmsg
+  https://github.com/fedora-infra/fedmsg/commit/05347ffb0
+- 08c0c50d5 Update project description
+  https://github.com/fedora-infra/fedmsg/commit/08c0c50d5
+- 7bfe39ac1 Fix title line markup
+  https://github.com/fedora-infra/fedmsg/commit/7bfe39ac1
+- 5a4650f92 Update publishing sample code
+  https://github.com/fedora-infra/fedmsg/commit/5a4650f92
+- af4790117 Provide an additional publishing example
+  https://github.com/fedora-infra/fedmsg/commit/af4790117
+- ebed181ce Give better explanation of default endpoint entries
+  https://github.com/fedora-infra/fedmsg/commit/ebed181ce
+- 2bb51cd8e Fix validation logic in the base consumer
+  https://github.com/fedora-infra/fedmsg/commit/2bb51cd8e
+- 7e374467a 0.18.2
+  https://github.com/fedora-infra/fedmsg/commit/7e374467a
+- 69ffb8420 Fedmsg-relay shouldn't run producers.
+  https://github.com/fedora-infra/fedmsg/commit/69ffb8420
+- 64d42757b Remove artifical keys from datagrepper backlog to pass validation.
+  https://github.com/fedora-infra/fedmsg/commit/64d42757b
+- f79c5de09 Fix a mock used by the test suite.
+  https://github.com/fedora-infra/fedmsg/commit/f79c5de09
+- 08036fe22 Remove env validation.
+  https://github.com/fedora-infra/fedmsg/commit/08036fe22
+0.18.2
+------
+
+Commits
+
+- 5c21cf88a Fix validation logic in the base consumer
+  https://github.com/fedora-infra/fedmsg/commit/5c21cf88a
+
 0.18.1
 ------
 

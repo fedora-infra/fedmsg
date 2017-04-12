@@ -72,7 +72,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
           in order for the consumer to be activated.
     """
 
-    validate_signatures = False
+    validate_signatures = None
     config_key = None
 
     def __init__(self, hub):
@@ -100,7 +100,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         # Now, re-get our logger to override the one moksha assigns us.
         self.log = logging.getLogger("fedmsg")
 
-        if self.validate_signatures:
+        if self.validate_signatures is None:
             self.validate_signatures = self.hub.config['validate_signatures']
 
         if hasattr(self, "replay_name"):
@@ -169,6 +169,17 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
         retrieved = 0
         for message in self.get_datagrepper_results(then, now):
+
+            # Take the messages from datagrepper and remove any keys that were
+            # artificially added to the message.  The presence of these would
+            # otherwise cause message crypto validation to fail.
+            for artificial_key in ('source_name', 'source_version'):
+                if artificial_key in message:
+                    del message[artificial_key]
+
+            # Also, we expect the timestamp to be an 'int'
+            message['timestamp'] = int(message['timestamp'])
+
             if message['msg_id'] != last['msg_id']:
                 retrieved = retrieved + 1
                 self.incoming.put(dict(body=message, topic=message['topic']))
