@@ -196,27 +196,16 @@ class FedMsgContext(object):
           ... })
 
         The above snippet will send the message ``'{test: "Hello World"}'``
-        over the ``<topic_prefix>.dev.test.testing`` topic.
+        over the ``<topic_prefix>.dev.test.testing`` topic. The fully qualified
+        topic of a message is constructed out of the following pieces:
+
+         <:term:`topic_prefix`>.<:term:`environment`>.<``modname``>.<``topic``>
 
         This function (and other API functions) do a little bit more
         heavy lifting than they let on.  If the "zeromq context" is not yet
         initialized, :func:`fedmsg.init` is called to construct it and
         store it as :data:`fedmsg.__local.__context` before anything else is
         done.
-
-        The ``modname`` argument will be omitted in most use cases.  By
-        default, ``fedmsg`` will try to guess the name of the module that
-        called it and use that to produce an intelligent topic.  Specifying
-        ``modname`` explicitly overrides this behavior.
-
-        The ``pre_fire_hook`` argument may be a callable that will be called
-        with a single argument -- the dict of the constructed message -- just
-        before it is handed off to ZeroMQ for publication.
-
-        The fully qualified topic of a message is constructed out of the
-        following pieces:
-
-         <:term:`topic_prefix`>.<:term:`environment`>.<``modname``>.<``topic``>
 
         ----
 
@@ -255,6 +244,24 @@ class FedMsgContext(object):
             $ echo "Hello, world." | fedmsg-logger --topic testing
             $ echo '{"foo": "bar"}' | fedmsg-logger --json-input
 
+        :param topic: The message topic suffix. This suffix is joined to the
+            configured topic prefix (e.g. ``org.fedoraproject``), environment
+            (e.g. ``prod``, ``dev``, etc.), and modname.
+        :type topic: unicode
+        :param msg: A message to publish. This message will be JSON-encoded
+            prior to being sent, so the object must be composed of JSON-
+            serializable data types. Please note that if this is already a
+            string JSON serialization will be applied to that string.
+        :type msg: dict
+        :param modname: The module name that is publishing the message. If this
+            is omitted, ``fedmsg`` will try to guess the name of the module
+            that called it and use that to produce an intelligent topic.
+            Specifying ``modname`` explicitly overrides this behavior.
+        :type modname: unicode
+        :param pre_fire_hook: A callable that will be called with a single
+            argument -- the dict of the constructed message -- just before it
+            is handed off to ZeroMQ for publication.
+        :type pre_fire_hook: function
         """
 
         topic = topic or 'unspecified'
