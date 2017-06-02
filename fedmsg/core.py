@@ -332,7 +332,7 @@ class FedMsgContext(object):
             # Perhaps we're using STOMP or AMQP?  Let moksha handle it.
             import moksha.hub
             # First, a quick sanity check.
-            if not moksha.hub._hub:
+            if not getattr(moksha.hub, '_hub', None):
                 raise AttributeError("Unable to publish non-zeromq msg"
                                      "without moksha-hub initialization.")
             # Let moksha.hub do our work.
