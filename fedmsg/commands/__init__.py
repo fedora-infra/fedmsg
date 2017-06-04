@@ -21,7 +21,6 @@ import fedmsg
 import fedmsg.config
 import warnings
 import six
-import sys
 
 import logging
 try:
