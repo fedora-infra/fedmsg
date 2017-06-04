@@ -65,11 +65,13 @@ def sign(message, ssldir=None, certname=None, **config):
 
     message['crypto'] = 'x509'
 
-    certificate = M2Crypto.X509.load_cert(
-        "%s/%s.crt" % (ssldir, certname)).as_pem()
+    marker = "-----BEGIN CERTIFICATE-----"
+    with open("%s/%s.crt" % (ssldir, certname), 'r') as f:
+        content = marker + f.read().split(marker)[-1]
+        certificate = M2Crypto.X509.load_cert_string(content).as_pem()
+
     # Opening this file requires elevated privileges in stg/prod.
-    rsa_private = M2Crypto.RSA.load_key(
-        "%s/%s.key" % (ssldir, certname))
+    rsa_private = M2Crypto.RSA.load_key("%s/%s.key" % (ssldir, certname))
 
     digest = M2Crypto.EVP.MessageDigest('sha1')
     digest.update(fedmsg.encoding.dumps(message))
