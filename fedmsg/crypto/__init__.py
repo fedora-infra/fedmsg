@@ -150,24 +150,12 @@ import copy
 import os
 import logging
 
+from . import gpg, x509
+
 log = logging.getLogger(__name__)
 
 _implementation = None
 _validate_implementations = None
-
-import six
-
-# For python3, we're in trouble due to M2Crypto - it won't be ported.
-# So we have python-cryptography!  but it only supports what we need for
-# message signing, not message validation.  So, if we're on py3, use the
-# experimental x509 module that can do just that.  Otherwise, use the
-# tried-and-true-but-python2-only module.
-if six.PY3:
-    from . import x509_ng as x509
-else:
-    from . import x509
-
-from . import gpg
 
 _possible_backends = {
     'gpg': gpg,
