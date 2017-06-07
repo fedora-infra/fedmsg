@@ -172,6 +172,7 @@ setup(
             #"fedmsg-config=fedmsg.commands.config:config [commands]",
             "fedmsg-hub=fedmsg.commands.hub:hub [consumers]",
             "fedmsg-relay=fedmsg.commands.relay:relay [consumers]",
+            "fedmsg-signing-relay=fedmsg.commands.relay:signing_relay [consumers]",
             "fedmsg-gateway=fedmsg.commands.gateway:gateway [consumers]",
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot [consumers]",
         ],

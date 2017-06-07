@@ -21,6 +21,7 @@ import fedmsg
 import logging
 
 from fedmsg.consumers import FedmsgConsumer
+from fedmsg import crypto
 
 log = logging.getLogger(__name__)
 
@@ -53,3 +54,37 @@ class RelayConsumer(FedmsgConsumer):
 
         log.debug("Got message %r" % msg)
         self.hub.send_message(topic=msg['topic'], message=msg['body'])
+
+
+class SigningRelayConsumer(RelayConsumer):
+    """
+    A relay that signs messages it relays with x509 certificates.
+
+    The key pair used for message signing is configured by setting the ``signing_relay``
+    key in the ``certnames`` configuration dictionary to the key pair name inside of
+    the configured ``ssldir``. See the configuration documentation for more information.
+    """
+
+    def __init__(self, *args, **kwargs):
+        """
+        Initialize the relay.
+
+        All arguments are passed directly on to the :class:`RelayConsumer`.
+        """
+        super(SigningRelayConsumer, self).__init__(*args, **kwargs)
+
+        try:
+            self.hub.config['certname'] = self.hub.config['certnames']['signing_relay']
+        except KeyError:
+            log.error('The signing relay requires that the certificate name is in '
+                      'the "certnames" dictionary using the "signing_relay" key')
+
+    def consume(self, msg):
+        """
+        Sign the message prior to sending the message.
+
+        Args:
+            msg (dict): The message to sign and relay.
+        """
+        msg['body'] = crypto.sign(msg['body'], **self.hub.config)
+        super(SigningRelayConsumer, self).consume(msg)
