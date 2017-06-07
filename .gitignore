@@ -10,6 +10,7 @@ html-output
 htmldoc
 _tweet-real.py
 htmldocs
+htmlcov/
 .coverage
 fedmsg/tests/test_certs/gpg/random_seed
 html-docs
