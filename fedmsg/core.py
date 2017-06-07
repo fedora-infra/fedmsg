@@ -62,7 +62,7 @@ class FedMsgContext(object):
         self.log = logging.getLogger("fedmsg")
 
         self.c = config
-        self.hostname = socket.gethostname().split('.', maxsplit=1)[0]
+        self.hostname = socket.gethostname().split('.', 1)[0]
 
         # Prepare our context and publisher
         self.context = zmq.Context(config['io_threads'])
