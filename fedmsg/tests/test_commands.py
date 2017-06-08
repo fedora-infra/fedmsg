@@ -15,6 +15,8 @@ import fedmsg.config
 import fedmsg.commands
 from fedmsg.commands.hub import HubCommand
 from fedmsg.commands.logger import LoggerCommand
+from fedmsg.commands.relay import RelayCommand
+from fedmsg.commands.tail import TailCommand
 from fedmsg.commands.config import config as config_command
 import fedmsg.consumers.relay
 
@@ -98,7 +100,7 @@ class TestCommands(unittest.TestCase):
             with mock.patch("fedmsg.config.__cache", config):
                 with mock.patch(
                         "fedmsg.core.FedMsgContext.tail_messages", mock_tail):
-                    command = fedmsg.commands.tail.TailCommand()
+                    command = TailCommand()
                     command.execute()
 
         output = stdout.getvalue()
@@ -123,7 +125,7 @@ class TestCommands(unittest.TestCase):
             with mock.patch("fedmsg.config.__cache", config):
                 with mock.patch(
                         "fedmsg.core.FedMsgContext.tail_messages", mock_tail):
-                    command = fedmsg.commands.tail.TailCommand()
+                    command = TailCommand()
                     command.execute()
 
         output = stdout.getvalue()
@@ -149,7 +151,7 @@ class TestCommands(unittest.TestCase):
             with mock.patch("fedmsg.config.__cache", config):
                 with mock.patch(
                         "fedmsg.core.FedMsgContext.tail_messages", mock_tail):
-                    command = fedmsg.commands.tail.TailCommand()
+                    command = TailCommand()
                     command.execute()
 
         output = stdout.getvalue()
@@ -167,7 +169,7 @@ class TestCommands(unittest.TestCase):
         with mock.patch("fedmsg.__local", self.local):
             with mock.patch("fedmsg.config.__cache", config):
                 with mock.patch("moksha.hub.main", mock_main):
-                    command = fedmsg.commands.relay.RelayCommand()
+                    command = RelayCommand()
                     command.execute()
 
         actual_options = actual_options[0]

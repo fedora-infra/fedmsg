@@ -12,7 +12,7 @@ install:
  - pip install --upgrade pip setuptools
  - pip install -r test-requirements.txt
  - pip install -e .[commands,consumers]
- - pip install codecov flake8
+ - pip install codecov
 
 before_script:
   flake8 .
