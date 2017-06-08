@@ -93,9 +93,6 @@ class TestCryptoGPG(unittest.TestCase):
             'gpg_signing_key': gpg_key
         }
 
-    def tearDown(self):
-        self.config = None
-
     @skip_on_travis
     def test_full_circle(self):
         """ Try to sign and validate a message. """
@@ -115,6 +112,7 @@ class TestCryptoGPG(unittest.TestCase):
         # We have to reset the implementation in fedmsg.crypto
         # otherwise all the other tests will use the gpg backend
         fedmsg.crypto._implementation = None
+        self.config = None
 
 
 if __name__ == '__main__':

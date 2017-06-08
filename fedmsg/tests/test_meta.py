@@ -23,6 +23,7 @@ import inspect
 import os
 import unittest
 import textwrap
+import imp
 
 from nose import SkipTest
 from nose.tools import eq_
@@ -74,7 +75,7 @@ def skip_if_fedmsg_meta_FI_is_present(f):
     """
     def _wrapper(self, *args, **kw):
         try:
-            import fedmsg_meta_fedora_infrastructure
+            imp.find_module('fedmsg_meta_fedora_infrastructure')
             raise SkipTest("fedmsg_meta_FI is present")
         except ImportError:
             pass
@@ -372,7 +373,7 @@ class ConglomerateBase(unittest.TestCase):
 
         # Delete the msg_ids field because it is bulky and I don't want to
         # bother with testing it (copying and pasting it).
-        if not self.expected is Unspecified:
+        if self.expected is not Unspecified:
             for item in self.expected:
                 if 'msg_ids' in item:
                     del item['msg_ids']

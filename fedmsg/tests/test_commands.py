@@ -1,10 +1,10 @@
-from datetime import datetime
 import resource
 import threading
 import unittest
 import time
 import json
 import os
+import mock
 
 from nose.tools import eq_
 import six
@@ -15,11 +15,8 @@ import fedmsg.config
 import fedmsg.commands
 from fedmsg.commands.hub import HubCommand
 from fedmsg.commands.logger import LoggerCommand
-from fedmsg.commands.tail import TailCommand
-from fedmsg.commands.relay import RelayCommand
 from fedmsg.commands.config import config as config_command
 import fedmsg.consumers.relay
-from fedmsg.tests.test_utils import mock
 
 
 CONF_FILE = os.path.join(os.path.dirname(__file__), "fedmsg.d", "ircbot.py")
@@ -99,8 +96,8 @@ class TestCommands(unittest.TestCase):
         config = {}
         with mock.patch("fedmsg.__local", self.local):
             with mock.patch("fedmsg.config.__cache", config):
-                with mock.patch("fedmsg.core.FedMsgContext.tail_messages",
-                           mock_tail):
+                with mock.patch(
+                        "fedmsg.core.FedMsgContext.tail_messages", mock_tail):
                     command = fedmsg.commands.tail.TailCommand()
                     command.execute()
 
@@ -111,7 +108,6 @@ class TestCommands(unittest.TestCase):
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--pretty"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_tail_pretty(self, stdout, argv):
-        msgs = []
 
         def mock_tail(self, topic="", passive=False, **kw):
             msg = dict(
@@ -120,14 +116,13 @@ class TestCommands(unittest.TestCase):
                 timestamp=1354563717.472648,  # Once upon a time...
                 topic="org.threebean.prod.testing",
             )
-
             yield ("name", "endpoint", "topic", msg)
 
         config = {}
         with mock.patch("fedmsg.__local", self.local):
             with mock.patch("fedmsg.config.__cache", config):
-                with mock.patch("fedmsg.core.FedMsgContext.tail_messages",
-                           mock_tail):
+                with mock.patch(
+                        "fedmsg.core.FedMsgContext.tail_messages", mock_tail):
                     command = fedmsg.commands.tail.TailCommand()
                     command.execute()
 
@@ -138,7 +133,6 @@ class TestCommands(unittest.TestCase):
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--really-pretty"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_tail_really_pretty(self, stdout, argv):
-        msgs = []
 
         def mock_tail(self, topic="", passive=False, **kw):
             msg = dict(
@@ -153,8 +147,8 @@ class TestCommands(unittest.TestCase):
         config = {}
         with mock.patch("fedmsg.__local", self.local):
             with mock.patch("fedmsg.config.__cache", config):
-                with mock.patch("fedmsg.core.FedMsgContext.tail_messages",
-                           mock_tail):
+                with mock.patch(
+                        "fedmsg.core.FedMsgContext.tail_messages", mock_tail):
                     command = fedmsg.commands.tail.TailCommand()
                     command.execute()
 

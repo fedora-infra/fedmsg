@@ -161,7 +161,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
             return
 
         last = data['message']['body']
-        if isinstance(last, basestring):
+        if isinstance(last, str):
             last = json.loads(last)
 
         then = last['timestamp']
@@ -217,7 +217,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         """ This needs to raise an exception, caught by moksha. """
         if hasattr(message, '__json__'):
             message = message.__json__()
-            if isinstance(message['body'], basestring):
+            if isinstance(message['body'], str):
                 message['body'] = json.loads(message['body'])
 
         # Massage STOMP messages into a more compatible format.

@@ -24,10 +24,12 @@ inactive = collections.defaultdict(list)
 
 pool = multiprocessing.pool.ThreadPool(25)
 
+
 def info(content="\n"):
     if not for_collectd:
         sys.stdout.write(content)
         sys.stdout.flush()
+
 
 def scan_one(item):
     name, endpoint = item
@@ -61,7 +63,7 @@ def scan_all():
     info()
 
     if 'verbose' in sys.argv:
-        import pprint;
+        import pprint
         pprint.pprint(dict(active))
         pprint.pprint(dict(inactive))
 
@@ -105,6 +107,7 @@ def scan_all():
     value = 100 * float(active_n_total) / (active_n_total + inactive_n_total)
     info("percent active: %%%0.1f\n" % value)
     return value
+
 
 if not for_collectd:
     scan_all()

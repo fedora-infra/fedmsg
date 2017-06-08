@@ -19,18 +19,13 @@ try:
 except ImportError:
     import unittest
 
-import os
-import socket
-
-from time import sleep, time
-from uuid import uuid4
+from time import sleep
 
 from moksha.hub.tests.test_hub import simulate_reactor
-from moksha.hub.hub import MokshaHub
 from moksha.hub import CentralMokshaHub
 from fedmsg.core import FedMsgContext
 
-from nose.tools import eq_, assert_true, assert_false, raises
+from nose.tools import eq_, raises
 
 import fedmsg.config
 import fedmsg.consumers

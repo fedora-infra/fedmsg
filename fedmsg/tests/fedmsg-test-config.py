@@ -26,11 +26,12 @@ SEP = os.path.sep
 here = os.getcwd()
 hostname = socket.gethostname().split('.', 1)[0]
 
-ssl_enabled_for_tests = True
+import imp
 try:
-    import M2Crypto
-    import m2ext
-except:
+    imp.find_module('M2Crypto')
+    imp.find_module('m2ext')
+    ssl_enabled_for_tests = True
+except ImportError:
     ssl_enabled_for_tests = False
 
 # Pick random ports for the tests so travis-ci doesn't flip out.
@@ -96,7 +97,7 @@ config = dict(
         "__main__.%s" % hostname: "shell-app01.phx2.fedoraproject.org",
         # In prod/stg, map hostname to the name of the cert in ssldir.
         # Unfortunately, we can't use socket.getfqdn()
-        #"app01.stg": "app01.stg.phx2.fedoraproject.org",
+        # "app01.stg": "app01.stg.phx2.fedoraproject.org",
     },
     gpg_keys={
         "unittest.%s" % hostname: gpg_key_unittest,

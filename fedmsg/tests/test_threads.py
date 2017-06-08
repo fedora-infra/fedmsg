@@ -144,5 +144,6 @@ class TestHub(unittest.TestCase):
 
         assert(self.test_reinit_success)
 
+
 if __name__ == '__main__':
     unittest.main()

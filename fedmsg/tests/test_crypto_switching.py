@@ -20,6 +20,7 @@
 import six
 import sys
 import os
+import imp
 
 import nose.tools.nontrivial
 
@@ -40,10 +41,10 @@ def skip_if_missing_x509_libs(f):
     def _wrapper(self, *args, **kw):
         try:
             if six.PY3:
-                import cryptography
+                imp.find_module('cryptography')
             else:
-                import M2Crypto
-                import m2ext
+                imp.find_module('M2Crypto')
+                imp.find_module('m2ext')
         except ImportError as e:
             self.skipTest(six.text_type(e))
 

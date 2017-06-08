@@ -230,7 +230,6 @@ class IRCBotConsumer(FedmsgConsumer):
 
             filters = self.compile_filters(settings.get('filters', None))
 
-
             factory = Fedmsg2IRCFactory(
                 channel, nickname, filters,
                 pretty, terse, short, rate,
