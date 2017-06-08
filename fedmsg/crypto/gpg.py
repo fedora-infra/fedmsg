@@ -148,6 +148,7 @@ class Context(object):
 
 # Here comes the part actually relevent to fedmsg
 """ ``fedmsg.crypto.gpg`` - GnuPG backend for :mod:`fedmsg.crypto` """
+
 import fedmsg.encoding
 _ctx = Context()
 

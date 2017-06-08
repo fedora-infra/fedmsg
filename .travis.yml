@@ -1,4 +1,5 @@
 language: python
+
 python:
  - "2.6"
  - "2.7"
@@ -6,12 +7,18 @@ python:
  - "3.4"
  - "3.5"
 
-# Twisted dropped Python 2.6 support, so install a compatible version on 2.6
 install:
+ # Twisted dropped Python 2.6 support, so install a compatible version on 2.6
  - pip install --upgrade pip setuptools
  - pip install -r test-requirements.txt
  - pip install -e .[commands,consumers]
+ - pip install codecov flake8
+
+before_script:
+  flake8 .
+
 script: python setup.py nosetests
+
 notifications:
     email: false
     irc:
@@ -24,3 +31,6 @@ matrix:
     - python: "3.3"
     - python: "3.4"
     - python: "3.5"
+
+after-success:
+  codecov

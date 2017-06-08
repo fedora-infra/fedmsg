@@ -79,8 +79,9 @@ class ProcessorsNotInitialized(Exception):
         return False
     __bool__ = __nonzero__
 
-processors = ProcessorsNotInitialized("You must first call "
-                                      "fedmsg.meta.make_processors(**config)")
+
+processors = ProcessorsNotInitialized(
+    "You must first call fedmsg.meta.make_processors(**config)")
 
 
 def make_processors(**config):

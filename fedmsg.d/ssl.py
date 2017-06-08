@@ -18,7 +18,6 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 import os
-import socket
 
 SEP = os.path.sep
 here = os.getcwd()
@@ -43,7 +42,7 @@ config = dict(
     certnames={
         # In prod/stg, map hostname to the name of the cert in ssldir.
         # Unfortunately, we can't use socket.getfqdn()
-        #"app01.stg": "app01.stg.phx2.fedoraproject.org",
+        # "app01.stg": "app01.stg.phx2.fedoraproject.org",
     },
 
     # A mapping of fully qualified topics to a list of cert names for which
