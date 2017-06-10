@@ -12,7 +12,6 @@ install:
  - pip install --upgrade pip setuptools
  - pip install -r test-requirements.txt
  - pip install -e .[commands,consumers]
- - pip install codecov
 
 before_script:
   flake8 .
@@ -31,6 +30,3 @@ matrix:
     - python: "3.3"
     - python: "3.4"
     - python: "3.5"
-
-after-success:
-  codecov

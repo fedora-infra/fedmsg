@@ -139,8 +139,7 @@ class FedMsgContext(object):
                     # If we fail to bind or connect, there's probably another
                     # process already using that endpoint port.  Try the next
                     # one.
-                    self.log.debug(
-                        "Couldn't connect to %s to %s" % (method, endpoint))
+                    pass
 
             # If we make it through the loop without establishing our
             # connection, then there are not enough endpoints listed in the
@@ -382,7 +381,6 @@ class FedMsgContext(object):
             # it appears in the endpoints list due to a hack where it gets
             # added in __init__ above.
             if _name == 'relay_inbound':
-                self.log.debug("ignored relay_inbound from config.endpoints")
                 continue
 
             # Listify endpoint_list in case it is a single string

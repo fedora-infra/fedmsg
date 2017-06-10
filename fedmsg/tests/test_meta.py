@@ -23,7 +23,6 @@ import inspect
 import os
 import unittest
 import textwrap
-import imp
 
 from nose import SkipTest
 from nose.tools import eq_
@@ -75,7 +74,7 @@ def skip_if_fedmsg_meta_FI_is_present(f):
     """
     def _wrapper(self, *args, **kw):
         try:
-            imp.find_module('fedmsg_meta_fedora_infrastructure')
+            import fedmsg_meta_fedora_infrastructure  # noqa: F401
             raise SkipTest("fedmsg_meta_FI is present")
         except ImportError:
             pass

@@ -26,10 +26,9 @@ SEP = os.path.sep
 here = os.getcwd()
 hostname = socket.gethostname().split('.', 1)[0]
 
-import imp
 try:
-    imp.find_module('M2Crypto')
-    imp.find_module('m2ext')
+    import M2Crypto             # noqa: F401
+    import m2ext                # noqa: F401
     ssl_enabled_for_tests = True
 except ImportError:
     ssl_enabled_for_tests = False

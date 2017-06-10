@@ -9,6 +9,4 @@ ordereddict; python_version <= '2.6'
 logutils; python_version <= '2.6'
 unittest2; python_version <= '2.6'
 Twisted==12.2; python_version <= '2.6'
-# flake8 3 dropped support for py{26,33}
-flake8<3.0.0; python_version == '2.6' or python_version == '3.3'
-flake8>=3.0.0; python_version == '2.7' or python_version >  '3.3'
+flake8

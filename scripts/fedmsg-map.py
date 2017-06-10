@@ -10,6 +10,7 @@ import multiprocessing.pool
 import socket
 import sys
 import time
+import pprint
 
 import fedmsg.config
 config = fedmsg.config.load_config()
@@ -63,7 +64,6 @@ def scan_all():
     info()
 
     if 'verbose' in sys.argv:
-        import pprint
         pprint.pprint(dict(active))
         pprint.pprint(dict(inactive))
 
