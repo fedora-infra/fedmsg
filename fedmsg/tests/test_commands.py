@@ -1,4 +1,5 @@
 import resource
+import sys
 import threading
 import unittest
 import time
@@ -6,8 +7,10 @@ import json
 import os
 import mock
 
+from click.testing import CliRunner
 from nose.tools import eq_
 import six
+import zmq
 
 import fedmsg
 import fedmsg.core
@@ -18,6 +21,7 @@ from fedmsg.commands.logger import LoggerCommand
 from fedmsg.commands.relay import RelayCommand
 from fedmsg.commands.tail import TailCommand
 from fedmsg.commands.config import config as config_command
+from fedmsg.commands.check import check
 import fedmsg.consumers.relay
 
 
@@ -279,3 +283,154 @@ class TestHubsCommand(unittest.TestCase):
         hub_command.log = mock.Mock()
         hub_command.set_rlimit_nofiles(limit=1844674407370)
         hub_command.log.warning.assert_called_once()
+
+
+class CheckTests(unittest.TestCase):
+    """Tests for the :class:`fedmsg.commands.check.CheckCommand`."""
+
+    def setUp(self):
+        self.report = {
+            "consumers": [
+                {
+                    "backlog": 0,
+                    "exceptions": 0,
+                    "headcount_in": 0,
+                    "headcount_out": 0,
+                    "initialized": True,
+                    "jsonify": True,
+                    "module": "test.consumers",
+                    "name": "TestConsumer",
+                    "times": [],
+                    "topic": ['test']
+                },
+            ],
+            "producers": [
+                 {
+                   "exceptions": 0,
+                   "frequency": 5,
+                   "initialized": True,
+                   "last_ran": 1496780847.269628,
+                   "module": "moksha.hub.monitoring",
+                   "name": "MonitoringProducer",
+                   "now": False,
+                 }
+            ]
+        }
+        self.context = zmq.Context.instance()
+        self.socket = self.context.socket(zmq.PUB)
+        self.port = self.socket.bind_to_random_port('tcp://127.0.0.1', max_tries=1000)
+
+    def tearDown(self):
+        self.context.destroy()
+
+    def test_no_monitor_endpoint(self):
+        """Assert that when no endpoint for monitoring is configured, users are informed."""
+        expected_error = (
+            u'Error: No monitoring endpoint has been configured: please set '
+            u'"moksha.monitoring.socket"\n'
+        )
+        runner = CliRunner()
+        result = runner.invoke(check, [])
+        self.assertEqual(1, result.exit_code)
+        self.assertEqual(expected_error, result.output)
+
+    @mock.patch('fedmsg.commands.check.load_config')
+    def test_socket_timeout(self, mock_load_config):
+        """Assert when no message is received a timeout is hit."""
+        mock_load_config.return_value = {
+            'moksha.monitoring.socket': 'tcp://127.0.0.1:' + str(self.port)
+        }
+        expected_error = (
+            u'Error: Failed to receive message from the monitoring endpoint'
+            u' (tcp://127.0.0.1:{p}) in 1 seconds.\n'.format(p=self.port)
+        )
+        runner = CliRunner()
+
+        result = runner.invoke(check, ['--timeout=1'])
+
+        self.assertEqual(1, result.exit_code)
+        self.assertEqual(expected_error, result.output)
+
+    @mock.patch('fedmsg.commands.check.load_config')
+    def test_no_consumers_or_producers(self, mock_load_config):
+        """Assert that when no consumers or producers are specified, all are displayed."""
+        mock_load_config.return_value = {
+            'moksha.monitoring.socket': 'tcp://127.0.0.1:' + str(self.port)
+        }
+        runner = CliRunner()
+        expected_output = (u'No consumers or producers specified so all will be shown.'
+                           u'\n{r}\n'.format(r=json.dumps(self.report, indent=2, sort_keys=True)))
+
+        def send_report():
+            self.socket.send(json.dumps(self.report))
+
+        threading.Timer(2.0, send_report).start()
+        result = runner.invoke(check, [])
+
+        self.assertEqual(0, result.exit_code)
+        self.assertEqual(expected_output, result.output)
+
+    @mock.patch('fedmsg.commands.check.load_config')
+    def test_missing(self, mock_load_config):
+        """
+        Assert the command has a non-zero exit when a consumer is missing
+        from the list of active consumers.
+        """
+        mock_load_config.return_value = {
+            'moksha.monitoring.socket': 'tcp://127.0.0.1:' + str(self.port)
+        }
+        runner = CliRunner()
+        expected_output = (
+            u'"MissingConsumer" is not active!\n'
+            u'Error: Some consumers and/or producers are missing!\n'
+        )
+
+        def send_report():
+            self.socket.send(json.dumps(self.report))
+
+        threading.Timer(2.0, send_report).start()
+        result = runner.invoke(check, ['--consumer=MissingConsumer'])
+
+        self.assertEqual(1, result.exit_code)
+        self.assertEqual(expected_output, result.output)
+
+    @mock.patch('fedmsg.commands.check.load_config')
+    def test_uninitialized(self, mock_load_config):
+        """Assert the command has a non-zero exit when a consumer is not initialized."""
+        mock_load_config.return_value = {
+            'moksha.monitoring.socket': 'tcp://127.0.0.1:' + str(self.port)
+        }
+        runner = CliRunner()
+        expected_output = (
+            u'"TestConsumer" is not initialized!\n'
+            u'Error: Some consumers and/or producers are uninitialized!\n'
+        )
+        self.report['consumers'][0]['initialized'] = False
+
+        def send_report():
+            self.socket.send(json.dumps(self.report))
+
+        threading.Timer(2.0, send_report).start()
+        result = runner.invoke(check, ['--consumer=TestConsumer'])
+
+        self.assertEqual(1, result.exit_code)
+        self.assertEqual(expected_output, result.output)
+
+    @mock.patch('fedmsg.commands.check.load_config')
+    def test_all_good(self, mock_load_config):
+        """Assert if all consumers/producers are present, the command exits 0."""
+        mock_load_config.return_value = {
+            'moksha.monitoring.socket': 'tcp://127.0.0.1:' + str(self.port)
+        }
+        runner = CliRunner()
+        expected_output = (u'All consumers and producers are active!\n'
+                           u'{r}\n'.format(r=json.dumps(self.report, indent=2, sort_keys=True)))
+
+        def send_report():
+            self.socket.send(json.dumps(self.report))
+
+        threading.Timer(2.0, send_report).start()
+        result = runner.invoke(check, ['--consumer=TestConsumer'])
+
+        self.assertEqual(0, result.exit_code)
+        self.assertEqual(expected_output, result.output)

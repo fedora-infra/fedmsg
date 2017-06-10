@@ -72,6 +72,7 @@ extras_require = {
     'commands': [
         'pygments',
         'psutil',
+        'click',
     ],
     'consumers': [
         'moksha.hub>=1.3.0',
@@ -160,9 +161,11 @@ setup(
             "fedmsg-announce=fedmsg.commands.announce:announce [commands]",
             "fedmsg-trigger=fedmsg.commands.trigger:trigger [commands]",
             "fedmsg-dg-replay=fedmsg.commands.replay:replay [commands]",
+            "fedmsg-check=fedmsg.commands.check:check [commands]",
             # "fedmsg-config=fedmsg.commands.config:config [commands]",
             "fedmsg-hub=fedmsg.commands.hub:hub [consumers]",
             "fedmsg-relay=fedmsg.commands.relay:relay [consumers]",
+            "fedmsg-signing-relay=fedmsg.commands.relay:signing_relay [consumers]",
             "fedmsg-gateway=fedmsg.commands.gateway:gateway [consumers]",
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot [consumers]",
         ],

@@ -23,7 +23,7 @@
 import zmq
 
 from fedmsg.commands import BaseCommand
-from fedmsg.consumers.relay import RelayConsumer
+from fedmsg.consumers.relay import RelayConsumer, SigningRelayConsumer
 
 from kitchen.iterutils import iterate
 
@@ -44,6 +44,7 @@ class RelayCommand(BaseCommand):
     """
     daemonizable = True
     name = 'fedmsg-relay'
+    relay_consumer = RelayConsumer
 
     def run(self):
         # Do just like in fedmsg.commands.hub and mangle fedmsg.d/ to work
@@ -57,7 +58,7 @@ class RelayCommand(BaseCommand):
         self.config.update(moksha_options)
 
         # Flip the special bit that allows the RelayConsumer to run
-        self.config[RelayConsumer.config_key] = True
+        self.config[self.relay_consumer.config_key] = True
 
         from moksha.hub import main
         for publish_endpoint in self.config['endpoints']['relay_outbound']:
@@ -67,7 +68,7 @@ class RelayCommand(BaseCommand):
                     # Pass in our config dict
                     options=self.config,
                     # Only run this *one* consumer
-                    consumers=[RelayConsumer],
+                    consumers=[self.relay_consumer],
                     # And no producers.
                     producers=[],
                     # Tell moksha to quiet its logging.
@@ -79,6 +80,17 @@ class RelayCommand(BaseCommand):
         raise IOError("Failed to bind to any outbound endpoints.")
 
 
+class SigningRelayCommand(RelayCommand):
+    """Relay messages, signing them before re-publishing them."""
+    name = 'fedmsg-signing-relay'
+    relay_consumer = SigningRelayConsumer
+
+
 def relay():
     command = RelayCommand()
     return command.execute()
+
+
+def signing_relay():
+    """Entry point for the ``fedmsg-signing-relay`` command."""
+    return SigningRelayCommand().execute()
