@@ -40,8 +40,8 @@ here = SEP.join(__file__.split(SEP)[:-1])
 def skip_if_missing_libs(f):
     def _wrapper(self, *args, **kw):
         try:
-            import M2Crypto
-            import m2ext
+            import M2Crypto     # noqa: F401
+            import m2ext        # noqa: F401
         except ImportError as e:
             self.skipTest(six.text_type(e))
 

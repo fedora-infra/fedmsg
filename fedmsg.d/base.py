@@ -17,8 +17,6 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 
-import os
-
 config = dict(
     # Set this to dev if you're hacking on fedmsg or an app.
     # Set to stg or prod if running in the Fedora Infrastructure
@@ -31,11 +29,11 @@ config = dict(
     ## For the fedmsg-hub and fedmsg-relay. ##
 
     # This is a status dir to keep a record of the last processed message
-    #status_directory=os.getcwd() + "/status",
-    #status_directory='/var/run/fedmsg/status',
+    # status_directory=os.getcwd() + "/status",
+    # status_directory='/var/run/fedmsg/status',
 
     # This is the URL of a datagrepper instance that we can query for backlog.
-    #datagrepper_url="https://apps.fedoraproject.org/datagrepper/raw",
+    # datagrepper_url="https://apps.fedoraproject.org/datagrepper/raw",
 
     # We almost always want the fedmsg-hub to be sending messages with zmq as
     # opposed to amqp or stomp.  You can send with only *one* of the messaging
@@ -46,12 +44,12 @@ config = dict(
 
     # On the other hand, if you wanted to use STOMP *instead* of zeromq, you
     # could do the following...
-    #zmq_enabled=False,
-    #stomp_uri='localhost:59597,localhost:59598',
-    #stomp_user='username',
-    #stomp_pass='password',
-    #stomp_ssl_crt='/path/to/an/optional.crt',
-    #stomp_ssl_key='/path/to/an/optional.key',
+    # zmq_enabled=False,
+    # stomp_uri='localhost:59597,localhost:59598',
+    # stomp_user='username',
+    # stomp_pass='password',
+    # stomp_ssl_crt='/path/to/an/optional.crt',
+    # stomp_ssl_key='/path/to/an/optional.key',
 
     # When subscribing to messages, we want to allow splats ('*') so we tell
     # the hub to not be strict when comparing messages topics to subscription

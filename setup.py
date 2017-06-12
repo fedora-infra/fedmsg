@@ -55,15 +55,6 @@ long_description = f.read().strip()
 long_description = long_description.split('split here', 1)[1]
 f.close()
 
-# Ridiculous as it may seem, we need to import multiprocessing and
-# logging here in order to get tests to pass smoothly on python 2.7.
-try:
-    import multiprocessing
-    import logging
-except Exception:
-    pass
-
-
 install_requires = [
     'pyzmq',
     'kitchen',
@@ -89,8 +80,8 @@ extras_require = {
         'pygments',
         'psutil',
         # only needed for irc ssl support
-        #'pyopenssl',
-        #'service_identity',
+        # 'pyopenssl',
+        # 'service_identity',
     ],
 }
 extras_require['all'] = list(set(
@@ -171,7 +162,7 @@ setup(
             "fedmsg-trigger=fedmsg.commands.trigger:trigger [commands]",
             "fedmsg-dg-replay=fedmsg.commands.replay:replay [commands]",
             "fedmsg-check=fedmsg.commands.check:check [commands]",
-            #"fedmsg-config=fedmsg.commands.config:config [commands]",
+            # "fedmsg-config=fedmsg.commands.config:config [commands]",
             "fedmsg-hub=fedmsg.commands.hub:hub [consumers]",
             "fedmsg-relay=fedmsg.commands.relay:relay [consumers]",
             "fedmsg-signing-relay=fedmsg.commands.relay:signing_relay [consumers]",

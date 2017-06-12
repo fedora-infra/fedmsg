@@ -17,7 +17,6 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import fedmsg
 import logging
 
 from fedmsg.consumers import FedmsgConsumer
@@ -40,9 +39,9 @@ class RelayConsumer(FedmsgConsumer):
 
     def consume(self, msg):
         ## FIXME - for some reason twisted is screwing up fedmsg.
-        #fedmsg.__context.publisher.send_multipart(
+        # fedmsg.__context.publisher.send_multipart(
         #    [msg['topic'], fedmsg.encoding.dumps(msg['body'])]
-        #)
+        # )
         #
         # We have to do this instead.  This works for the fedmsg-relay service
         # since it doesn't need to do any formatting of the message.  It just

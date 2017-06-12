@@ -79,8 +79,9 @@ class ProcessorsNotInitialized(Exception):
         return False
     __bool__ = __nonzero__
 
-processors = ProcessorsNotInitialized("You must first call "
-                                      "fedmsg.meta.make_processors(**config)")
+
+processors = ProcessorsNotInitialized(
+    "You must first call fedmsg.meta.make_processors(**config)")
 
 
 def make_processors(**config):
@@ -303,7 +304,7 @@ def msg2agent(msg, processor=None, legacy=False, **config):
     If there are no users returned by msg2usernames, then None is returned.
     """
 
-    if not processor.agent is NotImplemented:
+    if processor.agent is not NotImplemented:
         return processor.agent(msg, **config)
     else:
         usernames = processor.usernames(msg, **config)

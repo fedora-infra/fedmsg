@@ -74,7 +74,7 @@ def skip_if_fedmsg_meta_FI_is_present(f):
     """
     def _wrapper(self, *args, **kw):
         try:
-            import fedmsg_meta_fedora_infrastructure
+            import fedmsg_meta_fedora_infrastructure  # noqa: F401
             raise SkipTest("fedmsg_meta_FI is present")
         except ImportError:
             pass
@@ -372,7 +372,7 @@ class ConglomerateBase(unittest.TestCase):
 
         # Delete the msg_ids field because it is bulky and I don't want to
         # bother with testing it (copying and pasting it).
-        if not self.expected is Unspecified:
+        if self.expected is not Unspecified:
             for item in self.expected:
                 if 'msg_ids' in item:
                     del item['msg_ids']

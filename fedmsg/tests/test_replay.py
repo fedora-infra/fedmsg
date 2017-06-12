@@ -26,6 +26,7 @@ except ImportError:
 
 from nose.tools import raises
 
+import mock
 import json
 from datetime import datetime
 import zmq
@@ -33,7 +34,6 @@ import socket
 from threading import Thread, Event
 
 from fedmsg.tests.common import load_config, requires_network
-from fedmsg.tests.test_utils import mock
 
 from fedmsg.replay import ReplayContext, get_replay
 
@@ -225,7 +225,7 @@ class TestGetReplay(unittest.TestCase):
     @requires_network
     @raises(IOError)
     def test_get_replay_no_available_endpoint(self):
-        #self.replay_thread.start()
+        # self.replay_thread.start()
         list(get_replay(
             "phony", {"seq_ids": [1, 2]}, self.config, self.context
         ))

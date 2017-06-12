@@ -129,7 +129,7 @@ def check_for_replay(name, names_to_seq_id, msg, config, context=None):
         # we assume the replay has already been asked for and we dismiss it
         return []
 
-    if cur_seq_id == prev_seq_id+1 or prev_seq_id < 0:
+    if cur_seq_id == prev_seq_id + 1 or prev_seq_id < 0:
         ret = [msg]
     else:
         ret = list(get_replay(name, {

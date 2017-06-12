@@ -21,7 +21,6 @@ import fedmsg
 import fedmsg.config
 import warnings
 import six
-import sys
 
 import logging
 try:
@@ -89,12 +88,12 @@ class BaseCommand(object):
             self.log.warn("PID file exists but with no proc:  coup d'etat!")
             pidlock.break_lock()
 
-        output = file('/var/log/fedmsg/%s.log' % self.name, 'a')
-        daemon = DaemonContext(pidfile=pidlock, stdout=output, stderr=output)
-        daemon.terminate = self._handle_signal
+        with open('/var/log/fedmsg/%s.log' % self.name, 'a') as output:
+            daemon = DaemonContext(pidfile=pidlock, stdout=output, stderr=output)
+            daemon.terminate = self._handle_signal
 
-        with daemon:
-            return self.run()
+            with daemon:
+                return self.run()
 
     def execute(self):
         if self.daemonizable and self.config['daemon'] is True:

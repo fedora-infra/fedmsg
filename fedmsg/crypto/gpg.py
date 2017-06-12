@@ -146,8 +146,10 @@ class Context(object):
             raise GpgBinaryError(stderr)
         return stdout
 
+
 # Here comes the part actually relevent to fedmsg
 """ ``fedmsg.crypto.gpg`` - GnuPG backend for :mod:`fedmsg.crypto` """
+
 import fedmsg.encoding
 _ctx = Context()
 
@@ -193,6 +195,6 @@ def validate(message, gpg_home=None, **config):
             homedir=gpg_home
         )
         return True
-    except GpgBinaryError as e:
+    except GpgBinaryError:
         log.warn("Failed validation. {0}".format(six.text_type(message)))
         return False

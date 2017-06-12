@@ -110,9 +110,9 @@ def validate(message, ssldir=None, **config):
 
     # Some sanity checking
     for field in ['signature', 'certificate']:
-        if not field in message:
+        if field not in message:
             return fail("No %r field found." % field)
-        if not isinstance(message[field], basestring):
+        if not isinstance(message[field], str):
             return fail("msg[%r] is not a string" % field)
 
     # Peal off the auth datums
@@ -150,7 +150,7 @@ def validate(message, ssldir=None, **config):
 
     # FIXME -- We need to check that the CRL is signed by our own CA.
     # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
-    #if not ctx.validate_certificate(crl):
+    # if not ctx.validate_certificate(crl):
     #    return fail("X509 CRL is not valid.")
 
     # FIXME -- we check the CRL, but by doing string comparison ourselves.
@@ -263,11 +263,11 @@ def _load_remote_cert(location, cache, cache_expiry, tries=0, **config):
                 log.warn("Could not access %r.  Trying again." % location)
                 time.sleep(1)  # Take a nap to see if the network settles down.
                 return _load_remote_cert(
-                    location, cache, cache_expiry, tries+1, **config)
+                    location, cache, cache_expiry, tries + 1, **config)
             else:
                 log.error("Could not access %r" % location)
                 raise
-        except IOError as e:
+        except IOError:
             # If we couldn't write to the specified cache location, try a
             # similar place but inside our home directory instead.
             cache = alternative_cache

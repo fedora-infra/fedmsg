@@ -20,7 +20,6 @@
 """
 """
 
-import fedmsg
 from fedmsg.commands import BaseCommand
 from fedmsg.consumers.gateway import GatewayConsumer
 

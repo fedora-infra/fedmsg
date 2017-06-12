@@ -58,7 +58,7 @@ def sign(message, ssldir=None, certname=None, **config):
 
     with open("%s/%s.crt" % (ssldir, certname), "rb") as f:
         data = f.read()
-        certificate = cryptography.x509.load_pem_x509_certificate(
+        cryptography.x509.load_pem_x509_certificate(
             data,
             default_backend()
         )
@@ -115,7 +115,7 @@ def validate(message, ssldir=None, **config):
 
     # Some sanity checking
     for field in ['signature', 'certificate']:
-        if not field in message:
+        if field not in message:
             return fail("No %r field found." % field)
         # TODO: should this be six.binary_type?
         if not isinstance(message[field], six.binary_type):
@@ -156,7 +156,7 @@ def validate(message, ssldir=None, **config):
 
     # FIXME -- We need to check that the CRL is signed by our own CA.
     # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
-    #if not ctx.validate_certificate(crl):
+    # if not ctx.validate_certificate(crl):
     #    return fail("X509 CRL is not valid.")
 
     # FIXME -- we check the CRL, but by doing string comparison ourselves.

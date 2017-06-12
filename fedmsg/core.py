@@ -75,7 +75,7 @@ class FedMsgContext(object):
             module_name = guess_calling_module(default="fedmsg")
             config["name"] = module_name + '.' + self.hostname
 
-            if any(map(config["name"].startswith, ['fedmsg'])):
+            if config["name"].startswith('fedmsg'):
                 config["name"] = None
 
         # Do a little special-case mangling.  We never want to "listen" to the
@@ -89,7 +89,7 @@ class FedMsgContext(object):
                 config['endpoints'][name] = config[name]
             except KeyError:
                 raise KeyError("Could not find endpoint for fedmsg-relay."
-                              " Try installing fedmsg-relay.")
+                               " Try installing fedmsg-relay.")
 
         # Actually set up our publisher, but only if we're configured for zmq.
         if (
@@ -163,6 +163,7 @@ class FedMsgContext(object):
             pass
 
         # Cleanup.  See https://bit.ly/SaGeOr for discussion.
+        # arg signature - weakref.ref(object [, callback])
         weakref.ref(threading.current_thread(), self.destroy)
 
         # Sleep just to make sure that the socket gets set up before anyone
@@ -174,6 +175,7 @@ class FedMsgContext(object):
 
         if getattr(self, 'publisher', None):
             self.log.debug("closing fedmsg publisher")
+            self.log.debug("sent %i messages" % self._i)
             self.publisher.close()
             self.publisher = None
 
@@ -182,7 +184,8 @@ class FedMsgContext(object):
             self.context = None
 
     def send_message(self, topic=None, msg=None, modname=None):
-        warnings.warn(".send_message is deprecated.", DeprecationWarning)
+        warnings.warn(
+            ".send_message is deprecated. Use .publish", DeprecationWarning)
 
         return self.publish(topic, msg, modname)
 
@@ -342,7 +345,6 @@ class FedMsgContext(object):
                 jsonify=False,
             )
 
-
     def tail_messages(self, topic="", passive=False, **kw):
         """ Tail messages on the bus.
 
@@ -369,7 +371,7 @@ class FedMsgContext(object):
 
         # TODO -- the 'passive' here and the 'active' are ambiguous.  They
         # don't actually mean the same thing.  This should be resolved.
-        method = passive and 'bind' or 'connect'
+        method = (passive and 'bind') or 'connect'
 
         failed_hostnames = []
         subs = {}
@@ -463,7 +465,7 @@ class FedMsgContext(object):
                     else:
                         raise ValidationError(msg)
             else:
-                return name, ep, _topic, msg
+                return (name, ep, _topic, msg)
         else:
             raise ValidationError(msg)
 

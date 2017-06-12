@@ -1,11 +1,6 @@
 from nose.tools import raises, eq_
 from fedmsg.utils import load_class, dict_query
 
-try:
-    import mock
-except ImportError:
-    from unittest import mock
-
 
 def test_load_class_succeed():
     cls = load_class("shelve:Shelf")
@@ -15,12 +10,12 @@ def test_load_class_succeed():
 
 @raises(ImportError)
 def test_load_class_import_error():
-    cls = load_class("thisisnotapackage:ThisIsNotAClass")
+    load_class("thisisnotapackage:ThisIsNotAClass")
 
 
 @raises(ImportError)
 def test_load_class_attribute_error():
-    cls = load_class("shelve:ThisIsNotAClass")
+    load_class("shelve:ThisIsNotAClass")
 
 
 def test_dict_query_basic():

@@ -37,6 +37,7 @@ class ThreadedJob(threading.Thread):
         topic, msg = self.s.recv_multipart()
         sys.stdout.flush()
 
+
 threads = [ThreadedJob() for i in range(N)]
 for thread in threads:
     thread.start()

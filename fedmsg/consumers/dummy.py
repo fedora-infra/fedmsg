@@ -17,8 +17,6 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import fedmsg
-
 from fedmsg.consumers import FedmsgConsumer
 
 import logging
