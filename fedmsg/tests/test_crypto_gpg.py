@@ -17,8 +17,9 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import os
 import functools
+import os
+import unittest
 
 from nose.tools import raises
 from nose.exc import SkipTest
@@ -29,8 +30,7 @@ except ImportError:
     # It lives here in older versions of nose (el6)
     from nose.tools import make_decorator
 
-import unittest
-
+import fedmsg.crypto
 import fedmsg.crypto.gpg
 
 SEP = os.path.sep
@@ -79,9 +79,6 @@ class TestGpg(unittest.TestCase):
         test_data = u'I can haz a signature?'
         signature = self.ctx.sign(test_data, fingerprint=secret_fp)
         self.ctx.verify(test_data, signature)
-
-
-import fedmsg.crypto
 
 
 class TestCryptoGPG(unittest.TestCase):

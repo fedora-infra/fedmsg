@@ -19,13 +19,15 @@
 #
 
 from sqlalchemy.ext.declarative import declarative_base
-Base = declarative_base()
 
 from sqlalchemy import Column, Integer, String, Text, DateTime, or_
 from sqlalchemy.orm import sessionmaker
 
 from datetime import datetime
 import json
+
+
+Base = declarative_base()
 
 
 class SqlMessage(Base):

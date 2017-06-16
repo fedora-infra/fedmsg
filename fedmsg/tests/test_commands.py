@@ -1,5 +1,4 @@
 import resource
-import sys
 import threading
 import unittest
 import time
@@ -46,10 +45,13 @@ class TestCommands(unittest.TestCase):
 
         test_input = "a message for you"
 
-        if six.PY3:
-            stdin = lambda: six.StringIO(test_input)
-        else:
-            stdin = lambda: six.StringIO(test_input.encode('utf-8'))
+        def mock_stdin():
+            if six.PY3:
+                return six.StringIO(test_input)
+            else:
+                return six.StringIO(test_input.encode('utf-8'))
+
+        stdin = mock_stdin
 
         msgs = []
 
@@ -73,10 +75,13 @@ class TestCommands(unittest.TestCase):
         test_input_dict = {"hello": "world"}
         test_input = json.dumps(test_input_dict)
 
-        if six.PY3:
-            stdin = lambda: six.StringIO(test_input)
-        else:
-            stdin = lambda: six.StringIO(test_input.encode('utf-8'))
+        def mock_stdin():
+            if six.PY3:
+                return six.StringIO(test_input)
+            else:
+                return six.StringIO(test_input.encode('utf-8'))
+
+        stdin = mock_stdin
 
         msgs = []
 

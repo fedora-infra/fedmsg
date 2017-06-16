@@ -41,12 +41,11 @@ following exceptions to normal JSON serialization are observed.
 import time
 import datetime
 
-sqlalchemy = None
 try:
     import sqlalchemy
     import sqlalchemy.ext.declarative
 except ImportError:
-    pass
+    sqlalchemy = None
 
 import json
 import json.encoder

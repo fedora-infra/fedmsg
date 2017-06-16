@@ -26,7 +26,7 @@ config = dict(
     high_water_mark=0,
     io_threads=1,
 
-    ## For the fedmsg-hub and fedmsg-relay. ##
+    # For the fedmsg-hub and fedmsg-relay. ##
 
     # This is a status dir to keep a record of the last processed message
     # status_directory=os.getcwd() + "/status",

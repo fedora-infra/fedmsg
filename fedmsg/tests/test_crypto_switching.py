@@ -30,7 +30,8 @@ if major == 2 and minor <= 6:
 else:
     import unittest
 
-import fedmsg.crypto
+import fedmsg.crypto  # noqa: E402
+
 
 SEP = os.path.sep
 here = SEP.join(__file__.split(SEP)[:-1])
