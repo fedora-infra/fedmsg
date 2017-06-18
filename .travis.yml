@@ -34,6 +34,8 @@ matrix:
       env: TOXENV=py35
     - python: "3.6"
       env: TOXENV=py36
+    - python: "2.7"
+      env: TOXENV=lint
   allow_failures:
     - python: "3.4"
     - python: "3.5"

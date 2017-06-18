@@ -49,6 +49,7 @@ entry-point, your new class will need to be added to the
 End users can have multiple plugin sets installed simultaneously.
 
 """
+import logging
 
 import six
 
@@ -62,11 +63,9 @@ if six.PY3:
 else:
     _ = t.ugettext
 
+from fedmsg.meta.default import DefaultProcessor  # noqa: E402
+from fedmsg.meta.base import BaseConglomerator  # noqa: E402
 
-from fedmsg.meta.default import DefaultProcessor
-from fedmsg.meta.base import BaseConglomerator
-
-import logging
 log = logging.getLogger("fedmsg")
 
 
