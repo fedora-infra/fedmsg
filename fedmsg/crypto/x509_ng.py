@@ -151,12 +151,15 @@ def validate(message, ssldir=None, **config):
 
     message = fedmsg.crypto.strip_credentials(message)
 
-    crl_file = utils.load_remote_cert(
-        config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem'),
-        config.get('crl_cache', '/var/cache/fedmsg/crl.pem'),
-        config.get('crl_cache_expiry', 1800),
-        **config
-    )
+    crl_file = None
+    if 'crl_location' in config and 'crl_cache' in config:
+        crl_file = utils.load_remote_cert(
+            config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem'),
+            config.get('crl_cache', '/var/cache/fedmsg/crl.pem'),
+            config.get('crl_cache_expiry', 1800),
+            **config
+        )
+
     ca_file = utils.load_remote_cert(
         config.get('ca_cert_location', 'https://fedoraproject.org/fedmsg/ca.crt'),
         config.get('ca_cert_cache', '/etc/pki/fedmsg/ca.crt'),
@@ -166,8 +169,11 @@ def validate(message, ssldir=None, **config):
 
     with open(ca_file, 'rb') as fd:
         ca_certificate = fd.read()
-    with open(crl_file, 'rb') as fd:
-        crl = fd.read()
+
+    crl = None
+    if crl_file:
+        with open(crl_file, 'rb') as fd:
+            crl = fd.read()
 
     try:
         _validate_signing_cert(ca_certificate, certificate, crl)

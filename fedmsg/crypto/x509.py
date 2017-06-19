@@ -141,37 +141,39 @@ def _m2crypto_validate(message, ssldir=None, **config):
         return fail("X509 certificate is not valid.")
 
     # Load and check against the CRL
-    crl = load_remote_cert(
-        config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem'),
-        config.get('crl_cache', '/var/cache/fedmsg/crl.pem'),
-        config.get('crl_cache_expiry', 1800),
-        **config)
-    crl = M2Crypto.X509.load_crl(crl)
+    crl = None
+    if 'crl_location' in config and 'crl_cache' in config:
+        crl = load_remote_cert(
+            config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem'),
+            config.get('crl_cache', '/var/cache/fedmsg/crl.pem'),
+            config.get('crl_cache_expiry', 1800),
+            **config)
+    if crl:
+        crl = M2Crypto.X509.load_crl(crl)
+        # FIXME -- We need to check that the CRL is signed by our own CA.
+        # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
+        # if not ctx.validate_certificate(crl):
+        #    return fail("X509 CRL is not valid.")
 
-    # FIXME -- We need to check that the CRL is signed by our own CA.
-    # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
-    # if not ctx.validate_certificate(crl):
-    #    return fail("X509 CRL is not valid.")
+        # FIXME -- we check the CRL, but by doing string comparison ourselves.
+        # This is not what we want to be doing.
+        # There is a patch into M2Crypto to handle this for us.  We should use it
+        # once its integrated upstream.
+        # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
+        revoked_serials = [long(line.split(': ')[1].strip(), base=16)
+                           for line in crl.as_text().split('\n')
+                           if 'Serial Number:' in line]
+        if cert.get_serial_number() in revoked_serials:
+            subject = cert.get_subject()
 
-    # FIXME -- we check the CRL, but by doing string comparison ourselves.
-    # This is not what we want to be doing.
-    # There is a patch into M2Crypto to handle this for us.  We should use it
-    # once its integrated upstream.
-    # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
-    revoked_serials = [long(line.split(': ')[1].strip(), base=16)
-                       for line in crl.as_text().split('\n')
-                       if 'Serial Number:' in line]
-    if cert.get_serial_number() in revoked_serials:
-        subject = cert.get_subject()
+            signer = '(no CN)'
+            if subject.nid.get('CN'):
+                entry = subject.get_entries_by_nid(subject.nid['CN'])[0]
+                if entry:
+                    signer = entry.get_data().as_text()
 
-        signer = '(no CN)'
-        if subject.nid.get('CN'):
-            entry = subject.get_entries_by_nid(subject.nid['CN'])[0]
-            if entry:
-                signer = entry.get_data().as_text()
-
-        return fail("X509 cert %r, %r is in the Revocation List (CRL)" % (
-            signer, cert.get_serial_number()))
+            return fail("X509 cert %r, %r is in the Revocation List (CRL)" % (
+                signer, cert.get_serial_number()))
 
     # If the cert is good, then test to see if the signature in the messages
     # matches up with the provided cert.
