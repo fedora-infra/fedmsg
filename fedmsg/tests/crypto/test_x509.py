@@ -1,5 +1,5 @@
 # This file is part of fedmsg.
-# Copyright (C) 2012 - 2014 Red Hat, Inc.
+# Copyright (C) 2012 - 2017 Red Hat, Inc.
 #
 # fedmsg is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
-#
+# Authors:  Jeremy Cline <jcline@redhat.com>
 import os
 
 _m2crypto, _cryptography = False, False
@@ -119,6 +119,27 @@ class X509BaseTests(TestCase):
         """Assert when the signed digest doesn't match the message digest, validation fails."""
         signed = self.sign({'message': 'so secure'}, **self.config)
         signed['message'] = 'so insecure!'
+        self.assertFalse(self.validate(signed, **self.config))
+
+    def test_no_crl(self):
+        """Assert that it's okay to not use a CRL."""
+        del self.config['crl_location']
+        del self.config['crl_cache']
+        del self.config['crl_cache_expiry']
+
+        signed = self.sign({'message': 'so secure'}, **self.config)
+        self.assertTrue(self.validate(signed, **self.config))
+
+    def test_signed_by_expired_ca(self):
+        """Assert certs signed by an expired CA fail validation."""
+        self.config['certname'] = 'signed_by_expired_ca'
+        self.config['ca_cert_cache'] = os.path.join(SSLDIR, 'expired_ca.crt')
+        # There's no CRL for this CA.
+        del self.config['crl_location']
+        del self.config['crl_cache']
+        del self.config['crl_cache_expiry']
+
+        signed = self.sign({'message': 'so secure'}, **self.config)
         self.assertFalse(self.validate(signed, **self.config))
 
     def test_invalid_policy(self):
