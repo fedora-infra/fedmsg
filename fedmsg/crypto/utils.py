@@ -16,7 +16,7 @@ def validate_policy(topic, signer, routing_policy, nitpicky=False):
         signer (str): The Common Name of the certificate used to sign the message.
 
     Returns:
-        bool: True of the policy defined in the settings allows the signer to send
+        bool: True if the policy defined in the settings allows the signer to send
             messages on ``topic``.
     """
     if topic in routing_policy:
@@ -47,15 +47,24 @@ def validate_policy(topic, signer, routing_policy, nitpicky=False):
             # We are *not* in nitpicky mode.  We don't have an entry in the
             # routing_policy for the topic of this message.. but we don't
             # really care.
-            _log.info('No routing policy defined for "{t}" and routing_nitpicky '
-                      'is False so the message is being treated as authorized.'.format(t=topic))
+            _log.warning('No routing policy defined for "{t}" and routing_nitpicky is '
+                         'False so the message is being treated as authorized.'.format(t=topic))
             return True
 
 
 def load_remote_cert(location, cache, cache_expiry, tries=0, **config):
-    """ Get a fresh copy from fp.o/fedmsg/crl.pem if ours is getting stale.
+    """Get a fresh copy from fp.o/fedmsg/crl.pem if ours is getting stale.
 
     Return the local filename.
+
+    .. note:: This is not a public API and is subject to change.
+
+    Args:
+        location (str): The URL where the certificate is hosted.
+        cache (str): The absolute path where the certificate should be stored.
+        cache_expiry (int): How long the cache should be considered fresh, in seconds.
+        tries (int): The number of times to attempt downloading the certificate.
+
     """
     alternative_cache = os.path.expanduser("~/.local" + cache)
 
