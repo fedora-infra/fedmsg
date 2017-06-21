@@ -144,6 +144,15 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
             self.log.info("No backlog handling.  status: %r, url: %r" % (
                 self.status_filename, self.datagrepper_url))
 
+        # allow consumer classes to configure themselves after init
+        self.configure()
+
+    def configure(self):
+        """
+        Allow consumer classes to configure themselves after init
+        """
+        pass
+
     def _backlog(self, data):
         """Find all the datagrepper messages between 'then' and 'now'.
 
