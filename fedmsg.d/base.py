@@ -20,6 +20,9 @@
 import os
 
 config = dict(
+    # Prefix for the topic of each message sent.
+    topic_prefix="org.fedoraproject",
+
     # Set this to dev if you're hacking on fedmsg or an app.
     # Set to stg or prod if running in the Fedora Infrastructure
     environment="dev",
