@@ -22,6 +22,8 @@
 
 import zmq
 
+from moksha.hub.monitoring import MonitoringProducer
+
 from fedmsg.commands import BaseCommand
 from fedmsg.consumers.relay import RelayConsumer, SigningRelayConsumer
 
@@ -69,8 +71,7 @@ class RelayCommand(BaseCommand):
                     options=self.config,
                     # Only run this *one* consumer
                     consumers=[self.relay_consumer],
-                    # And no producers.
-                    producers=[],
+                    producers=[MonitoringProducer],
                     # Tell moksha to quiet its logging.
                     framework=False,
                 )
