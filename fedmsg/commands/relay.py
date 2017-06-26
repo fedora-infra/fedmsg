@@ -22,6 +22,8 @@
 
 import zmq
 
+from moksha.hub.monitoring import MonitoringProducer
+
 from fedmsg.commands import BaseCommand
 from fedmsg.consumers.relay import RelayConsumer
 
@@ -69,7 +71,7 @@ class RelayCommand(BaseCommand):
                     # Only run this *one* consumer
                     consumers=[RelayConsumer],
                     # And no producers.
-                    producers=[],
+                    producers=[MonitoringProducer],
                     # Tell moksha to quiet its logging.
                     framework=False,
                 )
