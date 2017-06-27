@@ -168,10 +168,12 @@ else:
     from . import x509
 
 from . import gpg
+from . import fedhmac
 
 _possible_backends = {
     'gpg': gpg,
     'x509': x509,
+    'hmac': fedhmac,
 }
 
 
@@ -182,12 +184,15 @@ def init(**config):
 
         - 'x509' - Uses x509 certificates.
         - 'gpg' - Uses GnuPG keys.
+        - 'hmac' - Uses hmac.
     """
     global _implementation
     global _validate_implementations
 
     if config.get('crypto_backend') == 'gpg':
         _implementation = gpg
+    elif config.get('crypto_backend') == 'hmac':
+        _implementation = fedhmac
     else:
         _implementation = x509
 
@@ -197,6 +202,8 @@ def init(**config):
             _validate_implementations.append(gpg)
         elif mod == 'x509':
             _validate_implementations.append(x509)
+        elif mod == 'hmac':
+            _validate_implementations.append(fedhmac)
         else:
             raise ValueError("%r is not a valid crypto backend" % mod)
 
@@ -248,6 +255,8 @@ def validate(message, **config):
         backend = x509
     elif 'signature' in message:
         backend = gpg
+    elif 'hmac' in message:
+        backend = fedhmac
     else:
         log.warn('Could not determine crypto backend.  Message unsigned?')
         return False
