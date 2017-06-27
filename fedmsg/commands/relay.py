@@ -22,6 +22,7 @@
 
 import zmq
 
+from moksha.hub import main
 from moksha.hub.monitoring import MonitoringProducer
 
 from fedmsg.commands import BaseCommand
@@ -61,7 +62,6 @@ class RelayCommand(BaseCommand):
         # Flip the special bit that allows the RelayConsumer to run
         self.config[RelayConsumer.config_key] = True
 
-        from moksha.hub import main
         for publish_endpoint in self.config['endpoints']['relay_outbound']:
             self.config['zmq_publish_endpoints'] = publish_endpoint
             try:
