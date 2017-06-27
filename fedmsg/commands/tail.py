@@ -37,6 +37,7 @@ class TailCommand(BaseCommand):
     """ Watch all endpoints on the bus and print each message to stdout. """
 
     name = "fedmsg-tail"
+    daemonizable = True
     extra_args = [
         (['--topic'], {
             'dest': 'topic',
