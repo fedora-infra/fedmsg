@@ -18,6 +18,9 @@ coverage:
         enabled: yes
         target: 100%  # Require 100% coverage on all PRs
 
+  ignore:
+    - "fedmsg/tests/*"
+
 parsers:
   gcov:
     branch_detection:

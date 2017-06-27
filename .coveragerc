@@ -1,7 +1,6 @@
 [run]
 branch = True
-include =
-    fedmsg/*
+source = fedmsg
 
 [report]
 precision = 2

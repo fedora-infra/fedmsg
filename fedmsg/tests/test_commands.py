@@ -17,7 +17,6 @@ import fedmsg.config
 import fedmsg.commands
 from fedmsg.commands.hub import HubCommand
 from fedmsg.commands.logger import LoggerCommand
-from fedmsg.commands.relay import RelayCommand
 from fedmsg.commands.tail import TailCommand
 from fedmsg.commands.config import config as config_command
 from fedmsg.commands.check import check
@@ -166,28 +165,6 @@ class TestCommands(unittest.TestCase):
         output = stdout.getvalue()
         expected = '\x1b[33m"hello"\x1b[39;49;00m'
         assert(expected in output)
-
-    @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-relay"])
-    def test_relay(self, argv):
-        actual_options = []
-
-        def mock_main(options, consumers, producers, framework):
-            actual_options.append(options)
-
-        config = {}
-        with mock.patch("fedmsg.__local", self.local):
-            with mock.patch("fedmsg.config.__cache", config):
-                with mock.patch("moksha.hub.main", mock_main):
-                    command = RelayCommand()
-                    command.execute()
-
-        actual_options = actual_options[0]
-        assert(
-            fedmsg.consumers.relay.RelayConsumer.config_key in actual_options
-        )
-        assert(
-            actual_options[fedmsg.consumers.relay.RelayConsumer.config_key]
-        )
 
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-config"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
