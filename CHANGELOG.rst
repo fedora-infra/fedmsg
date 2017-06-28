@@ -1,10 +1,14 @@
-0.18.2
+Changelog
+=========
+
+0.18.4
 ------
 
-Commits
+Bugs
+^^^^
 
-- 5c21cf88a Fix validation logic in the base consumer
-  https://github.com/fedora-infra/fedmsg/commit/5c21cf88a
+* Fix an issue introduced in 0.18.3 where monitoring sockets were not being created
+  in the fedmsg relay (`#433 <https://github.com/fedora-infra/fedmsg/pull/433>`_)
 
 0.18.3
 ------
@@ -56,6 +60,7 @@ Commits
   https://github.com/fedora-infra/fedmsg/commit/f79c5de09
 - 08036fe22 Remove env validation.
   https://github.com/fedora-infra/fedmsg/commit/08036fe22
+
 0.18.2
 ------
 
