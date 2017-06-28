@@ -52,7 +52,7 @@ def validate_policy(topic, signer, routing_policy, nitpicky=False):
             return True
 
 
-def load_remote_cert(location, cache, cache_expiry, tries=0, **config):
+def _load_remote_cert(location, cache, cache_expiry, tries=0, **config):
     """Get a fresh copy from fp.o/fedmsg/crl.pem if ours is getting stale.
 
     Return the local filename.
@@ -93,7 +93,7 @@ def load_remote_cert(location, cache, cache_expiry, tries=0, **config):
             if tries < 3:
                 _log.warn("Could not access %r.  Trying again." % location)
                 time.sleep(1)  # Take a nap to see if the network settles down.
-                return load_remote_cert(
+                return _load_remote_cert(
                     location, cache, cache_expiry, tries + 1, **config)
             else:
                 _log.error("Could not access %r" % location)

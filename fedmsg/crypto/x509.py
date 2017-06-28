@@ -31,7 +31,7 @@ try:
 except ImportError:
     _m2crypto = False
 
-from .utils import load_remote_cert, validate_policy
+from .utils import _load_remote_cert, validate_policy
 from .x509_ng import _cryptography, sign as _crypto_sign, validate as _crypto_validate
 import fedmsg.crypto  # noqa: E402
 import fedmsg.encoding  # noqa: E402
@@ -51,8 +51,8 @@ def _disabled_sign(*args, **kwargs):
 
 def _disabled_validate(*args, **kwargs):
     """A fallback function that emits a warning when no crypto is being used."""
-    warnings.warn('Message signature validation is disabled because "cryptography"'
-                  ' and "pyopenssl" or "m2crypto" are not available.')
+    warnings.warn('Message signature validation is disabled because ("cryptography"'
+                  ' and "pyopenssl") or "m2crypto" are not available.')
 
 
 def _m2crypto_sign(message, ssldir=None, certname=None, **config):
@@ -129,7 +129,7 @@ def _m2crypto_validate(message, ssldir=None, **config):
     #   https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
 
     default_ca_cert_loc = 'https://fedoraproject.org/fedmsg/ca.crt'
-    cafile = load_remote_cert(
+    cafile = _load_remote_cert(
         config.get('ca_cert_location', default_ca_cert_loc),
         config.get('ca_cert_cache', '/etc/pki/fedmsg/ca.crt'),
         config.get('ca_cert_cache_expiry', 0),
@@ -143,7 +143,7 @@ def _m2crypto_validate(message, ssldir=None, **config):
     # Load and check against the CRL
     crl = None
     if 'crl_location' in config and 'crl_cache' in config:
-        crl = load_remote_cert(
+        crl = _load_remote_cert(
             config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem'),
             config.get('crl_cache', '/var/cache/fedmsg/crl.pem'),
             config.get('crl_cache_expiry', 1800),

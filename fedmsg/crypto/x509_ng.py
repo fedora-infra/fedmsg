@@ -153,14 +153,14 @@ def validate(message, ssldir=None, **config):
 
     crl_file = None
     if 'crl_location' in config and 'crl_cache' in config:
-        crl_file = utils.load_remote_cert(
+        crl_file = utils._load_remote_cert(
             config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem'),
             config.get('crl_cache', '/var/cache/fedmsg/crl.pem'),
             config.get('crl_cache_expiry', 1800),
             **config
         )
 
-    ca_file = utils.load_remote_cert(
+    ca_file = utils._load_remote_cert(
         config.get('ca_cert_location', 'https://fedoraproject.org/fedmsg/ca.crt'),
         config.get('ca_cert_cache', '/etc/pki/fedmsg/ca.crt'),
         config.get('ca_cert_cache_expiry', 0),

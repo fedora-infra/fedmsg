@@ -35,13 +35,13 @@ class ValidatePolicyTests(unittest.TestCase):
 
 
 class LoadRemoteCertTests(unittest.TestCase):
-    """Tests for :func:`utils.load_remote_cert`."""
+    """Tests for :func:`utils._load_remote_cert`."""
 
     @mock.patch('fedmsg.crypto.utils.os.stat')
     def test_valid_cache(self, mock_stat):
         """Assert when the primary cache is valid it's used."""
         mock_stat.return_value.st_mtime = time.time()
-        cache = utils.load_remote_cert('https://example.com/ca.crt', '/my/ca.crt', 60)
+        cache = utils._load_remote_cert('https://example.com/ca.crt', '/my/ca.crt', 60)
 
         self.assertEqual('/my/ca.crt', cache)
         mock_stat.assert_called_once_with('/my/ca.crt')
@@ -50,7 +50,7 @@ class LoadRemoteCertTests(unittest.TestCase):
     def test_valid_alternate_cache(self, mock_stat):
         """Assert when the alternate cache is valid it's used."""
         mock_stat.side_effect = [OSError, mock.Mock(st_mtime=time.time())]
-        cache = utils.load_remote_cert('https://example.com/ca.crt', '/my/ca.crt', 60)
+        cache = utils._load_remote_cert('https://example.com/ca.crt', '/my/ca.crt', 60)
 
         self.assertEqual(os.path.expanduser('~/.local/my/ca.crt'), cache)
         self.assertEqual('/my/ca.crt', mock_stat.call_args_list[0][0][0])
