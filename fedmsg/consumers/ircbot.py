@@ -342,11 +342,6 @@ class IRCBotConsumer(FedmsgConsumer):
         log.debug("Got message %r" % msg)
         topic, body = msg.get('topic'), msg.get('body')
 
-        # Pass along headers if present.  May be useful to filters or
-        # fedmsg.meta routines.
-        if 'headers' in msg:
-            body['headers'] = msg['headers']
-
         for client in self.irc_clients:
             if not client.factory.filters or (
                 client.factory.filters and

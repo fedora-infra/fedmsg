@@ -246,6 +246,12 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         except RuntimeWarning as e:
             self.log.warn("Received invalid message {0}".format(e))
             return
+
+        # Pass along headers if present.  May be useful to filters or
+        # fedmsg.meta routines.
+        if 'headers' in message and 'body' in message:
+            message['body']['headers'] = message['headers']
+
         if hasattr(self, "replay_name"):
             for m in check_for_replay(
                     self.replay_name, self.name_to_seq_id,

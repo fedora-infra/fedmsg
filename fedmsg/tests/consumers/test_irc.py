@@ -12,6 +12,7 @@ class TestIRCConsumer(unittest.TestCase):
         self.hub = mock.Mock()
         self.hub.config = {
             'fedmsg.consumers.ircbot.enabled': True,
+            'moksha.blocking_mode': True,
             'topic_prefix_re': 'whatever...',
             'irc_method': 'notice',
             'irc': [
@@ -41,10 +42,10 @@ class TestIRCConsumer(unittest.TestCase):
         apply_filters.return_value = True
         consumer = ircbot.IRCBotConsumer(self.hub)
         consumer.irc_clients = [mock.Mock()]
-        consumer.consume({'topic': 'testtopic', 'body': {'my': 'msg'}, 'headers': 'awesome'})
+        consumer._consume({'topic': 'testtopic', 'body': {'my': 'msg'}, 'headers': 'awesome'})
         consumer.prettify.assert_called_once_with(
             topic='testtopic',
-            msg=dict(my='msg', headers='awesome'),
+            msg=dict(topic='testtopic', msg=dict(my='msg'), headers='awesome'),
             pretty=mock.ANY,
             short=mock.ANY,
             terse=mock.ANY,
