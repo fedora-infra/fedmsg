@@ -69,6 +69,10 @@ extras_require = {
         'M2Crypto',    # for message validation
         'm2ext',       # for message validation
     ],
+    'crypto_ng': [
+        'cryptography>=1.6',
+        'pyOpenSSL>=16.1.0',
+    ],
     'commands': [
         'pygments',
         'psutil',
