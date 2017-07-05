@@ -68,8 +68,12 @@ mirc_colors = {
 
 def _default_link_shortener(url):
     dagd = 'http://da.gd/s'
-    resp = requests.get(dagd, params=dict(url=url))
-    return resp.text.strip()
+    try:
+        resp = requests.get(dagd, params=dict(url=url), timeout=3)
+        return resp.text.strip()
+    except:
+        log.exception("Failed to shorten %r" % url)
+        return url
 
 
 def ircprettify(title, subtitle, link="", config=None):
