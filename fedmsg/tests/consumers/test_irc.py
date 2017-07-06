@@ -50,3 +50,57 @@ class TestIRCConsumer(unittest.TestCase):
             short=mock.ANY,
             terse=mock.ANY,
         )
+
+    @mock.patch('fedmsg.meta.msg2link')
+    @mock.patch('fedmsg.consumers.ircbot._default_link_shortener')
+    def test_default_shortener_is_used(self, shortener, link):
+        """ Assert that the default shortener gets called.
+
+        https://github.com/fedora-infra/fedmsg/pull/430
+        """
+        link.return_value = 'the link'
+        consumer = ircbot.IRCBotConsumer(self.hub)
+        consumer.prettify(
+            topic='testtopic',
+            msg=dict(topic='testtopic', msg=dict(my='msg'), headers='awesome'),
+            pretty=True, terse=True, short=True)
+        shortener.assert_called_once_with('the link')
+
+    @mock.patch('requests.get')
+    def test_default_shortener_happy_path(self, get):
+        """ Make sure the default shortener happy path works.
+
+        https://github.com/fedora-infra/fedmsg/pull/430
+        """
+        expected = 'much better'
+        get.return_value = mock.Mock()
+        get.return_value.text = ' ' + expected + ' '
+        result = ircbot._default_link_shortener('some garbage')
+        self.assertEqual(result, expected)
+
+    @mock.patch('requests.get')
+    def test_default_shortener_failure(self, get):
+        """ Make sure the default shortener handles failure.
+
+        https://github.com/fedora-infra/fedmsg/pull/430
+        """
+        get.side_effect = Exception
+        original = 'some garbage'
+        result = ircbot._default_link_shortener(original)
+        self.assertEqual(result, original)
+
+    @mock.patch('fedmsg.meta.msg2link')
+    def test_custom_shortener(self, link):
+        """ Assert that a custom shortener gets called.
+
+        https://github.com/fedora-infra/fedmsg/pull/430
+        """
+        link.return_value = 'the link'
+        custom = mock.Mock()
+
+        consumer = ircbot.IRCBotConsumer(self.hub)
+        consumer.prettify(
+            topic='testtopic',
+            msg=dict(topic='testtopic', msg=dict(my='msg'), headers='awesome'),
+            pretty=True, terse=True, short=custom)
+        custom.assert_called_once_with('the link')
