@@ -3,7 +3,7 @@ moksha.hub
 pygments
 psutil
 sqlalchemy
-mock; python_version <= '2.7'
+mock
 argparse; python_version <= '2.6'
 ordereddict; python_version <= '2.6'
 logutils; python_version <= '2.6'
