@@ -312,6 +312,7 @@ Glossary of Configuration Values
           ...
           ...             make_pretty=True,
           ...             make_terse=True,
+          ...             make_short=True,
           ...
           ...             filters=dict(
           ...                 topic=['koji'],
@@ -330,6 +331,13 @@ Glossary of Configuration Values
         ``make_terse`` specifies that the "natural language" representations
         produced by :mod:`fedmsg.meta` should be echoed into the channel instead
         of raw or dumb representations.
+
+        ``make_short`` specifies that any url associated with the message
+        should be shortened with a link shortening service.  If `True`, the
+        https://da.gd/ service will be used.  You can alternatively specify a
+        `callable` to use your own custom url shortener, like this::
+
+            make_short=lambda url: requests.get('http://api.bitly.com/v3/shorten?login=YOURLOGIN&apiKey=YOURAPIKEY&longUrl=%s&format=txt' % url).text.strip()
 
         The ``filters`` dict is not very smart.  In the above case, any message
         that has 'koji' anywhere in the topic or 'ralph' anywhere in the JSON
