@@ -343,7 +343,7 @@ class CheckTests(unittest.TestCase):
                            u'\n{r}\n'.format(r=json.dumps(self.report, indent=2, sort_keys=True)))
 
         def send_report():
-            self.socket.send(json.dumps(self.report))
+            self.socket.send(json.dumps(self.report).encode('utf-8'))
 
         threading.Timer(2.0, send_report).start()
         result = runner.invoke(check, [])
@@ -367,7 +367,7 @@ class CheckTests(unittest.TestCase):
         )
 
         def send_report():
-            self.socket.send(json.dumps(self.report))
+            self.socket.send(json.dumps(self.report).encode('utf-8'))
 
         threading.Timer(2.0, send_report).start()
         result = runner.invoke(check, ['--consumer=MissingConsumer'])
@@ -389,7 +389,7 @@ class CheckTests(unittest.TestCase):
         self.report['consumers'][0]['initialized'] = False
 
         def send_report():
-            self.socket.send(json.dumps(self.report))
+            self.socket.send(json.dumps(self.report).encode('utf-8'))
 
         threading.Timer(2.0, send_report).start()
         result = runner.invoke(check, ['--consumer=TestConsumer'])
@@ -408,7 +408,7 @@ class CheckTests(unittest.TestCase):
                            u'{r}\n'.format(r=json.dumps(self.report, indent=2, sort_keys=True)))
 
         def send_report():
-            self.socket.send(json.dumps(self.report))
+            self.socket.send(json.dumps(self.report).encode('utf-8'))
 
         threading.Timer(2.0, send_report).start()
         result = runner.invoke(check, ['--consumer=TestConsumer'])
