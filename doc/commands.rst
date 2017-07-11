@@ -27,6 +27,14 @@ fedmsg-collectd
 
 .. autofunction:: fedmsg.commands.collectd.collectd
 
+fedmsg-check
+~~~~~~~~~~~~
+
+``fedmsg-check`` is used to check the status of consumers and producers. It
+requires the ``moksha.monitoring.socket`` key to be set in the configuration.
+
+See usage details with ``fedmsg-check --help``.
+
 Service Daemons
 ---------------
 
