@@ -93,5 +93,14 @@ def relay():
 
 
 def signing_relay():
-    """Entry point for the ``fedmsg-signing-relay`` command."""
+    """
+    Sign and relay fedmsgs.
+
+    This relay behaves like the default relay, except that messages it receives
+    are signed with the certificate referenced in the ``signing_relay`` key of
+    the ``certnames`` dictionary in the fedmsg configuration.
+
+    This allows users to send unsigned messages on a trusted network and have a single
+    exit point to an untrusted network that is cryptographically signed.
+    """
     return SigningRelayCommand().execute()

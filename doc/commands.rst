@@ -38,6 +38,10 @@ fedmsg-relay
 ~~~~~~~~~~~~
 .. autofunction:: fedmsg.commands.relay.relay
 
+fedmsg-signing-relay
+~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: fedmsg.commands.relay.signing_relay
+
 fedmsg-irc
 ~~~~~~~~~~
 .. autofunction:: fedmsg.commands.ircbot.ircbot
