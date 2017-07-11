@@ -1,6 +1,77 @@
 Changelog
 =========
 
+0.19.0
+------
+
+Deprecations
+^^^^^^^^^^^^
+
+* The ``--daemon`` option has been deprecated for all fedmsg commands and will be
+  removed in a future release. We recommend using your operating system's init
+  system instead. `systemd units and SysV init scripts
+  <https://github.com/fedora-infra/fedmsg/tree/0.19.0/initsys>`_ are available in
+  the git repository (`#434 <https://github.com/fedora-infra/fedmsg/pull/434>`_).
+
+
+Features
+^^^^^^^^
+
+* A new command, ``fedmsg-signing-relay``, has been added that signs messages prior
+  to relaying them (`#409 <https://github.com/fedora-infra/fedmsg/pull/409>`_).
+
+* A new command, ``fedmsg-check``, can be used to check whether or not the expected
+  fedmsg producers and consumers are running
+  (`#416 <https://github.com/fedora-infra/fedmsg/pull/416>`_).
+
+* If the message contains a ``headers`` key, these are placed in the message body
+  (`#437 <https://github.com/fedora-infra/fedmsg/pull/437>`_).
+
+* It is now possible to use `cryptography <https://cryptography.io/>`_ and
+  `pyOpenSSL <https://pyopenssl.org/>`_ rather than m2crypto
+  (`#421 <https://github.com/fedora-infra/fedmsg/pull/421>`_).
+
+* The ircbot's URL shortener service is now configurable
+  (`#430 <https://github.com/fedora-infra/fedmsg/pull/430>`_).
+
+
+Bug fixes
+^^^^^^^^^
+
+* Fix an issue where an ``AttributeError`` wasn't actually raised when calling
+  ``fedmsg.publish`` before initializing the Moksha hub and using a non-ZeroMQ
+  publishing mechanism (`#412 <https://github.com/fedora-infra/fedmsg/pull/412>`_).
+
+* The default configuration was missing the ``topic_prefix`` key
+  (`#431 <https://github.com/fedora-infra/fedmsg/pull/431>`_).
+
+
+Development Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* fedmsg is now PEP-8 compliant (
+  `#414 <https://github.com/fedora-infra/fedmsg/pull/414>`_,
+  `#421 <https://github.com/fedora-infra/fedmsg/pull/421>`_,
+  `#422 <https://github.com/fedora-infra/fedmsg/pull/422>`_).
+
+* `Tox <https://tox.readthedocs.io/en/latest/>`_ is used to enforce PEP-8, build
+  the documentation, and run the tests with multiple versions of Python
+  (`#417 <https://github.com/fedora-infra/fedmsg/pull/417>`_).
+
+* The test suite is now run with `pytest <https://docs.pytest.org/>`_ rather than nose.
+  (`#417 <https://github.com/fedora-infra/fedmsg/pull/417>`_).
+
+* Code coverage history is now tracked with
+  `codecov.io <https://codecov.io/gh/fedora-infra/fedmsg/>`_.
+
+Many thanks to all our contributors for this release:
+
+* Elan Ruusamäe
+* Pravin Chaudhary
+* Ralph Bean
+* Jeremy Cline
+
+
 0.18.4
 ------
 
