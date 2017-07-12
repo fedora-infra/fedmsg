@@ -66,6 +66,16 @@ mirc_colors = {
 }
 
 
+def _default_link_shortener(url):
+    dagd = 'http://da.gd/s'
+    try:
+        resp = requests.get(dagd, params=dict(url=url), timeout=3)
+        return resp.text.strip()
+    except:
+        log.exception("Failed to shorten %r" % url)
+        return url
+
+
 def ircprettify(title, subtitle, link="", config=None):
     def markup(s, color):
         return "\x03%i%s\x03" % (mirc_colors[color], s)
@@ -307,9 +317,10 @@ class IRCBotConsumer(FedmsgConsumer):
                     link = fedmsg.meta.msg2link(msg, **self.hub.config)
 
                 if link and short:
-                    dagd = 'http://da.gd/s'
-                    resp = requests.get(dagd, params=dict(url=link))
-                    link = resp.text.strip()
+                    if callable(short):
+                        link = short(link)
+                    else:
+                        link = _default_link_shortener(link)
 
                 return ircprettify(
                     title=title,
