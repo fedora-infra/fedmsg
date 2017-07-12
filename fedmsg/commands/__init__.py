@@ -82,7 +82,7 @@ class BaseCommand(object):
             from daemon.pidlockfile import PIDLockFile
 
         msg = ('The use of the "--daemon" flag is deprecated and will be removed in '
-               'fedmsg-0.20.0. Use your init system to run fedmsg commands as daemons.')
+               'fedmsg-1.0.0. Use your init system to run fedmsg commands as daemons.')
         warnings.warn(msg, category=UserWarning)
         pidlock = PIDLockFile('/var/run/fedmsg/%s.pid' % self.name)
 
