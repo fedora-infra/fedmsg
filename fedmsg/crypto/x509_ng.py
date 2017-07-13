@@ -145,8 +145,8 @@ def validate(message, ssldir=None, **config):
         bool: True of the message passes validation, False otherwise.
     """
     try:
-        signature = message['signature'].decode('base64')
-        certificate = message['certificate'].decode('base64')
+        signature = base64.b64decode(message['signature'])
+        certificate = base64.b64decode(message['certificate'])
     except KeyError:
         return False
 
