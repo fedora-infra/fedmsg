@@ -174,7 +174,7 @@ class X509CryptographyTests(X509BaseTests):
         self.assertFalse(self.validate(signed, **self.config))
 
 
-@skipIf(not _cryptography, "M2Crypto/m2ext are missing.")
+@skipIf(not _m2crypto, "M2Crypto/m2ext are missing.")
 class X509M2CryptoTests(X509BaseTests):
     """Tests that explicitly use the m2crypto-based sign/verify."""
 
