@@ -7,7 +7,6 @@ import os
 import mock
 
 from click.testing import CliRunner
-from nose.tools import eq_
 import six
 import zmq
 
@@ -65,7 +64,7 @@ class TestCommands(unittest.TestCase):
                         command = LoggerCommand()
                         command.execute()
 
-        eq_(msgs, [{'log': test_input}])
+        self.assertEqual(msgs, [{'log': test_input}])
 
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-logger", "--json-input"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
@@ -95,7 +94,7 @@ class TestCommands(unittest.TestCase):
                         command = LoggerCommand()
                         command.execute()
 
-        eq_(msgs, [test_input_dict])
+        self.assertEqual(msgs, [test_input_dict])
 
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-tail"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
@@ -178,7 +177,7 @@ class TestCommands(unittest.TestCase):
         with mock.patch('fedmsg.config.__cache', {}):
             fedmsg_conf = fedmsg.config.load_config()
 
-        eq_(output_conf, fedmsg_conf)
+        self.assertEqual(output_conf, fedmsg_conf)
 
     @mock.patch("sys.argv", new_callable=lambda: [
         "fedmsg-config", "--query", "endpoints",
@@ -194,7 +193,7 @@ class TestCommands(unittest.TestCase):
         with mock.patch('fedmsg.config.__cache', {}):
             fedmsg_conf = fedmsg.config.load_config()
 
-        eq_(output_conf, fedmsg_conf["endpoints"])
+        self.assertEqual(output_conf, fedmsg_conf["endpoints"])
 
     @mock.patch("sys.argv", new_callable=lambda: [
         "fedmsg-config", "--query", "endpoints.broken",
@@ -206,7 +205,7 @@ class TestCommands(unittest.TestCase):
             with mock.patch('fedmsg.config.__cache', {}):
                 config_command()
         except SystemExit as exc:
-            eq_(exc.code, 1)
+            self.assertEqual(exc.code, 1)
         else:
             output = "output: %r, error: %r" % (
                 stdout.getvalue(), stderr.getvalue())
@@ -215,8 +214,8 @@ class TestCommands(unittest.TestCase):
         output = stdout.getvalue()
         error = stderr.getvalue()
 
-        eq_(output.strip(), "")
-        eq_(error.strip(), "Key `endpoints.broken` does not exist in config")
+        self.assertEqual(output.strip(), "")
+        self.assertEqual(error.strip(), "Key `endpoints.broken` does not exist in config")
 
     @mock.patch("sys.argv", new_callable=lambda: [
         "fedmsg-config", "--disable-defaults", "--config-filename", CONF_FILE,
@@ -235,7 +234,7 @@ class TestCommands(unittest.TestCase):
                 disable_defaults=True,
             )
 
-        eq_(output_conf, fedmsg_conf)
+        self.assertEqual(output_conf, fedmsg_conf)
 
 
 @mock.patch('fedmsg.commands.dictConfig', autospec=True)

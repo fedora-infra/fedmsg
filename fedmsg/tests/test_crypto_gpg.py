@@ -17,18 +17,12 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import functools
 import os
-import unittest
-
-from nose.tools import raises
-from nose.exc import SkipTest
 
 try:
-    from nose.tools.nontrivial import make_decorator
+    import unittest2 as unittest
 except ImportError:
-    # It lives here in older versions of nose (el6)
-    from nose.tools import make_decorator
+    import unittest
 
 import fedmsg.crypto
 import fedmsg.crypto.gpg
@@ -42,16 +36,6 @@ clear_data_path = os.path.join(data_dir, "test_data")
 secret_fp = 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
 
 
-def skip_on_travis(fn):
-    """ A decorator that just skips some tests on travis-ci.org """
-    @functools.wraps(fn)
-    def newfunc(self, *args, **kw):
-        if os.environ.get('TRAVIS', None):
-            raise SkipTest("gpg permissions are weird on travis-ci.org")
-        return fn(self, *args, **kw)
-    return make_decorator(fn)(newfunc)
-
-
 class TestGpg(unittest.TestCase):
     def setUp(self):
         self.ctx = fedmsg.crypto.gpg.Context(keyrings=keyrings,
@@ -63,18 +47,18 @@ class TestGpg(unittest.TestCase):
                         signature=open(signature_path, 'rb').read())
         self.ctx.verify_from_file(clear_data_path, sig_path=signature_path)
 
-    @raises(fedmsg.crypto.gpg.GpgBinaryError)
     def test_corrupt_detach_sig(self):
-        signature_path = os.path.join(data_dir, "corrupt.sig")
-        self.ctx.verify_from_file(clear_data_path, sig_path=signature_path)
+        with self.assertRaises(fedmsg.crypto.gpg.GpgBinaryError):
+            signature_path = os.path.join(data_dir, "corrupt.sig")
+            self.ctx.verify_from_file(clear_data_path, sig_path=signature_path)
 
-    @skip_on_travis
+    @unittest.skipIf(os.environ.get('TRAVIS', None), "Skipping due to TravisCI")
     def test_sign_cleartext(self):
         test_data = u'I can haz a signature?'
         signed_text = self.ctx.clearsign(test_data, fingerprint=secret_fp)
         self.ctx.verify(signed_text)
 
-    @skip_on_travis
+    @unittest.skipIf(os.environ.get('TRAVIS', None), "Skipping due to TravisCI")
     def test_sign_detached(self):
         test_data = u'I can haz a signature?'
         signature = self.ctx.sign(test_data, fingerprint=secret_fp)
@@ -90,14 +74,14 @@ class TestCryptoGPG(unittest.TestCase):
             'gpg_signing_key': gpg_key
         }
 
-    @skip_on_travis
+    @unittest.skipIf(os.environ.get('TRAVIS', None), "Skipping due to TravisCI")
     def test_full_circle(self):
         """ Try to sign and validate a message. """
         message = dict(msg='awesome')
         signed = fedmsg.crypto.sign(message, **self.config)
         assert fedmsg.crypto.validate(signed, **self.config)
 
-    @skip_on_travis
+    @unittest.skipIf(os.environ.get('TRAVIS', None), "Skipping due to TravisCI")
     def test_failed_validation(self):
         message = dict(msg='awesome')
         signed = fedmsg.crypto.sign(message, **self.config)

@@ -94,7 +94,6 @@ extras_require['all'] = list(set(
     for requirement in requirements
 ))
 tests_require = [
-    'nose',
     'moksha.hub',
     'pygments',
     'psutil',
@@ -135,7 +134,6 @@ setup(
     install_requires=install_requires,
     extras_require=extras_require,
     tests_require=tests_require,
-    test_suite='nose.collector',
     packages=[
         'fedmsg',
         'fedmsg.encoding',

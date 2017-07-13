@@ -20,18 +20,13 @@
 """ Tests for fedmsg.meta """
 
 import inspect
+import functools
 import os
-import unittest
 import textwrap
-
-from nose import SkipTest
-from nose.tools import eq_
-
 try:
-    from nose.tools.nontrivial import make_decorator
+    import unittest2 as unittest
 except ImportError:
-    # It lives here in older versions of nose (el6)
-    from nose.tools import make_decorator
+    import unittest
 
 import fedmsg.meta
 
@@ -56,32 +51,24 @@ def skip_on(attributes):
     are left unspecified.
     """
     def wrapper(func):
-        @make_decorator(func)
+        @functools.wraps(func)
         def inner(self):
             for attr in attributes:
                 if getattr(self, attr) is Unspecified:
-                    raise SkipTest("%r left unspecified" % attr)
+                    raise unittest.SkipTest("%r left unspecified" % attr)
             return func(self)
         return inner
     return wrapper
 
 
-def skip_if_fedmsg_meta_FI_is_present(f):
-    """ A test decorator that will skip if fedmsg_meta_fedora_infrastructure
-    is installed.
+try:
+    import fedmsg_meta_fedora_infrastructure  # noqa: F401
+    _fedmsg_meta_fi = True
+except ImportError:
+    _fedmsg_meta_fi = False
 
-    The presence of that module will screw up some tests.
-    """
-    def _wrapper(self, *args, **kw):
-        try:
-            import fedmsg_meta_fedora_infrastructure  # noqa: F401
-            raise SkipTest("fedmsg_meta_FI is present")
-        except ImportError:
-            pass
 
-        return f(self, *args, **kw)
-
-    return make_decorator(f)(_wrapper)
+skip_if_fedmsg_meta_FI_is_present = unittest.skipIf(_fedmsg_meta_fi, "fedmsg_meta_FI is present")
 
 
 class TestForWarning(unittest.TestCase):
@@ -108,7 +95,7 @@ class TestForWarning(unittest.TestCase):
             fedmsg.meta.processors = []
             fedmsg.meta.log.warn = mocked_warning
             fedmsg.meta.make_processors(**self.config)
-            eq_(messages, [expected])
+            self.assertEqual(messages, [expected])
         finally:
             fedmsg.meta.log.warn = original
 
@@ -415,22 +402,22 @@ class TestConglomeratorExtras(unittest.TestCase):
     def test_list_to_series_simple(self):
         original, expected = ['a', 'b', 'c'], "a, b, and c"
         result = self.conglomerator.list_to_series(original)
-        eq_(result, expected)
+        self.assertEqual(result, expected)
 
     def test_list_to_series_single_duplicate(self):
         original, expected = ['a', 'a', 'a'], "a"
         result = self.conglomerator.list_to_series(original)
-        eq_(result, expected)
+        self.assertEqual(result, expected)
 
     def test_list_to_series_double_duplicate(self):
         original, expected = ['a', 'a', 'b', 'b'], "a and b"
         result = self.conglomerator.list_to_series(original)
-        eq_(result, expected)
+        self.assertEqual(result, expected)
 
     def test_list_to_series_backheavy_duplicate(self):
         original, expected = ['a', 'b', 'b', 'b'], "a and b"
         result = self.conglomerator.list_to_series(original)
-        eq_(result, expected)
+        self.assertEqual(result, expected)
 
 
 if __name__ == '__main__':

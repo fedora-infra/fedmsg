@@ -19,13 +19,11 @@ try:
 except ImportError:
     import unittest
 
-from time import sleep
+from time import sleep, time
 
-from moksha.hub.tests.test_hub import simulate_reactor
 from moksha.hub import CentralMokshaHub
+from moksha.hub.reactor import reactor
 from fedmsg.core import FedMsgContext
-
-from nose.tools import eq_, raises
 
 import fedmsg.config
 import fedmsg.consumers
@@ -39,14 +37,24 @@ sleep_duration = 0.25
 secret = "secret_message"
 
 
-@raises(KeyError)
-def test_init_missing_cert():
-    """ Try to initialize the context with a nonexistant cert. """
-    config = load_config()
-    config['name'] = "failboat"
-    config['sign_messages'] = True
-    context = FedMsgContext(**config)
-    context.publish(topic='awesome', msg=dict(foo='bar'))
+def simulate_reactor(duration=sleep_duration):
+    """ Simulate running the reactor for `duration` milliseconds """
+    start = time()
+    while time() - start < duration:
+        reactor.doPoll(0.0001)
+        reactor.runUntilCurrent()
+
+
+class FedMsgContextTests(unittest.TestCase):
+
+    def test_init_missing_cert(self):
+        """ Try to initialize the context with a nonexistant cert. """
+        config = load_config()
+        config['name'] = "failboat"
+        config['sign_messages'] = True
+        with self.assertRaises(KeyError):
+            context = FedMsgContext(**config)
+            context.publish(topic='awesome', msg=dict(foo='bar'))
 
 
 class TestHub(unittest.TestCase):
@@ -91,8 +99,8 @@ class TestHub(unittest.TestCase):
         simulate_reactor(sleep_duration)
         sleep(sleep_duration)
 
-        eq_(len(messages_received), 1)
-        eq_(messages_received[0]['msg'], secret)
+        self.assertEqual(len(messages_received), 1)
+        self.assertEqual(messages_received[0]['msg'], secret)
 
     def fake_register_consumer(self, cons):
         """ Fake register a consumer, not by entry-point like usual.
@@ -133,8 +141,8 @@ class TestHub(unittest.TestCase):
         simulate_reactor(sleep_duration)
         sleep(sleep_duration)
 
-        eq_(len(messages_received), 1)
-        eq_(messages_received[0], obj)
+        self.assertEqual(len(messages_received), 1)
+        self.assertEqual(messages_received[0], obj)
 
     @requires_network
     def test_double_consumers(self):
@@ -170,9 +178,9 @@ class TestHub(unittest.TestCase):
         simulate_reactor(sleep_duration)
         sleep(sleep_duration)
 
-        eq_(len(messages_received), 2)
-        eq_(messages_received[0], obj)
-        eq_(messages_received[1], obj)
+        self.assertEqual(len(messages_received), 2)
+        self.assertEqual(messages_received[0], obj)
+        self.assertEqual(messages_received[1], obj)
 
     @requires_network
     def test_consumer_failed_validation(self):
@@ -203,7 +211,7 @@ class TestHub(unittest.TestCase):
         sleep(sleep_duration)
 
         # Verify that we received no message.
-        eq_(len(messages_received), 0)
+        self.assertEqual(len(messages_received), 0)
 
 
 if __name__ == '__main__':
