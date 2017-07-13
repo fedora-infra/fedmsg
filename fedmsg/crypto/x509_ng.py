@@ -103,6 +103,7 @@ def _prep_crypto_msg(message):
 
     Args:
         message (dict): A message with the ``signature`` and ``certificate`` keywords.
+            The values of these two keys must be byte strings.
 
     Returns:
         dict: The same message, but with the values of ``signature`` and ``certificate``
@@ -116,8 +117,8 @@ def _prep_crypto_msg(message):
     for x in range(0, len(certificate), 76):
         sliced_certificate.append(certificate[x:x+76])
 
-    message['signature'] = '\n'.join(sliced_signature) + '\n'
-    message['certificate'] = '\n'.join(sliced_certificate) + '\n'
+    message['signature'] = b'\n'.join(sliced_signature) + b'\n'
+    message['certificate'] = b'\n'.join(sliced_certificate) + b'\n'
     return message
 
 
