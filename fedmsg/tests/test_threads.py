@@ -26,12 +26,10 @@ import socket
 
 from time import sleep
 
-from moksha.hub.tests.test_hub import simulate_reactor
 from moksha.hub import CentralMokshaHub
 from fedmsg.tests.common import requires_network
 
-from nose.tools import eq_
-
+from .test_hub import simulate_reactor
 import fedmsg.config
 import fedmsg.consumers
 import fedmsg.encoding
@@ -115,8 +113,8 @@ class TestHub(unittest.TestCase):
         simulate_reactor(sleep_duration)
         sleep(sleep_duration)
 
-        eq_(len(messages_received), 5)
-        eq_(messages_received[0]['msg'], secret)
+        self.assertEqual(len(messages_received), 5)
+        self.assertEqual(messages_received[0]['msg'], secret)
 
     def test_reinitialize(self):
         """ In a thread, try to destroy and re-init the API. """

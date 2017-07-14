@@ -24,8 +24,6 @@ try:
 except ImportError:
     import unittest
 
-from nose.tools import raises
-
 import mock
 import json
 from datetime import datetime
@@ -44,35 +42,35 @@ hostname = socket.gethostname().split('.', 1)[0]
 local_name = '{0}.{1}'.format(unittest.__name__, hostname)
 
 
-@raises(KeyError)
-def test_init_missing_endpoint():
-    """ Try to initialize the context with a nonexistant service name. """
-    config = load_config()
-    config['persistent_store'] = mock.Mock()
-    config['name'] = "failboat"
-    ReplayContext(**config)
+class ReplayContextTests(unittest.TestCase):
 
+    def test_init_missing_endpoint(self):
+        """ Try to initialize the context with a nonexistant service name. """
+        with self.assertRaises(KeyError):
+            config = load_config()
+            config['persistent_store'] = mock.Mock()
+            config['name'] = "failboat"
+            ReplayContext(**config)
 
-@raises(ValueError)
-def test_init_missing_store():
-    config = load_config()
-    ReplayContext(**config)
-
-
-@raises(IOError)
-def test_init_invalid_endpoint():
-    try:
+    def test_init_missing_store(self):
         config = load_config()
-        config['name'] = local_name
-        config['persistent_store'] = mock.Mock()
-        tmp = zmq.Context()
-        placeholder = tmp.socket(zmq.REP)
-        placeholder.bind('tcp://*:{0}'.format(
-            config["replay_endpoints"][local_name].rsplit(':')[-1]
-        ))
-        ReplayContext(**config)
-    finally:
-        placeholder.close()
+        with self.assertRaises(ValueError):
+            ReplayContext(**config)
+
+    def test_init_invalid_endpoint(self):
+        try:
+            config = load_config()
+            config['name'] = local_name
+            config['persistent_store'] = mock.Mock()
+            tmp = zmq.Context()
+            placeholder = tmp.socket(zmq.REP)
+            placeholder.bind('tcp://*:{0}'.format(
+                config["replay_endpoints"][local_name].rsplit(':')[-1]
+            ))
+            with self.assertRaises(IOError):
+                ReplayContext(**config)
+        finally:
+            placeholder.close()
 
 
 class TestReplayContext(unittest.TestCase):
@@ -186,13 +184,13 @@ class TestSqlStore(unittest.TestCase):
             (first['i'] == 0 and second['i'] == 1) or
             (first['i'] == 1 and second['i'] == 0))
 
-    @raises(ValueError)
     def test_get_wrong_seq_id(self):
-        self.store.get({"seq_id": 18})
+        with self.assertRaises(ValueError):
+            self.store.get({"seq_id": 18})
 
-    @raises(ValueError)
     def test_get_illformed_time(self):
-        first, second = self.store.get({"time": [0, 15, 3]})
+        with self.assertRaises(ValueError):
+            first, second = self.store.get({"time": [0, 15, 3]})
 
 
 class ReplayThread(Thread):
@@ -223,24 +221,20 @@ class TestGetReplay(unittest.TestCase):
         self.replay_thread.stop.set()
 
     @requires_network
-    @raises(IOError)
     def test_get_replay_no_available_endpoint(self):
         # self.replay_thread.start()
-        list(get_replay(
-            "phony", {"seq_ids": [1, 2]}, self.config, self.context
-        ))
+        with self.assertRaises(ValueError):
+            list(get_replay("phony", {"seq_ids": [1, 2]}, self.config, self.context))
 
     @requires_network
-    @raises(ValueError)
     def test_get_replay_wrong_query(self):
         # We don't actually test with a wrong query, we just throw back an
         # error from the store.
         self.config['persistent_store'].get = mock.Mock(
             side_effect=[ValueError("this is an error")])
         self.replay_thread.start()
-        list(get_replay(
-            local_name, {"seq_ids": [1, 2]}, self.config, self.context
-        ))
+        with self.assertRaises(ValueError):
+            list(get_replay(local_name, {"seq_ids": [1, 2]}, self.config, self.context))
 
     @requires_network
     def test_get_replay(self):
