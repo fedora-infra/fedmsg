@@ -108,6 +108,6 @@ def _load_remote_cert(location, cache, cache_expiry, tries=0, **config):
                 os.makedirs(usr_dir)
 
             with open(cache, 'w') as f:
-                f.write(response.content)
+                f.write(response.text)
 
     return cache
