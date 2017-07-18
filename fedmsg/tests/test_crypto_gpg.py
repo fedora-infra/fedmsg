@@ -18,6 +18,7 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 import os
+import stat
 
 try:
     import unittest2 as unittest
@@ -31,15 +32,21 @@ SEP = os.path.sep
 here = SEP.join(__file__.split(SEP)[:-1])
 
 data_dir = SEP.join((here, 'test_certs', 'gpg'))
-keyrings = []
 clear_data_path = os.path.join(data_dir, "test_data")
-secret_fp = 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
+# Older versions of GPG don't handle the full key digest, so we will use the
+# short one for the moment.
+secret_fp = 'DA19B4EC'
 
 
 class TestGpg(unittest.TestCase):
     def setUp(self):
-        self.ctx = fedmsg.crypto.gpg.Context(keyrings=keyrings,
-                                             homedir=data_dir)
+        # Equivalent to chmod 700. If the directory isn't protected, GPG gets unhappy.
+        os.chmod(data_dir, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | 0)
+        for root, __, files in os.walk(data_dir):
+            for f in files:
+                os.chmod(os.path.join(root, f), stat.S_IRUSR | stat.S_IWUSR | 0)
+
+        self.ctx = fedmsg.crypto.gpg.Context(homedir=data_dir)
 
     def test_verif_detach_sig(self):
         signature_path = os.path.join(data_dir, "test_data.sig")
@@ -52,13 +59,11 @@ class TestGpg(unittest.TestCase):
             signature_path = os.path.join(data_dir, "corrupt.sig")
             self.ctx.verify_from_file(clear_data_path, sig_path=signature_path)
 
-    @unittest.skipIf(os.environ.get('TRAVIS', None), "Skipping due to TravisCI")
     def test_sign_cleartext(self):
         test_data = u'I can haz a signature?'
         signed_text = self.ctx.clearsign(test_data, fingerprint=secret_fp)
         self.ctx.verify(signed_text)
 
-    @unittest.skipIf(os.environ.get('TRAVIS', None), "Skipping due to TravisCI")
     def test_sign_detached(self):
         test_data = u'I can haz a signature?'
         signature = self.ctx.sign(test_data, fingerprint=secret_fp)
@@ -67,21 +72,18 @@ class TestGpg(unittest.TestCase):
 
 class TestCryptoGPG(unittest.TestCase):
     def setUp(self):
-        gpg_key = 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
         self.config = {
             'crypto_backend': 'gpg',
             'gpg_home': SEP.join((here, 'test_certs', 'gpg')),
-            'gpg_signing_key': gpg_key
+            'gpg_signing_key': secret_fp
         }
 
-    @unittest.skipIf(os.environ.get('TRAVIS', None), "Skipping due to TravisCI")
     def test_full_circle(self):
         """ Try to sign and validate a message. """
         message = dict(msg='awesome')
         signed = fedmsg.crypto.sign(message, **self.config)
         assert fedmsg.crypto.validate(signed, **self.config)
 
-    @unittest.skipIf(os.environ.get('TRAVIS', None), "Skipping due to TravisCI")
     def test_failed_validation(self):
         message = dict(msg='awesome')
         signed = fedmsg.crypto.sign(message, **self.config)
