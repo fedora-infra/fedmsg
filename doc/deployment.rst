@@ -1,5 +1,6 @@
-Deploying fedmsg for yourself
-=============================
+================
+Deploying fedmsg
+================
 
 Elsewhere, the emphasis in fedmsg docs is on how to subscribe to an existing fedmsg
 deployment; how do I listen for koji builds from Fedora Infrastructure?  This
@@ -11,7 +12,7 @@ You typically deploy fedmsg across an *infrastructure* but if you just want to
 try it out for "proof-of-concept", these are the docs for you.
 
 Lastly, the emphasis here is on the practical -- there will be lots of
-examples.  There is plenty of long-winded explanation over at :doc:`overview`.
+examples.
 
 .. note:: Caveat:  fedmsg is deployed at a couple different sites:
 
@@ -24,7 +25,7 @@ examples.  There is plenty of long-winded explanation over at :doc:`overview`.
    <https://github.com/fedora-infra/fedmsg/issues/new>`_.
 
 The basics
-----------
+==========
 
 First install fedmsg::
 
@@ -46,7 +47,7 @@ want that.  So edit ``/etc/fedmsg.d/endpoints.py`` and *comment out the whole
     #],
 
 Starting fedmsg-relay
----------------------
+=====================
 
 Not all fedmsg interactions require the relay, but publishing messages from a
 terminal does.
@@ -66,7 +67,7 @@ Out of the box, it should be listening for incoming messages on
 ``tcp://127.0.0.1:4001``.  It is fine to keep these defaults.
 
 Test it out
------------
+===========
 
 Try a test!  Open two terminals:
 
@@ -93,9 +94,9 @@ These are two handy tools for debugging the configuration of your
 bus.
 
 Branching out to two machines
------------------------------
+=============================
 
-Everything is tied together in fedmsg by the :term:`endpoints` dict.  It lets
+Everything is tied together in fedmsg by the :ref:`conf-endpoints` dict.  It lets
 
 - A publishing service know what port it should be publishing on.
 - A consuming service know where the publisher is so it can connect there.
@@ -144,7 +145,7 @@ using in production for Fedora Infrastructure
 
 
 Store all messages
-------------------
+==================
 
 And now for a different topic.
 
@@ -154,7 +155,7 @@ Using whatever relational database you like should be possible just by
 modifying the config.
 
 Setting up postgres
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 Here, set up a postgres database::
 
@@ -189,7 +190,7 @@ Create a database user and the db itself for datanommer and friends::
     $ sudo -u postgres createdb -E utf8 datanommer -O datanommer
 
 Setting up datanommer
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 Install it::
 
@@ -228,7 +229,7 @@ should see it in the datanommer stats if you run ``datanommer-stats``::
     [2014-03-03 20:34:43][    fedmsg    INFO] logger has 2 entries
 
 Querying datanommer with datagrepper
-------------------------------------
+====================================
 
 You can, of course, query datanommer with SQL yourself (and there's a python
 API for directly querying in the ``datanommer.models`` module).  For the rest
@@ -272,8 +273,8 @@ using the httpie tool::
     $ http get http://localhost/datagrepper/raw/ order==desc
 
 Outro
------
+=====
 
-This document is a work in progress.  Future topics may include selinux and :doc:`crypto`.
+This document is a work in progress.  Future topics may include selinux and :ref:`api-crypto`.
 
 Let us know what you'd like to know if it is missing.

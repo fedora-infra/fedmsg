@@ -49,7 +49,7 @@ Two backend methods are available to accomplish this:
     - :mod:`fedmsg.crypto.x509`
     - :mod:`fedmsg.crypto.gpg`
 
-Which backend is used is configured by the :term:`crypto_backend` configuration
+Which backend is used is configured by the :ref:`conf-crypto-backend` configuration
 value.
 
 Certificates
@@ -61,7 +61,7 @@ or to read public and private GnuPG keys in the came of the
 :mod:`fedmsg.crypto.gpg` backend.  For message validation, it only need be
 able to read the x509 certificate or gpg public key.  Exactly *which*
 certificates are used are determined by looking up the ``certname`` in the
-:term:`certnames` config dict.
+:ref:`conf-certnames` config dict.
 
 We use a large number of certs for the deployment of fedmsg.  We have one cert
 per `service-host`.  For example, if we have 3 fedmsg-enabled services and each
@@ -81,25 +81,25 @@ Routing Policy
 --------------
 
 Messages are also checked to see if the name of the certificate they bear and
-the topic they're routed on match up in a :term:`routing_policy` dict.  Is the
+the topic they're routed on match up in a :ref:`conf-routing-policy` dict.  Is the
 build server allowed to send messages about wiki updates?  Not if the routing
 policy has anything to say about it.
 
 .. note::  By analogy, "signature validation is to authentication as
            routing policy checks are to authorization."
 
-If the topic of a message appears in the :term:`routing_policy`, the name borne
+If the topic of a message appears in the :ref:`conf-routing-policy`, the name borne
 on the certificate must also appear under the associated list of permitted
 publishers or the message is marked invalid.
 
-If the topic of a message does *not* appear in the :term:`routing_policy`, two
+If the topic of a message does *not* appear in the :ref:`conf-routing-policy`, two
 different courses of action are possible:
 
-    - If :term:`routing_nitpicky` is set to ``False``, then the message is
+    - If :ref:`conf-routing-nitpicky` is set to ``False``, then the message is
       given the green light.  Our routing policy doesn't have anything
       specific to say about messages of this topic and so who are we to deny
       it passage, right?
-    - If :term:`routing_nitpicky` is set to ``True``, then we deny the message
+    - If :ref:`conf-routing-nitpicky` is set to ``True``, then we deny the message
       and mark it as invalid.
 
 Typically, you'll deploy fedmsg with nitpicky mode turned off.  You can build
@@ -118,17 +118,17 @@ by :mod:`fedmsg.config`).
 
 The cryptography routines expect the following values to be defined:
 
-  - :term:`crypto_backend`
-  - :term:`crypto_validate_backends`
-  - :term:`sign_messages`
-  - :term:`validate_signatures`
-  - :term:`ssldir`
-  - :term:`crl_location`
-  - :term:`crl_cache`
-  - :term:`crl_cache_expiry`
-  - :term:`certnames`
-  - :term:`routing_policy`
-  - :term:`routing_nitpicky`
+  - :ref:`conf-crypto-backend`
+  - :ref:`conf-crypto-validate-backends`
+  - :ref:`conf-sign-messages`
+  - :ref:`conf-validate-signatures`
+  - :ref:`conf-ssldir`
+  - :ref:`conf-crl-location`
+  - :ref:`conf-crl-cache`
+  - :ref:`conf-crl-cache-expiry`
+  - :ref:`conf-certnames`
+  - :ref:`conf-routing-policy`
+  - :ref:`conf-routing-nitpicky`
 
 For general information on configuration, see :mod:`fedmsg.config`.
 

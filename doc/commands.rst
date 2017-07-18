@@ -12,6 +12,9 @@ fedmsg-logger
 
 .. autofunction:: fedmsg.commands.logger.logger
 
+
+.. _command-tail:
+
 fedmsg-tail
 ~~~~~~~~~~~
 
@@ -38,12 +41,18 @@ See usage details with ``fedmsg-check --help``.
 Service Daemons
 ---------------
 
+.. _command-hub:
+
 fedmsg-hub
 ~~~~~~~~~~
 .. autofunction:: fedmsg.commands.hub.hub
 
+
+.. _command-relay:
+
 fedmsg-relay
 ~~~~~~~~~~~~
+
 .. autofunction:: fedmsg.commands.relay.relay
 
 fedmsg-signing-relay

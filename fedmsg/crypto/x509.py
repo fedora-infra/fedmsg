@@ -98,7 +98,7 @@ def _m2crypto_validate(message, ssldir=None, **config):
       3) We must be able to verify the signature using the RSA public key
          contained in the X509 cert.
       4) The topic of the message and the CN on the cert must appear in the
-         :term:`routing_policy` dict.
+         :ref:`conf-routing-policy` dict.
 
     """
 

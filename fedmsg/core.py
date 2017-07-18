@@ -80,7 +80,7 @@ class FedMsgContext(object):
 
         # Do a little special-case mangling.  We never want to "listen" to the
         # relay_inbound address, but in the special case that we want to emit
-        # our messages there, we add it to the :term:`endpoints` dict so that
+        # our messages there, we add it to the :ref:`conf-endpoints` dict so that
         # the code below where we "Actually set up our publisher" can be
         # simplified.  See Issue #37 - https://bit.ly/KN6dEK
         if config.get('active', False):
@@ -191,26 +191,25 @@ class FedMsgContext(object):
 
     def publish(self, topic=None, msg=None, modname=None,
                 pre_fire_hook=None, **kw):
-        """ Send a message over the publishing zeromq socket.
+        """
+        Send a message over the publishing zeromq socket.
 
-          >>> import fedmsg
-          >>> fedmsg.publish(topic='testing', modname='test', msg={
-          ...     'test': "Hello World",
-          ... })
+            >>> import fedmsg
+            >>> fedmsg.publish(topic='testing', modname='test', msg={
+            ...     'test': "Hello World",
+            ... })
 
         The above snippet will send the message ``'{test: "Hello World"}'``
         over the ``<topic_prefix>.dev.test.testing`` topic. The fully qualified
         topic of a message is constructed out of the following pieces:
 
-         <:term:`topic_prefix`>.<:term:`environment`>.<``modname``>.<``topic``>
+            <:ref:`conf-topic-prefix`>.<:ref:`conf-environment`>.<``modname``>.<``topic``>
 
         This function (and other API functions) do a little bit more
         heavy lifting than they let on.  If the "zeromq context" is not yet
         initialized, :func:`fedmsg.init` is called to construct it and
         store it as :data:`fedmsg.__local.__context` before anything else is
         done.
-
-        ----
 
         **An example from Fedora Tagger -- SQLAlchemy encoding**
 
@@ -237,8 +236,6 @@ class FedMsgContext(object):
         ``fedoratagger.controllers.root``.  ``fedmsg`` figured that out and
         stripped it down to just ``fedoratagger`` for the final topic of
         ``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``.
-
-        ----
 
         **Shell Usage**
 
@@ -346,10 +343,18 @@ class FedMsgContext(object):
             )
 
     def tail_messages(self, topic="", passive=False, **kw):
-        """ Tail messages on the bus.
+        """
+        Subscribe to messages published on the sockets listed in :ref:`conf-endpoints`.
 
-        Generator that yields tuples of the form:
-        ``(name, endpoint, topic, message)``
+        Args:
+            topic (six.text_type): The topic to subscribe to. The default is to
+                subscribe to all topics.
+            passive (bool): If ``True``, bind to the :ref:`conf-endpoints` sockets
+                instead of connecting to them. Defaults to ``False``.
+            **kw: Additional keyword arguments. Currently none are used.
+
+        Yields:
+            tuple: A 4-tuple in the form (name, endpoint, topic, message).
         """
 
         if not self.c.get('zmq_enabled', True):
