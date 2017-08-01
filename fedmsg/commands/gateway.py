@@ -33,7 +33,7 @@ class GatewayCommand(BaseCommand):
     messages from "outside the bus" back in.
 
     The special zmq endpoint is specified by the presence of
-    :term:`fedmsg.consumers.gateway.port` in the config.
+    :ref:`conf-fedmsg.consumers.gateway.port` in the config.
 
     This service is what makes using ":doc:`consuming`" outside the
     VPN/firewalled bus environment possible.

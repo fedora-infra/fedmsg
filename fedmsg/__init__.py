@@ -32,8 +32,8 @@ __all__ = [
     'init',
     'send_message',
     'publish',
-    'subscribe',
     'destroy',
+    'tail_messages',
     '__local',
 ]
 

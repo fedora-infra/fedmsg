@@ -33,7 +33,7 @@ class AnnounceCommand(BaseCommand):
                 --link https://fedoraproject.org/news
 
     Technically this command is a simpler version of fedmsg-logger that emits
-    on a special topic.  It is expected that :term:`routing_policy` is
+    on a special topic.  It is expected that :ref:`conf-routing-policy` is
     specified such that only restricted parties can issue fedmsg announcements.
 
     This command expects its message to come from stdin.

@@ -32,13 +32,13 @@ from kitchen.iterutils import iterate
 
 
 class RelayCommand(BaseCommand):
-    """ Relay connections from active loggers to the bus.
+    """Relay connections from active loggers to the bus.
 
     ``fedmsg-relay`` is a service which binds to two ports, listens for
     messages on one and emits them on the other.  ``fedmsg-logger``
     requires that an instance of ``fedmsg-relay`` be running *somewhere*
     and that it's inbound address be listed in the config as one of the entries
-    in :term:`relay_inbound`.
+    in :ref:`conf-relay_inbound`.
 
     ``fedmsg-relay`` becomes a necessity for integration points that cannot
     bind consistently to and serve from a port.  See :doc:`topology` for the
@@ -88,6 +88,17 @@ class SigningRelayCommand(RelayCommand):
 
 
 def relay():
+    """
+    Relay messages from an inbound subscription socket to an outbound publishing socket.
+
+    This service binds to two sockets, :ref:`conf-relay-inbound` and
+    :ref:`conf-relay-outbound`. The inbound socket is a ZeroMQ SUB socket and the
+    outbound socket is a ZeroMQ PUB socket.
+
+    Tools like ``fedmsg-logger`` require that an instance of ``fedmsg-relay`` be running
+    *somewhere* and that it's inbound address be listed in the config as one of the
+    entries in :ref:`conf-relay-inbound`.
+    """
     command = RelayCommand()
     return command.execute()
 

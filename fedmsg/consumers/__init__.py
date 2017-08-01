@@ -35,41 +35,53 @@ from fedmsg.replay import check_for_replay
 
 
 class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
-    """ Base class for fedmsg consumers.
+    """
+    Base class for fedmsg consumers.
 
-    The fedmsg consumption API is really just a thin wrapper over moksha.
-    Moksha expects consumers to:
+    This class inherits from :class:`moksha.hub.api.consumer.Consumer` and you
+    should familiarize yourself with this class as well.
 
-        * Declare themselves on the moksha.consumers python entry-point.
-        * Declare a ``consume(...)`` method.
-        * Specify a ``topic``.
+    To create a consumer, you must inherit this class and do the following:
 
-    All this class does in addition to moksha is:
+        * Declare the class on the ``moksha.consumers`` python entry-point::
 
-        * Provide a mechanism for disabling/enabling consumers by configuration
-          in a consistent way (namely, by use of ``config_key``).
+              setup(
+                  entry_points={
+                      'moksha.consumer': (
+                          'your_consumer = python.path:YourConsumerClass',
+                      ),
+                  },
+              )
 
-          If you set ``validate_signatures = False`` on your consumer, it will
-          be exempt from global validation rules.  Messages will not be
-          checked for authenticity before being handed off to your consume
-          method.  This is handy if you're developing or building a
-          special-case consumer.  The consumer used by ``fedmsg-relay``
-          (described in :doc:`commands`) sets ``validate_signatures = False``
-          so that it can transparently forward along everything and let the
-          terminal endpoints decide whether or not to consume particular
-          messages.
+        * Implement the ``consume(self, message)`` method on the class.
 
-        * Provide a mechanism for automatically validating fedmsg messages
-          with :mod:`fedmsg.crypto`.
+        * Set the attributes documented below
 
-        * Provide a mechanism to play back messages that haven't been received
-          by the hub even though emitted. To make use of this feature, you have
-          to set ``replay_name`` to some string corresponding to an endpoint in
-          the ``replay_endpoints`` dict in the configuration.
+    Attributes:
+        validate_signatures (bool): If ``False``, message authenticity will not be
+            checked. This is helpful if you're developing or building a special-case
+            consumer. For example, the consumer used by :ref:`command-relay` sets
+            ``validate_signatures = False`` so that it can transparently forward along
+            everything and let the terminal endpoints decide whether or not to consume
+            particular messages.
 
-          You must set ``config_key`` to some string.  A config value by
-          that name must be True in the config parsed by :mod:`fedmsg.config`
-          in order for the consumer to be activated.
+        topic (str or list): This attribute is required. Either a :class:`str`
+            or :class:`list` of :class:`str` that are topics that this consumer
+            is interested in receiving messages for. To receive all messages, use
+            an empty string.
+
+        config_key (str): The name of the configuration key used to enable or disable
+            this consumer. If this key is not present in the fedmsg configuration or
+            does not have a value of ``True``, :ref:`command-hub` will not run the
+            consumer.
+
+        replay_name (str): The name of the replay endpoint where the system should
+            query for playback in case of missed messages. It must match a service
+            key in :ref:`conf-replay-endpoints`. This attribute is optional.
+
+    Args:
+        hub (moksha.hub.hub.MokshaCentralHub): The Moksha Hub that is initializing this
+            consumer.
     """
 
     validate_signatures = None

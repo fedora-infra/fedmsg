@@ -17,15 +17,16 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-""" :mod:`fedmsg.config` handles loading, processing and validation of
-all configuration.
+"""
+This module handles loading, processing and validation of all configuration.
 
 The configuration values used at runtime are determined by checking in
-the following order
+the following order:
 
     - Built-in defaults
-    - Config file (/etc/fedmsg.d/*.py)
-    - Config file (./fedmsg.d/*.py)
+    - All Python files in the /etc/fedmsg.d/ directory
+    - All Python files in the ~/.fedmsg.d/ directory
+    - All Python files in the current working directory's fedmsg.d/ directory
     - Command line arguments
 
 For example, if a config value does not appear in either the config file or on

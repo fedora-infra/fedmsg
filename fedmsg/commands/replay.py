@@ -40,7 +40,7 @@ class ReplayCommand(BaseCommand):
     ``fedmsg-relay`` instance.
 
     The message is stripped of its original credentials.  Local credentials are
-    applied if :term:`sign_messages` is set to ``True``.
+    applied if :ref:`conf-sign_messages` is set to ``True``.
     """
 
     name = "fedmsg-dg-replay"

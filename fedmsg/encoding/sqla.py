@@ -22,7 +22,7 @@ sqlalchemy models that do not define their own ``.__json__()`` methods.
 
 Use at your own risk.  :func:`fedmsg.encoding.sqla.to_json` will expose all
 attributes and relations of your sqlalchemy object and may expose information
-you not want it to.  See :doc:`crypto` for considerations.
+you not want it to.  See :ref:`api-crypto` for considerations.
 """
 
 try:
