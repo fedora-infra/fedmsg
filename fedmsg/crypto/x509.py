@@ -113,7 +113,7 @@ def _m2crypto_validate(message, ssldir=None, **config):
     for field in ['signature', 'certificate']:
         if field not in message:
             return fail("No %r field found." % field)
-        if not isinstance(message[field], str):
+        if not isinstance(message[field], basestring):
             return fail("msg[%r] is not a string" % field)
 
     # Peal off the auth datums
