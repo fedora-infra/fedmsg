@@ -39,6 +39,7 @@ try:
     _cryptography = True
 except ImportError:  # pragma: no cover
     _cryptography = False
+import six
 
 from . import utils
 import fedmsg.crypto
@@ -143,12 +144,23 @@ def validate(message, ssldir=None, **config):
     Returns:
         bool: True of the message passes validation, False otherwise.
     """
-    try:
-        signature = message['signature'].decode('base64')
-        certificate = message['certificate'].decode('base64')
-    except KeyError:
-        return False
+    for field in ['signature', 'certificate']:
+        if field not in message:
+            _log.warn('No %s field found.', field)
+            return False
+        if not isinstance(message[field], six.text_type):
+            _log.error('msg[%r] is not a unicode string' % field)
+            try:
+                # Make an effort to decode it, it's very likely utf-8 since that's what
+                # is hardcoded throughout fedmsg. Worst case scenario is it'll cause a
+                # validation error when there shouldn't be one.
+                message[field] = message[field].decode('utf-8')
+            except UnicodeError as e:
+                _log.error("Unable to decode the message '%s' field: %s", field, str(e))
+                return False
 
+    signature = base64.b64decode(message['signature'])
+    certificate = base64.b64decode(message['certificate'])
     message = fedmsg.crypto.strip_credentials(message)
 
     crl_file = None

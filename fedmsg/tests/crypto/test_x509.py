@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # This file is part of fedmsg.
 # Copyright (C) 2012 - 2017 Red Hat, Inc.
 #
@@ -18,6 +20,9 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 # Authors:  Jeremy Cline <jcline@redhat.com>
 import os
+
+import mock
+import six
 
 _m2crypto, _cryptography = False, False
 try:
@@ -81,6 +86,18 @@ class X509BaseTests(TestCase):
         signed = self.sign({'my': 'message'}, **self.config)
         self.assertTrue('signature' in signed)
         self.assertTrue('certificate' in signed)
+
+    @expectedFailure
+    def test_signature_text(self):
+        """Assert signature fields are unicode text."""
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertTrue(isinstance(signed['signature'], six.text_type))
+
+    @expectedFailure
+    def test_certificate_text(self):
+        """Assert signing a message inserts the certificate and a signature."""
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertTrue(isinstance(signed['certificate'], six.text_type))
 
     def test_sign_and_verify(self):
         """Assert signed messages are verified."""
@@ -156,6 +173,35 @@ class X509BaseTests(TestCase):
         signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
         self.assertTrue(self.validate(signed, **self.config))
 
+    def test_bytes_undecodable(self):
+        """Assert un-decodable signatures/certificates fails validation."""
+        signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
+
+        # This assertion will fail when the sign API changes to return text types, at
+        # which point this test should encode the signature to bytes.
+        self.assertTrue(isinstance(signed['signature'], six.binary_type))
+        self.assertTrue(isinstance(signed['certificate'], six.binary_type))
+
+        # This is a non-ascii character that encodes to a bytestring in latin-1
+        # that won't decode in UTF-8
+        signed['signature'] = u'Ö'.encode('latin-1')
+        signed['certificate'] = u'Ö'.encode('latin-1')
+
+        self.assertFalse(self.validate(signed, **self.config))
+
+    def test_text_validate(self):
+        """Assert unicode-type signatures/certificates work."""
+        signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
+
+        # This assertion will fail when the sign API changes to return text types, at
+        # which point this test should drop the decode step.
+        self.assertTrue(isinstance(signed['signature'], six.binary_type))
+        self.assertTrue(isinstance(signed['certificate'], six.binary_type))
+        signed['signature'] = signed['signature'].decode('utf-8')
+        signed['certificate'] = signed['certificate'].decode('utf-8')
+
+        self.assertTrue(self.validate(signed, **self.config))
+
 
 @skipIf(not _cryptography, "cryptography/pyOpenSSL are missing.")
 class X509CryptographyTests(X509BaseTests):
@@ -172,6 +218,20 @@ class X509CryptographyTests(X509BaseTests):
         self.config['crl_cache'] = os.path.join(SSLDIR, 'expired_crl.pem')
 
         self.assertFalse(self.validate(signed, **self.config))
+
+    @mock.patch('fedmsg.crypto.x509_ng._log')
+    def test_bytes_logs_error(self, mock_log):
+        """Assert calling validate with byte signature/certificate logs an error."""
+        signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
+
+        # This assertion will fail when the sign API changes to return text types, at
+        # which point this test should encode the signature to bytes.
+        self.assertTrue(isinstance(signed['signature'], six.binary_type))
+        self.assertTrue(isinstance(signed['certificate'], six.binary_type))
+
+        self.assertTrue(self.validate(signed, **self.config))
+        mock_log.error.assert_any_call("msg['signature'] is not a unicode string")
+        mock_log.error.assert_any_call("msg['certificate'] is not a unicode string")
 
 
 @skipIf(not _cryptography, "M2Crypto/m2ext are missing.")
@@ -190,6 +250,20 @@ class X509M2CryptoTests(X509BaseTests):
         self.config['crl_cache'] = os.path.join(SSLDIR, 'expired_crl.pem')
 
         self.assertFalse(self.validate(signed, **self.config))
+
+    @mock.patch('fedmsg.crypto.x509._log')
+    def test_bytes_logs_error(self, mock_log):
+        """Assert calling validate with byte signature/certificate logs an error."""
+        signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
+
+        # This assertion will fail when the sign API changes to return text types, at
+        # which point this test should encode the signature to bytes.
+        self.assertTrue(isinstance(signed['signature'], six.binary_type))
+        self.assertTrue(isinstance(signed['certificate'], six.binary_type))
+
+        self.assertTrue(self.validate(signed, **self.config))
+        mock_log.error.assert_any_call("msg['signature'] is not a unicode string")
+        mock_log.error.assert_any_call("msg['certificate'] is not a unicode string")
 
 
 @skipIf(not (_cryptography and _m2crypto), 'M2Crypto and cryptography required.')
