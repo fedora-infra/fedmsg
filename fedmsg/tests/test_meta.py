@@ -269,20 +269,47 @@ class Base(unittest.TestCase):
 
 
 class TestUnhandled(Base):
-    expected_title = "unhandled_service.some_event"
+    expected_agent = None
+    expected_avatars = {}
+    expected_emails = {}
+    expected_icon = None
+    expected_link = ''
+    expected_long_form = ''
+    expected_objects = set()
+    expected_packages = set()
+    expected_secondary_icon = None
     expected_subti = ""
+    expected_title = "unhandled_service.some_event"
+    expected_usernames = set()
+
+    expected_subjective = {
+        'foo': expected_subti,
+        'bar': expected_subti,
+    }
+
     msg = {
         "topic": "org.fedoraproject.stg.unhandled_service.some_event"
     }
 
 
 class TestAnnouncement(Base):
-    expected_title = "announce.announcement"
-    expected_subti = 'hello, world.'
-    expected_long_form = 'hello, world.'
-    expected_link = 'foo'
-    expected_usernames = set(['ralph'])
     expected_agent = 'ralph'
+    expected_avatars = {}
+    expected_emails = {}
+    expected_icon = None
+    expected_link = 'foo'
+    expected_long_form = 'hello, world.'
+    expected_objects = set()
+    expected_packages = set()
+    expected_secondary_icon = None
+    expected_subti = 'hello, world.'
+    expected_title = "announce.announcement"
+    expected_usernames = set(['ralph'])
+
+    expected_subjective = {
+        'foo': expected_subti,
+        'bar': expected_subti,
+    }
 
     msg = {
         "i": 1,
@@ -297,15 +324,23 @@ class TestAnnouncement(Base):
 
 
 class TestLoggerNormal(Base):
-    expected_title = "logger.log"
-    expected_subti = 'hello, world. (ralph)'
+    expected_agent = 'ralph'
+    expected_avatars = {}
+    expected_emails = {}
+    expected_icon = None
+    expected_link = ''
     expected_long_form = 'hello, world. (ralph)'
+    expected_objects = set()
+    expected_packages = set()
+    expected_secondary_icon = None
+    expected_subti = 'hello, world. (ralph)'
+    expected_title = "logger.log"
+    expected_usernames = set(['ralph'])
+
     expected_subjective = {
         'ralph': 'you logged "hello, world."',
         'lmacken': expected_subti,
     }
-    expected_usernames = set(['ralph'])
-    expected_agent = 'ralph'
 
     msg = {
         "i": 1,
@@ -319,8 +354,18 @@ class TestLoggerNormal(Base):
 
 
 class TestLoggerJSON(Base):
-    expected_title = "logger.log"
+    expected_agent = 'root'
+    expected_avatars = {}
+    expected_emails = {}
+    expected_icon = None
+    expected_link = ''
+    expected_objects = set()
+    expected_packages = set()
+    expected_secondary_icon = None
     expected_subti = '<custom JSON message> (root)'
+    expected_title = "logger.log"
+    expected_usernames = set(['root'])
+
     expected_long_form = textwrap.dedent("""
     A custom JSON message was logged by root::
 
@@ -328,8 +373,11 @@ class TestLoggerJSON(Base):
             "foo": "bar"
         }
     """).strip()
-    expected_usernames = set(['root'])
-    expected_agent = 'root'
+
+    expected_subjective = {
+        'foo': expected_subti,
+        'bar': expected_subti,
+    }
 
     msg = {
         "i": 1,
