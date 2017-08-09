@@ -113,8 +113,16 @@ def _m2crypto_validate(message, ssldir=None, **config):
     for field in ['signature', 'certificate']:
         if field not in message:
             return fail("No %r field found." % field)
-        if not isinstance(message[field], basestring):
-            return fail("msg[%r] is not a string" % field)
+        if not isinstance(message[field], six.text_type):
+            log.error('msg[%r] is not a unicode string' % field)
+            try:
+                # Make an effort to decode it, it's very likely utf-8 since that's what
+                # is hardcoded throughout fedmsg. Worst case scenario is it'll cause a
+                # validation error when there shouldn't be one.
+                message[field] = message[field].decode('utf-8')
+            except UnicodeError as e:
+                log.error("Unable to decode the message '%s' field: %s", field, str(e))
+                return False
 
     # Peal off the auth datums
     signature = message['signature'].decode('base64')
