@@ -28,6 +28,7 @@ import threading
 import time
 
 import moksha.hub.api.consumer
+import six
 
 import fedmsg.crypto
 import fedmsg.encoding
@@ -214,11 +215,30 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
                         break
 
     def validate(self, message):
-        """ This needs to raise an exception, caught by moksha. """
+        """
+        Validate the message before the consumer processes it.
+
+        This needs to raise an exception, caught by moksha.
+
+        Args:
+            message (dict): The message as a dictionary. This must, at a minimum,
+                contain the 'topic' key with a unicode string value and 'body' key
+                with a dictionary value.
+
+        Raises:
+            RuntimeWarning: If the message is not valid.
+        """
         if hasattr(message, '__json__'):
             message = message.__json__()
-            if isinstance(message['body'], str):
+            if isinstance(message['body'], six.text_type):
                 message['body'] = json.loads(message['body'])
+            elif isinstance(message['body'], six.binary_type):
+                # Try to decode the message body as UTF-8 since it's very likely
+                # that that was the encoding used. This API should eventually only
+                # accept unicode strings inside messages. If a UnicodeDecodeError
+                # happens, let that bubble up.
+                self.log.error('Message body is not unicode; this is deprecated')
+                message['body'] = json.loads(message['body'].decode('utf-8'))
 
         # Massage STOMP messages into a more compatible format.
         if 'topic' not in message['body']:
