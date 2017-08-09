@@ -37,7 +37,7 @@ import fedmsg.crypto  # noqa: E402
 import fedmsg.encoding  # noqa: E402
 
 
-log = logging.getLogger(__name__)
+_log = logging.getLogger(__name__)
 
 if six.PY3:
     long = int
@@ -106,7 +106,7 @@ def _m2crypto_validate(message, ssldir=None, **config):
         raise ValueError("You must set the ssldir keyword argument.")
 
     def fail(reason):
-        log.warn("Failed validation.  %s" % reason)
+        _log.warn("Failed validation.  %s" % reason)
         return False
 
     # Some sanity checking
@@ -114,14 +114,14 @@ def _m2crypto_validate(message, ssldir=None, **config):
         if field not in message:
             return fail("No %r field found." % field)
         if not isinstance(message[field], six.text_type):
-            log.error('msg[%r] is not a unicode string' % field)
+            _log.error('msg[%r] is not a unicode string' % field)
             try:
                 # Make an effort to decode it, it's very likely utf-8 since that's what
                 # is hardcoded throughout fedmsg. Worst case scenario is it'll cause a
                 # validation error when there shouldn't be one.
                 message[field] = message[field].decode('utf-8')
             except UnicodeError as e:
-                log.error("Unable to decode the message '%s' field: %s", field, str(e))
+                _log.error("Unable to decode the message '%s' field: %s", field, str(e))
                 return False
 
     # Peal off the auth datums
