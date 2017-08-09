@@ -286,7 +286,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
         # Pass along headers if present.  May be useful to filters or
         # fedmsg.meta routines.
-        if 'headers' in message and 'body' in message:
+        if 'headers' in message.__dict__ and 'body' in message.__dict__:
             message['body']['headers'] = message['headers']
 
         if hasattr(self, "replay_name"):
