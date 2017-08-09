@@ -1,4 +1,27 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of fedmsg.
+# Copyright (C) 2017 Red Hat, Inc.
+# Copyright (C) 2014 Nicolas Dandrimont
+# Copyright (C) 2015 Slavek Kabrda
+#
+# fedmsg is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# fedmsg is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with fedmsg; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+
 import resource
+import shutil
+import tempfile
 import threading
 import unittest
 import time
@@ -297,12 +320,26 @@ class CheckTests(unittest.TestCase):
                  }
             ]
         }
-        self.context = zmq.Context.instance()
-        self.socket = self.context.socket(zmq.PUB)
-        self.port = self.socket.bind_to_random_port('tcp://127.0.0.1', max_tries=1000)
+        self.tempdir = tempfile.mkdtemp()
+        self.socket_path = 'ipc://' + os.path.join(self.tempdir, self.id().split('.')[-1])
 
     def tearDown(self):
-        self.context.destroy()
+        shutil.rmtree(self.tempdir, ignore_errors=True)
+
+    def send_report(self):
+        """Set up a socket in thread and send a report for several seconds."""
+        def report_in_thread():
+            context = zmq.Context.instance()
+            socket = context.socket(zmq.PUB)
+            socket.setsockopt(zmq.LINGER, 0)
+            socket.bind(self.socket_path)
+            for x in range(0, 3):
+                socket.send(json.dumps(self.report).encode('utf-8'))
+                time.sleep(1)
+            socket.close()
+
+        thread = threading.Thread(target=report_in_thread)
+        thread.start()
 
     def test_no_monitor_endpoint(self):
         """Assert that when no endpoint for monitoring is configured, users are informed."""
@@ -319,37 +356,37 @@ class CheckTests(unittest.TestCase):
     def test_socket_timeout(self, mock_load_config):
         """Assert when no message is received a timeout is hit."""
         mock_load_config.return_value = {
-            'moksha.monitoring.socket': 'tcp://127.0.0.1:' + str(self.port)
+            'moksha.monitoring.socket': self.socket_path
         }
         expected_error = (
             u'Error: Failed to receive message from the monitoring endpoint'
-            u' (tcp://127.0.0.1:{p}) in 1 seconds.\n'.format(p=self.port)
+            u' ({path}) in 1 seconds.\n'.format(path=self.socket_path)
         )
         runner = CliRunner()
+        context = zmq.Context.instance()
+        socket = context.socket(zmq.PUB)
+        socket.setsockopt(zmq.LINGER, 0)
+        socket.bind(self.socket_path)
 
         result = runner.invoke(check, ['--timeout=1'])
 
-        self.assertEqual(1, result.exit_code)
         self.assertEqual(expected_error, result.output)
+        self.assertEqual(1, result.exit_code)
+        socket.close()
 
     @mock.patch('fedmsg.commands.check.load_config')
     def test_no_consumers_or_producers(self, mock_load_config):
         """Assert that when no consumers or producers are specified, all are displayed."""
-        mock_load_config.return_value = {
-            'moksha.monitoring.socket': 'tcp://127.0.0.1:' + str(self.port)
-        }
+        mock_load_config.return_value = {'moksha.monitoring.socket': self.socket_path}
         runner = CliRunner()
         expected_output = (u'No consumers or producers specified so all will be shown.'
                            u'\n{r}\n'.format(r=json.dumps(self.report, indent=2, sort_keys=True)))
 
-        def send_report():
-            self.socket.send(json.dumps(self.report).encode('utf-8'))
-
-        threading.Timer(2.0, send_report).start()
+        self.send_report()
         result = runner.invoke(check, [])
 
-        self.assertEqual(0, result.exit_code)
         self.assertEqual(expected_output, result.output)
+        self.assertEqual(0, result.exit_code)
 
     @mock.patch('fedmsg.commands.check.load_config')
     def test_missing(self, mock_load_config):
@@ -357,19 +394,14 @@ class CheckTests(unittest.TestCase):
         Assert the command has a non-zero exit when a consumer is missing
         from the list of active consumers.
         """
-        mock_load_config.return_value = {
-            'moksha.monitoring.socket': 'tcp://127.0.0.1:' + str(self.port)
-        }
+        mock_load_config.return_value = {'moksha.monitoring.socket': self.socket_path}
         runner = CliRunner()
         expected_output = (
             u'"MissingConsumer" is not active!\n'
             u'Error: Some consumers and/or producers are missing!\n'
         )
 
-        def send_report():
-            self.socket.send(json.dumps(self.report).encode('utf-8'))
-
-        threading.Timer(2.0, send_report).start()
+        self.send_report()
         result = runner.invoke(check, ['--consumer=MissingConsumer'])
 
         self.assertEqual(1, result.exit_code)
@@ -378,9 +410,7 @@ class CheckTests(unittest.TestCase):
     @mock.patch('fedmsg.commands.check.load_config')
     def test_uninitialized(self, mock_load_config):
         """Assert the command has a non-zero exit when a consumer is not initialized."""
-        mock_load_config.return_value = {
-            'moksha.monitoring.socket': 'tcp://127.0.0.1:' + str(self.port)
-        }
+        mock_load_config.return_value = {'moksha.monitoring.socket': self.socket_path}
         runner = CliRunner()
         expected_output = (
             u'"TestConsumer" is not initialized!\n'
@@ -388,29 +418,21 @@ class CheckTests(unittest.TestCase):
         )
         self.report['consumers'][0]['initialized'] = False
 
-        def send_report():
-            self.socket.send(json.dumps(self.report).encode('utf-8'))
-
-        threading.Timer(2.0, send_report).start()
+        self.send_report()
         result = runner.invoke(check, ['--consumer=TestConsumer'])
 
-        self.assertEqual(1, result.exit_code)
         self.assertEqual(expected_output, result.output)
+        self.assertEqual(1, result.exit_code)
 
     @mock.patch('fedmsg.commands.check.load_config')
     def test_all_good(self, mock_load_config):
         """Assert if all consumers/producers are present, the command exits 0."""
-        mock_load_config.return_value = {
-            'moksha.monitoring.socket': 'tcp://127.0.0.1:' + str(self.port)
-        }
+        mock_load_config.return_value = {'moksha.monitoring.socket': self.socket_path}
         runner = CliRunner()
         expected_output = (u'All consumers and producers are active!\n'
                            u'{r}\n'.format(r=json.dumps(self.report, indent=2, sort_keys=True)))
 
-        def send_report():
-            self.socket.send(json.dumps(self.report).encode('utf-8'))
-
-        threading.Timer(2.0, send_report).start()
+        self.send_report()
         result = runner.invoke(check, ['--consumer=TestConsumer'])
 
         self.assertEqual(0, result.exit_code)
