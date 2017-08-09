@@ -160,12 +160,8 @@ def validate(message, ssldir=None, **config):
                 _log.error("Unable to decode the message '%s' field: %s", field, str(e))
                 return False
 
-    try:
-        signature = base64.b64decode(message['signature'])
-        certificate = base64.b64decode(message['certificate'])
-    except KeyError:
-        return False
-
+    signature = base64.b64decode(message['signature'])
+    certificate = base64.b64decode(message['certificate'])
     message = fedmsg.crypto.strip_credentials(message)
 
     crl_file = None
