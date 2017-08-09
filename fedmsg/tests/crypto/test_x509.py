@@ -85,6 +85,18 @@ class X509BaseTests(TestCase):
         self.assertTrue('signature' in signed)
         self.assertTrue('certificate' in signed)
 
+    @expectedFailure
+    def test_signature_text(self):
+        """Assert signature fields are unicode text."""
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertTrue(isinstance(signed['signature'], six.text_type))
+
+    @expectedFailure
+    def test_certificate_text(self):
+        """Assert signing a message inserts the certificate and a signature."""
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertTrue(isinstance(signed['certificate'], six.text_type))
+
     def test_sign_and_verify(self):
         """Assert signed messages are verified."""
         signed = self.sign({'my': 'message'}, **self.config)
