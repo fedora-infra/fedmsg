@@ -189,6 +189,19 @@ class X509BaseTests(TestCase):
 
         self.assertFalse(self.validate(signed, **self.config))
 
+    def test_text_validate(self):
+        """Assert unicode-type signatures/certificates work."""
+        signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
+
+        # This assertion will fail when the sign API changes to return text types, at
+        # which point this test should drop the decode step.
+        self.assertTrue(isinstance(signed['signature'], six.binary_type))
+        self.assertTrue(isinstance(signed['certificate'], six.binary_type))
+        signed['signature'] = signed['signature'].decode('utf-8')
+        signed['certificate'] = signed['certificate'].decode('utf-8')
+
+        self.assertTrue(self.validate(signed, **self.config))
+
 
 @skipIf(not _cryptography, "cryptography/pyOpenSSL are missing.")
 class X509CryptographyTests(X509BaseTests):
