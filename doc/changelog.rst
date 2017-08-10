@@ -2,6 +2,37 @@
 Changelog
 =========
 
+0.19.1
+======
+
+0.19.1 is a bug fix release that addresses several critical regressions introduced
+in 0.19.0.
+
+Bug fixes
+---------
+
+* Fix an issue where messages failed validation because the message certificate
+  and signature were unicode objects (`#456
+  <https://github.com/fedora-infra/fedmsg/pull/456>`_).
+
+* Fix an issue where message bodies were not deserialized from JSON before being
+  passed to a consumer because the message bodies were unicode objects (`#464
+  <https://github.com/fedora-infra/fedmsg/pull/464>`_).
+
+* Fix an issue where messages never got passed to the consumer because the
+  message pre-processing caused an unhandled exception (`#462
+  <https://github.com/fedora-infra/fedmsg/pull/462>`_).
+
+
+Many thanks to the contributors for this release:
+
+* Kamil Páral
+* Jeremy Cline
+* Patrick Uiterwijk
+* Ralph Bean
+* Ricky Elrod
+
+
 0.19.0
 ======
 
