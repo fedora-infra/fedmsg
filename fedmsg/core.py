@@ -333,7 +333,7 @@ class FedMsgContext(object):
             import moksha.hub
             # First, a quick sanity check.
             if not getattr(moksha.hub, '_hub', None):
-                raise AttributeError("Unable to publish non-zeromq msg"
+                raise AttributeError("Unable to publish non-zeromq msg "
                                      "without moksha-hub initialization.")
             # Let moksha.hub do our work.
             moksha.hub._hub.send_message(
