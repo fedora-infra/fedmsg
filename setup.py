@@ -101,15 +101,7 @@ tests_require = [
 
 if sys.version_info[0] == 2:
     tests_require.append('mock')
-    if sys.version_info[1] <= 6:
-        install_requires.extend([
-            'argparse',
-            'ordereddict',
-            'logutils',
-        ])
-        tests_require.extend([
-            'unittest2',
-        ])
+
 
 setup(
     name='fedmsg',
@@ -126,7 +118,6 @@ setup(
         'License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)',
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',

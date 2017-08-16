@@ -13,6 +13,8 @@ Backwards incompatible changes
   `systemd unit files <https://github.com/fedora-infra/fedmsg/tree/1.0.0/initsys>`_
   are available in the git repository (`#470 <https://github.com/fedora-infra/fedmsg/pull/470>`_).
 
+* Python 2.6 is no longer supported (`#469 <https://github.com/fedora-infra/fedmsg/pull/469>`_).
+
 
 0.19.1
 ======
