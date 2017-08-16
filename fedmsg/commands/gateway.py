@@ -39,7 +39,6 @@ class GatewayCommand(BaseCommand):
     VPN/firewalled bus environment possible.
     """
     name = 'fedmsg-gateway'
-    daemonizable = True
     extra_args = []
 
     def run(self):

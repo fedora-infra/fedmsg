@@ -38,7 +38,6 @@ class IRCCommand(BaseCommand):
 
     name = "fedmsg-irc"
     extra_args = []
-    daemonizable = True
 
     def run(self):
         # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to

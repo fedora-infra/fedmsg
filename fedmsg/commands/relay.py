@@ -45,7 +45,6 @@ class RelayCommand(BaseCommand):
     mile-high view.  More specifically, ``fedmsg-relay`` is a
     SUB.bind()->PUB.bind() relay.
     """
-    daemonizable = True
     name = 'fedmsg-relay'
     relay_consumer = RelayConsumer
 

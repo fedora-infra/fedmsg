@@ -80,7 +80,6 @@ extras_require = {
     ],
     'consumers': [
         'moksha.hub>=1.3.0',
-        'python-daemon',      # not *necessarily* required
         'pygments',
         'psutil',
         # only needed for irc ssl support

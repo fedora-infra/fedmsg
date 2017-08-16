@@ -47,7 +47,6 @@ class HubCommand(BaseCommand):
 
     """
     name = 'fedmsg-hub'
-    daemonizable = True
     extra_args = [
         (['--with-consumers'], {
             'dest': 'explicit_hub_consumers',
