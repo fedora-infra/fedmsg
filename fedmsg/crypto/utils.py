@@ -47,7 +47,7 @@ def validate_policy(topic, signer, routing_policy, nitpicky=False):
             # We are *not* in nitpicky mode.  We don't have an entry in the
             # routing_policy for the topic of this message.. but we don't
             # really care.
-            _log.warning('No routing policy defined for "{t}" and routing_nitpicky is '
+            _log.warning('No routing policy defined for "{t}" but routing_nitpicky is '
                          'False so the message is being treated as authorized.'.format(t=topic))
             return True
 
