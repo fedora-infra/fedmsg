@@ -2,6 +2,18 @@
 Changelog
 =========
 
+1.0.0
+=====
+
+Backwards incompatible changes
+------------------------------
+
+* The ``--daemon`` option for all fedmsg commands that was deprecated in 0.19.0
+  has been removed. We recommend using your operating system's init system instead.
+  `systemd unit files <https://github.com/fedora-infra/fedmsg/tree/1.0.0/initsys>`_
+  are available in the git repository (`#470 <https://github.com/fedora-infra/fedmsg/pull/470>`_).
+
+
 0.19.1
 ======
 
