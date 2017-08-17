@@ -4,10 +4,5 @@ pygments
 psutil
 sqlalchemy
 mock
-argparse; python_version <= '2.6'
-ordereddict; python_version <= '2.6'
-logutils; python_version <= '2.6'
-unittest2; python_version <= '2.6'
-Twisted==12.2; python_version <= '2.6'
 flake8
 click
