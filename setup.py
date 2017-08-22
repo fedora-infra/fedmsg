@@ -105,7 +105,7 @@ if sys.version_info[0] == 2:
 
 setup(
     name='fedmsg',
-    version='0.19.0',
+    version='1.0.0',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -115,6 +115,7 @@ setup(
     classifiers=[  # https://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)',
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 2',
