@@ -16,6 +16,45 @@ Backwards incompatible changes
 * Python 2.6 is no longer supported (`#469 <https://github.com/fedora-infra/fedmsg/pull/469>`_).
 
 
+Features
+--------
+
+* Python 3.4+ is now supported. In order to use x509 certificates to sign and verify messages,
+  you will need `cryptography v1.6+ <https://cryptography.io/en/latest/>`_
+  and `pyOpenSSL v16.1+ <https://pyopenssl.org/en/stable/>`_. These can be installed with pip
+  via ``pip install fedmsg[crypto_ng]`` (`#449
+  <https://github.com/fedora-infra/fedmsg/pull/449>`_).
+
+* The fedmsg documentation has been re-organized (`#453
+  <https://github.com/fedora-infra/fedmsg/pull/453>`_).
+
+
+Development Improvements
+------------------------
+
+* The m2crypto unit tests were being skipped when the cryptography library was missing.
+  This is no longer the case
+  (`#446 <https://github.com/fedora-infra/fedmsg/pull/446>`_).
+
+* All usage of the nose library has been removed from the tests and the dependency on nose
+  has been removed (`#448 <https://github.com/fedora-infra/fedmsg/pull/448>`_).
+
+* ``click`` has been added as a test dependency (`#452
+  <https://github.com/fedora-infra/fedmsg/pull/452>`_).
+
+* Test coverage increased from 54.72% to 58.82%
+
+* Several improvements to the tox.ini file (`#458
+  <https://github.com/fedora-infra/fedmsg/pull/458>`_).
+
+Many thanks to all our contributors for this release:
+
+* Lumír 'Frenzy' Balhar
+* Ralph Bean
+* Jeremy Cline
+* Chenxiong Qi
+
+
 0.19.1
 ======
 
