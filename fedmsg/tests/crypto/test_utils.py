@@ -7,6 +7,74 @@ import mock
 from fedmsg.crypto import utils
 
 
+class FixDatanommerMessageTests(unittest.TestCase):
+    """Tests for the :func:`fedmsg.crypto.utils.fix_datagrepper_message` function."""
+
+    def test_no_source_keys(self):
+        """Assert messages with neither "source_name" or "source_version" are untouched."""
+        original_message = {'my': 'message'}
+
+        self.assertTrue(original_message is utils.fix_datagrepper_message(original_message))
+
+    def test_no_source_version(self):
+        """Assert messages missing the "source_version" key are untouched."""
+        original_message = {'source_version': '0.1.0'}
+
+        self.assertTrue(original_message is utils.fix_datagrepper_message(original_message))
+
+    def test_no_source_name(self):
+        """Assert messages missing the "source_name" key are untouched."""
+        original_message = {'source_name': 'datanommer'}
+
+        self.assertTrue(original_message is utils.fix_datagrepper_message(original_message))
+
+    def test_no_timestamp(self):
+        """Assert messages missing the 'timestamp' key are handled correctly."""
+        original_message = {
+            'source_name': 'datanommer',
+            'source_version': '1',
+        }
+
+        self.assertEqual({}, utils.fix_datagrepper_message(original_message))
+
+    def test_float_timestamp(self):
+        """Assert the "timestamp" key is converted to an int from a float."""
+        original_message = {
+            'source_name': 'datanommer',
+            'source_version': '1',
+            'timestamp': 1.0,
+        }
+
+        self.assertEqual({'timestamp': 1}, utils.fix_datagrepper_message(original_message))
+
+    def test_empty_headers(self):
+        """Assert the "headers" key is removed if it is empty."""
+        original_message = {
+            'source_name': 'datanommer',
+            'source_version': '1',
+            'headers': {},
+        }
+
+        self.assertEqual({}, utils.fix_datagrepper_message(original_message))
+
+    def test_headers(self):
+        """Assert the "headers" key is untouched if it has a value."""
+        original_message = {
+            'source_name': 'datanommer',
+            'source_version': '1',
+            'headers': {'k': 'v'},
+        }
+
+        self.assertEqual({'headers': {'k': 'v'}}, utils.fix_datagrepper_message(original_message))
+
+    def test_message_copied(self):
+        """Assert messages are copied if they are altered."""
+        original_message = {'source_name': 'datanommer', 'source_version': '1'}
+
+        self.assertEqual({}, utils.fix_datagrepper_message(original_message))
+        self.assertEqual({'source_name': 'datanommer', 'source_version': '1'}, original_message)
+
+
 class ValidatePolicyTests(unittest.TestCase):
     """Tests for :func:`utils.validate_policy`."""
 

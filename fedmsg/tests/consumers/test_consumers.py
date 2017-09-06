@@ -20,6 +20,7 @@
 # Authors:  Jeremy Cline <jcline@redhat.com>
 """Tests for the :mod:`fedmsg.consumers` module."""
 
+import json
 import os
 import unittest
 
@@ -31,10 +32,44 @@ from fedmsg.consumers import FedmsgConsumer
 from fedmsg.tests.crypto.test_x509 import SSLDIR
 
 
+FIXTURES_DIR = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '../fixtures/'))
+
+
 class DummyConsumer(FedmsgConsumer):
     """Set attributes necessary to instantiate a consumer."""
     config_key = 'dummy'
     validate_signatures = True
+
+
+class FedmsgConsumerReplayTests(unittest.TestCase):
+    """Tests for the replay functionality of fedmsg consumers method."""
+
+    def setUp(self):
+        self.config = {
+            'dummy': True,
+            'ssldir': SSLDIR,
+            'ca_cert_cache': os.path.join(SSLDIR, 'fedora_ca.crt'),
+            'ca_cert_cache_expiry': 1497618475,  # Stop fedmsg overwriting my CA, See Issue 420
+            'crypto_validate_backends': ['x509'],
+        }
+        self.hub = mock.Mock(config=self.config)
+        self.consumer = DummyConsumer(self.hub)
+
+    def test_backlog_message_validation(self):
+        """Assert messages fetched from datanommer pass signature validation."""
+        with open(os.path.join(FIXTURES_DIR, 'sample_datanommer_response.json')) as fd:
+            replay_messages = json.load(fd)
+        self.consumer.get_datagrepper_results = mock.Mock(
+            return_value=replay_messages['raw_messages'])
+        last_message = json.dumps({'message': {'body': {'msg_id': 'myid', 'timestamp': 0}}})
+
+        # This places all the messages from a call to "get_datagrepper_results" in the
+        # "incoming" queue.Queue
+        self.consumer._backlog(last_message)
+
+        while not self.consumer.incoming.empty():
+            self.consumer.validate(self.consumer.incoming.get())
 
 
 class FedmsgConsumerValidateTests(unittest.TestCase):
