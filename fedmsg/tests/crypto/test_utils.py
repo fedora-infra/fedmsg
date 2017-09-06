@@ -16,20 +16,20 @@ class FixDatanommerMessageTests(unittest.TestCase):
 
         self.assertTrue(original_message is utils.fix_datagrepper_message(original_message))
 
-    def test_no_source_name(self):
+    def test_no_source_version(self):
         """Assert messages missing the "source_version" key are untouched."""
         original_message = {'source_version': '0.1.0'}
 
         self.assertTrue(original_message is utils.fix_datagrepper_message(original_message))
 
-    def test_no_source_version(self):
+    def test_no_source_name(self):
         """Assert messages missing the "source_name" key are untouched."""
         original_message = {'source_name': 'datanommer'}
 
         self.assertTrue(original_message is utils.fix_datagrepper_message(original_message))
 
     def test_no_timestamp(self):
-        """Assert messages missing the "source_name" key are untouched."""
+        """Assert messages missing the 'timestamp' key are handled correctly."""
         original_message = {
             'source_name': 'datanommer',
             'source_version': '1',

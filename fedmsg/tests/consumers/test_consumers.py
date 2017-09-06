@@ -57,6 +57,7 @@ class FedmsgConsumerReplayTests(unittest.TestCase):
         self.consumer = DummyConsumer(self.hub)
 
     def test_backlog_message_validation(self):
+        """Assert messages fetched from datanommer pass signature validation."""
         with open(os.path.join(FIXTURES_DIR, 'sample_datanommer_response.json')) as fd:
             replay_messages = json.load(fd)
         self.consumer.get_datagrepper_results = mock.Mock(
