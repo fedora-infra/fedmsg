@@ -92,7 +92,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
     def __init__(self, hub):
         module = inspect.getmodule(self).__name__
         name = self.__class__.__name__
-        self.log = logging.getLogger("fedmsg")
+        self.log = logging.getLogger(__name__)
 
         if not self.config_key:
             raise ValueError("%s:%s must declare a 'config_key'" % (
@@ -112,7 +112,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         super(FedmsgConsumer, self).__init__(hub)
 
         # Now, re-get our logger to override the one moksha assigns us.
-        self.log = logging.getLogger("fedmsg")
+        self.log = logging.getLogger(__name__)
 
         if self.validate_signatures is None:
             self.validate_signatures = self.hub.config['validate_signatures']

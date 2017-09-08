@@ -66,7 +66,7 @@ else:
 from fedmsg.meta.default import DefaultProcessor  # noqa: E402
 from fedmsg.meta.base import BaseConglomerator  # noqa: E402
 
-log = logging.getLogger("fedmsg")
+log = logging.getLogger(__name__)
 
 
 class ProcessorsNotInitialized(Exception):

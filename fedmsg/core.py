@@ -59,7 +59,7 @@ class FedMsgContext(object):
 
     def __init__(self, **config):
         super(FedMsgContext, self).__init__()
-        self.log = logging.getLogger("fedmsg")
+        self.log = logging.getLogger(__name__)
 
         self.c = config
         self.hostname = socket.gethostname().split('.', 1)[0]
