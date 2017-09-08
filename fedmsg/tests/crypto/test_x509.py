@@ -44,10 +44,7 @@ except ImportError:
     from unittest2 import skipIf, TestCase, expectedFailure
 
 from fedmsg import crypto  # noqa: E402
-
-
-SSLDIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '../test_certs/keys/'))
+from fedmsg.tests.base import SSLDIR  # noqa: E402
 
 
 @skipIf(not (_m2crypto or _cryptography), "Neither M2Crypto nor Cryptography available")

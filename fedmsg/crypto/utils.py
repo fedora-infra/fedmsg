@@ -98,7 +98,7 @@ def validate_policy(topic, signer, routing_policy, nitpicky=False):
             return True
 
 
-def _load_remote_cert(location, cache, cache_expiry, tries=0, **config):
+def _load_remote_cert(location, cache, cache_expiry, tries=3, **config):
     """Get a fresh copy from fp.o/fedmsg/crl.pem if ours is getting stale.
 
     Return the local filename.
@@ -109,7 +109,7 @@ def _load_remote_cert(location, cache, cache_expiry, tries=0, **config):
         location (str): The URL where the certificate is hosted.
         cache (str): The absolute path where the certificate should be stored.
         cache_expiry (int): How long the cache should be considered fresh, in seconds.
-        tries (int): The number of times to attempt downloading the certificate.
+        tries (int): The number of times to attempt to retry downloading the certificate.
 
     """
     alternative_cache = os.path.expanduser("~/.local" + cache)
@@ -132,18 +132,12 @@ def _load_remote_cert(location, cache, cache_expiry, tries=0, **config):
         (cache_expiry and time.time() - modtime > cache_expiry)
     ):
         try:
-            response = requests.get(location)
+            with requests.Session() as session:
+                session.mount('http://', requests.adapters.HTTPAdapter(max_retries=tries))
+                session.mount('https://', requests.adapters.HTTPAdapter(max_retries=tries))
+                response = session.get(location, timeout=30)
             with open(cache, 'w') as f:
-                f.write(response.content)
-        except requests.exceptions.ConnectionError:
-            if tries < 3:
-                _log.warn("Could not access %r.  Trying again." % location)
-                time.sleep(1)  # Take a nap to see if the network settles down.
-                return _load_remote_cert(
-                    location, cache, cache_expiry, tries + 1, **config)
-            else:
-                _log.error("Could not access %r" % location)
-                raise
+                f.write(response.text)
         except IOError:
             # If we couldn't write to the specified cache location, try a
             # similar place but inside our home directory instead.

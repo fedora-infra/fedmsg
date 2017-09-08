@@ -1,10 +1,13 @@
 import os
+import shutil
+import tempfile
 import time
 import unittest
 
 import mock
 
 from fedmsg.crypto import utils
+from fedmsg.tests import base
 
 
 class FixDatanommerMessageTests(unittest.TestCase):
@@ -102,8 +105,26 @@ class ValidatePolicyTests(unittest.TestCase):
         self.assertTrue(result)
 
 
-class LoadRemoteCertTests(unittest.TestCase):
+class LoadRemoteCertTests(base.FedmsgTestCase):
     """Tests for :func:`utils._load_remote_cert`."""
+
+    def setUp(self):
+        super(LoadRemoteCertTests, self).setUp()
+
+        self.cache_dir = tempfile.mkdtemp()
+        self.cache_file = os.path.join(self.cache_dir, 'ca.crt')
+        self.addCleanup(shutil.rmtree, self.cache_dir, True)
+
+    def test_remote_cert(self):
+        """Assert downloading a certificate to a cache location works."""
+        with open(os.path.join(base.SSLDIR, 'fedora_ca.crt'), 'r') as fd:
+            expected_cert = fd.read()
+        utils._load_remote_cert('https://fedoraproject.org/fedmsg/ca.crt', self.cache_file, 0)
+
+        self.assertTrue(os.path.exists(self.cache_file))
+        with open(self.cache_file, 'r') as fd:
+            actual_cert = fd.read()
+        self.assertEqual(expected_cert, actual_cert)
 
     @mock.patch('fedmsg.crypto.utils.os.stat')
     def test_valid_cache(self, mock_stat):

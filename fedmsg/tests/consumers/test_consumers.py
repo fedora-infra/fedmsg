@@ -29,11 +29,7 @@ import mock
 
 from fedmsg import crypto
 from fedmsg.consumers import FedmsgConsumer
-from fedmsg.tests.crypto.test_x509 import SSLDIR
-
-
-FIXTURES_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '../fixtures/'))
+from fedmsg.tests.base import SSLDIR, FIXTURES_DIR
 
 
 class DummyConsumer(FedmsgConsumer):
