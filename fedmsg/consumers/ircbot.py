@@ -169,7 +169,7 @@ class Fedmsg2IRCFactory(protocol.ClientFactory):
         self.rate = rate
         self.parent_consumer = parent_consumer
         self.ready = ready
-        self.log = logging.getLogger("moksha.hub")
+        self.log = logging.getLogger(__name__)
 
     def startedConnecting(self, connector):
         if self.ready:

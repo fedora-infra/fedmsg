@@ -38,5 +38,5 @@ class DummyConsumer(FedmsgConsumer):
 
     def consume(self, msg):
         # Do nothing.
-        log = logging.getLogger("moksha.hub")
+        log = logging.getLogger(__name__)
         log.debug("Duhhhh... got: %r" % msg)
