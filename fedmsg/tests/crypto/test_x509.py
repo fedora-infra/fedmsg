@@ -24,26 +24,14 @@ import os
 import mock
 import six
 
-_m2crypto, _cryptography = False, False
-try:
-    import M2Crypto     # noqa: F401
-    import m2ext        # noqa: F401
-    _m2crypto = True
-except ImportError:
-    pass
-try:
-    import cryptography  # noqa
-    import OpenSSL  # noqa
-    _cryptography = True
-except ImportError:
-    pass
-
 try:
     from unittest import skipIf, TestCase, expectedFailure
 except ImportError:
     from unittest2 import skipIf, TestCase, expectedFailure
 
 from fedmsg import crypto  # noqa: E402
+from fedmsg.crypto.x509 import _m2crypto
+from fedmsg.crypto.x509_ng import _cryptography
 from fedmsg.tests.base import SSLDIR  # noqa: E402
 
 
