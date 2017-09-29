@@ -25,29 +25,26 @@ import mock
 import six
 
 try:
-    from unittest import skipIf, TestCase, expectedFailure
+    from unittest import skipIf, expectedFailure
 except ImportError:
-    from unittest2 import skipIf, TestCase, expectedFailure
+    from unittest2 import skipIf, expectedFailure
 
 from fedmsg import crypto  # noqa: E402
 from fedmsg.crypto.x509 import _m2crypto
 from fedmsg.crypto.x509_ng import _cryptography
-from fedmsg.tests.base import SSLDIR  # noqa: E402
+from fedmsg.tests.base import SSLDIR, FedmsgTestCase
 
 
 @skipIf(not (_m2crypto or _cryptography), "Neither M2Crypto nor Cryptography available")
-class X509BaseTests(TestCase):
+class X509BaseTests(FedmsgTestCase):
 
     def setUp(self):
+        super(X509BaseTests, self).setUp()
         self.config = {
             'ssldir': SSLDIR,
             'certname': 'shell-app01.phx2.fedoraproject.org',
-            'ca_cert_cache': os.path.join(SSLDIR, 'ca.crt'),
-            'ca_cert_cache_expiry': 1497618475,  # Stop fedmsg overwriting my CA, See Issue 420
-
-            'crl_location': "http://threebean.org/fedmsg-tests/crl.pem",
-            'crl_cache': os.path.join(SSLDIR, 'crl.pem'),
-            'crl_cache_expiry': 1497618475,
+            'ca_cert_location': os.path.join(SSLDIR, 'ca.crt'),
+            'crl_location': os.path.join(SSLDIR, 'crl.pem'),
             'crypto_validate_backends': ['x509'],
         }
         self.sign = crypto.sign
@@ -95,7 +92,64 @@ class X509BaseTests(TestCase):
 
     def test_invalid_ca(self):
         """Assert when the CA didn't sign the certificate, validation fails."""
-        self.config['ca_cert_cache'] = os.path.join(SSLDIR, 'badca.crt')
+        self.config['ca_cert_location'] = os.path.join(SSLDIR, 'badca.crt')
+
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertFalse(self.validate(signed, **self.config))
+
+    @mock.patch('fedmsg.crypto.utils.load_certificates')
+    def test_refreshing_ca_cache(self, mock_load_certificates):
+        """Assert that when validation fails, the CA cache is refreshed."""
+        with open(os.path.join(SSLDIR, 'ca.crt')) as fd:
+            good_ca = fd.read()
+        with open(os.path.join(SSLDIR, 'badca.crt')) as fd:
+            bad_ca = fd.read()
+        mock_load_certificates.side_effect = [(bad_ca, None), (good_ca, None)]
+
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertTrue(self.validate(signed, **self.config))
+
+    @mock.patch('fedmsg.crypto.utils.load_certificates')
+    def test_refreshing_ca_cache_invalid(self, mock_load_certificates):
+        """Assert that when the refreshed CA is still bad, the message is considered invalid."""
+        with open(os.path.join(SSLDIR, 'badca.crt')) as fd:
+            bad_ca = fd.read()
+        mock_load_certificates.side_effect = [(bad_ca, None), (bad_ca, None)]
+
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertFalse(self.validate(signed, **self.config))
+
+    @mock.patch('fedmsg.crypto.utils.load_certificates')
+    def test_refreshing_crl_cache(self, mock_load_certificates):
+        """Assert that when validation fails, the CRL cache is refreshed."""
+        with open(os.path.join(SSLDIR, 'ca.crt')) as fd:
+            good_ca = fd.read()
+        with open(os.path.join(SSLDIR, 'crl.pem')) as fd:
+            good_crl = fd.read()
+        with open(os.path.join(SSLDIR, 'expired_crl.pem')) as fd:
+            bad_crl = fd.read()
+        mock_load_certificates.side_effect = [(good_ca, bad_crl), (good_ca, good_crl)]
+
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertTrue(self.validate(signed, **self.config))
+
+    def test_ca_ioerror(self):
+        """Assert that if the CA is unreadable the message fails validation."""
+        self.config['ca_cert_location'] = '/if/you/make/this/path/my/test/fails.crt'
+
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertFalse(self.validate(signed, **self.config))
+
+    def test_crl_ioerror(self):
+        """Assert that if the CRL is unreadable the message fails validation."""
+        self.config['crl_location'] = '/if/you/make/this/path/my/test/fails.crt'
+
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertFalse(self.validate(signed, **self.config))
+
+    def test_loading_requests_exception(self):
+        """Assert that if the CA or CRL results in a Requests error, the message is invalid."""
+        self.config['crl_location'] = 'https://fedoraproject.org/fedmsg/notacrl.pem'
 
         signed = self.sign({'my': 'message'}, **self.config)
         self.assertFalse(self.validate(signed, **self.config))
@@ -125,9 +179,7 @@ class X509BaseTests(TestCase):
 
     def test_no_crl(self):
         """Assert that it's okay to not use a CRL."""
-        del self.config['crl_location']
-        del self.config['crl_cache']
-        del self.config['crl_cache_expiry']
+        self.config['crl_location'] = None
 
         signed = self.sign({'message': 'so secure'}, **self.config)
         self.assertTrue(self.validate(signed, **self.config))
@@ -135,11 +187,9 @@ class X509BaseTests(TestCase):
     def test_signed_by_expired_ca(self):
         """Assert certs signed by an expired CA fail validation."""
         self.config['certname'] = 'signed_by_expired_ca'
-        self.config['ca_cert_cache'] = os.path.join(SSLDIR, 'expired_ca.crt')
+        self.config['ca_cert_location'] = os.path.join(SSLDIR, 'expired_ca.crt')
         # There's no CRL for this CA.
-        del self.config['crl_location']
-        del self.config['crl_cache']
-        del self.config['crl_cache_expiry']
+        self.config['crl_location'] = None
 
         signed = self.sign({'message': 'so secure'}, **self.config)
         self.assertFalse(self.validate(signed, **self.config))
@@ -200,8 +250,20 @@ class X509CryptographyTests(X509BaseTests):
     def test_old_crl(self):
         """Assert when an old CRL is used, validation fails."""
         signed = self.sign({'my': 'message'}, **self.config)
-        self.config['crl_cache'] = os.path.join(SSLDIR, 'expired_crl.pem')
+        self.config['crl_location'] = os.path.join(SSLDIR, 'expired_crl.pem')
 
+        self.assertFalse(self.validate(signed, **self.config))
+
+    @mock.patch('fedmsg.crypto.utils.load_certificates')
+    def test_refreshing_crl_cache_invalid(self, mock_load_certificates):
+        """Assert that when the refreshed CRL is still bad, the message is considered invalid."""
+        with open(os.path.join(SSLDIR, 'ca.crt')) as fd:
+            good_ca = fd.read()
+        with open(os.path.join(SSLDIR, 'expired_crl.pem')) as fd:
+            bad_crl = fd.read()
+        mock_load_certificates.side_effect = [(good_ca, bad_crl), (good_ca, bad_crl)]
+
+        signed = self.sign({'my': 'message'}, **self.config)
         self.assertFalse(self.validate(signed, **self.config))
 
     @mock.patch('fedmsg.crypto.x509_ng._log')
@@ -232,8 +294,21 @@ class X509M2CryptoTests(X509BaseTests):
     def test_old_crl(self):
         """Assert when an old CRL is used, validation fails."""
         signed = self.sign({'my': 'message'}, **self.config)
-        self.config['crl_cache'] = os.path.join(SSLDIR, 'expired_crl.pem')
+        self.config['crl_location'] = os.path.join(SSLDIR, 'expired_crl.pem')
 
+        self.assertFalse(self.validate(signed, **self.config))
+
+    @expectedFailure
+    @mock.patch('fedmsg.crypto.utils.load_certificates')
+    def test_refreshing_crl_cache_invalid(self, mock_load_certificates):
+        """Assert that when the refreshed CRL is still bad, the message is considered invalid."""
+        with open(os.path.join(SSLDIR, 'ca.crt')) as fd:
+            good_ca = fd.read()
+        with open(os.path.join(SSLDIR, 'expired_crl.pem')) as fd:
+            bad_crl = fd.read()
+        mock_load_certificates.side_effect = [(good_ca, bad_crl), (good_ca, bad_crl)]
+
+        signed = self.sign({'my': 'message'}, **self.config)
         self.assertFalse(self.validate(signed, **self.config))
 
     @mock.patch('fedmsg.crypto.x509._log')
@@ -260,6 +335,18 @@ class M2CryptoWithCryptoTests(X509BaseTests):
         self.sign = crypto.x509._m2crypto_sign
         self.validate = crypto.x509._crypto_validate
 
+    @mock.patch('fedmsg.crypto.utils.load_certificates')
+    def test_refreshing_crl_cache_invalid(self, mock_load_certificates):
+        """Assert that when the refreshed CRL is still bad, the message is considered invalid."""
+        with open(os.path.join(SSLDIR, 'ca.crt')) as fd:
+            good_ca = fd.read()
+        with open(os.path.join(SSLDIR, 'expired_crl.pem')) as fd:
+            bad_crl = fd.read()
+        mock_load_certificates.side_effect = [(good_ca, bad_crl), (good_ca, bad_crl)]
+
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertFalse(self.validate(signed, **self.config))
+
 
 @skipIf(not (_cryptography and _m2crypto), 'M2Crypto and cryptography required.')
 class CryptoWithM2CryptoTests(X509BaseTests):
@@ -270,21 +357,30 @@ class CryptoWithM2CryptoTests(X509BaseTests):
         self.sign = crypto.x509._crypto_sign
         self.validate = crypto.x509._m2crypto_validate
 
+    @expectedFailure
+    @mock.patch('fedmsg.crypto.utils.load_certificates')
+    def test_refreshing_crl_cache_invalid(self, mock_load_certificates):
+        """Assert that when the refreshed CRL is still bad, the message is considered invalid."""
+        with open(os.path.join(SSLDIR, 'ca.crt')) as fd:
+            good_ca = fd.read()
+        with open(os.path.join(SSLDIR, 'expired_crl.pem')) as fd:
+            bad_crl = fd.read()
+        mock_load_certificates.side_effect = [(good_ca, bad_crl), (good_ca, bad_crl)]
+
+        signed = self.sign({'my': 'message'}, **self.config)
+        self.assertFalse(self.validate(signed, **self.config))
+
 
 @skipIf(not (_cryptography and _m2crypto), 'M2Crypto and cryptography required.')
-class CompatibleFormatTests(TestCase):
+class CompatibleFormatTests(FedmsgTestCase):
     """Tests that use cryptography for signing and validate with m2crypto."""
 
     def setUp(self):
         self.config = {
             'ssldir': SSLDIR,
             'certname': 'shell-app01.phx2.fedoraproject.org',
-            'ca_cert_cache': os.path.join(SSLDIR, 'ca.crt'),
-            'ca_cert_cache_expiry': 1497618475,  # Stop fedmsg overwriting my CA, See Issue 420
-
-            'crl_location': "http://threebean.org/fedmsg-tests/crl.pem",
-            'crl_cache': os.path.join(SSLDIR, 'crl.pem'),
-            'crl_cache_expiry': 1497618475,
+            'ca_cert_location': os.path.join(SSLDIR, 'ca.crt'),
+            'crl_location': os.path.join(SSLDIR, 'crl.pem'),
             'crypto_validate_backends': ['x509'],
         }
 
