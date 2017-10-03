@@ -122,10 +122,9 @@ class LoadCertificateTests(base.FedmsgTestCase):
 
         with mock.patch.dict('fedmsg.crypto.utils._cached_certificates', clear=True):
             ca, crl = utils.load_certificates(location)
-
             self.assertEqual((expected_cert, None), utils._cached_certificates[location])
-            self.assertEqual(expected_cert, ca)
-            self.assertTrue(crl is None)
+        self.assertEqual(expected_cert, ca)
+        self.assertTrue(crl is None)
 
     @mock.patch('fedmsg.crypto.utils._load_certificate')
     def test_valid_cache(self, mock_load_cert):
@@ -134,7 +133,6 @@ class LoadCertificateTests(base.FedmsgTestCase):
 
         with mock.patch.dict('fedmsg.crypto.utils._cached_certificates', {'/crt': ('crt', None)}):
             ca, crl = utils.load_certificates(location)
-
         self.assertEqual('crt', ca)
         self.assertTrue(crl is None)
         self.assertEqual(0, mock_load_cert.call_count)
@@ -147,8 +145,7 @@ class LoadCertificateTests(base.FedmsgTestCase):
 
         with mock.patch.dict('fedmsg.crypto.utils._cached_certificates', {'/crt': ('crt', None)}):
             ca, crl = utils.load_certificates(location, invalidate_cache=True)
-
             self.assertEqual(('fresh_ca', None), utils._cached_certificates[location])
-            self.assertEqual('fresh_ca', ca)
-            self.assertTrue(crl is None)
-            mock_load_cert.called_once_with('/crt')
+        self.assertEqual('fresh_ca', ca)
+        self.assertTrue(crl is None)
+        mock_load_cert.called_once_with('/crt')

@@ -145,14 +145,14 @@ def _m2crypto_validate(message, ssldir=None, **config):
     try:
         ca_certificate, crl = utils.load_certificates(ca_location, crl_location)
         os.write(fd, ca_certificate.encode('ascii'))
-        os.close(fd)
+        os.fsync(fd)
         ctx = m2ext.SSL.Context()
         ctx.load_verify_locations(cafile=cafile)
         if not ctx.validate_certificate(cert):
             ca_certificate, crl = utils.load_certificates(
                 ca_location, crl_location, invalidate_cache=True)
-            with open(cafile, 'w') as fd:
-                fd.write(ca_certificate)
+            with open(cafile, 'w') as f:
+                f.write(ca_certificate)
             ctx = m2ext.SSL.Context()
             ctx.load_verify_locations(cafile=cafile)
             if not ctx.validate_certificate(cert):
@@ -161,15 +161,17 @@ def _m2crypto_validate(message, ssldir=None, **config):
         _log.error(str(e))
         return False
     finally:
+        os.close(fd)
         os.remove(cafile)
 
     if crl:
-        fd, crlfile = tempfile.mkstemp(text=True)
-        os.write(fd, crl.encode('ascii'))
-        os.close(fd)
         try:
+            fd, crlfile = tempfile.mkstemp(text=True)
+            os.write(fd, crl.encode('ascii'))
+            os.fsync(fd)
             crl = M2Crypto.X509.load_crl(crlfile)
         finally:
+            os.close(fd)
             os.remove(crlfile)
         # FIXME -- We need to check that the CRL is signed by our own CA.
         # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2

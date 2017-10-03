@@ -103,11 +103,15 @@ def load_certificates(ca_location, crl_location=None, invalidate_cache=False):
     """
     Load the CA certificate and CRL, caching it for future use.
 
+    .. note::
+        Providing the location of the CA and CRL as an HTTPS URL is deprecated
+        and will be removed in a future release.
+
     Args:
         ca_location (str): The location of the Certificate Authority certificate. This should
             be the absolute path to a PEM-encoded file. It can also be an HTTPS url, but this
             is deprecated and will be removed in a future release.
-        ca_location (str): The location of the Certificate Revocation List. This should
+        crl_location (str): The location of the Certificate Revocation List. This should
             be the absolute path to a PEM-encoded file. It can also be an HTTPS url, but
             this is deprecated and will be removed in a future release.
         invalidate_cache (bool): Whether or not to invalidate the certificate cache.
@@ -150,7 +154,7 @@ def _load_certificate(location):
             ASCII encoding.
 
     Returns:
-        str:
+        str: The PEM-encoded certificate as a unicode string.
 
     Raises:
         requests.exception.RequestException: Any exception requests could raise.
