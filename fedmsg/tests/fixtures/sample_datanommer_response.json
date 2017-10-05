@@ -1,0 +1,1377 @@
+{
+    "arguments": {
+        "categories": [],
+        "contains": [],
+        "delta": 60.0,
+        "end": 1504643081.0,
+        "grouped": false,
+        "meta": [],
+        "not_categories": [],
+        "not_packages": [],
+        "not_topics": [],
+        "not_users": [],
+        "order": "desc",
+        "packages": [],
+        "page": 1,
+        "rows_per_page": 25,
+        "start": 1504643021.0,
+        "topics": [],
+        "users": []
+    },
+    "count": 25,
+    "pages": 3,
+    "raw_messages": [
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVUakNDQTdlZ0F3SUJBZ0lDQVBZd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUwTURReU16RTBNamsxTVZvWERUSTBNRFF5TURFME1qazFNVm93Z2R3eEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXRNQ3NHQTFVRUF4TWtZMjl3Y2kxamIzQnkKTFdKbExtTnNiM1ZrTG1abFpHOXlZWEJ5YjJwbFkz\nUXViM0puTVMwd0t3WURWUVFwRXlSamIzQnlMV052Y0hJdApZbVV1WTJ4dmRXUXVabVZrYjNKaGNI\nSnZhbVZqZEM1dmNtY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1ClFHWmxaRzl5WVhCeWIy\ncGxZM1F1YjNKbk1JR2ZNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0R05BRENCaVFLQmdRQ2UKREs5VFQy\nM05BdTZPWTVGMnVVNHpMRW9Ld2k1RnRRTU5jVWV5eDdmOHJxMUZXaUxDWHBjWFhpU2tzUE1XV1NM\nWQo5SHNoa1pvM3ZjMHFSRXVBWDNweWRuM2VFRDA0UExrUmRlaWpvSXA5L0Y2YlZ3MmlLMDdXRmc5\nU2MwNlRsKzhSCld1RHNaeTQ1SVJKYXhCRTlJaHBYL0x2Y2JnQ1cvZmVHVGp5WG1iRHd0UUlEQVFB\nQm80SUJWekNDQVZNd0NRWUQKVlIwVEJBSXdBREF0QmdsZ2hrZ0JodmhDQVEwRUlCWWVSV0Z6ZVMx\nU1UwRWdSMlZ1WlhKaGRHVmtJRU5sY25ScApabWxqWVhSbE1CMEdBMVVkRGdRV0JCUm5lNTg0d3Bs\nWGYrZVE2K25zSTZCbm5BNENaRENCMVFZRFZSMGpCSUhOCk1JSEtnQlJyUUZyNUVnaUpXZWRaNVFY\nMUFoMEtUbjhVQUtHQnBxU0JvekNCb0RFTE1Ba0dBMVVFQmhNQ1ZWTXgKQ3pBSkJnTlZCQWdUQWs1\nRE1SQXdEZ1lEVlFRSEV3ZFNZV3hsYVdkb01SY3dGUVlEVlFRS0V3NUdaV1J2Y21FZwpVSEp2YW1W\namRERVBNQTBHQTFVRUN4TUdabVZrYlhObk1ROHdEUVlEVlFRREV3Wm1aV1J0YzJjeER6QU5CZ05W\nCkJDa1RCbVpsWkcxelp6RW1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmhjSEp2\nYW1WamRDNXYKY21lQ0NRRGpVQjVIVHhjZVJUQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFM\nQmdOVkhROEVCQU1DQjRBdwpEUVlKS29aSWh2Y05BUUVGQlFBRGdZRUFVazNlbjBYUXpDQm5IUlh4\nZDhyOHp2ZFAwVURvbEpiUysyTEl3Z3NDClJDMnNkZ1UwNGdFblYxdFpVTjNydEk1SzQ2MnpKT0JQ\nOFhQd3h4eUZMN1lOYmVtWTgyTG52Y1pHdzliMGdxTDMKdHNKbzllSFV5SXBZMG93TlVKdzgzU1Ax\neFJvb3NwVGJRK3BsNm9qdjVPNVpGZ1lBUG1yckRWZ0M4a2gzRlp4Rgp0SWc9Ci0tLS0tRU5EIENF\nUlRJRklDQVRFLS0tLS0K\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 1,
+            "msg": {
+                "build": 598701,
+                "chroot": "fedora-25-x86_64",
+                "copr": "minsh",
+                "ip": "172.25.94.204",
+                "owner": "dvdmuckle",
+                "pid": 22484,
+                "pkg": "minsh",
+                "status": 3,
+                "user": "dvdmuckle",
+                "version": "1.0-20170905",
+                "what": "build start: user:dvdmuckle copr:minsh pkg:minsh build:598701 ip:172.25.94.204 pid:22484",
+                "who": "backend.worker-27584-PC"
+            },
+            "msg_id": "2017-138990ab-f93d-49e6-8c38-fad10d43a556",
+            "signature": "koccDh0pzTPKua1/AUO/SEHiFqx3/NenksddkLra/UQXWhKvng8jfrd+Qgj21r68VD9YPwmdXGJ9\nsvU0oa/ZUCs5+2In8gQOMM5L/uvg42S357bow3ByA59FI+ECwyJivOgWfnheYkxO9nm6GeFLLJq7\ndmrvgrWj1fwZk7cPLf8=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643075.0,
+            "topic": "org.fedoraproject.prod.copr.build.start",
+            "username": "copr"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVUakNDQTdlZ0F3SUJBZ0lDQVBZd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUwTURReU16RTBNamsxTVZvWERUSTBNRFF5TURFME1qazFNVm93Z2R3eEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXRNQ3NHQTFVRUF4TWtZMjl3Y2kxamIzQnkKTFdKbExtTnNiM1ZrTG1abFpHOXlZWEJ5YjJwbFkz\nUXViM0puTVMwd0t3WURWUVFwRXlSamIzQnlMV052Y0hJdApZbVV1WTJ4dmRXUXVabVZrYjNKaGNI\nSnZhbVZqZEM1dmNtY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1ClFHWmxaRzl5WVhCeWIy\ncGxZM1F1YjNKbk1JR2ZNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0R05BRENCaVFLQmdRQ2UKREs5VFQy\nM05BdTZPWTVGMnVVNHpMRW9Ld2k1RnRRTU5jVWV5eDdmOHJxMUZXaUxDWHBjWFhpU2tzUE1XV1NM\nWQo5SHNoa1pvM3ZjMHFSRXVBWDNweWRuM2VFRDA0UExrUmRlaWpvSXA5L0Y2YlZ3MmlLMDdXRmc5\nU2MwNlRsKzhSCld1RHNaeTQ1SVJKYXhCRTlJaHBYL0x2Y2JnQ1cvZmVHVGp5WG1iRHd0UUlEQVFB\nQm80SUJWekNDQVZNd0NRWUQKVlIwVEJBSXdBREF0QmdsZ2hrZ0JodmhDQVEwRUlCWWVSV0Z6ZVMx\nU1UwRWdSMlZ1WlhKaGRHVmtJRU5sY25ScApabWxqWVhSbE1CMEdBMVVkRGdRV0JCUm5lNTg0d3Bs\nWGYrZVE2K25zSTZCbm5BNENaRENCMVFZRFZSMGpCSUhOCk1JSEtnQlJyUUZyNUVnaUpXZWRaNVFY\nMUFoMEtUbjhVQUtHQnBxU0JvekNCb0RFTE1Ba0dBMVVFQmhNQ1ZWTXgKQ3pBSkJnTlZCQWdUQWs1\nRE1SQXdEZ1lEVlFRSEV3ZFNZV3hsYVdkb01SY3dGUVlEVlFRS0V3NUdaV1J2Y21FZwpVSEp2YW1W\namRERVBNQTBHQTFVRUN4TUdabVZrYlhObk1ROHdEUVlEVlFRREV3Wm1aV1J0YzJjeER6QU5CZ05W\nCkJDa1RCbVpsWkcxelp6RW1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmhjSEp2\nYW1WamRDNXYKY21lQ0NRRGpVQjVIVHhjZVJUQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFM\nQmdOVkhROEVCQU1DQjRBdwpEUVlKS29aSWh2Y05BUUVGQlFBRGdZRUFVazNlbjBYUXpDQm5IUlh4\nZDhyOHp2ZFAwVURvbEpiUysyTEl3Z3NDClJDMnNkZ1UwNGdFblYxdFpVTjNydEk1SzQ2MnpKT0JQ\nOFhQd3h4eUZMN1lOYmVtWTgyTG52Y1pHdzliMGdxTDMKdHNKbzllSFV5SXBZMG93TlVKdzgzU1Ax\neFJvb3NwVGJRK3BsNm9qdjVPNVpGZ1lBUG1yckRWZ0M4a2gzRlp4Rgp0SWc9Ci0tLS0tRU5EIENF\nUlRJRklDQVRFLS0tLS0K\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 2,
+            "msg": {
+                "build": 598701,
+                "chroot": "fedora-25-x86_64",
+                "copr": "minsh",
+                "ip": "172.25.94.204",
+                "owner": "dvdmuckle",
+                "pid": 22484,
+                "pkg": "minsh",
+                "status": 3,
+                "user": "dvdmuckle",
+                "version": "1.0-20170905",
+                "what": "chroot start: chroot:fedora-25-x86_64 user:dvdmuckle copr:minsh pkg:minsh build:598701 ip:172.25.94.204 pid:22484",
+                "who": "backend.worker-27584-PC"
+            },
+            "msg_id": "2017-9a94a8d1-3112-4ad9-ba8f-70db44a2bb5d",
+            "signature": "muZnHjT8cAKKgNu1vlnhprQM3yWdTtP5bJaoUkEF6pcLg1J8b1h4T+wvytB/aVXMVOP+XMAD8WN9\nrbhYe2l2q78FcfbmY/26In9m6nOpoZTkHir5/O6PnmzIilVcCDHP3g7VyED8Ah2ELCxHFYlFanyI\nSUEg9lAdtIMPe2ObWdA=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643075.0,
+            "topic": "org.fedoraproject.prod.copr.chroot.start",
+            "username": "copr"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVUakNDQTdlZ0F3SUJBZ0lDQVBZd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUwTURReU16RTBNamsxTVZvWERUSTBNRFF5TURFME1qazFNVm93Z2R3eEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXRNQ3NHQTFVRUF4TWtZMjl3Y2kxamIzQnkKTFdKbExtTnNiM1ZrTG1abFpHOXlZWEJ5YjJwbFkz\nUXViM0puTVMwd0t3WURWUVFwRXlSamIzQnlMV052Y0hJdApZbVV1WTJ4dmRXUXVabVZrYjNKaGNI\nSnZhbVZqZEM1dmNtY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1ClFHWmxaRzl5WVhCeWIy\ncGxZM1F1YjNKbk1JR2ZNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0R05BRENCaVFLQmdRQ2UKREs5VFQy\nM05BdTZPWTVGMnVVNHpMRW9Ld2k1RnRRTU5jVWV5eDdmOHJxMUZXaUxDWHBjWFhpU2tzUE1XV1NM\nWQo5SHNoa1pvM3ZjMHFSRXVBWDNweWRuM2VFRDA0UExrUmRlaWpvSXA5L0Y2YlZ3MmlLMDdXRmc5\nU2MwNlRsKzhSCld1RHNaeTQ1SVJKYXhCRTlJaHBYL0x2Y2JnQ1cvZmVHVGp5WG1iRHd0UUlEQVFB\nQm80SUJWekNDQVZNd0NRWUQKVlIwVEJBSXdBREF0QmdsZ2hrZ0JodmhDQVEwRUlCWWVSV0Z6ZVMx\nU1UwRWdSMlZ1WlhKaGRHVmtJRU5sY25ScApabWxqWVhSbE1CMEdBMVVkRGdRV0JCUm5lNTg0d3Bs\nWGYrZVE2K25zSTZCbm5BNENaRENCMVFZRFZSMGpCSUhOCk1JSEtnQlJyUUZyNUVnaUpXZWRaNVFY\nMUFoMEtUbjhVQUtHQnBxU0JvekNCb0RFTE1Ba0dBMVVFQmhNQ1ZWTXgKQ3pBSkJnTlZCQWdUQWs1\nRE1SQXdEZ1lEVlFRSEV3ZFNZV3hsYVdkb01SY3dGUVlEVlFRS0V3NUdaV1J2Y21FZwpVSEp2YW1W\namRERVBNQTBHQTFVRUN4TUdabVZrYlhObk1ROHdEUVlEVlFRREV3Wm1aV1J0YzJjeER6QU5CZ05W\nCkJDa1RCbVpsWkcxelp6RW1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmhjSEp2\nYW1WamRDNXYKY21lQ0NRRGpVQjVIVHhjZVJUQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFM\nQmdOVkhROEVCQU1DQjRBdwpEUVlKS29aSWh2Y05BUUVGQlFBRGdZRUFVazNlbjBYUXpDQm5IUlh4\nZDhyOHp2ZFAwVURvbEpiUysyTEl3Z3NDClJDMnNkZ1UwNGdFblYxdFpVTjNydEk1SzQ2MnpKT0JQ\nOFhQd3h4eUZMN1lOYmVtWTgyTG52Y1pHdzliMGdxTDMKdHNKbzllSFV5SXBZMG93TlVKdzgzU1Ax\neFJvb3NwVGJRK3BsNm9qdjVPNVpGZ1lBUG1yckRWZ0M4a2gzRlp4Rgp0SWc9Ci0tLS0tRU5EIENF\nUlRJRklDQVRFLS0tLS0K\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 1,
+            "msg": {
+                "build": 598701,
+                "chroot": "fedora-26-x86_64",
+                "copr": "minsh",
+                "ip": "172.25.94.210",
+                "owner": "dvdmuckle",
+                "pid": 22481,
+                "pkg": "minsh",
+                "status": 3,
+                "user": "dvdmuckle",
+                "version": "1.0-20170905",
+                "what": "build start: user:dvdmuckle copr:minsh pkg:minsh build:598701 ip:172.25.94.210 pid:22481",
+                "who": "backend.worker-27583-PC"
+            },
+            "msg_id": "2017-e3b53d1d-7171-4979-bc87-2b63f8671fe0",
+            "signature": "QgQQV6ILo6YCGQ2hIeDqu0CzQ4+NhmaSWVSvtD1mKXYSL5nMqKIHG22tLFje4PKHuyCqJblkkT9y\nbDV0F9+1WKHhOLfXry2jVT+/YKKsRwaYv0bddyYfT27ccAyGxqrVSKKnOTlXg86uOz2YcbjxzGCV\nJDNQzwZ4a/RkIx+zvBs=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643074.0,
+            "topic": "org.fedoraproject.prod.copr.build.start",
+            "username": "copr"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVUakNDQTdlZ0F3SUJBZ0lDQVBZd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUwTURReU16RTBNamsxTVZvWERUSTBNRFF5TURFME1qazFNVm93Z2R3eEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXRNQ3NHQTFVRUF4TWtZMjl3Y2kxamIzQnkKTFdKbExtTnNiM1ZrTG1abFpHOXlZWEJ5YjJwbFkz\nUXViM0puTVMwd0t3WURWUVFwRXlSamIzQnlMV052Y0hJdApZbVV1WTJ4dmRXUXVabVZrYjNKaGNI\nSnZhbVZqZEM1dmNtY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1ClFHWmxaRzl5WVhCeWIy\ncGxZM1F1YjNKbk1JR2ZNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0R05BRENCaVFLQmdRQ2UKREs5VFQy\nM05BdTZPWTVGMnVVNHpMRW9Ld2k1RnRRTU5jVWV5eDdmOHJxMUZXaUxDWHBjWFhpU2tzUE1XV1NM\nWQo5SHNoa1pvM3ZjMHFSRXVBWDNweWRuM2VFRDA0UExrUmRlaWpvSXA5L0Y2YlZ3MmlLMDdXRmc5\nU2MwNlRsKzhSCld1RHNaeTQ1SVJKYXhCRTlJaHBYL0x2Y2JnQ1cvZmVHVGp5WG1iRHd0UUlEQVFB\nQm80SUJWekNDQVZNd0NRWUQKVlIwVEJBSXdBREF0QmdsZ2hrZ0JodmhDQVEwRUlCWWVSV0Z6ZVMx\nU1UwRWdSMlZ1WlhKaGRHVmtJRU5sY25ScApabWxqWVhSbE1CMEdBMVVkRGdRV0JCUm5lNTg0d3Bs\nWGYrZVE2K25zSTZCbm5BNENaRENCMVFZRFZSMGpCSUhOCk1JSEtnQlJyUUZyNUVnaUpXZWRaNVFY\nMUFoMEtUbjhVQUtHQnBxU0JvekNCb0RFTE1Ba0dBMVVFQmhNQ1ZWTXgKQ3pBSkJnTlZCQWdUQWs1\nRE1SQXdEZ1lEVlFRSEV3ZFNZV3hsYVdkb01SY3dGUVlEVlFRS0V3NUdaV1J2Y21FZwpVSEp2YW1W\namRERVBNQTBHQTFVRUN4TUdabVZrYlhObk1ROHdEUVlEVlFRREV3Wm1aV1J0YzJjeER6QU5CZ05W\nCkJDa1RCbVpsWkcxelp6RW1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmhjSEp2\nYW1WamRDNXYKY21lQ0NRRGpVQjVIVHhjZVJUQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFM\nQmdOVkhROEVCQU1DQjRBdwpEUVlKS29aSWh2Y05BUUVGQlFBRGdZRUFVazNlbjBYUXpDQm5IUlh4\nZDhyOHp2ZFAwVURvbEpiUysyTEl3Z3NDClJDMnNkZ1UwNGdFblYxdFpVTjNydEk1SzQ2MnpKT0JQ\nOFhQd3h4eUZMN1lOYmVtWTgyTG52Y1pHdzliMGdxTDMKdHNKbzllSFV5SXBZMG93TlVKdzgzU1Ax\neFJvb3NwVGJRK3BsNm9qdjVPNVpGZ1lBUG1yckRWZ0M4a2gzRlp4Rgp0SWc9Ci0tLS0tRU5EIENF\nUlRJRklDQVRFLS0tLS0K\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 2,
+            "msg": {
+                "build": 598701,
+                "chroot": "fedora-26-x86_64",
+                "copr": "minsh",
+                "ip": "172.25.94.210",
+                "owner": "dvdmuckle",
+                "pid": 22481,
+                "pkg": "minsh",
+                "status": 3,
+                "user": "dvdmuckle",
+                "version": "1.0-20170905",
+                "what": "chroot start: chroot:fedora-26-x86_64 user:dvdmuckle copr:minsh pkg:minsh build:598701 ip:172.25.94.210 pid:22481",
+                "who": "backend.worker-27583-PC"
+            },
+            "msg_id": "2017-5691a086-ca9c-4554-9e27-66dc4cdd5df3",
+            "signature": "Q/piryPwk7ETsfwh9IJ7umbN/x6X0h54nS++y5BQ44nLYYifKqKCj8fcuEnGNZk8jKJ9m11BvWM/\naPtra4/8izrswNdyX83geUAZ7Gq0IXr/WmzV06q5kJMWxwOb/M8AuXHBxoUK3wK67HZQ58tCtmlo\nC3+0ublroYZTug1XM4A=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643074.0,
+            "topic": "org.fedoraproject.prod.copr.chroot.start",
+            "username": "copr"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 1,
+            "msg": {
+                "attribute": "state",
+                "build_id": 966572,
+                "instance": "primary",
+                "name": "slf4j",
+                "new": 0,
+                "old": null,
+                "owner": "mbs/mbs.fedoraproject.org",
+                "release": "2.module_bd16c34d",
+                "request": [
+                    "git://pkgs.fedoraproject.org/rpms/slf4j?#bd6275bd52f1dc34b659207f91dcc9fc6967815b",
+                    "module-bd16c34dc439bb63",
+                    {
+                        "mbs_artifact_name": "slf4j",
+                        "mbs_module_target": "module-bd16c34dc439bb63",
+                        "skip_tag": true
+                    }
+                ],
+                "task_id": 21666264,
+                "version": "1.7.25"
+            },
+            "msg_id": "2017-58a1a802-7f61-4fd1-945d-d8c48c393770",
+            "signature": "jJXPj+aAiB41+gviugTuiGEqv9AeBBUbKClEQnaFxNdXP4gYDhTrIj98O5GBc4SBs4QAok7aAgQa\nKns6Q7cM7JFDgFcm1yMmvZb1l/nmVuFM79iTW2sxzSFiTVqkzbJpx+q/oLJHxRfAH1rI4QARvoMM\nlR5Ndmhf1iQxDa+oDdQ=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643073.0,
+            "topic": "org.fedoraproject.prod.buildsys.build.state.change",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 2,
+            "msg": {
+                "attribute": "state",
+                "build_id": 966557,
+                "instance": "primary",
+                "name": "python-ply",
+                "new": 1,
+                "old": 0,
+                "owner": "mbs/mbs.fedoraproject.org",
+                "release": "4.module_bd16c34d",
+                "request": [
+                    "git://pkgs.fedoraproject.org/rpms/python-ply?#65c61b7aa71cc512ce2be54e9ca143db4011b855",
+                    "module-bd16c34dc439bb63",
+                    {
+                        "mbs_artifact_name": "python-ply",
+                        "mbs_module_target": "module-bd16c34dc439bb63",
+                        "skip_tag": true
+                    }
+                ],
+                "task_id": 21666168,
+                "version": "3.9"
+            },
+            "msg_id": "2017-81f99f96-9481-4361-b5f6-1ce2e22029ba",
+            "signature": "GDy4Vf6J8ktAkzyUku6MYjaMlP6PfWgCPUaEOUd+UCeOBd0PlOv628uyst6MS8M95/oUFAR83H0p\nI4zwERZF6RpM+1K5+/oI88tNu2tqAdfd+GbgOAghWh0iBGwxpPC3QPgpEmd0z3ymI8Znk6V9XJnB\nRVjgq3T7KHaD8GQChvg=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643072.0,
+            "topic": "org.fedoraproject.prod.buildsys.build.state.change",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 1,
+            "msg": {
+                "attribute": "state",
+                "build_id": 966571,
+                "instance": "primary",
+                "name": "python-idna",
+                "new": 0,
+                "old": null,
+                "owner": "mbs/mbs.fedoraproject.org",
+                "release": "2.module_bd16c34d",
+                "request": [
+                    "git://pkgs.fedoraproject.org/rpms/python-idna?#3073bf64ccce80be6e16ce1a4bce1e9d3f970e97",
+                    "module-bd16c34dc439bb63",
+                    {
+                        "mbs_artifact_name": "python-idna",
+                        "mbs_module_target": "module-bd16c34dc439bb63",
+                        "skip_tag": true
+                    }
+                ],
+                "task_id": 21666260,
+                "version": "2.5"
+            },
+            "msg_id": "2017-4debea8c-eec3-4921-8593-657d4a69cdb5",
+            "signature": "jaI0U/m2/rgfx9G8Xsfr2N6y3zxxOsjPIYkeAufqHiHViacFQUfB7cTdBhVM/nB2Fh+zyx+XCUt9\nVp9ObmipVxv92eFg0NpY4GGIEfPPBC/ecHOI9ewU2Gn6netfHrt1v13WH2qcxjWJtSQi8/S8odMA\nRg4lhsQbYrVZtdlV5hw=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643072.0,
+            "topic": "org.fedoraproject.prod.buildsys.build.state.change",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 2,
+            "msg": {
+                "attribute": "state",
+                "build_id": 966570,
+                "instance": "primary",
+                "name": "pyOpenSSL",
+                "new": 0,
+                "old": null,
+                "owner": "mbs/mbs.fedoraproject.org",
+                "release": "2.module_bd16c34d",
+                "request": [
+                    "git://pkgs.fedoraproject.org/rpms/pyOpenSSL?#e48a74378d4a8c6eb1775b94595c0897ab660572",
+                    "module-bd16c34dc439bb63",
+                    {
+                        "mbs_artifact_name": "pyOpenSSL",
+                        "mbs_module_target": "module-bd16c34dc439bb63",
+                        "skip_tag": true
+                    }
+                ],
+                "task_id": 21666212,
+                "version": "17.1.0"
+            },
+            "msg_id": "2017-bf2a5000-98a2-4385-bc36-747dd99d5f23",
+            "signature": "gIbp+2CdQS+lV0CNFS/Gab1xKh7jAE7AcuV/rloJl7zEhxz83HBK4TDONfrkAi0HlfbtBh5iEalN\nyGXqw48z5PpBECGgBl2IgQcjiS1s2BOYz6Qcxct43JvVqYrAy7p720OsIpPlzx4tAA+Chlw/xgro\na4Hnzc/j0aDRdpZESlg=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643071.0,
+            "topic": "org.fedoraproject.prod.buildsys.build.state.change",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUViakNDQTllZ0F3SUJBZ0lDQWJNd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUwTURZeE5qRTJOVFV3T0ZvWERUSTBNRFl4TXpFMk5UVXdPRm93Z2Z3eEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRTlNRHNHQTFVRUF4TTBaMmwwYUhWaU1tWmwKWkcxelp5MW5hWFJvZFdJeVptVmtiWE5uTURFdWNH\naDRNaTVtWldSdmNtRndjbTlxWldOMExtOXlaekU5TURzRwpBMVVFS1JNMFoybDBhSFZpTW1abFpH\nMXpaeTFuYVhSb2RXSXlabVZrYlhObk1ERXVjR2g0TWk1bVpXUnZjbUZ3CmNtOXFaV04wTG05eVp6\nRW1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmhjSEp2YW1WamRDNXYKY21jd2da\nOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEFNSUdKQW9HQkFMa0xGbUQ1MXBaRE1Yb1ZHQm1tbVdJ\nRwpjTDJXUnZ3Z2xvSEcxVm5DNndabno1TTYwb1ZHd0RkckZoU2NFYVUxY0FmMnZtNTl5NkZHblBl\ndlI0Tzc3ZmFECnlOa0NBcUNHUWV6WEhESkhXYWNqWXBiZUd4UWxEalRHdVdhaGxkQXhzRUNSVzJ2\naTY2aE1YengxVXJKTEJPeFMKVlBMRGZpTllLbGgwMGxYejl4bVpBZ01CQUFHamdnRlhNSUlCVXpB\nSkJnTlZIUk1FQWpBQU1DMEdDV0NHU0FHRworRUlCRFFRZ0ZoNUZZWE41TFZKVFFTQkhaVzVsY21G\nMFpXUWdRMlZ5ZEdsbWFXTmhkR1V3SFFZRFZSME9CQllFCkZGamQ1d25ONHlsLytVTHQ0NmNZOXpv\nMU0xOXhNSUhWQmdOVkhTTUVnYzB3Z2NxQUZHdEFXdmtTQ0lsWjUxbmwKQmZVQ0hRcE9meFFBb1lH\nbXBJR2pNSUdnTVFzd0NRWURWUVFHRXdKVlV6RUxNQWtHQTFVRUNCTUNUa014RURBTwpCZ05WQkFj\nVEIxSmhiR1ZwWjJneEZ6QVZCZ05WQkFvVERrWmxaRzl5WVNCUWNtOXFaV04wTVE4d0RRWURWUVFM\nCkV3Wm1aV1J0YzJjeER6QU5CZ05WQkFNVEJtWmxaRzF6WnpFUE1BMEdBMVVFS1JNR1ptVmtiWE5u\nTVNZd0pBWUoKS29aSWh2Y05BUWtCRmhkaFpHMXBia0JtWldSdmNtRndjbTlxWldOMExtOXlaNElK\nQU9OUUhrZFBGeDVGTUJNRwpBMVVkSlFRTU1Bb0dDQ3NHQVFVRkJ3TUNNQXNHQTFVZER3UUVBd0lI\nZ0RBTkJna3Foa2lHOXcwQkFRVUZBQU9CCmdRQTA1ODY5NFNMcFBXbEc2WUxiWDhFOEd3cGlPM1c3\nemZNMGFUMENVNnA4QmxMajhTdWRjdnVZRlQ1MURmZnEKZHdkWkt6MklUWU43Vi9kcEtjR05RSElv\ndGUzL1EySThXeGgyMG1tM09lV1B5amdmZVRwOStsTWtGNEI3eXR0UApoaDgzZXl2RHk1akQ1SnEr\ncDVXSDMwWC9oVTI4SytjWllDUlJOQkJKZDNWamZ3PT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0t\nLQo=\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 18,
+            "msg": {
+                "branches": [],
+                "commit": {
+                    "author": {
+                        "gravatar_id": "",
+                        "html_url": "https://github.com/felipevolpone",
+                        "id": 1590527,
+                        "login": "felipevolpone",
+                        "site_admin": false,
+                        "type": "User",
+                        "url": "https://api.github.com/users/felipevolpone"
+                    },
+                    "commit": {
+                        "author": {
+                            "date": "2017-09-05T20:21:25Z",
+                            "email": "fbarreto@redhat.com",
+                            "name": "Felipe Volpone"
+                        },
+                        "comment_count": 0,
+                        "committer": {
+                            "date": "2017-09-05T20:21:25Z",
+                            "email": "fbarreto@redhat.com",
+                            "name": "Felipe Volpone"
+                        },
+                        "message": "Adding unit test to check if constants in ipalib.util are in sync with original paths",
+                        "tree": {
+                            "sha": "cb8155f261beb16a4d1d9cd1b3b6d0252df59fae",
+                            "url": "https://api.github.com/repos/freeipa/freeipa/git/trees/cb8155f261beb16a4d1d9cd1b3b6d0252df59fae"
+                        },
+                        "url": "https://api.github.com/repos/freeipa/freeipa/git/commits/2cf42c808d130f5ca08e702110eebb4f034f878b"
+                    },
+                    "committer": {
+                        "gravatar_id": "",
+                        "html_url": "https://github.com/felipevolpone",
+                        "id": 1590527,
+                        "login": "felipevolpone",
+                        "site_admin": false,
+                        "type": "User",
+                        "url": "https://api.github.com/users/felipevolpone"
+                    },
+                    "html_url": "https://github.com/freeipa/freeipa/commit/2cf42c808d130f5ca08e702110eebb4f034f878b",
+                    "parents": [
+                        {
+                            "html_url": "https://github.com/freeipa/freeipa/commit/bef118025e2212b00c0cb742af5c215f74c2a3a1",
+                            "sha": "bef118025e2212b00c0cb742af5c215f74c2a3a1",
+                            "url": "https://api.github.com/repos/freeipa/freeipa/commits/bef118025e2212b00c0cb742af5c215f74c2a3a1"
+                        }
+                    ],
+                    "sha": "2cf42c808d130f5ca08e702110eebb4f034f878b",
+                    "url": "https://api.github.com/repos/freeipa/freeipa/commits/2cf42c808d130f5ca08e702110eebb4f034f878b"
+                },
+                "context": "fedora-25/caless",
+                "created_at": "2017-09-05T20:24:27Z",
+                "description": "unassigned",
+                "fas_usernames": {
+                    "freeipa": "github_org_freeipa"
+                },
+                "id": 1519169533,
+                "name": "freeipa/freeipa",
+                "organization": {
+                    "description": "FreeIPA project - An integrated Identity and Authentication solution for Linux/UNIX networked environments",
+                    "id": 10979201,
+                    "login": "freeipa",
+                    "url": "https://api.github.com/orgs/freeipa"
+                },
+                "repository": {
+                    "created_at": "2012-05-15T20:34:40Z",
+                    "default_branch": "master",
+                    "description": "Mirror of FreeIPA, an integrated security information management solution",
+                    "fork": false,
+                    "forks": 98,
+                    "forks_count": 98,
+                    "full_name": "freeipa/freeipa",
+                    "has_downloads": true,
+                    "has_issues": false,
+                    "has_pages": false,
+                    "has_projects": true,
+                    "has_wiki": false,
+                    "homepage": "http://www.freeipa.org",
+                    "html_url": "https://github.com/freeipa/freeipa",
+                    "id": 4340318,
+                    "language": "Python",
+                    "name": "freeipa",
+                    "open_issues": 46,
+                    "open_issues_count": 46,
+                    "owner": {
+                        "gravatar_id": "",
+                        "html_url": "https://github.com/freeipa",
+                        "id": 10979201,
+                        "login": "freeipa",
+                        "site_admin": false,
+                        "type": "Organization",
+                        "url": "https://api.github.com/users/freeipa"
+                    },
+                    "private": false,
+                    "pushed_at": "2017-09-05T20:21:43Z",
+                    "size": 43849,
+                    "stargazers_count": 116,
+                    "updated_at": "2017-09-05T02:22:53Z",
+                    "url": "https://api.github.com/repos/freeipa/freeipa",
+                    "watchers": 116,
+                    "watchers_count": 116
+                },
+                "sender": {
+                    "gravatar_id": "",
+                    "html_url": "https://github.com/freeipa-pr-ci",
+                    "id": 30528751,
+                    "login": "freeipa-pr-ci",
+                    "site_admin": false,
+                    "type": "User",
+                    "url": "https://api.github.com/users/freeipa-pr-ci"
+                },
+                "sha": "2cf42c808d130f5ca08e702110eebb4f034f878b",
+                "state": "pending",
+                "target_url": "",
+                "updated_at": "2017-09-05T20:24:27Z"
+            },
+            "msg_id": "2017-32acf57f-f298-4e49-a89a-e7bdee8600ab",
+            "signature": "TquAYyaQlDr0r2egQrdSnNsnlFUegYLC8CJiMfGRPAUONxlFz6R9XK9nMpjsVLT4x4KrRZSdjToO\niulOshjBV0DMThfwCEDMv/egsD4zLPjNGLFvUvGeNe3/itclqrPl2wERADuBWkU9+HoFimJZDrS1\nSFgyw8DgKasvWd5Jb8Y=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643067.0,
+            "topic": "org.fedoraproject.prod.github.status",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUViakNDQTllZ0F3SUJBZ0lDQWJNd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUwTURZeE5qRTJOVFV3T0ZvWERUSTBNRFl4TXpFMk5UVXdPRm93Z2Z3eEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRTlNRHNHQTFVRUF4TTBaMmwwYUhWaU1tWmwKWkcxelp5MW5hWFJvZFdJeVptVmtiWE5uTURFdWNH\naDRNaTVtWldSdmNtRndjbTlxWldOMExtOXlaekU5TURzRwpBMVVFS1JNMFoybDBhSFZpTW1abFpH\nMXpaeTFuYVhSb2RXSXlabVZrYlhObk1ERXVjR2g0TWk1bVpXUnZjbUZ3CmNtOXFaV04wTG05eVp6\nRW1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmhjSEp2YW1WamRDNXYKY21jd2da\nOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEFNSUdKQW9HQkFMa0xGbUQ1MXBaRE1Yb1ZHQm1tbVdJ\nRwpjTDJXUnZ3Z2xvSEcxVm5DNndabno1TTYwb1ZHd0RkckZoU2NFYVUxY0FmMnZtNTl5NkZHblBl\ndlI0Tzc3ZmFECnlOa0NBcUNHUWV6WEhESkhXYWNqWXBiZUd4UWxEalRHdVdhaGxkQXhzRUNSVzJ2\naTY2aE1YengxVXJKTEJPeFMKVlBMRGZpTllLbGgwMGxYejl4bVpBZ01CQUFHamdnRlhNSUlCVXpB\nSkJnTlZIUk1FQWpBQU1DMEdDV0NHU0FHRworRUlCRFFRZ0ZoNUZZWE41TFZKVFFTQkhaVzVsY21G\nMFpXUWdRMlZ5ZEdsbWFXTmhkR1V3SFFZRFZSME9CQllFCkZGamQ1d25ONHlsLytVTHQ0NmNZOXpv\nMU0xOXhNSUhWQmdOVkhTTUVnYzB3Z2NxQUZHdEFXdmtTQ0lsWjUxbmwKQmZVQ0hRcE9meFFBb1lH\nbXBJR2pNSUdnTVFzd0NRWURWUVFHRXdKVlV6RUxNQWtHQTFVRUNCTUNUa014RURBTwpCZ05WQkFj\nVEIxSmhiR1ZwWjJneEZ6QVZCZ05WQkFvVERrWmxaRzl5WVNCUWNtOXFaV04wTVE4d0RRWURWUVFM\nCkV3Wm1aV1J0YzJjeER6QU5CZ05WQkFNVEJtWmxaRzF6WnpFUE1BMEdBMVVFS1JNR1ptVmtiWE5u\nTVNZd0pBWUoKS29aSWh2Y05BUWtCRmhkaFpHMXBia0JtWldSdmNtRndjbTlxWldOMExtOXlaNElK\nQU9OUUhrZFBGeDVGTUJNRwpBMVVkSlFRTU1Bb0dDQ3NHQVFVRkJ3TUNNQXNHQTFVZER3UUVBd0lI\nZ0RBTkJna3Foa2lHOXcwQkFRVUZBQU9CCmdRQTA1ODY5NFNMcFBXbEc2WUxiWDhFOEd3cGlPM1c3\nemZNMGFUMENVNnA4QmxMajhTdWRjdnVZRlQ1MURmZnEKZHdkWkt6MklUWU43Vi9kcEtjR05RSElv\ndGUzL1EySThXeGgyMG1tM09lV1B5amdmZVRwOStsTWtGNEI3eXR0UApoaDgzZXl2RHk1akQ1SnEr\ncDVXSDMwWC9oVTI4SytjWllDUlJOQkJKZDNWamZ3PT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0t\nLQo=\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 27,
+            "msg": {
+                "branches": [],
+                "commit": {
+                    "author": {
+                        "gravatar_id": "",
+                        "html_url": "https://github.com/felipevolpone",
+                        "id": 1590527,
+                        "login": "felipevolpone",
+                        "site_admin": false,
+                        "type": "User",
+                        "url": "https://api.github.com/users/felipevolpone"
+                    },
+                    "commit": {
+                        "author": {
+                            "date": "2017-09-05T20:21:25Z",
+                            "email": "fbarreto@redhat.com",
+                            "name": "Felipe Volpone"
+                        },
+                        "comment_count": 0,
+                        "committer": {
+                            "date": "2017-09-05T20:21:25Z",
+                            "email": "fbarreto@redhat.com",
+                            "name": "Felipe Volpone"
+                        },
+                        "message": "Adding unit test to check if constants in ipalib.util are in sync with original paths",
+                        "tree": {
+                            "sha": "cb8155f261beb16a4d1d9cd1b3b6d0252df59fae",
+                            "url": "https://api.github.com/repos/freeipa/freeipa/git/trees/cb8155f261beb16a4d1d9cd1b3b6d0252df59fae"
+                        },
+                        "url": "https://api.github.com/repos/freeipa/freeipa/git/commits/2cf42c808d130f5ca08e702110eebb4f034f878b"
+                    },
+                    "committer": {
+                        "gravatar_id": "",
+                        "html_url": "https://github.com/felipevolpone",
+                        "id": 1590527,
+                        "login": "felipevolpone",
+                        "site_admin": false,
+                        "type": "User",
+                        "url": "https://api.github.com/users/felipevolpone"
+                    },
+                    "html_url": "https://github.com/freeipa/freeipa/commit/2cf42c808d130f5ca08e702110eebb4f034f878b",
+                    "parents": [
+                        {
+                            "html_url": "https://github.com/freeipa/freeipa/commit/bef118025e2212b00c0cb742af5c215f74c2a3a1",
+                            "sha": "bef118025e2212b00c0cb742af5c215f74c2a3a1",
+                            "url": "https://api.github.com/repos/freeipa/freeipa/commits/bef118025e2212b00c0cb742af5c215f74c2a3a1"
+                        }
+                    ],
+                    "sha": "2cf42c808d130f5ca08e702110eebb4f034f878b",
+                    "url": "https://api.github.com/repos/freeipa/freeipa/commits/2cf42c808d130f5ca08e702110eebb4f034f878b"
+                },
+                "context": "fedora-25/simple_replication",
+                "created_at": "2017-09-05T20:24:24Z",
+                "description": "unassigned",
+                "fas_usernames": {
+                    "freeipa": "github_org_freeipa"
+                },
+                "id": 1519169392,
+                "name": "freeipa/freeipa",
+                "organization": {
+                    "description": "FreeIPA project - An integrated Identity and Authentication solution for Linux/UNIX networked environments",
+                    "id": 10979201,
+                    "login": "freeipa",
+                    "url": "https://api.github.com/orgs/freeipa"
+                },
+                "repository": {
+                    "created_at": "2012-05-15T20:34:40Z",
+                    "default_branch": "master",
+                    "description": "Mirror of FreeIPA, an integrated security information management solution",
+                    "fork": false,
+                    "forks": 98,
+                    "forks_count": 98,
+                    "full_name": "freeipa/freeipa",
+                    "has_downloads": true,
+                    "has_issues": false,
+                    "has_pages": false,
+                    "has_projects": true,
+                    "has_wiki": false,
+                    "homepage": "http://www.freeipa.org",
+                    "html_url": "https://github.com/freeipa/freeipa",
+                    "id": 4340318,
+                    "language": "Python",
+                    "name": "freeipa",
+                    "open_issues": 46,
+                    "open_issues_count": 46,
+                    "owner": {
+                        "gravatar_id": "",
+                        "html_url": "https://github.com/freeipa",
+                        "id": 10979201,
+                        "login": "freeipa",
+                        "site_admin": false,
+                        "type": "Organization",
+                        "url": "https://api.github.com/users/freeipa"
+                    },
+                    "private": false,
+                    "pushed_at": "2017-09-05T20:21:43Z",
+                    "size": 43849,
+                    "stargazers_count": 116,
+                    "updated_at": "2017-09-05T02:22:53Z",
+                    "url": "https://api.github.com/repos/freeipa/freeipa",
+                    "watchers": 116,
+                    "watchers_count": 116
+                },
+                "sender": {
+                    "gravatar_id": "",
+                    "html_url": "https://github.com/freeipa-pr-ci",
+                    "id": 30528751,
+                    "login": "freeipa-pr-ci",
+                    "site_admin": false,
+                    "type": "User",
+                    "url": "https://api.github.com/users/freeipa-pr-ci"
+                },
+                "sha": "2cf42c808d130f5ca08e702110eebb4f034f878b",
+                "state": "pending",
+                "target_url": "",
+                "updated_at": "2017-09-05T20:24:24Z"
+            },
+            "msg_id": "2017-ce339d53-da76-48bc-a6d8-f6625e51b3b9",
+            "signature": "sZJ9TCw7e7M/opxIKW/Kgqv7Mtfrp1+EINWr5wjKhYbcKYGuLLIkPGUQopENzvub2whLyaTc+FvN\n6cJC1Z5JzHRWXDP/8uFN+rB9EMEyPNz3ueCHN1GmxlbvhMc4TStY9Bd+8RcYDGLVMiJYQaB9DyPu\ntoKfS5tZVo/ifzS3Mu0=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643065.0,
+            "topic": "org.fedoraproject.prod.github.status",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVWakNDQTcrZ0F3SUJBZ0lDQVJjd0RRWUpLb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBFd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkzUXUKYjNKbk1CNFhEVEUwTURReU16RTBNamsxTlZvWERUSTBNRFF5TURFME1qazFOVm93Z2VReEN6QUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6RXhNQzhHQTFVRUF4TW9iV0ZwYkcxaGJpMXQKWVdsc2JXRnVNREV1Y0doNE1pNW1aV1J2Y21Gd2NtOXFaV04wTG05eVp6RXhNQzhHQTFVRUtSTW9iV0ZwYkcxaApiaTF0WVdsc2JXRnVNREV1Y0doNE1pNW1aV1J2Y21Gd2NtOXFaV04wTG05eVp6RW1NQ1FHQ1NxR1NJYjNEUUVKCkFSWVhZV1J0YVc1QVptVmtiM0poY0hKdmFtVmpkQzV2Y21jd2daOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEEKTUlHSkFvR0JBTVJneGpxUWFZdG50YndINWx3OGUwOHI5empmZEZaWVZrdXZMLzZsVExxdUJMeWlnRm5qSERkdgoySWpSWFpJZzJScHM2M2hxaktBVHhhRWdDZFYzTFVPS1lPbHRqaWlRNlpLaEZyTlBhbWo1WWlUWklUMERPRkt1Ck9qK3dnNlZUQXV4L2oyNE8rQmZTRXNjN2lDbHl1TWN0T296SWw0YWNrVjlVUDVQcEgwWk5BZ01CQUFHamdnRlgKTUlJQlV6QUpCZ05WSFJNRUFqQUFNQzBHQ1dDR1NBR0crRUlCRFFRZ0ZoNUZZWE41TFZKVFFTQkhaVzVsY21GMApaV1FnUTJWeWRHbG1hV05oZEdVd0hRWURWUjBPQkJZRUZMaWg4dlc2dGJrTDZxRWRlMVlyRW1kUHo3dXFNSUhWCkJnTlZIU01FZ2Mwd2djcUFGR3RBV3ZrU0NJbFo1MW5sQmZVQ0hRcE9meFFBb1lHbXBJR2pNSUdnTVFzd0NRWUQKVlFRR0V3SlZVekVMTUFrR0ExVUVDQk1DVGtNeEVEQU9CZ05WQkFjVEIxSmhiR1ZwWjJneEZ6QVZCZ05WQkFvVApEa1psWkc5eVlTQlFjbTlxWldOME1ROHdEUVlEVlFRTEV3Wm1aV1J0YzJjeER6QU5CZ05WQkFNVEJtWmxaRzF6Clp6RVBNQTBHQTFVRUtSTUdabVZrYlhObk1TWXdKQVlKS29aSWh2Y05BUWtCRmhkaFpHMXBia0JtWldSdmNtRncKY205cVpXTjBMbTl5WjRJSkFPTlFIa2RQRng1Rk1CTUdBMVVkSlFRTU1Bb0dDQ3NHQVFVRkJ3TUNNQXNHQTFVZApEd1FFQXdJSGdEQU5CZ2txaGtpRzl3MEJBUVVGQUFPQmdRQUFqbzNBU1dMNGhXNlQwc0VIeVpoZXgvbVdienhQCmRrNjZWVWZnVHBzOUtOQ3hWRnJKeURtd0lXUDQxWllEYm1KNFY3cGNvUm1jMHptTzE2VTNLQW80Qmt1V3llbncKMVluM2Izbit1ekR3KzRxejl1UjN2WGs4eG9CSUNyMnFqdDJRNDV4M3JUWGdackJ6bnNoaDNvMFN5bHlqVkRYTAp2WWYydmNac2lkTkZkUT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K",
+            "crypto": "x509",
+            "headers": {},
+            "i": 7732,
+            "msg": {
+                "mlist": {
+                    "list_name": "package-review"
+                },
+                "msg": {
+                    "archived-at": "<https://lists.fedoraproject.org/archives/list/package-review@lists.fedoraproject.org/message/BSG2TWIG5TG3J2IJYDRMGQ7HL37QASL4/>",
+                    "cc": null,
+                    "delivered-to": null,
+                    "from": "bugzilla@redhat.com",
+                    "in-reply-to": "<bug-1488612-308966@bugzilla.redhat.com>",
+                    "message-id": "<bug-1488612-308966-Fz51tpLYvl@bugzilla.redhat.com>",
+                    "references": "<bug-1488612-308966@bugzilla.redhat.com>",
+                    "subject": "[Bug 1488612] Review Request:\r\n   ghc-esqueleto - Type-safe EDSL for SQL queries on persistent backends",
+                    "to": "package-review@lists.fedoraproject.org",
+                    "user-agent": null,
+                    "x-mailman-rule-hits": "nonmember-moderation",
+                    "x-mailman-rule-misses": "dmarc-mitigation; approved; emergency; loop; banned-address; member-moderation; header-match-config-1; header-match-config-2; header-match-config-3; header-match-package-review.lists.fedoraproject.org-0; header-match-package-review.lists.fedoraproject.org-1; header-match-package-review.lists.fedoraproject.org-2",
+                    "x-message-id-hash": "BSG2TWIG5TG3J2IJYDRMGQ7HL37QASL4"
+                }
+            },
+            "msg_id": "2017-3f20d459-7bba-4e25-94f9-a8a1bcef68d8",
+            "signature": "FNaIwU+nGKDE7UN4RC7E4Bqzr4W9ab3gkpGz8jgHutS1PW8T0mElHJdqJzo5P22+cCqCZ42NEXvf1kDzMl5Yh1unzVT6Qne5cLFSuBPPfqW7FJPJGe4DF2wQ/+XVB3UtOKV0JHjnfK+Jwq0uhyeF0bqWY2KY+trCahWs22eRa1s=",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643065.0,
+            "topic": "org.fedoraproject.prod.mailman.receive",
+            "username": "mailman"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVkekNDQStDZ0F3SUJBZ0lDQWJvd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUwTURZeU1ESXdNREl6TVZvWERUSTBNRFl4TnpJd01ESXpNVm93Z2dFRU1R\nc3dDUVlEVlFRRwpFd0pWVXpFTE1Ba0dBMVVFQ0JNQ1RrTXhFREFPQmdOVkJBY1RCMUpoYkdWcFoy\nZ3hGekFWQmdOVkJBb1REa1psClpHOXlZU0JRY205cVpXTjBNUTh3RFFZRFZRUUxFd1ptWldSdGMy\nY3hRVEEvQmdOVkJBTVRPR0oxWjNwcGJHeGgKTW1abFpHMXpaeTFpZFdkNmFXeHNZVEptWldSdGMy\nY3dNUzV3YUhneUxtWmxaRzl5WVhCeWIycGxZM1F1YjNKbgpNVUV3UHdZRFZRUXBFemhpZFdkNmFX\neHNZVEptWldSdGMyY3RZblZuZW1sc2JHRXlabVZrYlhObk1ERXVjR2g0Ck1pNW1aV1J2Y21Gd2Nt\nOXFaV04wTG05eVp6RW1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmgKY0hKdmFt\nVmpkQzV2Y21jd2daOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEFNSUdKQW9HQkFMMmVrQnE2TlZK\nbQpONVFSdzhpM0diRDlRV213ZFV6Z1ZCVDRSaW5lU0tGbUlSditNNmM5aW1IbTVZcXpOMWl4eEJT\na21ibjZ1WWUrCkRFbEMzYUJ5MzREY2YzY2s0S3Nvams2YTk3SU5MQ0s1cWpKYmFuK3c0QU92ZDJn\nUHNUUCtmSHRLUUxDTUJEcEsKZVFLUk1tUUhUUjFjSWpiQmtSdDBWelRvZVBHNk5HL0xBZ01CQUFH\namdnRlhNSUlCVXpBSkJnTlZIUk1FQWpBQQpNQzBHQ1dDR1NBR0crRUlCRFFRZ0ZoNUZZWE41TFZK\nVFFTQkhaVzVsY21GMFpXUWdRMlZ5ZEdsbWFXTmhkR1V3CkhRWURWUjBPQkJZRUZIZlVVWlNJeGxl\nb3dud0JyMEE1Wm1jK2hZUTZNSUhWQmdOVkhTTUVnYzB3Z2NxQUZHdEEKV3ZrU0NJbFo1MW5sQmZV\nQ0hRcE9meFFBb1lHbXBJR2pNSUdnTVFzd0NRWURWUVFHRXdKVlV6RUxNQWtHQTFVRQpDQk1DVGtN\neEVEQU9CZ05WQkFjVEIxSmhiR1ZwWjJneEZ6QVZCZ05WQkFvVERrWmxaRzl5WVNCUWNtOXFaV04w\nCk1ROHdEUVlEVlFRTEV3Wm1aV1J0YzJjeER6QU5CZ05WQkFNVEJtWmxaRzF6WnpFUE1BMEdBMVVF\nS1JNR1ptVmsKYlhObk1TWXdKQVlKS29aSWh2Y05BUWtCRmhkaFpHMXBia0JtWldSdmNtRndjbTlx\nWldOMExtOXlaNElKQU9OUQpIa2RQRng1Rk1CTUdBMVVkSlFRTU1Bb0dDQ3NHQVFVRkJ3TUNNQXNH\nQTFVZER3UUVBd0lIZ0RBTkJna3Foa2lHCjl3MEJBUVVGQUFPQmdRQjAwYU52aHJMZ0p6ckRGK2cy\nOG5ZclZ4WXZMYzdDaE5hUU5wTFNUK2hGaWxqZ2lRblEKSnJTN2hCN3crV1hNbmp1MVNmWWRET09M\nQjU3V3ovR0RkM1lYU2ZZU0RjckphY1dRR2ZvRjZUT1ZoeDRJejlkdAp3RktXMG1wWDRYSXNacDN2\nR1JkY05KUVI3TWlCZkZTUkh0blR6Nkdoajd0eVRLNHRPMlRBSHpoUlBnPT0KLS0tLS1FTkQgQ0VS\nVElGSUNBVEUtLS0tLQo=\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 5709,
+            "msg": {
+                "bug": {
+                    "actual_time": 0.0,
+                    "alias": [],
+                    "assigned_to": "nobody@fedoraproject.org",
+                    "blocks": [],
+                    "cc": [
+                        "package-review@lists.fedoraproject.org"
+                    ],
+                    "classification": "Fedora",
+                    "comments": [
+                        {
+                            "author": "quantum.analyst@gmail.com",
+                            "bug_id": 1488612,
+                            "count": 0,
+                            "creation_time": 1504643044.0,
+                            "creator": "quantum.analyst@gmail.com",
+                            "creator_id": 286694,
+                            "id": 10769446,
+                            "is_private": false,
+                            "text": "\nSpec URL: http://qulogic.fedorapeople.org//ghc-esqueleto.spec\nSRPM URL: http://qulogic.fedorapeople.org//ghc-esqueleto-2.5.3-1.git.0.dd21a5b.fc26.src.rpm\n\nDescription:\n'esqueleto' is a bare bones, type-safe EDSL for SQL queries that works with\nunmodified 'persistent' SQL backends. Its language closely resembles SQL, so\nyou don't have to learn new concepts, just new syntax, and it's fairly easy to\npredict the generated SQL and optimize it for your backend. Most kinds of\nerrors committed when writing SQL are caught as compile-time errors---although\nit is possible to write type-checked 'esqueleto' queries that fail at runtime.\n\n'persistent' is a library for type-safe data serialization. It has many kinds\nof backends, such as SQL backends ('persistent-mysql', 'persistent-postgresql',\n'persistent-sqlite') and NoSQL backends ('persistent-mongoDB'). While\n'persistent' is a nice library for storing and retrieving records, including\nwith filters, it does not try to support some of the features that are specific\nto SQL backends. In particular, 'esqueleto' is the recommended library for\ntype-safe 'JOIN's on 'persistent' SQL backends. (The alternative is using raw\nSQL, but that's error prone and does not offer any composability.)\n\nCurrently, 'SELECT's, 'UPDATE's, 'INSERT's and 'DELETE's are supported.\nNot all SQL features are available, but most of them can be easily added\n(especially functions), so please open an issue or send a pull request if you\nneed anything that is not covered by 'esqueleto' on\n<https://github.com/prowdsponsor/esqueleto/>.\n\nThe name of this library means \"skeleton\" in Portuguese and contains all three\nSQL letters in the correct order =). It was inspired by Scala's Squeryl but\ncreated from scratch.",
+                            "time": 1504643044.0
+                        },
+                        {
+                            "author": "quantum.analyst@gmail.com",
+                            "bug_id": 1488612,
+                            "count": 1,
+                            "creation_time": 1504643048.0,
+                            "creator": "quantum.analyst@gmail.com",
+                            "creator_id": 286694,
+                            "id": 10769448,
+                            "is_private": false,
+                            "text": "This package built on koji:  https://koji.fedoraproject.org/koji/taskinfo?taskID=21665954",
+                            "time": 1504643048.0
+                        }
+                    ],
+                    "component": "Package Review",
+                    "components": [
+                        "Package Review"
+                    ],
+                    "creation_time": 1504643040.0,
+                    "creator": "quantum.analyst@gmail.com",
+                    "depends_on": [],
+                    "description": "\nSpec URL: http://qulogic.fedorapeople.org//ghc-esqueleto.spec\nSRPM URL: http://qulogic.fedorapeople.org//ghc-esqueleto-2.5.3-1.git.0.dd21a5b.fc26.src.rpm\n\nDescription:\n'esqueleto' is a bare bones, type-safe EDSL for SQL queries that works with\nunmodified 'persistent' SQL backends. Its language closely resembles SQL, so\nyou don't have to learn new concepts, just new syntax, and it's fairly easy to\npredict the generated SQL and optimize it for your backend. Most kinds of\nerrors committed when writing SQL are caught as compile-time errors---although\nit is possible to write type-checked 'esqueleto' queries that fail at runtime.\n\n'persistent' is a library for type-safe data serialization. It has many kinds\nof backends, such as SQL backends ('persistent-mysql', 'persistent-postgresql',\n'persistent-sqlite') and NoSQL backends ('persistent-mongoDB'). While\n'persistent' is a nice library for storing and retrieving records, including\nwith filters, it does not try to support some of the features that are specific\nto SQL backends. In particular, 'esqueleto' is the recommended library for\ntype-safe 'JOIN's on 'persistent' SQL backends. (The alternative is using raw\nSQL, but that's error prone and does not offer any composability.)\n\nCurrently, 'SELECT's, 'UPDATE's, 'INSERT's and 'DELETE's are supported.\nNot all SQL features are available, but most of them can be easily added\n(especially functions), so please open an issue or send a pull request if you\nneed anything that is not covered by 'esqueleto' on\n<https://github.com/prowdsponsor/esqueleto/>.\n\nThe name of this library means \"skeleton\" in Portuguese and contains all three\nSQL letters in the correct order =). It was inspired by Scala's Squeryl but\ncreated from scratch.",
+                    "docs_contact": "",
+                    "estimated_time": 0.0,
+                    "external_bugs": [],
+                    "fixed_in": "",
+                    "flags": [],
+                    "groups": [],
+                    "id": 1488612,
+                    "is_cc_accessible": true,
+                    "is_confirmed": true,
+                    "is_creator_accessible": true,
+                    "is_open": true,
+                    "keywords": [],
+                    "last_change_time": 1504643048.0,
+                    "op_sys": "Unspecified",
+                    "platform": "Unspecified",
+                    "priority": "unspecified",
+                    "product": "Fedora",
+                    "qa_contact": "extras-qa@fedoraproject.org",
+                    "remaining_time": 0.0,
+                    "resolution": "",
+                    "see_also": [],
+                    "severity": "unspecified",
+                    "status": "NEW",
+                    "summary": "Review Request: ghc-esqueleto - Type-safe EDSL for SQL queries on persistent backends",
+                    "target_milestone": "---",
+                    "target_release": [
+                        "---"
+                    ],
+                    "url": "",
+                    "version": "rawhide",
+                    "versions": [
+                        "rawhide"
+                    ],
+                    "weburl": "https://bugzilla.redhat.com/show_bug.cgi?id=1488612",
+                    "whiteboard": ""
+                },
+                "comment": {
+                    "author": "quantum.analyst@gmail.com",
+                    "bug_id": 1488612,
+                    "count": 0,
+                    "creation_time": 1504643044.0,
+                    "creator": "quantum.analyst@gmail.com",
+                    "creator_id": 286694,
+                    "id": 10769446,
+                    "is_private": false,
+                    "text": "\nSpec URL: http://qulogic.fedorapeople.org//ghc-esqueleto.spec\nSRPM URL: http://qulogic.fedorapeople.org//ghc-esqueleto-2.5.3-1.git.0.dd21a5b.fc26.src.rpm\n\nDescription:\n'esqueleto' is a bare bones, type-safe EDSL for SQL queries that works with\nunmodified 'persistent' SQL backends. Its language closely resembles SQL, so\nyou don't have to learn new concepts, just new syntax, and it's fairly easy to\npredict the generated SQL and optimize it for your backend. Most kinds of\nerrors committed when writing SQL are caught as compile-time errors---although\nit is possible to write type-checked 'esqueleto' queries that fail at runtime.\n\n'persistent' is a library for type-safe data serialization. It has many kinds\nof backends, such as SQL backends ('persistent-mysql', 'persistent-postgresql',\n'persistent-sqlite') and NoSQL backends ('persistent-mongoDB'). While\n'persistent' is a nice library for storing and retrieving records, including\nwith filters, it does not try to support some of the features that are specific\nto SQL backends. In particular, 'esqueleto' is the recommended library for\ntype-safe 'JOIN's on 'persistent' SQL backends. (The alternative is using raw\nSQL, but that's error prone and does not offer any composability.)\n\nCurrently, 'SELECT's, 'UPDATE's, 'INSERT's and 'DELETE's are supported.\nNot all SQL features are available, but most of them can be easily added\n(especially functions), so please open an issue or send a pull request if you\nneed anything that is not covered by 'esqueleto' on\n<https://github.com/prowdsponsor/esqueleto/>.\n\nThe name of this library means \"skeleton\" in Portuguese and contains all three\nSQL letters in the correct order =). It was inspired by Scala's Squeryl but\ncreated from scratch.",
+                    "time": 1504643044.0
+                },
+                "event": null,
+                "headers": {
+                    "CamelJmsDeliveryMode": "1",
+                    "breadcrumbId": "ID:messaging-devops-broker01.web.prod.ext.phx2.redhat.com-36838-1502307902532-3:16:-1:1:159738",
+                    "destination": "/queue/fedora_from_esb",
+                    "esbMessageType": "bugzillaNotification",
+                    "esbSourceSystem": "bugzilla",
+                    "expires": "1505247862979",
+                    "message-id": "ID:messaging-devops-router01.web.prod.ext.phx2.redhat.com-37914-1498737001698-3:5:7:1:13281",
+                    "persistent": "true",
+                    "priority": "4",
+                    "subscription": "/queue/fedora_from_esb",
+                    "timestamp": "1504643062979"
+                }
+            },
+            "msg_id": "2017-8af01072-e2d0-4722-a93b-3fecfc8176a8",
+            "signature": "DsNIl/gA5hCK3+lyF8+XtsJ73Jv14q7hcQY5VKm/RgdlrD5lHh9qVUyQ4oTEtp+TWIVgNvzBjHQ4\nTd1goPPTYe9N2QoOXB+5bP98qNKbvqI3IsgZ1+9MO7epip8xkCu0Cwhph5NlmKNyz1jQgW4pMevq\nHPIoWP+/BAjZg6BZkbM=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643064.0,
+            "topic": "org.fedoraproject.prod.bugzilla.bug.update",
+            "username": "fedmsg"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVkekNDQStDZ0F3SUJBZ0lDQWJvd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUwTURZeU1ESXdNREl6TVZvWERUSTBNRFl4TnpJd01ESXpNVm93Z2dFRU1R\nc3dDUVlEVlFRRwpFd0pWVXpFTE1Ba0dBMVVFQ0JNQ1RrTXhFREFPQmdOVkJBY1RCMUpoYkdWcFoy\nZ3hGekFWQmdOVkJBb1REa1psClpHOXlZU0JRY205cVpXTjBNUTh3RFFZRFZRUUxFd1ptWldSdGMy\nY3hRVEEvQmdOVkJBTVRPR0oxWjNwcGJHeGgKTW1abFpHMXpaeTFpZFdkNmFXeHNZVEptWldSdGMy\nY3dNUzV3YUhneUxtWmxaRzl5WVhCeWIycGxZM1F1YjNKbgpNVUV3UHdZRFZRUXBFemhpZFdkNmFX\neHNZVEptWldSdGMyY3RZblZuZW1sc2JHRXlabVZrYlhObk1ERXVjR2g0Ck1pNW1aV1J2Y21Gd2Nt\nOXFaV04wTG05eVp6RW1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmgKY0hKdmFt\nVmpkQzV2Y21jd2daOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEFNSUdKQW9HQkFMMmVrQnE2TlZK\nbQpONVFSdzhpM0diRDlRV213ZFV6Z1ZCVDRSaW5lU0tGbUlSditNNmM5aW1IbTVZcXpOMWl4eEJT\na21ibjZ1WWUrCkRFbEMzYUJ5MzREY2YzY2s0S3Nvams2YTk3SU5MQ0s1cWpKYmFuK3c0QU92ZDJn\nUHNUUCtmSHRLUUxDTUJEcEsKZVFLUk1tUUhUUjFjSWpiQmtSdDBWelRvZVBHNk5HL0xBZ01CQUFH\namdnRlhNSUlCVXpBSkJnTlZIUk1FQWpBQQpNQzBHQ1dDR1NBR0crRUlCRFFRZ0ZoNUZZWE41TFZK\nVFFTQkhaVzVsY21GMFpXUWdRMlZ5ZEdsbWFXTmhkR1V3CkhRWURWUjBPQkJZRUZIZlVVWlNJeGxl\nb3dud0JyMEE1Wm1jK2hZUTZNSUhWQmdOVkhTTUVnYzB3Z2NxQUZHdEEKV3ZrU0NJbFo1MW5sQmZV\nQ0hRcE9meFFBb1lHbXBJR2pNSUdnTVFzd0NRWURWUVFHRXdKVlV6RUxNQWtHQTFVRQpDQk1DVGtN\neEVEQU9CZ05WQkFjVEIxSmhiR1ZwWjJneEZ6QVZCZ05WQkFvVERrWmxaRzl5WVNCUWNtOXFaV04w\nCk1ROHdEUVlEVlFRTEV3Wm1aV1J0YzJjeER6QU5CZ05WQkFNVEJtWmxaRzF6WnpFUE1BMEdBMVVF\nS1JNR1ptVmsKYlhObk1TWXdKQVlKS29aSWh2Y05BUWtCRmhkaFpHMXBia0JtWldSdmNtRndjbTlx\nWldOMExtOXlaNElKQU9OUQpIa2RQRng1Rk1CTUdBMVVkSlFRTU1Bb0dDQ3NHQVFVRkJ3TUNNQXNH\nQTFVZER3UUVBd0lIZ0RBTkJna3Foa2lHCjl3MEJBUVVGQUFPQmdRQjAwYU52aHJMZ0p6ckRGK2cy\nOG5ZclZ4WXZMYzdDaE5hUU5wTFNUK2hGaWxqZ2lRblEKSnJTN2hCN3crV1hNbmp1MVNmWWRET09M\nQjU3V3ovR0RkM1lYU2ZZU0RjckphY1dRR2ZvRjZUT1ZoeDRJejlkdAp3RktXMG1wWDRYSXNacDN2\nR1JkY05KUVI3TWlCZkZTUkh0blR6Nkdoajd0eVRLNHRPMlRBSHpoUlBnPT0KLS0tLS1FTkQgQ0VS\nVElGSUNBVEUtLS0tLQo=\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 5595,
+            "msg": {
+                "bug": {
+                    "actual_time": 0.0,
+                    "alias": [],
+                    "assigned_to": "nobody@fedoraproject.org",
+                    "blocks": [],
+                    "cc": [
+                        "package-review@lists.fedoraproject.org"
+                    ],
+                    "classification": "Fedora",
+                    "comments": [
+                        {
+                            "author": "quantum.analyst@gmail.com",
+                            "bug_id": 1488612,
+                            "count": 0,
+                            "creation_time": 1504643044.0,
+                            "creator": "quantum.analyst@gmail.com",
+                            "creator_id": 286694,
+                            "id": 10769446,
+                            "is_private": false,
+                            "text": "\nSpec URL: http://qulogic.fedorapeople.org//ghc-esqueleto.spec\nSRPM URL: http://qulogic.fedorapeople.org//ghc-esqueleto-2.5.3-1.git.0.dd21a5b.fc26.src.rpm\n\nDescription:\n'esqueleto' is a bare bones, type-safe EDSL for SQL queries that works with\nunmodified 'persistent' SQL backends. Its language closely resembles SQL, so\nyou don't have to learn new concepts, just new syntax, and it's fairly easy to\npredict the generated SQL and optimize it for your backend. Most kinds of\nerrors committed when writing SQL are caught as compile-time errors---although\nit is possible to write type-checked 'esqueleto' queries that fail at runtime.\n\n'persistent' is a library for type-safe data serialization. It has many kinds\nof backends, such as SQL backends ('persistent-mysql', 'persistent-postgresql',\n'persistent-sqlite') and NoSQL backends ('persistent-mongoDB'). While\n'persistent' is a nice library for storing and retrieving records, including\nwith filters, it does not try to support some of the features that are specific\nto SQL backends. In particular, 'esqueleto' is the recommended library for\ntype-safe 'JOIN's on 'persistent' SQL backends. (The alternative is using raw\nSQL, but that's error prone and does not offer any composability.)\n\nCurrently, 'SELECT's, 'UPDATE's, 'INSERT's and 'DELETE's are supported.\nNot all SQL features are available, but most of them can be easily added\n(especially functions), so please open an issue or send a pull request if you\nneed anything that is not covered by 'esqueleto' on\n<https://github.com/prowdsponsor/esqueleto/>.\n\nThe name of this library means \"skeleton\" in Portuguese and contains all three\nSQL letters in the correct order =). It was inspired by Scala's Squeryl but\ncreated from scratch.",
+                            "time": 1504643044.0
+                        },
+                        {
+                            "author": "quantum.analyst@gmail.com",
+                            "bug_id": 1488612,
+                            "count": 1,
+                            "creation_time": 1504643048.0,
+                            "creator": "quantum.analyst@gmail.com",
+                            "creator_id": 286694,
+                            "id": 10769448,
+                            "is_private": false,
+                            "text": "This package built on koji:  https://koji.fedoraproject.org/koji/taskinfo?taskID=21665954",
+                            "time": 1504643048.0
+                        }
+                    ],
+                    "component": "Package Review",
+                    "components": [
+                        "Package Review"
+                    ],
+                    "creation_time": 1504643040.0,
+                    "creator": "quantum.analyst@gmail.com",
+                    "depends_on": [],
+                    "description": "\nSpec URL: http://qulogic.fedorapeople.org//ghc-esqueleto.spec\nSRPM URL: http://qulogic.fedorapeople.org//ghc-esqueleto-2.5.3-1.git.0.dd21a5b.fc26.src.rpm\n\nDescription:\n'esqueleto' is a bare bones, type-safe EDSL for SQL queries that works with\nunmodified 'persistent' SQL backends. Its language closely resembles SQL, so\nyou don't have to learn new concepts, just new syntax, and it's fairly easy to\npredict the generated SQL and optimize it for your backend. Most kinds of\nerrors committed when writing SQL are caught as compile-time errors---although\nit is possible to write type-checked 'esqueleto' queries that fail at runtime.\n\n'persistent' is a library for type-safe data serialization. It has many kinds\nof backends, such as SQL backends ('persistent-mysql', 'persistent-postgresql',\n'persistent-sqlite') and NoSQL backends ('persistent-mongoDB'). While\n'persistent' is a nice library for storing and retrieving records, including\nwith filters, it does not try to support some of the features that are specific\nto SQL backends. In particular, 'esqueleto' is the recommended library for\ntype-safe 'JOIN's on 'persistent' SQL backends. (The alternative is using raw\nSQL, but that's error prone and does not offer any composability.)\n\nCurrently, 'SELECT's, 'UPDATE's, 'INSERT's and 'DELETE's are supported.\nNot all SQL features are available, but most of them can be easily added\n(especially functions), so please open an issue or send a pull request if you\nneed anything that is not covered by 'esqueleto' on\n<https://github.com/prowdsponsor/esqueleto/>.\n\nThe name of this library means \"skeleton\" in Portuguese and contains all three\nSQL letters in the correct order =). It was inspired by Scala's Squeryl but\ncreated from scratch.",
+                    "docs_contact": "",
+                    "estimated_time": 0.0,
+                    "external_bugs": [],
+                    "fixed_in": "",
+                    "flags": [],
+                    "groups": [],
+                    "id": 1488612,
+                    "is_cc_accessible": true,
+                    "is_confirmed": true,
+                    "is_creator_accessible": true,
+                    "is_open": true,
+                    "keywords": [],
+                    "last_change_time": 1504643048.0,
+                    "op_sys": "Unspecified",
+                    "platform": "Unspecified",
+                    "priority": "unspecified",
+                    "product": "Fedora",
+                    "qa_contact": "extras-qa@fedoraproject.org",
+                    "remaining_time": 0.0,
+                    "resolution": "",
+                    "see_also": [],
+                    "severity": "unspecified",
+                    "status": "NEW",
+                    "summary": "Review Request: ghc-esqueleto - Type-safe EDSL for SQL queries on persistent backends",
+                    "target_milestone": "---",
+                    "target_release": [
+                        "---"
+                    ],
+                    "url": "",
+                    "version": "rawhide",
+                    "versions": [
+                        "rawhide"
+                    ],
+                    "weburl": "https://bugzilla.redhat.com/show_bug.cgi?id=1488612",
+                    "whiteboard": ""
+                },
+                "comment": {
+                    "author": "quantum.analyst@gmail.com",
+                    "bug_id": 1488612,
+                    "count": 1,
+                    "creation_time": 1504643048.0,
+                    "creator": "quantum.analyst@gmail.com",
+                    "creator_id": 286694,
+                    "id": 10769448,
+                    "is_private": false,
+                    "text": "This package built on koji:  https://koji.fedoraproject.org/koji/taskinfo?taskID=21665954",
+                    "time": 1504643048.0
+                },
+                "event": null,
+                "headers": {
+                    "CamelJmsDeliveryMode": "1",
+                    "breadcrumbId": "ID:messaging-devops-broker01.web.prod.ext.phx2.redhat.com-36838-1502307902532-3:16:-1:1:159740",
+                    "destination": "/queue/fedora_from_esb",
+                    "esbMessageType": "bugzillaNotification",
+                    "esbSourceSystem": "bugzilla",
+                    "expires": "1505247863055",
+                    "message-id": "ID:messaging-devops-router01.web.prod.ext.phx2.redhat.com-37914-1498737001698-3:2:17:1:12732",
+                    "persistent": "true",
+                    "priority": "4",
+                    "subscription": "/queue/fedora_from_esb",
+                    "timestamp": "1504643063055"
+                }
+            },
+            "msg_id": "2017-c3788657-67f6-4f11-b655-6ae2191ba47a",
+            "signature": "NTlDIIEFftr75I5iyMHsOJVShFMuWdNAaAkyYfHh4+KHVDMs1wg/gR9EKAGvJqQkum+MXHt724hJ\nNmG8ZvBN7EvtOG33QvT8i4ftE0Q7wdyGHs0lvTZmulskc76sDWqs1Wg4hdSmysJU8JUNdbQ4kSqu\nys+QQlWMGkDua7UqwOk=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643064.0,
+            "topic": "org.fedoraproject.prod.bugzilla.bug.update",
+            "username": "fedmsg"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUViakNDQTllZ0F3SUJBZ0lDQWJNd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUwTURZeE5qRTJOVFV3T0ZvWERUSTBNRFl4TXpFMk5UVXdPRm93Z2Z3eEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRTlNRHNHQTFVRUF4TTBaMmwwYUhWaU1tWmwKWkcxelp5MW5hWFJvZFdJeVptVmtiWE5uTURFdWNH\naDRNaTVtWldSdmNtRndjbTlxWldOMExtOXlaekU5TURzRwpBMVVFS1JNMFoybDBhSFZpTW1abFpH\nMXpaeTFuYVhSb2RXSXlabVZrYlhObk1ERXVjR2g0TWk1bVpXUnZjbUZ3CmNtOXFaV04wTG05eVp6\nRW1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmhjSEp2YW1WamRDNXYKY21jd2da\nOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEFNSUdKQW9HQkFMa0xGbUQ1MXBaRE1Yb1ZHQm1tbVdJ\nRwpjTDJXUnZ3Z2xvSEcxVm5DNndabno1TTYwb1ZHd0RkckZoU2NFYVUxY0FmMnZtNTl5NkZHblBl\ndlI0Tzc3ZmFECnlOa0NBcUNHUWV6WEhESkhXYWNqWXBiZUd4UWxEalRHdVdhaGxkQXhzRUNSVzJ2\naTY2aE1YengxVXJKTEJPeFMKVlBMRGZpTllLbGgwMGxYejl4bVpBZ01CQUFHamdnRlhNSUlCVXpB\nSkJnTlZIUk1FQWpBQU1DMEdDV0NHU0FHRworRUlCRFFRZ0ZoNUZZWE41TFZKVFFTQkhaVzVsY21G\nMFpXUWdRMlZ5ZEdsbWFXTmhkR1V3SFFZRFZSME9CQllFCkZGamQ1d25ONHlsLytVTHQ0NmNZOXpv\nMU0xOXhNSUhWQmdOVkhTTUVnYzB3Z2NxQUZHdEFXdmtTQ0lsWjUxbmwKQmZVQ0hRcE9meFFBb1lH\nbXBJR2pNSUdnTVFzd0NRWURWUVFHRXdKVlV6RUxNQWtHQTFVRUNCTUNUa014RURBTwpCZ05WQkFj\nVEIxSmhiR1ZwWjJneEZ6QVZCZ05WQkFvVERrWmxaRzl5WVNCUWNtOXFaV04wTVE4d0RRWURWUVFM\nCkV3Wm1aV1J0YzJjeER6QU5CZ05WQkFNVEJtWmxaRzF6WnpFUE1BMEdBMVVFS1JNR1ptVmtiWE5u\nTVNZd0pBWUoKS29aSWh2Y05BUWtCRmhkaFpHMXBia0JtWldSdmNtRndjbTlxWldOMExtOXlaNElK\nQU9OUUhrZFBGeDVGTUJNRwpBMVVkSlFRTU1Bb0dDQ3NHQVFVRkJ3TUNNQXNHQTFVZER3UUVBd0lI\nZ0RBTkJna3Foa2lHOXcwQkFRVUZBQU9CCmdRQTA1ODY5NFNMcFBXbEc2WUxiWDhFOEd3cGlPM1c3\nemZNMGFUMENVNnA4QmxMajhTdWRjdnVZRlQ1MURmZnEKZHdkWkt6MklUWU43Vi9kcEtjR05RSElv\ndGUzL1EySThXeGgyMG1tM09lV1B5amdmZVRwOStsTWtGNEI3eXR0UApoaDgzZXl2RHk1akQ1SnEr\ncDVXSDMwWC9oVTI4SytjWllDUlJOQkJKZDNWamZ3PT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0t\nLQo=\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 26,
+            "msg": {
+                "branches": [],
+                "commit": {
+                    "author": {
+                        "gravatar_id": "",
+                        "html_url": "https://github.com/felipevolpone",
+                        "id": 1590527,
+                        "login": "felipevolpone",
+                        "site_admin": false,
+                        "type": "User",
+                        "url": "https://api.github.com/users/felipevolpone"
+                    },
+                    "commit": {
+                        "author": {
+                            "date": "2017-09-05T20:21:25Z",
+                            "email": "fbarreto@redhat.com",
+                            "name": "Felipe Volpone"
+                        },
+                        "comment_count": 0,
+                        "committer": {
+                            "date": "2017-09-05T20:21:25Z",
+                            "email": "fbarreto@redhat.com",
+                            "name": "Felipe Volpone"
+                        },
+                        "message": "Adding unit test to check if constants in ipalib.util are in sync with original paths",
+                        "tree": {
+                            "sha": "cb8155f261beb16a4d1d9cd1b3b6d0252df59fae",
+                            "url": "https://api.github.com/repos/freeipa/freeipa/git/trees/cb8155f261beb16a4d1d9cd1b3b6d0252df59fae"
+                        },
+                        "url": "https://api.github.com/repos/freeipa/freeipa/git/commits/2cf42c808d130f5ca08e702110eebb4f034f878b"
+                    },
+                    "committer": {
+                        "gravatar_id": "",
+                        "html_url": "https://github.com/felipevolpone",
+                        "id": 1590527,
+                        "login": "felipevolpone",
+                        "site_admin": false,
+                        "type": "User",
+                        "url": "https://api.github.com/users/felipevolpone"
+                    },
+                    "html_url": "https://github.com/freeipa/freeipa/commit/2cf42c808d130f5ca08e702110eebb4f034f878b",
+                    "parents": [
+                        {
+                            "html_url": "https://github.com/freeipa/freeipa/commit/bef118025e2212b00c0cb742af5c215f74c2a3a1",
+                            "sha": "bef118025e2212b00c0cb742af5c215f74c2a3a1",
+                            "url": "https://api.github.com/repos/freeipa/freeipa/commits/bef118025e2212b00c0cb742af5c215f74c2a3a1"
+                        }
+                    ],
+                    "sha": "2cf42c808d130f5ca08e702110eebb4f034f878b",
+                    "url": "https://api.github.com/repos/freeipa/freeipa/commits/2cf42c808d130f5ca08e702110eebb4f034f878b"
+                },
+                "context": "fedora-25/build",
+                "created_at": "2017-09-05T20:24:22Z",
+                "description": "unassigned",
+                "fas_usernames": {
+                    "freeipa": "github_org_freeipa"
+                },
+                "id": 1519169266,
+                "name": "freeipa/freeipa",
+                "organization": {
+                    "description": "FreeIPA project - An integrated Identity and Authentication solution for Linux/UNIX networked environments",
+                    "id": 10979201,
+                    "login": "freeipa",
+                    "url": "https://api.github.com/orgs/freeipa"
+                },
+                "repository": {
+                    "created_at": "2012-05-15T20:34:40Z",
+                    "default_branch": "master",
+                    "description": "Mirror of FreeIPA, an integrated security information management solution",
+                    "fork": false,
+                    "forks": 98,
+                    "forks_count": 98,
+                    "full_name": "freeipa/freeipa",
+                    "has_downloads": true,
+                    "has_issues": false,
+                    "has_pages": false,
+                    "has_projects": true,
+                    "has_wiki": false,
+                    "homepage": "http://www.freeipa.org",
+                    "html_url": "https://github.com/freeipa/freeipa",
+                    "id": 4340318,
+                    "language": "Python",
+                    "name": "freeipa",
+                    "open_issues": 46,
+                    "open_issues_count": 46,
+                    "owner": {
+                        "gravatar_id": "",
+                        "html_url": "https://github.com/freeipa",
+                        "id": 10979201,
+                        "login": "freeipa",
+                        "site_admin": false,
+                        "type": "Organization",
+                        "url": "https://api.github.com/users/freeipa"
+                    },
+                    "private": false,
+                    "pushed_at": "2017-09-05T20:21:43Z",
+                    "size": 43849,
+                    "stargazers_count": 116,
+                    "updated_at": "2017-09-05T02:22:53Z",
+                    "url": "https://api.github.com/repos/freeipa/freeipa",
+                    "watchers": 116,
+                    "watchers_count": 116
+                },
+                "sender": {
+                    "gravatar_id": "",
+                    "html_url": "https://github.com/freeipa-pr-ci",
+                    "id": 30528751,
+                    "login": "freeipa-pr-ci",
+                    "site_admin": false,
+                    "type": "User",
+                    "url": "https://api.github.com/users/freeipa-pr-ci"
+                },
+                "sha": "2cf42c808d130f5ca08e702110eebb4f034f878b",
+                "state": "pending",
+                "target_url": "",
+                "updated_at": "2017-09-05T20:24:22Z"
+            },
+            "msg_id": "2017-5743f8d8-324e-49a2-bac2-0add0c87b35f",
+            "signature": "Ff9gFJCXMUvHRqP4r9rTEw4+HIB8fJaBM2h0l7NzIx3JtQfR2hrqU6ReNoohpuclnozeYjAbafg3\nCmcjYEHjMSDFhA8zLLH1vrBc3ZVgcjS8ev3wQvMo06xUgmNGAq8fdguU6B6xp3POoOWVZGYzCb3c\noperFBi39XvkdDs+UM4=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643062.0,
+            "topic": "org.fedoraproject.prod.github.status",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVWakNDQTcrZ0F3SUJBZ0lDQVJjd0RRWUpLb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBFd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkzUXUKYjNKbk1CNFhEVEUwTURReU16RTBNamsxTlZvWERUSTBNRFF5TURFME1qazFOVm93Z2VReEN6QUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6RXhNQzhHQTFVRUF4TW9iV0ZwYkcxaGJpMXQKWVdsc2JXRnVNREV1Y0doNE1pNW1aV1J2Y21Gd2NtOXFaV04wTG05eVp6RXhNQzhHQTFVRUtSTW9iV0ZwYkcxaApiaTF0WVdsc2JXRnVNREV1Y0doNE1pNW1aV1J2Y21Gd2NtOXFaV04wTG05eVp6RW1NQ1FHQ1NxR1NJYjNEUUVKCkFSWVhZV1J0YVc1QVptVmtiM0poY0hKdmFtVmpkQzV2Y21jd2daOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEEKTUlHSkFvR0JBTVJneGpxUWFZdG50YndINWx3OGUwOHI5empmZEZaWVZrdXZMLzZsVExxdUJMeWlnRm5qSERkdgoySWpSWFpJZzJScHM2M2hxaktBVHhhRWdDZFYzTFVPS1lPbHRqaWlRNlpLaEZyTlBhbWo1WWlUWklUMERPRkt1Ck9qK3dnNlZUQXV4L2oyNE8rQmZTRXNjN2lDbHl1TWN0T296SWw0YWNrVjlVUDVQcEgwWk5BZ01CQUFHamdnRlgKTUlJQlV6QUpCZ05WSFJNRUFqQUFNQzBHQ1dDR1NBR0crRUlCRFFRZ0ZoNUZZWE41TFZKVFFTQkhaVzVsY21GMApaV1FnUTJWeWRHbG1hV05oZEdVd0hRWURWUjBPQkJZRUZMaWg4dlc2dGJrTDZxRWRlMVlyRW1kUHo3dXFNSUhWCkJnTlZIU01FZ2Mwd2djcUFGR3RBV3ZrU0NJbFo1MW5sQmZVQ0hRcE9meFFBb1lHbXBJR2pNSUdnTVFzd0NRWUQKVlFRR0V3SlZVekVMTUFrR0ExVUVDQk1DVGtNeEVEQU9CZ05WQkFjVEIxSmhiR1ZwWjJneEZ6QVZCZ05WQkFvVApEa1psWkc5eVlTQlFjbTlxWldOME1ROHdEUVlEVlFRTEV3Wm1aV1J0YzJjeER6QU5CZ05WQkFNVEJtWmxaRzF6Clp6RVBNQTBHQTFVRUtSTUdabVZrYlhObk1TWXdKQVlKS29aSWh2Y05BUWtCRmhkaFpHMXBia0JtWldSdmNtRncKY205cVpXTjBMbTl5WjRJSkFPTlFIa2RQRng1Rk1CTUdBMVVkSlFRTU1Bb0dDQ3NHQVFVRkJ3TUNNQXNHQTFVZApEd1FFQXdJSGdEQU5CZ2txaGtpRzl3MEJBUVVGQUFPQmdRQUFqbzNBU1dMNGhXNlQwc0VIeVpoZXgvbVdienhQCmRrNjZWVWZnVHBzOUtOQ3hWRnJKeURtd0lXUDQxWllEYm1KNFY3cGNvUm1jMHptTzE2VTNLQW80Qmt1V3llbncKMVluM2Izbit1ekR3KzRxejl1UjN2WGs4eG9CSUNyMnFqdDJRNDV4M3JUWGdackJ6bnNoaDNvMFN5bHlqVkRYTAp2WWYydmNac2lkTkZkUT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K",
+            "crypto": "x509",
+            "headers": {},
+            "i": 7731,
+            "msg": {
+                "mlist": {
+                    "list_name": "package-review"
+                },
+                "msg": {
+                    "archived-at": "<https://lists.fedoraproject.org/archives/list/package-review@lists.fedoraproject.org/message/4DL7TU65LQSSBXUVJO2TPJ747YMC7JHA/>",
+                    "cc": null,
+                    "delivered-to": null,
+                    "from": "bugzilla@redhat.com",
+                    "in-reply-to": null,
+                    "message-id": "<bug-1488612-308966@bugzilla.redhat.com>",
+                    "references": null,
+                    "subject": "[Bug 1488612] New: Review Request:\r\n   ghc-esqueleto - Type-safe EDSL for SQL queries on persistent backends",
+                    "to": "package-review@lists.fedoraproject.org",
+                    "user-agent": null,
+                    "x-mailman-rule-hits": "nonmember-moderation",
+                    "x-mailman-rule-misses": "dmarc-mitigation; approved; emergency; loop; banned-address; member-moderation; header-match-config-1; header-match-config-2; header-match-config-3; header-match-package-review.lists.fedoraproject.org-0; header-match-package-review.lists.fedoraproject.org-1; header-match-package-review.lists.fedoraproject.org-2",
+                    "x-message-id-hash": "4DL7TU65LQSSBXUVJO2TPJ747YMC7JHA"
+                }
+            },
+            "msg_id": "2017-04d4a698-da5a-49d0-9d1d-7c41614f6c04",
+            "signature": "TNhUScMvN1TFu8poI/klv12jy0uo6PYn2UkHzJOIdZyCCKL4ppZ6M2sNrwp7Tw4PLAxxSnaAOqZw6NFknWuRyXxv5LGAkJDf3lsOJWRSSY7ELu4x6veB5OkdPQPtEMrmbshuvB10/hSuwlBe7mS9753k7EmATYmu4oBun1whjoI=",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643057.0,
+            "topic": "org.fedoraproject.prod.mailman.receive",
+            "username": "mailman"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVUakNDQTdlZ0F3SUJBZ0lDQVBZd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUwTURReU16RTBNamsxTVZvWERUSTBNRFF5TURFME1qazFNVm93Z2R3eEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXRNQ3NHQTFVRUF4TWtZMjl3Y2kxamIzQnkKTFdKbExtTnNiM1ZrTG1abFpHOXlZWEJ5YjJwbFkz\nUXViM0puTVMwd0t3WURWUVFwRXlSamIzQnlMV052Y0hJdApZbVV1WTJ4dmRXUXVabVZrYjNKaGNI\nSnZhbVZqZEM1dmNtY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1ClFHWmxaRzl5WVhCeWIy\ncGxZM1F1YjNKbk1JR2ZNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0R05BRENCaVFLQmdRQ2UKREs5VFQy\nM05BdTZPWTVGMnVVNHpMRW9Ld2k1RnRRTU5jVWV5eDdmOHJxMUZXaUxDWHBjWFhpU2tzUE1XV1NM\nWQo5SHNoa1pvM3ZjMHFSRXVBWDNweWRuM2VFRDA0UExrUmRlaWpvSXA5L0Y2YlZ3MmlLMDdXRmc5\nU2MwNlRsKzhSCld1RHNaeTQ1SVJKYXhCRTlJaHBYL0x2Y2JnQ1cvZmVHVGp5WG1iRHd0UUlEQVFB\nQm80SUJWekNDQVZNd0NRWUQKVlIwVEJBSXdBREF0QmdsZ2hrZ0JodmhDQVEwRUlCWWVSV0Z6ZVMx\nU1UwRWdSMlZ1WlhKaGRHVmtJRU5sY25ScApabWxqWVhSbE1CMEdBMVVkRGdRV0JCUm5lNTg0d3Bs\nWGYrZVE2K25zSTZCbm5BNENaRENCMVFZRFZSMGpCSUhOCk1JSEtnQlJyUUZyNUVnaUpXZWRaNVFY\nMUFoMEtUbjhVQUtHQnBxU0JvekNCb0RFTE1Ba0dBMVVFQmhNQ1ZWTXgKQ3pBSkJnTlZCQWdUQWs1\nRE1SQXdEZ1lEVlFRSEV3ZFNZV3hsYVdkb01SY3dGUVlEVlFRS0V3NUdaV1J2Y21FZwpVSEp2YW1W\namRERVBNQTBHQTFVRUN4TUdabVZrYlhObk1ROHdEUVlEVlFRREV3Wm1aV1J0YzJjeER6QU5CZ05W\nCkJDa1RCbVpsWkcxelp6RW1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmhjSEp2\nYW1WamRDNXYKY21lQ0NRRGpVQjVIVHhjZVJUQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFM\nQmdOVkhROEVCQU1DQjRBdwpEUVlKS29aSWh2Y05BUUVGQlFBRGdZRUFVazNlbjBYUXpDQm5IUlh4\nZDhyOHp2ZFAwVURvbEpiUysyTEl3Z3NDClJDMnNkZ1UwNGdFblYxdFpVTjNydEk1SzQ2MnpKT0JQ\nOFhQd3h4eUZMN1lOYmVtWTgyTG52Y1pHdzliMGdxTDMKdHNKbzllSFV5SXBZMG93TlVKdzgzU1Ax\neFJvb3NwVGJRK3BsNm9qdjVPNVpGZ1lBUG1yckRWZ0M4a2gzRlp4Rgp0SWc9Ci0tLS0tRU5EIENF\nUlRJRklDQVRFLS0tLS0K\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 3,
+            "msg": {
+                "build": 598679,
+                "chroot": "fedora-rawhide-i386",
+                "copr": "FreeCAD",
+                "ip": "172.25.93.247",
+                "owner": "przemof",
+                "pid": 13471,
+                "pkg": "freecad",
+                "status": 1,
+                "user": "przemof",
+                "version": "1:0.17_pre-11967",
+                "what": "build end: user:przemof copr:FreeCAD build:598679 pkg:freecad version:1:0.17_pre-11967 ip:172.25.93.247 pid:13471 status:1",
+                "who": "backend.worker-27500-PC"
+            },
+            "msg_id": "2017-56f03c5e-2dc9-45ba-8134-ca2dd7b3883c",
+            "signature": "mS9SMRe/cB2tJXdFxqsUmoxh9AJRcWgqAbnLNMTL6ozg7gi3o2xmy5xtlGMblKlylr4CE6q6wpxv\nVbafZJIBI0CFOefSJZcVAOOvglqDK0ITMKxiFUXf/6NuVWVbr4ZwlI3lffZG5mA/jvQR1owon6MQ\n9CnUQaidm9OFK+NAuMk=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643054.0,
+            "topic": "org.fedoraproject.prod.copr.build.end",
+            "username": "copr"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 1,
+            "msg": {
+                "attribute": "state",
+                "id": 21665761,
+                "info": {
+                    "arch": "noarch",
+                    "awaited": null,
+                    "channel_id": 1,
+                    "children": [
+                        {
+                            "arch": "noarch",
+                            "awaited": false,
+                            "channel_id": 1,
+                            "completion_time": 1504643040.0,
+                            "create_time": 1504641136.0,
+                            "host_id": 309,
+                            "id": 21665762,
+                            "label": "noarch",
+                            "method": "buildArch",
+                            "owner": 3199,
+                            "parent": 21665761,
+                            "priority": 49,
+                            "start_time": 1504641137.0,
+                            "state": 2,
+                            "waiting": null
+                        }
+                    ],
+                    "completion_time": 1504643054.0,
+                    "create_time": 1504641131.0,
+                    "host_id": 313,
+                    "id": 21665761,
+                    "label": null,
+                    "method": "build",
+                    "owner": 3199,
+                    "parent": null,
+                    "priority": 50,
+                    "request": [
+                        "../packages/jetty/9.4.6/2.v20170531.fc27/src/jetty-9.4.6-2.v20170531.fc27.src.rpm",
+                        "f28",
+                        {
+                            "scratch": true
+                        }
+                    ],
+                    "result": null,
+                    "start_time": 1504641132.0,
+                    "state": 2,
+                    "waiting": false
+                },
+                "instance": "primary",
+                "method": "build",
+                "new": "CLOSED",
+                "old": "OPEN",
+                "owner": "koschei",
+                "srpm": "jetty-9.4.6-2.v20170531.fc27.src.rpm"
+            },
+            "msg_id": "2017-7877efbf-b4e6-422c-b7a6-22b757dd6dbb",
+            "signature": "X7lpirzZNrDROh4oN/5J9+hZ/aBuTf/Orvmg4ex9ifPwfYTtGh/ZpBjPct277vbRDibYRgvnRWC5\nzkCqwr7LxKJ1Nw3cT5q7iQNxAC9gzFiEVVLjGA2GkBaLrP7nbxDMIlT6CSfnaaeLtTBfIWFH+7US\nXosQv7Sm6C2y55qmnZ8=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643054.0,
+            "topic": "org.fedoraproject.prod.buildsys.task.state.change",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 4,
+            "msg": {
+                "attribute": "state",
+                "build_id": 966560,
+                "instance": "primary",
+                "name": "python-py",
+                "new": 1,
+                "old": 0,
+                "owner": "mbs/mbs.fedoraproject.org",
+                "release": "4.module_bd16c34d",
+                "request": [
+                    "git://pkgs.fedoraproject.org/rpms/python-py?#8cf7510ee59bfb0ad30259ecab5e4b38c420bbbb",
+                    "module-bd16c34dc439bb63",
+                    {
+                        "mbs_artifact_name": "python-py",
+                        "mbs_module_target": "module-bd16c34dc439bb63",
+                        "skip_tag": true
+                    }
+                ],
+                "task_id": 21666174,
+                "version": "1.4.34"
+            },
+            "msg_id": "2017-80554cee-7d5a-409f-92df-906b86470a7b",
+            "signature": "Sdo11y18sfbJqFgR2Ft6Tlj0Fa1vpGNwGNf1RUc9YZ128EKf1+qvlXvkvvOunLGtwNNR2DhedYaa\nuUmq61smIWXEXW3DJK6/QSk1VCZGmEugUeSy8zKGWARAdOtzV4/eqzvdUxleNpUoOlEuUfQ3W+aw\nJHVfpl7FZj8H3eHtbsQ=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643051.0,
+            "topic": "org.fedoraproject.prod.buildsys.build.state.change",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 3,
+            "msg": {
+                "attribute": "state",
+                "build_id": 966569,
+                "instance": "primary",
+                "name": "python-isort",
+                "new": 0,
+                "old": null,
+                "owner": "mbs/mbs.fedoraproject.org",
+                "release": "2.module_bd16c34d",
+                "request": [
+                    "git://pkgs.fedoraproject.org/rpms/python-isort?#62d252bf8e1860458c98711d403a6a7324c7b36c",
+                    "module-bd16c34dc439bb63",
+                    {
+                        "mbs_artifact_name": "python-isort",
+                        "mbs_module_target": "module-bd16c34dc439bb63",
+                        "skip_tag": true
+                    }
+                ],
+                "task_id": 21666215,
+                "version": "4.2.15"
+            },
+            "msg_id": "2017-51690ecf-b7af-46cc-962c-d7e51cb86019",
+            "signature": "e2m0Ya7rQOuYIWQE7CmsSmnLBpOwekQw7A58mS0OjtlT29SfPxYisz9oRKFS0t0pu4wW8yIk6y4n\nKSHiCFRjA/BZTCjxUJyl5leh90Fx7QU7dAV6Nus133kJp+pDKKV9wSfwSpU7w3j/60zPch0sJXf/\ndM7qRU0ottZJzsr35Xg=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643051.0,
+            "topic": "org.fedoraproject.prod.buildsys.build.state.change",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 1,
+            "msg": {
+                "build_id": 966549,
+                "instance": "primary",
+                "name": "template-glib",
+                "owner": "yaneti",
+                "release": "1.fc28",
+                "tag": "f28-pending",
+                "tag_id": 1924,
+                "user": "autopen",
+                "version": "3.25.92"
+            },
+            "msg_id": "2017-0bd18918-5190-4c32-a709-ee1ad973f82f",
+            "signature": "i9lzuGoXQgLQEU+rQiOkMlfopk5lRzUvYlv6RNu4mb+4b3OMrwEZFCvQcAK0jqTwpUcGgcvYEWtd\ndhCP3KppoC49ahmD2WzcxxvAdbdDOz6iQ6yEVN4jwRXthyP2yqjt8gFNpf7GV7Oh2z2tzVCyS8Br\npPdU3x5Z36gr7Wf9ncU=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643047.0,
+            "topic": "org.fedoraproject.prod.buildsys.untag",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 2,
+            "msg": {
+                "build_id": 966549,
+                "instance": "primary",
+                "name": "template-glib",
+                "owner": "yaneti",
+                "release": "1.fc28",
+                "tag": "f28",
+                "tag_id": 1913,
+                "user": "autopen",
+                "version": "3.25.92"
+            },
+            "msg_id": "2017-2bc4917c-9f15-4d34-b5cd-025466df75cc",
+            "signature": "tGsiR8ZTP9snLT9k3GaTqJESrXOrL372h2RhVQBij3agi/TL/21Bzxtk7FW1zkZB2H6UnZWw3Ile\nucwJBsl/w8+1CpLIaxxVMs5mN6cK95WiXvurVO3Qvu8wsKpoN6omX/sTafZ7pLyk7/AM8tGv3gRU\naoslmnDuutR98tU0jao=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643047.0,
+            "topic": "org.fedoraproject.prod.buildsys.tag",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 2,
+            "msg": {
+                "build_id": 966550,
+                "instance": "primary",
+                "name": "template-glib",
+                "owner": "yaneti",
+                "release": "1.fc27",
+                "tag": "f27-gnome",
+                "tag_id": 2116,
+                "user": "yaneti",
+                "version": "3.25.92"
+            },
+            "msg_id": "2017-b8555ab6-dc3d-4f8d-bf34-d52e081832a5",
+            "signature": "Ucpyfa548YHUpSsM23NLcqDfTwFFqAxe4xs9otxfzRejM3/ifWs29sZJWOMRbYup9GWfDy1DMj6v\nD8vKIb9HtEg4WAYltCHZZ8PMkxDdpBDJRiW7BYtSFv8J9QFXIFjlzFdibr5U2VUOPrwBXrxY12Sw\nr0TWaPVFRjfMX4YPlTc=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643046.0,
+            "topic": "org.fedoraproject.prod.buildsys.tag",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 1,
+            "msg": {
+                "build": {
+                    "build_id": 966549,
+                    "completion_time": 1504643014.0,
+                    "creation_event_id": 26842752,
+                    "creation_time": 1504642719.0,
+                    "creation_ts": 1504642719.23539,
+                    "epoch": null,
+                    "extra": null,
+                    "id": 966549,
+                    "name": "template-glib",
+                    "nvr": "template-glib-3.25.92-1.fc28",
+                    "owner_id": 1044,
+                    "owner_name": "yaneti",
+                    "package_id": 24285,
+                    "package_name": "template-glib",
+                    "release": "1.fc28",
+                    "source": null,
+                    "start_time": 1504642719.0,
+                    "state": 1,
+                    "task_id": 21666115,
+                    "version": "3.25.92",
+                    "volume_id": 0,
+                    "volume_name": "DEFAULT"
+                },
+                "instance": "primary",
+                "rpm": {
+                    "arch": "armv7hl",
+                    "build_id": 966549,
+                    "buildroot_id": 9779964,
+                    "buildtime": 1504642992,
+                    "epoch": null,
+                    "external_repo_id": 0,
+                    "external_repo_name": "INTERNAL",
+                    "extra": null,
+                    "id": 11251189,
+                    "metadata_only": false,
+                    "name": "template-glib-debuginfo",
+                    "payloadhash": "caf88dc9f04de27d477bc0b2af7140ee",
+                    "release": "1.fc28",
+                    "size": 115420,
+                    "version": "3.25.92"
+                },
+                "sighash": "6f5cdfb1beb836ebdc3028478b371ede",
+                "sigkey": "9db62fb1"
+            },
+            "msg_id": "2017-186d441b-ebbf-4d69-abdf-c68403f12d26",
+            "signature": "DrRnlXUlvL9b6yLtx68ZuoHb1CPIiXcupULkb0xke96CtFHa9r2fglzZdi4Th+Nyz78Ngt83UTSl\nu9HYJ3QiRDZsfrOxWflRmq0yXFq3X6Co7KXf3mLPHlL3pGHI9gdGmGIktYZKrv6ZhIPSs0ULKVMZ\nIWZOJj3hDwgrBJO0+pI=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643038.0,
+            "topic": "org.fedoraproject.prod.buildsys.rpm.sign",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 1,
+            "msg": {
+                "build": {
+                    "build_id": 966549,
+                    "completion_time": 1504643014.0,
+                    "creation_event_id": 26842752,
+                    "creation_time": 1504642719.0,
+                    "creation_ts": 1504642719.23539,
+                    "epoch": null,
+                    "extra": null,
+                    "id": 966549,
+                    "name": "template-glib",
+                    "nvr": "template-glib-3.25.92-1.fc28",
+                    "owner_id": 1044,
+                    "owner_name": "yaneti",
+                    "package_id": 24285,
+                    "package_name": "template-glib",
+                    "release": "1.fc28",
+                    "source": null,
+                    "start_time": 1504642719.0,
+                    "state": 1,
+                    "task_id": 21666115,
+                    "version": "3.25.92",
+                    "volume_id": 0,
+                    "volume_name": "DEFAULT"
+                },
+                "instance": "primary",
+                "rpm": {
+                    "arch": "s390x",
+                    "build_id": 966549,
+                    "buildroot_id": 9779972,
+                    "buildtime": 1504642851,
+                    "epoch": null,
+                    "external_repo_id": 0,
+                    "external_repo_name": "INTERNAL",
+                    "extra": null,
+                    "id": 11251185,
+                    "metadata_only": false,
+                    "name": "template-glib-debuginfo",
+                    "payloadhash": "4a76d3bdc3fee8515321169434a3f0cd",
+                    "release": "1.fc28",
+                    "size": 117660,
+                    "version": "3.25.92"
+                },
+                "sighash": "e4b9c1781ecbebcc73baa723c6e8cdca",
+                "sigkey": "9db62fb1"
+            },
+            "msg_id": "2017-7676133c-4cdd-4e26-8d5a-3fb6ef2f1ab4",
+            "signature": "FgQHicf6kqZSCMRXE4NVBnQ6YrJuDGKWdct00DOZWjHTef8gB8vn7FXRWqgpK87jjl3iwIX4s3oX\nPWqESuZxIVK3QfCPGhI+iUjtYKOGYb6OcfJKOQxAzohI8BWCmRveNX/riVHmpsWuXoakV6RphlKP\n4ZOHKxKUtnMu/5NUq/s=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643038.0,
+            "topic": "org.fedoraproject.prod.buildsys.rpm.sign",
+            "username": "apache"
+        },
+        {
+            "certificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTakNDQTdPZ0F3SUJBZ0lDQWRzd0RRWUpL\nb1pJaHZjTkFRRUZCUUF3Z2FBeEN6QUpCZ05WQkFZVEFsVlQKTVFzd0NRWURWUVFJRXdKT1F6RVFN\nQTRHQTFVRUJ4TUhVbUZzWldsbmFERVhNQlVHQTFVRUNoTU9SbVZrYjNKaApJRkJ5YjJwbFkzUXhE\nekFOQmdOVkJBc1RCbVpsWkcxelp6RVBNQTBHQTFVRUF4TUdabVZrYlhObk1ROHdEUVlEClZRUXBF\nd1ptWldSdGMyY3hKakFrQmdrcWhraUc5dzBCQ1FFV0YyRmtiV2x1UUdabFpHOXlZWEJ5YjJwbFkz\nUXUKYjNKbk1CNFhEVEUxTURFd05USXhNemd5TVZvWERUSTFNREV3TWpJeE16Z3lNVm93Z2RneEN6\nQUpCZ05WQkFZVApBbFZUTVFzd0NRWURWUVFJRXdKT1F6RVFNQTRHQTFVRUJ4TUhVbUZzWldsbmFE\nRVhNQlVHQTFVRUNoTU9SbVZrCmIzSmhJRkJ5YjJwbFkzUXhEekFOQmdOVkJBc1RCbVpsWkcxelp6\nRXJNQ2tHQTFVRUF4TWlhMjlxYVMxcmIycHAKTURFdWNHaDRNaTVtWldSdmNtRndjbTlxWldOMExt\nOXlaekVyTUNrR0ExVUVLUk1pYTI5cWFTMXJiMnBwTURFdQpjR2g0TWk1bVpXUnZjbUZ3Y205cVpX\nTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYWVdSdGFXNUFabVZrCmIzSmhjSEp2YW1WamRD\nNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0pBb0dCQU9PaSt4VEsKSStQdEU2\nMll0ZkkzM3g4bW5UUE1ZU0hDZHB3NkhCNjZlbU1qeHRyMU95a082alY4NERQS1JDdzVFWCswUEV2\nbgozNFo2MCtKOXkxMS9JZzRuYTBhNlA5aVI5TlNXb1o3cENwQ3NMRUZIeFJUM0tqVlg4V3JkeURX\ndVRaSXNBN0c3CkVSL2wyRzlKaDBKSmVCNDBBcm9LMTJEeGllMjZ1dFQ5SHJpN0FnTUJBQUdqZ2dG\nWE1JSUJVekFKQmdOVkhSTUUKQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1RllYTjVMVkpUUVNC\nSFpXNWxjbUYwWldRZ1EyVnlkR2xtYVdOaApkR1V3SFFZRFZSME9CQllFRkxNVGpXekFPOURmYU83\nT1h0K2VkdFVMd2I3Vk1JSFZCZ05WSFNNRWdjMHdnY3FBCkZHdEFXdmtTQ0lsWjUxbmxCZlVDSFFw\nT2Z4UUFvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUdFd0pWVXpFTE1Ba0cKQTFVRUNCTUNUa014RURB\nT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabFpHOXlZU0JRY205cQpaV04wTVE4\nd0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQTUEwR0ExVUVLUk1H\nClptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2Y21Gd2NtOXFaV04w\nTG05eVo0SUoKQU9OUUhrZFBGeDVGTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQ01Bc0dBMVVk\nRHdRRUF3SUhnREFOQmdrcQpoa2lHOXcwQkFRVUZBQU9CZ1FCU2hrTnZ5ZzdvclZxbVVXdHdmZHpW\nUS92QnFXWkp1bys2a0RwckJIYUJlVWdmClA2RExEUEVPN3JHZXlxaFVtb0U3dmRVRHBGeE5mbC9E\nemtBOHJBRWVsMjdGUXZ5RVFkUDJFaHpPUjZlTldwT0cKdEVJU0RML1piRFgwZzRrSWR5YjVoWGZY\nbUJzbzQ1RmdPYkNGUkdsTlg5SUU1Ly95bmxCZU5CMzEvYlk1bmc9PQotLS0tLUVORCBDRVJUSUZJ\nQ0FURS0tLS0tCg==\n",
+            "crypto": "x509",
+            "headers": {},
+            "i": 1,
+            "msg": {
+                "build": {
+                    "build_id": 966549,
+                    "completion_time": 1504643014.0,
+                    "creation_event_id": 26842752,
+                    "creation_time": 1504642719.0,
+                    "creation_ts": 1504642719.23539,
+                    "epoch": null,
+                    "extra": null,
+                    "id": 966549,
+                    "name": "template-glib",
+                    "nvr": "template-glib-3.25.92-1.fc28",
+                    "owner_id": 1044,
+                    "owner_name": "yaneti",
+                    "package_id": 24285,
+                    "package_name": "template-glib",
+                    "release": "1.fc28",
+                    "source": null,
+                    "start_time": 1504642719.0,
+                    "state": 1,
+                    "task_id": 21666115,
+                    "version": "3.25.92",
+                    "volume_id": 0,
+                    "volume_name": "DEFAULT"
+                },
+                "instance": "primary",
+                "rpm": {
+                    "arch": "ppc64",
+                    "build_id": 966549,
+                    "buildroot_id": 9779967,
+                    "buildtime": 1504642902,
+                    "epoch": null,
+                    "external_repo_id": 0,
+                    "external_repo_name": "INTERNAL",
+                    "extra": null,
+                    "id": 11251177,
+                    "metadata_only": false,
+                    "name": "template-glib-debuginfo",
+                    "payloadhash": "66664b291c4d1b3c0a118fafa380d5a3",
+                    "release": "1.fc28",
+                    "size": 118928,
+                    "version": "3.25.92"
+                },
+                "sighash": "f6cfd03c67528970593f86068419ee3a",
+                "sigkey": "9db62fb1"
+            },
+            "msg_id": "2017-0bfe94f0-8dc6-4a9b-8986-0e657b99d93f",
+            "signature": "Wmaz11gRf84ysHhMQAwdoCeV0Ng5Q5U1UTKtvYGMVkPLRZO8pK+JQcJ51kTfEoUI97pdWrQ7ltHE\n3uqFmvO+t57NoRwFTDHP4gYc55b05mySNwQjS8c9Z6AGxwshC8XOFZT7n3BuB+N1m4SvzPeCjK0+\n4zY5cJBtP80jUBL58vY=\n",
+            "source_name": "datanommer",
+            "source_version": "0.8.1",
+            "timestamp": 1504643038.0,
+            "topic": "org.fedoraproject.prod.buildsys.rpm.sign",
+            "username": "apache"
+        }
+    ],
+    "total": 65
+}

@@ -2,6 +2,33 @@
 Changelog
 =========
 
+1.0.1
+=====
+
+Bug fixes
+---------
+
+* Fix an issue where messages replayed from datagrepper always failed signature
+  validation despite having valid signatures
+  (`#477 <https://github.com/fedora-infra/fedmsg/pull/477>`_).
+
+* Fix a Python 3 incompatibility where the downloading the certificate revocation
+  list crashed when attempting to write the file
+  (`#478 <https://github.com/fedora-infra/fedmsg/pull/478>`_).
+
+
+Development improvements
+------------------------
+
+* Several loggers now use their full module path as their logger name rather
+  than just "fedmsg" (`#479 <https://github.com/fedora-infra/fedmsg/pull/479>`_).
+
+Many thanks to all our contributors for this release:
+
+* Jeremy Cline
+* Chaitanya Kukde
+
+
 1.0.0
 =====
 
