@@ -318,7 +318,8 @@ class BaseConglomerator(object):
                 'subjective': fm.msg2subjective(msg, subject=subject, **config),
                 'link': fm.msg2link(msg, **config),
                 'icon': fm.msg2icon(msg, **config),
-                '__icon__': getattr(fm.msg2processor(msg, **config), '__icon__', None),
+                '__icon__': getattr(
+                    fm.msg2processor(msg, **config), '__icon__', None),
                 'secondary_icon': fm.msg2secondary_icon(msg, **config),
                 'usernames': fm.msg2usernames(msg, **config),
                 'packages': fm.msg2packages(msg, **config),

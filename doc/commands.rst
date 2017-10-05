@@ -12,6 +12,9 @@ fedmsg-logger
 
 .. autofunction:: fedmsg.commands.logger.logger
 
+
+.. _command-tail:
+
 fedmsg-tail
 ~~~~~~~~~~~
 
@@ -27,16 +30,34 @@ fedmsg-collectd
 
 .. autofunction:: fedmsg.commands.collectd.collectd
 
+fedmsg-check
+~~~~~~~~~~~~
+
+``fedmsg-check`` is used to check the status of consumers and producers. It
+requires the ``moksha.monitoring.socket`` key to be set in the configuration.
+
+See usage details with ``fedmsg-check --help``.
+
 Service Daemons
 ---------------
+
+.. _command-hub:
 
 fedmsg-hub
 ~~~~~~~~~~
 .. autofunction:: fedmsg.commands.hub.hub
 
+
+.. _command-relay:
+
 fedmsg-relay
 ~~~~~~~~~~~~
+
 .. autofunction:: fedmsg.commands.relay.relay
+
+fedmsg-signing-relay
+~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: fedmsg.commands.relay.signing_relay
 
 fedmsg-irc
 ~~~~~~~~~~

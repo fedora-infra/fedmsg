@@ -18,44 +18,35 @@
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
 import os
-import functools
-
-from nose.tools import raises
-from nose.exc import SkipTest
+import stat
 
 try:
-    from nose.tools.nontrivial import make_decorator
+    import unittest2 as unittest
 except ImportError:
-    # It lives here in older versions of nose (el6)
-    from nose.tools import make_decorator
+    import unittest
 
-import unittest
-
+import fedmsg.crypto
 import fedmsg.crypto.gpg
 
 SEP = os.path.sep
 here = SEP.join(__file__.split(SEP)[:-1])
 
 data_dir = SEP.join((here, 'test_certs', 'gpg'))
-keyrings = []
 clear_data_path = os.path.join(data_dir, "test_data")
-secret_fp = 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
-
-
-def skip_on_travis(fn):
-    """ A decorator that just skips some tests on travis-ci.org """
-    @functools.wraps(fn)
-    def newfunc(self, *args, **kw):
-        if os.environ.get('TRAVIS', None):
-            raise SkipTest("gpg permissions are weird on travis-ci.org")
-        return fn(self, *args, **kw)
-    return make_decorator(fn)(newfunc)
+# Older versions of GPG don't handle the full key digest, so we will use the
+# short one for the moment.
+secret_fp = 'DA19B4EC'
 
 
 class TestGpg(unittest.TestCase):
     def setUp(self):
-        self.ctx = fedmsg.crypto.gpg.Context(keyrings=keyrings,
-                                             homedir=data_dir)
+        # Equivalent to chmod 700. If the directory isn't protected, GPG gets unhappy.
+        os.chmod(data_dir, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | 0)
+        for root, __, files in os.walk(data_dir):
+            for f in files:
+                os.chmod(os.path.join(root, f), stat.S_IRUSR | stat.S_IWUSR | 0)
+
+        self.ctx = fedmsg.crypto.gpg.Context(homedir=data_dir)
 
     def test_verif_detach_sig(self):
         signature_path = os.path.join(data_dir, "test_data.sig")
@@ -63,47 +54,36 @@ class TestGpg(unittest.TestCase):
                         signature=open(signature_path, 'rb').read())
         self.ctx.verify_from_file(clear_data_path, sig_path=signature_path)
 
-    @raises(fedmsg.crypto.gpg.GpgBinaryError)
     def test_corrupt_detach_sig(self):
-        signature_path = os.path.join(data_dir, "corrupt.sig")
-        self.ctx.verify_from_file(clear_data_path, sig_path=signature_path)
+        with self.assertRaises(fedmsg.crypto.gpg.GpgBinaryError):
+            signature_path = os.path.join(data_dir, "corrupt.sig")
+            self.ctx.verify_from_file(clear_data_path, sig_path=signature_path)
 
-    @skip_on_travis
     def test_sign_cleartext(self):
         test_data = u'I can haz a signature?'
         signed_text = self.ctx.clearsign(test_data, fingerprint=secret_fp)
         self.ctx.verify(signed_text)
 
-    @skip_on_travis
     def test_sign_detached(self):
         test_data = u'I can haz a signature?'
         signature = self.ctx.sign(test_data, fingerprint=secret_fp)
         self.ctx.verify(test_data, signature)
 
 
-import fedmsg.crypto
-
-
 class TestCryptoGPG(unittest.TestCase):
     def setUp(self):
-        gpg_key = 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
         self.config = {
             'crypto_backend': 'gpg',
             'gpg_home': SEP.join((here, 'test_certs', 'gpg')),
-            'gpg_signing_key': gpg_key
+            'gpg_signing_key': secret_fp
         }
 
-    def tearDown(self):
-        self.config = None
-
-    @skip_on_travis
     def test_full_circle(self):
         """ Try to sign and validate a message. """
         message = dict(msg='awesome')
         signed = fedmsg.crypto.sign(message, **self.config)
         assert fedmsg.crypto.validate(signed, **self.config)
 
-    @skip_on_travis
     def test_failed_validation(self):
         message = dict(msg='awesome')
         signed = fedmsg.crypto.sign(message, **self.config)
@@ -115,6 +95,7 @@ class TestCryptoGPG(unittest.TestCase):
         # We have to reset the implementation in fedmsg.crypto
         # otherwise all the other tests will use the gpg backend
         fedmsg.crypto._implementation = None
+        self.config = None
 
 
 if __name__ == '__main__':

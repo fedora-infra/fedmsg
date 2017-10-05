@@ -20,7 +20,6 @@
 import pprint
 import re
 import time
-import sys
 
 import pygments
 import pygments.lexers
@@ -135,38 +134,39 @@ class TailCommand(BaseCommand):
         fedmsg.init(**self.config)
 
         # Build a message formatter
-        formatter = lambda d: d
-        if self.config['pretty']:
-            def formatter(d):
+        def formatter(d):
+            format_ = d
+
+            if self.config['pretty']:
                 d['timestamp'] = time.ctime(d['timestamp'])
                 d = fedmsg.crypto.strip_credentials(d)
-                return "\n" + pprint.pformat(d)
+                format_ = "\n" + pprint.pformat(d)
 
-        if self.config['really_pretty']:
-            def formatter(d):
+            if self.config['really_pretty']:
                 d = fedmsg.crypto.strip_credentials(d)
                 fancy = pygments.highlight(
                     fedmsg.encoding.pretty_dumps(d),
                     pygments.lexers.JavascriptLexer(),
                     pygments.formatters.TerminalFormatter()
                 ).strip()
-                return "\n" + fancy
+                format_ = "\n" + fancy
 
-        if self.config['query']:
-            def formatter(d):
+            if self.config['query']:
                 result = fedmsg.utils.dict_query(d, self.config['query'])
-                return ", ".join([six.text_type(value) for value in result.values()])
+                format_ = ", ".join(
+                    [six.text_type(value) for value in result.values()])
 
-        if self.config['terse']:
-            formatter = lambda d: "\n" + fedmsg.meta.msg2repr(d, **self.config)
+            if self.config['terse']:
+                format_ = "\n" + fedmsg.meta.msg2repr(d, **self.config)
 
-        if self.config['cowsay']:
-            def formatter(d):
-                result, error = cowsay_output(fedmsg.meta.msg2subtitle(d, **self.config))
-                if not error:
-                    return "\n" + result
+            if self.config['cowsay']:
+                result, error = cowsay_output(
+                    fedmsg.meta.msg2subtitle(d, **self.config))
+                if error:
+                    format_ = "\n" + error
                 else:
-                    return "\n" + error
+                    format_ = "\n" + result
+            return format_
 
         # Build regular expressions for use in our loop.
         exclusive_regexp = re.compile(self.config['exclusive_regexp'])

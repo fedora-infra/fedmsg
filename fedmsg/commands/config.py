@@ -24,7 +24,6 @@ from __future__ import print_function
 import argparse
 import six
 import sys
-import textwrap
 
 import fedmsg.config
 import fedmsg.encoding
@@ -95,8 +94,7 @@ def config():
     if args.query:
         cur = fedmsg.utils.dict_query(cur, args.query)[args.query]
         if cur is None:
-            print ("Key `%s` does not exist in config" % args.query,
-                   file=sys.stderr)
+            print("Key `%s` does not exist in config" % args.query, file=sys.stderr)
             sys.exit(1)
 
     if isinstance(cur, list):

@@ -1,27 +1,33 @@
-fedmsg -- Federated Message Bus Client API
-==========================================
+fedmsg - Federated Messaging
+============================
 
 .. split here
 
-fedmsg (FEDerated MeSsaGe bus) is a python package and API defining a brokerless messaging architecture to send and receive messages to and from applications.
+.. image:: https://img.shields.io/pypi/v/fedmsg.svg
+    :target: https://pypi.python.org/pypi/fedmsg
 
-Please see doc `here <https://github.com/fedora-infra/fedmsg/tree/develop/doc>`_ or `fedmsg online doc <https://fedmsg.readthedocs.org/>`_ for more info.
+.. image:: https://img.shields.io/pypi/pyversions/fedmsg.svg
+    :target: https://pypi.python.org/pypi/fedmsg
 
-Build Status
-------------
+.. image:: https://img.shields.io/pypi/l/fedmsg.svg
+    :target: https://pypi.python.org/pypi/fedmsg
 
-.. |master| image:: https://secure.travis-ci.org/fedora-infra/fedmsg.png?branch=master
-   :alt: Build Status - master branch
-   :target: https://travis-ci.org/#!/fedora-infra/fedmsg
+.. image:: https://readthedocs.org/projects/docs/badge/?version=latest
+    :alt: Documentation Status
+    :target: https://fedmsg.readthedocs.io/en/latest/?badge=latest
 
-.. |develop| image:: https://secure.travis-ci.org/fedora-infra/fedmsg.png?branch=develop
+.. image:: https://secure.travis-ci.org/fedora-infra/fedmsg.png?branch=develop
    :alt: Build Status - develop branch
    :target: https://travis-ci.org/#!/fedora-infra/fedmsg
 
-+----------+-----------+
-| Branch   | Status    |
-+==========+===========+
-| master   | |master|  |
-+----------+-----------+
-| develop  | |develop| |
-+----------+-----------+
+.. image:: https://codecov.io/github/fedora-infra/fedmsg/coverage.svg?branch=develop
+    :target: https://codecov.io/github/fedora-infra/fedmsg
+    :alt: codecov.io
+
+
+fedmsg (Federated Message Bus) is a library built on ZeroMQ using the PyZMQ Python bindings.
+fedmsg aims to make it easy to connect services together using ZeroMQ publishers and
+subscribers.
+
+Check out the `documentation <https://fedmsg.readthedocs.io/en/stable/>`_ for installation and
+configuration instructions.

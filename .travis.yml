@@ -1,17 +1,17 @@
+sudo: true
 language: python
-python:
- - "2.6"
- - "2.7"
- - "3.3"
- - "3.4"
- - "3.5"
 
-# Twisted dropped Python 2.6 support, so install a compatible version on 2.6
 install:
+ - sudo apt-get install swig
  - pip install --upgrade pip setuptools
- - pip install -r test-requirements.txt
- - pip install -e .[commands,consumers]
-script: python setup.py nosetests
+ - pip install tox
+
+script:
+  - tox
+
+after_success:
+  - source .tox/${TOXENV}/bin/activate && pip install codecov && codecov --env TRAVIS_OS_NAME,TOXENV
+
 notifications:
     email: false
     irc:
@@ -19,8 +19,22 @@ notifications:
     on_success: change
     on_failure: change
 
+env:
+  global:
+    - PYTHONWARNINGS=always::DeprecationWarning
 matrix:
-  allow_failures:
-    - python: "3.3"
+  include:
+    - python: "2.7"
+      env: TOXENV=py27
+    - python: "2.7"
+      env: TOXENV=m2crypto
     - python: "3.4"
+      env: TOXENV=py34
     - python: "3.5"
+      env: TOXENV=py35
+    - python: "3.6"
+      env: TOXENV=py36
+    - python: "3.6"
+      env: TOXENV=docs
+    - python: "2.7"
+      env: TOXENV=lint

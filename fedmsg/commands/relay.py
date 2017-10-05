@@ -22,28 +22,31 @@
 
 import zmq
 
+from moksha.hub import main
+from moksha.hub.monitoring import MonitoringProducer
+
 from fedmsg.commands import BaseCommand
-from fedmsg.consumers.relay import RelayConsumer
+from fedmsg.consumers.relay import RelayConsumer, SigningRelayConsumer
 
 from kitchen.iterutils import iterate
 
 
 class RelayCommand(BaseCommand):
-    """ Relay connections from active loggers to the bus.
+    """Relay connections from active loggers to the bus.
 
     ``fedmsg-relay`` is a service which binds to two ports, listens for
     messages on one and emits them on the other.  ``fedmsg-logger``
     requires that an instance of ``fedmsg-relay`` be running *somewhere*
     and that it's inbound address be listed in the config as one of the entries
-    in :term:`relay_inbound`.
+    in :ref:`conf-relay_inbound`.
 
     ``fedmsg-relay`` becomes a necessity for integration points that cannot
     bind consistently to and serve from a port.  See :doc:`topology` for the
     mile-high view.  More specifically, ``fedmsg-relay`` is a
     SUB.bind()->PUB.bind() relay.
     """
-    daemonizable = True
     name = 'fedmsg-relay'
+    relay_consumer = RelayConsumer
 
     def run(self):
         # Do just like in fedmsg.commands.hub and mangle fedmsg.d/ to work
@@ -57,9 +60,8 @@ class RelayCommand(BaseCommand):
         self.config.update(moksha_options)
 
         # Flip the special bit that allows the RelayConsumer to run
-        self.config[RelayConsumer.config_key] = True
+        self.config[self.relay_consumer.config_key] = True
 
-        from moksha.hub import main
         for publish_endpoint in self.config['endpoints']['relay_outbound']:
             self.config['zmq_publish_endpoints'] = publish_endpoint
             try:
@@ -67,9 +69,8 @@ class RelayCommand(BaseCommand):
                     # Pass in our config dict
                     options=self.config,
                     # Only run this *one* consumer
-                    consumers=[RelayConsumer],
-                    # And no producers.
-                    producers=[],
+                    consumers=[self.relay_consumer],
+                    producers=[MonitoringProducer],
                     # Tell moksha to quiet its logging.
                     framework=False,
                 )
@@ -79,6 +80,37 @@ class RelayCommand(BaseCommand):
         raise IOError("Failed to bind to any outbound endpoints.")
 
 
+class SigningRelayCommand(RelayCommand):
+    """Relay messages, signing them before re-publishing them."""
+    name = 'fedmsg-signing-relay'
+    relay_consumer = SigningRelayConsumer
+
+
 def relay():
+    """
+    Relay messages from an inbound subscription socket to an outbound publishing socket.
+
+    This service binds to two sockets, :ref:`conf-relay-inbound` and
+    :ref:`conf-relay-outbound`. The inbound socket is a ZeroMQ SUB socket and the
+    outbound socket is a ZeroMQ PUB socket.
+
+    Tools like ``fedmsg-logger`` require that an instance of ``fedmsg-relay`` be running
+    *somewhere* and that it's inbound address be listed in the config as one of the
+    entries in :ref:`conf-relay-inbound`.
+    """
     command = RelayCommand()
     return command.execute()
+
+
+def signing_relay():
+    """
+    Sign and relay fedmsgs.
+
+    This relay behaves like the default relay, except that messages it receives
+    are signed with the certificate referenced in the ``signing_relay`` key of
+    the ``certnames`` dictionary in the fedmsg configuration.
+
+    This allows users to send unsigned messages on a trusted network and have a single
+    exit point to an untrusted network that is cryptographically signed.
+    """
+    return SigningRelayCommand().execute()

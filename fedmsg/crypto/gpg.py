@@ -17,7 +17,10 @@
 #
 # Authors:  Simon Chopin <chopin.simon@gmail.com>
 #           Ralph Bean <rbean@redhat.com>
+""" ``fedmsg.crypto.gpg`` - GnuPG backend for :mod:`fedmsg.crypto` """
 
+from base64 import b64encode, b64decode
+import logging
 import os
 import os.path
 import tempfile
@@ -25,9 +28,9 @@ import shutil
 import six
 import subprocess
 
-from base64 import b64encode, b64decode
 
-import logging
+import fedmsg.encoding
+
 log = logging.getLogger(__name__)
 
 
@@ -146,9 +149,8 @@ class Context(object):
             raise GpgBinaryError(stderr)
         return stdout
 
+
 # Here comes the part actually relevent to fedmsg
-""" ``fedmsg.crypto.gpg`` - GnuPG backend for :mod:`fedmsg.crypto` """
-import fedmsg.encoding
 _ctx = Context()
 
 
@@ -193,6 +195,6 @@ def validate(message, gpg_home=None, **config):
             homedir=gpg_home
         )
         return True
-    except GpgBinaryError as e:
+    except GpgBinaryError:
         log.warn("Failed validation. {0}".format(six.text_type(message)))
         return False

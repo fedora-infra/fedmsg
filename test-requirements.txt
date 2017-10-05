@@ -1,11 +1,8 @@
-nose
+pytest-cov
 moksha.hub
 pygments
 psutil
 sqlalchemy
-mock; python_version <= '2.7'
-argparse; python_version <= '2.6'
-ordereddict; python_version <= '2.6'
-logutils; python_version <= '2.6'
-unittest2; python_version <= '2.6'
-Twisted==12.2; python_version <= '2.6'
+mock
+flake8
+click

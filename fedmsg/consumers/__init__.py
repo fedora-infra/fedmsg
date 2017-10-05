@@ -26,8 +26,10 @@ import psutil
 import requests
 import threading
 import time
+import warnings
 
 import moksha.hub.api.consumer
+import six
 
 import fedmsg.crypto
 import fedmsg.encoding
@@ -35,41 +37,53 @@ from fedmsg.replay import check_for_replay
 
 
 class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
-    """ Base class for fedmsg consumers.
+    """
+    Base class for fedmsg consumers.
 
-    The fedmsg consumption API is really just a thin wrapper over moksha.
-    Moksha expects consumers to:
+    This class inherits from :class:`moksha.hub.api.consumer.Consumer` and you
+    should familiarize yourself with this class as well.
 
-        * Declare themselves on the moksha.consumers python entry-point.
-        * Declare a ``consume(...)`` method.
-        * Specify a ``topic``.
+    To create a consumer, you must inherit this class and do the following:
 
-    All this class does in addition to moksha is:
+        * Declare the class on the ``moksha.consumers`` python entry-point::
 
-        * Provide a mechanism for disabling/enabling consumers by configuration
-          in a consistent way (namely, by use of ``config_key``).
+              setup(
+                  entry_points={
+                      'moksha.consumer': (
+                          'your_consumer = python.path:YourConsumerClass',
+                      ),
+                  },
+              )
 
-          If you set ``validate_signatures = False`` on your consumer, it will
-          be exempt from global validation rules.  Messages will not be
-          checked for authenticity before being handed off to your consume
-          method.  This is handy if you're developing or building a
-          special-case consumer.  The consumer used by ``fedmsg-relay``
-          (described in :doc:`commands`) sets ``validate_signatures = False``
-          so that it can transparently forward along everything and let the
-          terminal endpoints decide whether or not to consume particular
-          messages.
+        * Implement the ``consume(self, message)`` method on the class.
 
-        * Provide a mechanism for automatically validating fedmsg messages
-          with :mod:`fedmsg.crypto`.
+        * Set the attributes documented below
 
-        * Provide a mechanism to play back messages that haven't been received
-          by the hub even though emitted. To make use of this feature, you have
-          to set ``replay_name`` to some string corresponding to an endpoint in
-          the ``replay_endpoints`` dict in the configuration.
+    Attributes:
+        validate_signatures (bool): If ``False``, message authenticity will not be
+            checked. This is helpful if you're developing or building a special-case
+            consumer. For example, the consumer used by :ref:`command-relay` sets
+            ``validate_signatures = False`` so that it can transparently forward along
+            everything and let the terminal endpoints decide whether or not to consume
+            particular messages.
 
-          You must set ``config_key`` to some string.  A config value by
-          that name must be True in the config parsed by :mod:`fedmsg.config`
-          in order for the consumer to be activated.
+        topic (str or list): This attribute is required. Either a :class:`str`
+            or :class:`list` of :class:`str` that are topics that this consumer
+            is interested in receiving messages for. To receive all messages, use
+            an empty string.
+
+        config_key (str): The name of the configuration key used to enable or disable
+            this consumer. If this key is not present in the fedmsg configuration or
+            does not have a value of ``True``, :ref:`command-hub` will not run the
+            consumer.
+
+        replay_name (str): The name of the replay endpoint where the system should
+            query for playback in case of missed messages. It must match a service
+            key in :ref:`conf-replay-endpoints`. This attribute is optional.
+
+    Args:
+        hub (moksha.hub.hub.MokshaCentralHub): The Moksha Hub that is initializing this
+            consumer.
     """
 
     validate_signatures = None
@@ -78,7 +92,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
     def __init__(self, hub):
         module = inspect.getmodule(self).__name__
         name = self.__class__.__name__
-        self.log = logging.getLogger("fedmsg")
+        self.log = logging.getLogger(__name__)
 
         if not self.config_key:
             raise ValueError("%s:%s must declare a 'config_key'" % (
@@ -98,7 +112,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         super(FedmsgConsumer, self).__init__(hub)
 
         # Now, re-get our logger to override the one moksha assigns us.
-        self.log = logging.getLogger("fedmsg")
+        self.log = logging.getLogger(__name__)
 
         if self.validate_signatures is None:
             self.validate_signatures = self.hub.config['validate_signatures']
@@ -161,7 +175,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
             return
 
         last = data['message']['body']
-        if isinstance(last, basestring):
+        if isinstance(last, str):
             last = json.loads(last)
 
         then = last['timestamp']
@@ -214,11 +228,34 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
                         break
 
     def validate(self, message):
-        """ This needs to raise an exception, caught by moksha. """
+        """
+        Validate the message before the consumer processes it.
+
+        This needs to raise an exception, caught by moksha.
+
+        Args:
+            message (dict): The message as a dictionary. This must, at a minimum,
+                contain the 'topic' key with a unicode string value and 'body' key
+                with a dictionary value. However, the message might also be an object
+                with a ``__json__`` method that returns a dict with a 'body' key that
+                can be a unicode string that is JSON-encoded.
+
+        Raises:
+            RuntimeWarning: If the message is not valid.
+            UnicodeDecodeError: If the message body is not unicode or UTF-8 and also
+                happens to contain invalid UTF-8 binary.
+        """
         if hasattr(message, '__json__'):
             message = message.__json__()
-            if isinstance(message['body'], basestring):
+            if isinstance(message['body'], six.text_type):
                 message['body'] = json.loads(message['body'])
+            elif isinstance(message['body'], six.binary_type):
+                # Try to decode the message body as UTF-8 since it's very likely
+                # that that was the encoding used. This API should eventually only
+                # accept unicode strings inside messages. If a UnicodeDecodeError
+                # happens, let that bubble up.
+                warnings.warn('Message body is not unicode', DeprecationWarning)
+                message['body'] = json.loads(message['body'].decode('utf-8'))
 
         # Massage STOMP messages into a more compatible format.
         if 'topic' not in message['body']:
@@ -246,6 +283,12 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
         except RuntimeWarning as e:
             self.log.warn("Received invalid message {0}".format(e))
             return
+
+        # Pass along headers if present.  May be useful to filters or
+        # fedmsg.meta routines.
+        if isinstance(message, dict) and 'headers' in message and 'body' in message:
+            message['body']['headers'] = message['headers']
+
         if hasattr(self, "replay_name"):
             for m in check_for_replay(
                     self.replay_name, self.name_to_seq_id,

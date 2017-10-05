@@ -19,35 +19,43 @@
 #
 """ ``fedmsg.crypto.x509`` - X.509 backend for :mod:`fedmsg.crypto`.  """
 
-
-import os
-import requests
-import time
-
-import fedmsg.crypto
-import fedmsg.encoding
-
 import logging
-log = logging.getLogger(__name__)
-
-try:
-    import M2Crypto
-    # FIXME - m2ext will be unnecessary once the following bug is closed.
-    # https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
-    import m2ext
-    disabled = False
-except ImportError as e:
-    logging.basicConfig()
-    log.warn("Crypto disabled %r" % e)
-    disabled = True
+import warnings
 
 import six
+try:
+    # Else we need M2Crypto and m2ext
+    import M2Crypto
+    import m2ext
+    _m2crypto = True
+except ImportError:
+    _m2crypto = False
+
+from .utils import _load_remote_cert, validate_policy
+from .x509_ng import _cryptography, sign as _crypto_sign, validate as _crypto_validate
+import fedmsg.crypto  # noqa: E402
+import fedmsg.encoding  # noqa: E402
+
+
+_log = logging.getLogger(__name__)
 
 if six.PY3:
     long = int
 
 
-def sign(message, ssldir=None, certname=None, **config):
+def _disabled_sign(*args, **kwargs):
+    """A fallback function that emits a warning when no crypto is being used."""
+    warnings.warn('Message signing is disabled because "cryptography" and '
+                  '"pyopenssl" or "m2crypto" are not available.')
+
+
+def _disabled_validate(*args, **kwargs):
+    """A fallback function that emits a warning when no crypto is being used."""
+    warnings.warn('Message signature validation is disabled because ("cryptography"'
+                  ' and "pyopenssl") or "m2crypto" are not available.')
+
+
+def _m2crypto_sign(message, ssldir=None, certname=None, **config):
     """ Insert two new fields into the message dict and return it.
 
     Those fields are:
@@ -55,10 +63,6 @@ def sign(message, ssldir=None, certname=None, **config):
         - 'signature' - the computed RSA message digest of the JSON repr.
         - 'certificate' - the base64 X509 certificate of the sending host.
     """
-
-    if disabled:
-        return message
-
     if ssldir is None or certname is None:
         error = "You must set the ssldir and certname keyword arguments."
         raise ValueError(error)
@@ -84,7 +88,7 @@ def sign(message, ssldir=None, certname=None, **config):
     ])
 
 
-def validate(message, ssldir=None, **config):
+def _m2crypto_validate(message, ssldir=None, **config):
     """ Return true or false if the message is signed appropriately.
 
     Four things must be true:
@@ -94,7 +98,7 @@ def validate(message, ssldir=None, **config):
       3) We must be able to verify the signature using the RSA public key
          contained in the X509 cert.
       4) The topic of the message and the CN on the cert must appear in the
-         :term:`routing_policy` dict.
+         :ref:`conf-routing-policy` dict.
 
     """
 
@@ -102,23 +106,27 @@ def validate(message, ssldir=None, **config):
         raise ValueError("You must set the ssldir keyword argument.")
 
     def fail(reason):
-        log.warn("Failed validation.  %s" % reason)
+        _log.warn("Failed validation.  %s" % reason)
         return False
-
-    if disabled:
-        fail("M2Crypto and/or m2ext missing!")
 
     # Some sanity checking
     for field in ['signature', 'certificate']:
-        if not field in message:
+        if field not in message:
             return fail("No %r field found." % field)
-        if not isinstance(message[field], basestring):
-            return fail("msg[%r] is not a string" % field)
+        if not isinstance(message[field], six.text_type):
+            _log.error('msg[%r] is not a unicode string' % field)
+            try:
+                # Make an effort to decode it, it's very likely utf-8 since that's what
+                # is hardcoded throughout fedmsg. Worst case scenario is it'll cause a
+                # validation error when there shouldn't be one.
+                message[field] = message[field].decode('utf-8')
+            except UnicodeError as e:
+                _log.error("Unable to decode the message '%s' field: %s", field, str(e))
+                return False
 
     # Peal off the auth datums
-    decode = lambda obj: obj.decode('base64')
-    signature, certificate = map(decode, (
-        message['signature'], message['certificate']))
+    signature = message['signature'].decode('base64')
+    certificate = message['certificate'].decode('base64')
     message = fedmsg.crypto.strip_credentials(message)
 
     # Build an X509 object
@@ -141,37 +149,39 @@ def validate(message, ssldir=None, **config):
         return fail("X509 certificate is not valid.")
 
     # Load and check against the CRL
-    crl = _load_remote_cert(
-        config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem'),
-        config.get('crl_cache', '/var/cache/fedmsg/crl.pem'),
-        config.get('crl_cache_expiry', 1800),
-        **config)
-    crl = M2Crypto.X509.load_crl(crl)
+    crl = None
+    if 'crl_location' in config and 'crl_cache' in config:
+        crl = _load_remote_cert(
+            config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem'),
+            config.get('crl_cache', '/var/cache/fedmsg/crl.pem'),
+            config.get('crl_cache_expiry', 1800),
+            **config)
+    if crl:
+        crl = M2Crypto.X509.load_crl(crl)
+        # FIXME -- We need to check that the CRL is signed by our own CA.
+        # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
+        # if not ctx.validate_certificate(crl):
+        #    return fail("X509 CRL is not valid.")
 
-    # FIXME -- We need to check that the CRL is signed by our own CA.
-    # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
-    #if not ctx.validate_certificate(crl):
-    #    return fail("X509 CRL is not valid.")
+        # FIXME -- we check the CRL, but by doing string comparison ourselves.
+        # This is not what we want to be doing.
+        # There is a patch into M2Crypto to handle this for us.  We should use it
+        # once its integrated upstream.
+        # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
+        revoked_serials = [long(line.split(': ')[1].strip(), base=16)
+                           for line in crl.as_text().split('\n')
+                           if 'Serial Number:' in line]
+        if cert.get_serial_number() in revoked_serials:
+            subject = cert.get_subject()
 
-    # FIXME -- we check the CRL, but by doing string comparison ourselves.
-    # This is not what we want to be doing.
-    # There is a patch into M2Crypto to handle this for us.  We should use it
-    # once its integrated upstream.
-    # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
-    revoked_serials = [long(line.split(': ')[1].strip(), base=16)
-                       for line in crl.as_text().split('\n')
-                       if 'Serial Number:' in line]
-    if cert.get_serial_number() in revoked_serials:
-        subject = cert.get_subject()
+            signer = '(no CN)'
+            if subject.nid.get('CN'):
+                entry = subject.get_entries_by_nid(subject.nid['CN'])[0]
+                if entry:
+                    signer = entry.get_data().as_text()
 
-        signer = '(no CN)'
-        if subject.nid.get('CN'):
-            entry = subject.get_entries_by_nid(subject.nid['CN'])[0]
-            if entry:
-                signer = entry.get_data().as_text()
-
-        return fail("X509 cert %r, %r is in the Revocation List (CRL)" % (
-            signer, cert.get_serial_number()))
+            return fail("X509 cert %r, %r is in the Revocation List (CRL)" % (
+                signer, cert.get_serial_number()))
 
     # If the cert is good, then test to see if the signature in the messages
     # matches up with the provided cert.
@@ -196,87 +206,18 @@ def validate(message, ssldir=None, **config):
     signer = subject.get_entries_by_nid(subject.nid['CN'])[0]\
         .get_data().as_text()
 
-    # Perform the authz dance
-    # Do we have a list of permitted senders for the topic of this message?
-    if message.get('topic') in routing_policy:
-        # If so.. is the signer one of those permitted senders?
-        if signer in routing_policy[message['topic']]:
-            # We are good.  The signer of this message is explicitly
-            # whitelisted to send on this topic in our config policy.
-            pass
-        else:
-            # We have a policy for this topic and $homeboy isn't on the list.
-            return fail("Authorization/routing_policy error.  "
-                        "Topic %r.  Signer %r." % (message['topic'], signer))
-    else:
-        # We don't have a policy for this topic.  How we react next for an
-        # underspecified routing_policy is based on a configuration option.
-
-        # Ideally, we are in nitpicky mode.  We leave it disabled while
-        # standing up fedmsg across our environment so that we can build our
-        # policy without having the whole thing come crashing down.
-        if config.get('routing_nitpicky', False):
-            # We *are* in nitpicky mode.  We don't have an entry in the
-            # routing_policy for the topic of this message.. and *nobody*
-            # gets in without a pass.  That means that we fail the message.
-            return fail("Authorization/routing_policy underspecified.")
-        else:
-            # We are *not* in nitpicky mode.  We don't have an entry in the
-            # routing_policy for the topic of this message.. but we don't
-            # really care.  We pass on the message and ultimately return
-            # True later on.
-            pass
-
-    return True
+    return validate_policy(
+        message.get('topic'), signer, routing_policy, config.get('routing_nitpicky', False))
 
 
-def _load_remote_cert(location, cache, cache_expiry, tries=0, **config):
-    """ Get a fresh copy from fp.o/fedmsg/crl.pem if ours is getting stale.
-
-    Return the local filename.
-    """
-    alternative_cache = os.path.expanduser("~/.local" + cache)
-
-    try:
-        modtime = os.stat(cache).st_mtime
-    except OSError:
-        # File does not exist yet.
-        try:
-            # Try alternative location.
-            modtime = os.stat(alternative_cache).st_mtime
-            # It worked!  Use the alternative location
-            cache = alternative_cache
-        except OSError:
-            # Neither file exists
-            modtime = 0
-
-    if (
-        (not modtime and not cache_expiry) or
-        (cache_expiry and time.time() - modtime > cache_expiry)
-    ):
-        try:
-            response = requests.get(location)
-            with open(cache, 'w') as f:
-                f.write(response.content)
-        except requests.exceptions.ConnectionError:
-            if tries < 3:
-                log.warn("Could not access %r.  Trying again." % location)
-                time.sleep(1)  # Take a nap to see if the network settles down.
-                return _load_remote_cert(
-                    location, cache, cache_expiry, tries+1, **config)
-            else:
-                log.error("Could not access %r" % location)
-                raise
-        except IOError as e:
-            # If we couldn't write to the specified cache location, try a
-            # similar place but inside our home directory instead.
-            cache = alternative_cache
-            usr_dir = '/'.join(cache.split('/')[:-1])
-
-            if not os.path.isdir(usr_dir):
-                os.makedirs(usr_dir)
-
-            with open(cache, 'w') as f:
-                f.write(response.content)
-
-    return cache
+# Maintain the ``sign`` and ``validate`` APIs while preferring cryptography and
+# pyOpenSSL over M2Crypto.
+if _cryptography:
+    sign = _crypto_sign
+    validate = _crypto_validate
+elif _m2crypto:
+    sign = _m2crypto_sign
+    validate = _m2crypto_validate
+else:
+    sign = _disabled_sign
+    validate = _disabled_validate

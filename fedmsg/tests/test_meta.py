@@ -20,18 +20,13 @@
 """ Tests for fedmsg.meta """
 
 import inspect
+import functools
 import os
-import unittest
 import textwrap
-
-from nose import SkipTest
-from nose.tools import eq_
-
 try:
-    from nose.tools.nontrivial import make_decorator
+    import unittest2 as unittest
 except ImportError:
-    # It lives here in older versions of nose (el6)
-    from nose.tools import make_decorator
+    import unittest
 
 import fedmsg.meta
 
@@ -56,32 +51,24 @@ def skip_on(attributes):
     are left unspecified.
     """
     def wrapper(func):
-        @make_decorator(func)
+        @functools.wraps(func)
         def inner(self):
             for attr in attributes:
                 if getattr(self, attr) is Unspecified:
-                    raise SkipTest("%r left unspecified" % attr)
+                    raise unittest.SkipTest("%r left unspecified" % attr)
             return func(self)
         return inner
     return wrapper
 
 
-def skip_if_fedmsg_meta_FI_is_present(f):
-    """ A test decorator that will skip if fedmsg_meta_fedora_infrastructure
-    is installed.
+try:
+    import fedmsg_meta_fedora_infrastructure  # noqa: F401
+    _fedmsg_meta_fi = True
+except ImportError:
+    _fedmsg_meta_fi = False
 
-    The presence of that module will screw up some tests.
-    """
-    def _wrapper(self, *args, **kw):
-        try:
-            import fedmsg_meta_fedora_infrastructure
-            raise SkipTest("fedmsg_meta_FI is present")
-        except ImportError:
-            pass
 
-        return f(self, *args, **kw)
-
-    return make_decorator(f)(_wrapper)
+skip_if_fedmsg_meta_FI_is_present = unittest.skipIf(_fedmsg_meta_fi, "fedmsg_meta_FI is present")
 
 
 class TestForWarning(unittest.TestCase):
@@ -108,7 +95,7 @@ class TestForWarning(unittest.TestCase):
             fedmsg.meta.processors = []
             fedmsg.meta.log.warn = mocked_warning
             fedmsg.meta.make_processors(**self.config)
-            eq_(messages, [expected])
+            self.assertEqual(messages, [expected])
         finally:
             fedmsg.meta.log.warn = original
 
@@ -282,20 +269,47 @@ class Base(unittest.TestCase):
 
 
 class TestUnhandled(Base):
-    expected_title = "unhandled_service.some_event"
+    expected_agent = None
+    expected_avatars = {}
+    expected_emails = {}
+    expected_icon = None
+    expected_link = ''
+    expected_long_form = ''
+    expected_objects = set()
+    expected_packages = set()
+    expected_secondary_icon = None
     expected_subti = ""
+    expected_title = "unhandled_service.some_event"
+    expected_usernames = set()
+
+    expected_subjective = {
+        'foo': expected_subti,
+        'bar': expected_subti,
+    }
+
     msg = {
         "topic": "org.fedoraproject.stg.unhandled_service.some_event"
     }
 
 
 class TestAnnouncement(Base):
-    expected_title = "announce.announcement"
-    expected_subti = 'hello, world.'
-    expected_long_form = 'hello, world.'
-    expected_link = 'foo'
-    expected_usernames = set(['ralph'])
     expected_agent = 'ralph'
+    expected_avatars = {}
+    expected_emails = {}
+    expected_icon = None
+    expected_link = 'foo'
+    expected_long_form = 'hello, world.'
+    expected_objects = set()
+    expected_packages = set()
+    expected_secondary_icon = None
+    expected_subti = 'hello, world.'
+    expected_title = "announce.announcement"
+    expected_usernames = set(['ralph'])
+
+    expected_subjective = {
+        'foo': expected_subti,
+        'bar': expected_subti,
+    }
 
     msg = {
         "i": 1,
@@ -310,15 +324,23 @@ class TestAnnouncement(Base):
 
 
 class TestLoggerNormal(Base):
-    expected_title = "logger.log"
-    expected_subti = 'hello, world. (ralph)'
+    expected_agent = 'ralph'
+    expected_avatars = {}
+    expected_emails = {}
+    expected_icon = None
+    expected_link = ''
     expected_long_form = 'hello, world. (ralph)'
+    expected_objects = set()
+    expected_packages = set()
+    expected_secondary_icon = None
+    expected_subti = 'hello, world. (ralph)'
+    expected_title = "logger.log"
+    expected_usernames = set(['ralph'])
+
     expected_subjective = {
         'ralph': 'you logged "hello, world."',
         'lmacken': expected_subti,
     }
-    expected_usernames = set(['ralph'])
-    expected_agent = 'ralph'
 
     msg = {
         "i": 1,
@@ -332,8 +354,18 @@ class TestLoggerNormal(Base):
 
 
 class TestLoggerJSON(Base):
-    expected_title = "logger.log"
+    expected_agent = 'root'
+    expected_avatars = {}
+    expected_emails = {}
+    expected_icon = None
+    expected_link = ''
+    expected_objects = set()
+    expected_packages = set()
+    expected_secondary_icon = None
     expected_subti = '<custom JSON message> (root)'
+    expected_title = "logger.log"
+    expected_usernames = set(['root'])
+
     expected_long_form = textwrap.dedent("""
     A custom JSON message was logged by root::
 
@@ -341,8 +373,11 @@ class TestLoggerJSON(Base):
             "foo": "bar"
         }
     """).strip()
-    expected_usernames = set(['root'])
-    expected_agent = 'root'
+
+    expected_subjective = {
+        'foo': expected_subti,
+        'bar': expected_subti,
+    }
 
     msg = {
         "i": 1,
@@ -372,7 +407,7 @@ class ConglomerateBase(unittest.TestCase):
 
         # Delete the msg_ids field because it is bulky and I don't want to
         # bother with testing it (copying and pasting it).
-        if not self.expected is Unspecified:
+        if self.expected is not Unspecified:
             for item in self.expected:
                 if 'msg_ids' in item:
                     del item['msg_ids']
@@ -415,22 +450,22 @@ class TestConglomeratorExtras(unittest.TestCase):
     def test_list_to_series_simple(self):
         original, expected = ['a', 'b', 'c'], "a, b, and c"
         result = self.conglomerator.list_to_series(original)
-        eq_(result, expected)
+        self.assertEqual(result, expected)
 
     def test_list_to_series_single_duplicate(self):
         original, expected = ['a', 'a', 'a'], "a"
         result = self.conglomerator.list_to_series(original)
-        eq_(result, expected)
+        self.assertEqual(result, expected)
 
     def test_list_to_series_double_duplicate(self):
         original, expected = ['a', 'a', 'b', 'b'], "a and b"
         result = self.conglomerator.list_to_series(original)
-        eq_(result, expected)
+        self.assertEqual(result, expected)
 
     def test_list_to_series_backheavy_duplicate(self):
         original, expected = ['a', 'b', 'b', 'b'], "a and b"
         result = self.conglomerator.list_to_series(original)
-        eq_(result, expected)
+        self.assertEqual(result, expected)
 
 
 if __name__ == '__main__':

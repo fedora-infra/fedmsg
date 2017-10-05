@@ -20,7 +20,6 @@
 """ Tests for fedmsg.config """
 
 import unittest
-from nose.tools import eq_
 
 import fedmsg.config
 from fedmsg.tests.common import load_config
@@ -41,7 +40,7 @@ class RecursiveUpdateBase(unittest.TestCase):
         for o in self.originals:
             actual = fedmsg.config._recursive_update(actual, o)
 
-        eq_(actual, self.expected)
+        self.assertEqual(actual, self.expected)
 
 
 class TestSimpleOne(RecursiveUpdateBase):

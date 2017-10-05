@@ -17,7 +17,6 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import fedmsg
 import threading
 import weakref
 import zmq

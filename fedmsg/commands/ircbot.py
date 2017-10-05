@@ -21,7 +21,7 @@
 # -*- coding; utf-8 -*-
 """
 Description: A bot that takes a config and puts messages matching given
-regexes in specified IRC channels.  See :term:`irc` for options.
+regexes in specified IRC channels.  See :ref:`conf-irc` for options.
 
 Think of it like a one-way firehose that spews fedmsg messages to IRC.
 """
@@ -33,12 +33,11 @@ from fedmsg.consumers.ircbot import IRCBotConsumer
 class IRCCommand(BaseCommand):
     """ Relay messages from the bus to any number of IRC channels.
 
-    This is highly configurable by way of the :term:`irc` config value.
+    This is highly configurable by way of the :ref:`conf-irc` config value.
     """
 
     name = "fedmsg-irc"
     extra_args = []
-    daemonizable = True
 
     def run(self):
         # Do just like in fedmsg.commands.hub and mangle fedmsg-config.py to

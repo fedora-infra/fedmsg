@@ -17,15 +17,16 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-""" :mod:`fedmsg.config` handles loading, processing and validation of
-all configuration.
+"""
+This module handles loading, processing and validation of all configuration.
 
 The configuration values used at runtime are determined by checking in
-the following order
+the following order:
 
     - Built-in defaults
-    - Config file (/etc/fedmsg.d/*.py)
-    - Config file (./fedmsg.d/*.py)
+    - All Python files in the /etc/fedmsg.d/ directory
+    - All Python files in the ~/.fedmsg.d/ directory
+    - All Python files in the current working directory's fedmsg.d/ directory
     - Command line arguments
 
 For example, if a config value does not appear in either the config file or on
@@ -60,7 +61,8 @@ defaults = dict(
     print_config=False,
     high_water_mark=0,  # zero means no limit
     zmq_linger=1000,    # Wait one second before timing out on fedmsg-relay
-    active=False,       # generally only true for fedmsg-logger
+    active=False,       # if active, "connect", else "bind"
+                        # Generally active is true only for fedmsg-logger
     persistent_store=None,  # an object.  See the fedmsg.replay module.
     logging=dict(
         version=1,
@@ -157,7 +159,7 @@ def load_config(extra_args=None,
         raise ValueError("No config value 'endpoints' found.")
 
     if not isinstance(config.get('endpoints', {}), dict):
-        raise ValueError("The 'endpoint' config value must be a dict.")
+        raise ValueError("The 'endpoints' config value must be a dict.")
 
     if 'endpoints' in config:
         config['endpoints'] = dict([

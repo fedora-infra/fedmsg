@@ -55,15 +55,6 @@ long_description = f.read().strip()
 long_description = long_description.split('split here', 1)[1]
 f.close()
 
-# Ridiculous as it may seem, we need to import multiprocessing and
-# logging here in order to get tests to pass smoothly on python 2.7.
-try:
-    import multiprocessing
-    import logging
-except Exception:
-    pass
-
-
 install_requires = [
     'pyzmq',
     'kitchen',
@@ -78,18 +69,22 @@ extras_require = {
         'M2Crypto',    # for message validation
         'm2ext',       # for message validation
     ],
+    'crypto_ng': [
+        'cryptography>=1.6',
+        'pyOpenSSL>=16.1.0',
+    ],
     'commands': [
         'pygments',
         'psutil',
+        'click',
     ],
     'consumers': [
         'moksha.hub>=1.3.0',
-        'daemon',      # not *necessarily* required
         'pygments',
         'psutil',
         # only needed for irc ssl support
-        #'pyopenssl',
-        #'service_identity',
+        # 'pyopenssl',
+        # 'service_identity',
     ],
 }
 extras_require['all'] = list(set(
@@ -98,7 +93,6 @@ extras_require['all'] = list(set(
     for requirement in requirements
 ))
 tests_require = [
-    'nose',
     'moksha.hub',
     'pygments',
     'psutil',
@@ -107,29 +101,34 @@ tests_require = [
 
 if sys.version_info[0] == 2:
     tests_require.append('mock')
-    if sys.version_info[1] <= 6:
-        install_requires.extend([
-            'argparse',
-            'ordereddict',
-            'logutils',
-        ])
-        tests_require.extend([
-            'unittest2',
-        ])
+
 
 setup(
     name='fedmsg',
-    version='0.18.3',
+    version='1.0.0',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
     author_email='rbean@redhat.com',
     url='https://github.com/fedora-infra/fedmsg/',
     license='LGPLv2+',
+    classifiers=[  # https://pypi.python.org/pypi?%3Aaction=list_classifiers
+        'Intended Audience :: Developers',
+        'Intended Audience :: System Administrators',
+        'Development Status :: 5 - Production/Stable',
+        'License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)',
+        'Operating System :: POSIX :: Linux',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: System :: Networking',
+    ],
     install_requires=install_requires,
     extras_require=extras_require,
     tests_require=tests_require,
-    test_suite='nose.collector',
     packages=[
         'fedmsg',
         'fedmsg.encoding',
@@ -169,9 +168,11 @@ setup(
             "fedmsg-announce=fedmsg.commands.announce:announce [commands]",
             "fedmsg-trigger=fedmsg.commands.trigger:trigger [commands]",
             "fedmsg-dg-replay=fedmsg.commands.replay:replay [commands]",
-            #"fedmsg-config=fedmsg.commands.config:config [commands]",
+            "fedmsg-check=fedmsg.commands.check:check [commands]",
+            # "fedmsg-config=fedmsg.commands.config:config [commands]",
             "fedmsg-hub=fedmsg.commands.hub:hub [consumers]",
             "fedmsg-relay=fedmsg.commands.relay:relay [consumers]",
+            "fedmsg-signing-relay=fedmsg.commands.relay:signing_relay [consumers]",
             "fedmsg-gateway=fedmsg.commands.gateway:gateway [consumers]",
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot [consumers]",
         ],

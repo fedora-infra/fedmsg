@@ -20,7 +20,6 @@
 
 import six
 import zmq
-import logging
 import inspect
 import subprocess
 
@@ -133,7 +132,7 @@ def load_class(location):
 
     try:
         return getattr(module, cls_name)
-    except AttributeError as e:
+    except AttributeError:
         raise ImportError("%r not found in %r" % (cls_name, mod_name))
 
 
@@ -183,12 +182,14 @@ def dict_query(dic, query):
         ('.'.join(tokens), _browse(tokens, dic)) for tokens in keys
     ])
 
+
 def cowsay_output(message):
     """ Invoke a shell command to print cowsay output. Primary replacement for
     os.system calls.
     """
     command = 'cowsay "%s"' % message
-    ret = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    ret = subprocess.Popen(
+        command, shell=True, stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     output, error = ret.communicate()
     return output, error

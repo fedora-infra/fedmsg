@@ -1,13 +1,37 @@
-from datetime import datetime
+# -*- coding: utf-8 -*-
+#
+# This file is part of fedmsg.
+# Copyright (C) 2017 Red Hat, Inc.
+# Copyright (C) 2014 Nicolas Dandrimont
+# Copyright (C) 2015 Slavek Kabrda
+#
+# fedmsg is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# fedmsg is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with fedmsg; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+
 import resource
+import shutil
+import tempfile
 import threading
 import unittest
 import time
 import json
 import os
+import mock
 
-from nose.tools import eq_
+from click.testing import CliRunner
 import six
+import zmq
 
 import fedmsg
 import fedmsg.core
@@ -16,10 +40,9 @@ import fedmsg.commands
 from fedmsg.commands.hub import HubCommand
 from fedmsg.commands.logger import LoggerCommand
 from fedmsg.commands.tail import TailCommand
-from fedmsg.commands.relay import RelayCommand
 from fedmsg.commands.config import config as config_command
+from fedmsg.commands.check import check
 import fedmsg.consumers.relay
-from fedmsg.tests.test_utils import mock
 
 
 CONF_FILE = os.path.join(os.path.dirname(__file__), "fedmsg.d", "ircbot.py")
@@ -43,10 +66,13 @@ class TestCommands(unittest.TestCase):
 
         test_input = "a message for you"
 
-        if six.PY3:
-            stdin = lambda: six.StringIO(test_input)
-        else:
-            stdin = lambda: six.StringIO(test_input.encode('utf-8'))
+        def mock_stdin():
+            if six.PY3:
+                return six.StringIO(test_input)
+            else:
+                return six.StringIO(test_input.encode('utf-8'))
+
+        stdin = mock_stdin
 
         msgs = []
 
@@ -61,7 +87,7 @@ class TestCommands(unittest.TestCase):
                         command = LoggerCommand()
                         command.execute()
 
-        eq_(msgs, [{'log': test_input}])
+        self.assertEqual(msgs, [{'log': test_input}])
 
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-logger", "--json-input"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
@@ -70,10 +96,13 @@ class TestCommands(unittest.TestCase):
         test_input_dict = {"hello": "world"}
         test_input = json.dumps(test_input_dict)
 
-        if six.PY3:
-            stdin = lambda: six.StringIO(test_input)
-        else:
-            stdin = lambda: six.StringIO(test_input.encode('utf-8'))
+        def mock_stdin():
+            if six.PY3:
+                return six.StringIO(test_input)
+            else:
+                return six.StringIO(test_input.encode('utf-8'))
+
+        stdin = mock_stdin
 
         msgs = []
 
@@ -88,7 +117,7 @@ class TestCommands(unittest.TestCase):
                         command = LoggerCommand()
                         command.execute()
 
-        eq_(msgs, [test_input_dict])
+        self.assertEqual(msgs, [test_input_dict])
 
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-tail"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
@@ -99,9 +128,9 @@ class TestCommands(unittest.TestCase):
         config = {}
         with mock.patch("fedmsg.__local", self.local):
             with mock.patch("fedmsg.config.__cache", config):
-                with mock.patch("fedmsg.core.FedMsgContext.tail_messages",
-                           mock_tail):
-                    command = fedmsg.commands.tail.TailCommand()
+                with mock.patch(
+                        "fedmsg.core.FedMsgContext.tail_messages", mock_tail):
+                    command = TailCommand()
                     command.execute()
 
         output = stdout.getvalue()
@@ -111,7 +140,6 @@ class TestCommands(unittest.TestCase):
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--pretty"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_tail_pretty(self, stdout, argv):
-        msgs = []
 
         def mock_tail(self, topic="", passive=False, **kw):
             msg = dict(
@@ -120,15 +148,14 @@ class TestCommands(unittest.TestCase):
                 timestamp=1354563717.472648,  # Once upon a time...
                 topic="org.threebean.prod.testing",
             )
-
             yield ("name", "endpoint", "topic", msg)
 
         config = {}
         with mock.patch("fedmsg.__local", self.local):
             with mock.patch("fedmsg.config.__cache", config):
-                with mock.patch("fedmsg.core.FedMsgContext.tail_messages",
-                           mock_tail):
-                    command = fedmsg.commands.tail.TailCommand()
+                with mock.patch(
+                        "fedmsg.core.FedMsgContext.tail_messages", mock_tail):
+                    command = TailCommand()
                     command.execute()
 
         output = stdout.getvalue()
@@ -138,7 +165,6 @@ class TestCommands(unittest.TestCase):
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--really-pretty"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
     def test_tail_really_pretty(self, stdout, argv):
-        msgs = []
 
         def mock_tail(self, topic="", passive=False, **kw):
             msg = dict(
@@ -153,36 +179,14 @@ class TestCommands(unittest.TestCase):
         config = {}
         with mock.patch("fedmsg.__local", self.local):
             with mock.patch("fedmsg.config.__cache", config):
-                with mock.patch("fedmsg.core.FedMsgContext.tail_messages",
-                           mock_tail):
-                    command = fedmsg.commands.tail.TailCommand()
+                with mock.patch(
+                        "fedmsg.core.FedMsgContext.tail_messages", mock_tail):
+                    command = TailCommand()
                     command.execute()
 
         output = stdout.getvalue()
         expected = '\x1b[33m"hello"\x1b[39;49;00m'
         assert(expected in output)
-
-    @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-relay"])
-    def test_relay(self, argv):
-        actual_options = []
-
-        def mock_main(options, consumers, producers, framework):
-            actual_options.append(options)
-
-        config = {}
-        with mock.patch("fedmsg.__local", self.local):
-            with mock.patch("fedmsg.config.__cache", config):
-                with mock.patch("moksha.hub.main", mock_main):
-                    command = fedmsg.commands.relay.RelayCommand()
-                    command.execute()
-
-        actual_options = actual_options[0]
-        assert(
-            fedmsg.consumers.relay.RelayConsumer.config_key in actual_options
-        )
-        assert(
-            actual_options[fedmsg.consumers.relay.RelayConsumer.config_key]
-        )
 
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-config"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
@@ -196,7 +200,7 @@ class TestCommands(unittest.TestCase):
         with mock.patch('fedmsg.config.__cache', {}):
             fedmsg_conf = fedmsg.config.load_config()
 
-        eq_(output_conf, fedmsg_conf)
+        self.assertEqual(output_conf, fedmsg_conf)
 
     @mock.patch("sys.argv", new_callable=lambda: [
         "fedmsg-config", "--query", "endpoints",
@@ -212,7 +216,7 @@ class TestCommands(unittest.TestCase):
         with mock.patch('fedmsg.config.__cache', {}):
             fedmsg_conf = fedmsg.config.load_config()
 
-        eq_(output_conf, fedmsg_conf["endpoints"])
+        self.assertEqual(output_conf, fedmsg_conf["endpoints"])
 
     @mock.patch("sys.argv", new_callable=lambda: [
         "fedmsg-config", "--query", "endpoints.broken",
@@ -224,7 +228,7 @@ class TestCommands(unittest.TestCase):
             with mock.patch('fedmsg.config.__cache', {}):
                 config_command()
         except SystemExit as exc:
-            eq_(exc.code, 1)
+            self.assertEqual(exc.code, 1)
         else:
             output = "output: %r, error: %r" % (
                 stdout.getvalue(), stderr.getvalue())
@@ -233,8 +237,8 @@ class TestCommands(unittest.TestCase):
         output = stdout.getvalue()
         error = stderr.getvalue()
 
-        eq_(output.strip(), "")
-        eq_(error.strip(), "Key `endpoints.broken` does not exist in config")
+        self.assertEqual(output.strip(), "")
+        self.assertEqual(error.strip(), "Key `endpoints.broken` does not exist in config")
 
     @mock.patch("sys.argv", new_callable=lambda: [
         "fedmsg-config", "--disable-defaults", "--config-filename", CONF_FILE,
@@ -253,7 +257,7 @@ class TestCommands(unittest.TestCase):
                 disable_defaults=True,
             )
 
-        eq_(output_conf, fedmsg_conf)
+        self.assertEqual(output_conf, fedmsg_conf)
 
 
 @mock.patch('fedmsg.commands.dictConfig', autospec=True)
@@ -283,3 +287,153 @@ class TestHubsCommand(unittest.TestCase):
         hub_command.log = mock.Mock()
         hub_command.set_rlimit_nofiles(limit=1844674407370)
         hub_command.log.warning.assert_called_once()
+
+
+class CheckTests(unittest.TestCase):
+    """Tests for the :class:`fedmsg.commands.check.CheckCommand`."""
+
+    def setUp(self):
+        self.report = {
+            "consumers": [
+                {
+                    "backlog": 0,
+                    "exceptions": 0,
+                    "headcount_in": 0,
+                    "headcount_out": 0,
+                    "initialized": True,
+                    "jsonify": True,
+                    "module": "test.consumers",
+                    "name": "TestConsumer",
+                    "times": [],
+                    "topic": ['test']
+                },
+            ],
+            "producers": [
+                 {
+                   "exceptions": 0,
+                   "frequency": 5,
+                   "initialized": True,
+                   "last_ran": 1496780847.269628,
+                   "module": "moksha.hub.monitoring",
+                   "name": "MonitoringProducer",
+                   "now": False,
+                 }
+            ]
+        }
+        self.tempdir = tempfile.mkdtemp()
+        self.socket_path = 'ipc://' + os.path.join(self.tempdir, self.id().split('.')[-1])
+
+    def tearDown(self):
+        shutil.rmtree(self.tempdir, ignore_errors=True)
+
+    def send_report(self):
+        """Set up a socket in thread and send a report for several seconds."""
+        def report_in_thread():
+            context = zmq.Context.instance()
+            socket = context.socket(zmq.PUB)
+            socket.setsockopt(zmq.LINGER, 0)
+            socket.bind(self.socket_path)
+            for x in range(0, 3):
+                socket.send(json.dumps(self.report).encode('utf-8'))
+                time.sleep(1)
+            socket.close()
+
+        thread = threading.Thread(target=report_in_thread)
+        thread.start()
+
+    def test_no_monitor_endpoint(self):
+        """Assert that when no endpoint for monitoring is configured, users are informed."""
+        expected_error = (
+            u'Error: No monitoring endpoint has been configured: please set '
+            u'"moksha.monitoring.socket"\n'
+        )
+        runner = CliRunner()
+        result = runner.invoke(check, [])
+        self.assertEqual(1, result.exit_code)
+        self.assertEqual(expected_error, result.output)
+
+    @mock.patch('fedmsg.commands.check.load_config')
+    def test_socket_timeout(self, mock_load_config):
+        """Assert when no message is received a timeout is hit."""
+        mock_load_config.return_value = {
+            'moksha.monitoring.socket': self.socket_path
+        }
+        expected_error = (
+            u'Error: Failed to receive message from the monitoring endpoint'
+            u' ({path}) in 1 seconds.\n'.format(path=self.socket_path)
+        )
+        runner = CliRunner()
+        context = zmq.Context.instance()
+        socket = context.socket(zmq.PUB)
+        socket.setsockopt(zmq.LINGER, 0)
+        socket.bind(self.socket_path)
+
+        result = runner.invoke(check, ['--timeout=1'])
+
+        self.assertEqual(expected_error, result.output)
+        self.assertEqual(1, result.exit_code)
+        socket.close()
+
+    @mock.patch('fedmsg.commands.check.load_config')
+    def test_no_consumers_or_producers(self, mock_load_config):
+        """Assert that when no consumers or producers are specified, all are displayed."""
+        mock_load_config.return_value = {'moksha.monitoring.socket': self.socket_path}
+        runner = CliRunner()
+        expected_output = (u'No consumers or producers specified so all will be shown.'
+                           u'\n{r}\n'.format(r=json.dumps(self.report, indent=2, sort_keys=True)))
+
+        self.send_report()
+        result = runner.invoke(check, [])
+
+        self.assertEqual(expected_output, result.output)
+        self.assertEqual(0, result.exit_code)
+
+    @mock.patch('fedmsg.commands.check.load_config')
+    def test_missing(self, mock_load_config):
+        """
+        Assert the command has a non-zero exit when a consumer is missing
+        from the list of active consumers.
+        """
+        mock_load_config.return_value = {'moksha.monitoring.socket': self.socket_path}
+        runner = CliRunner()
+        expected_output = (
+            u'"MissingConsumer" is not active!\n'
+            u'Error: Some consumers and/or producers are missing!\n'
+        )
+
+        self.send_report()
+        result = runner.invoke(check, ['--consumer=MissingConsumer'])
+
+        self.assertEqual(1, result.exit_code)
+        self.assertEqual(expected_output, result.output)
+
+    @mock.patch('fedmsg.commands.check.load_config')
+    def test_uninitialized(self, mock_load_config):
+        """Assert the command has a non-zero exit when a consumer is not initialized."""
+        mock_load_config.return_value = {'moksha.monitoring.socket': self.socket_path}
+        runner = CliRunner()
+        expected_output = (
+            u'"TestConsumer" is not initialized!\n'
+            u'Error: Some consumers and/or producers are uninitialized!\n'
+        )
+        self.report['consumers'][0]['initialized'] = False
+
+        self.send_report()
+        result = runner.invoke(check, ['--consumer=TestConsumer'])
+
+        self.assertEqual(expected_output, result.output)
+        self.assertEqual(1, result.exit_code)
+
+    @mock.patch('fedmsg.commands.check.load_config')
+    def test_all_good(self, mock_load_config):
+        """Assert if all consumers/producers are present, the command exits 0."""
+        mock_load_config.return_value = {'moksha.monitoring.socket': self.socket_path}
+        runner = CliRunner()
+        expected_output = (u'All consumers and producers are active!\n'
+                           u'{r}\n'.format(r=json.dumps(self.report, indent=2, sort_keys=True)))
+
+        self.send_report()
+        result = runner.invoke(check, ['--consumer=TestConsumer'])
+
+        self.assertEqual(0, result.exit_code)
+        self.assertEqual(expected_output, result.output)

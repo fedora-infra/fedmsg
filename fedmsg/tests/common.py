@@ -2,8 +2,6 @@ import os
 import socket
 import fedmsg.config
 
-from nose.tools.nontrivial import make_decorator
-
 try:
     import unittest2 as unittest
 except ImportError:
@@ -38,12 +36,5 @@ def load_config(name='fedmsg-test-config.py'):
     return config
 
 
-def requires_network(function):
-    """ Decorator to skip tests if FEDMSG_NETWORK is not in os.environ """
-    @make_decorator(function)
-    def decorated_function(*args, **kwargs):
-        """ Decorated function, actually does the work. """
-        if not os.environ.get('FEDMSG_NETWORK'):
-            raise unittest.SkipTest("Skip test since we don't have network")
-        return function(*args, **kwargs)
-    return decorated_function
+requires_network = unittest.skipIf(
+    not os.environ.get('FEDMSG_NETWORK'), "Skip test since we don't have network")

@@ -17,11 +17,8 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import six
 import sys
 import os
-
-import nose.tools.nontrivial
 
 major, minor = sys.version_info[:2]
 if major == 2 and minor <= 6:
@@ -30,26 +27,11 @@ if major == 2 and minor <= 6:
 else:
     import unittest
 
-import fedmsg.crypto
+import fedmsg.crypto  # noqa: E402
+
 
 SEP = os.path.sep
 here = SEP.join(__file__.split(SEP)[:-1])
-
-
-def skip_if_missing_x509_libs(f):
-    def _wrapper(self, *args, **kw):
-        try:
-            if six.PY3:
-                import cryptography
-            else:
-                import M2Crypto
-                import m2ext
-        except ImportError as e:
-            self.skipTest(six.text_type(e))
-
-        return f(self, *args, **kw)
-
-    return nose.tools.nontrivial.make_decorator(f)(_wrapper)
 
 
 class TestCryptoSwitching(unittest.TestCase):
@@ -75,7 +57,6 @@ class TestCryptoSwitching(unittest.TestCase):
         # Need to reset this global
         fedmsg.crypto._validate_implementations = None
 
-    @skip_if_missing_x509_libs
     def test_invalid_validator(self):
         """ Try to verify an x509 message when only gpg is allowed. """
         message = dict(msg='awesome')

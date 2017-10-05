@@ -34,19 +34,18 @@ following exceptions to normal JSON serialization are observed.
    through :func:`fedmsg.encoding.sqla.to_json` which recursively produces a
    dict of all attributes and relations of the object(!)  Be careful using
    this, as you might expose information to the bus that you do not want to.
-   See :doc:`crypto` for considerations.
+   See :ref:`api-crypto` for considerations.
 
 """
 
 import time
 import datetime
 
-sqlalchemy = None
 try:
     import sqlalchemy
     import sqlalchemy.ext.declarative
 except ImportError:
-    pass
+    sqlalchemy = None
 
 import json
 import json.encoder

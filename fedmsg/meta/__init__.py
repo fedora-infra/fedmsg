@@ -49,6 +49,7 @@ entry-point, your new class will need to be added to the
 End users can have multiple plugin sets installed simultaneously.
 
 """
+import logging
 
 import six
 
@@ -62,12 +63,10 @@ if six.PY3:
 else:
     _ = t.ugettext
 
+from fedmsg.meta.default import DefaultProcessor  # noqa: E402
+from fedmsg.meta.base import BaseConglomerator  # noqa: E402
 
-from fedmsg.meta.default import DefaultProcessor
-from fedmsg.meta.base import BaseConglomerator
-
-import logging
-log = logging.getLogger("fedmsg")
+log = logging.getLogger(__name__)
 
 
 class ProcessorsNotInitialized(Exception):
@@ -79,8 +78,9 @@ class ProcessorsNotInitialized(Exception):
         return False
     __bool__ = __nonzero__
 
-processors = ProcessorsNotInitialized("You must first call "
-                                      "fedmsg.meta.make_processors(**config)")
+
+processors = ProcessorsNotInitialized(
+    "You must first call fedmsg.meta.make_processors(**config)")
 
 
 def make_processors(**config):
@@ -303,7 +303,7 @@ def msg2agent(msg, processor=None, legacy=False, **config):
     If there are no users returned by msg2usernames, then None is returned.
     """
 
-    if not processor.agent is NotImplemented:
+    if processor.agent is not NotImplemented:
         return processor.agent(msg, **config)
     else:
         usernames = processor.usernames(msg, **config)

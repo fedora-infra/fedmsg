@@ -17,8 +17,6 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 #
-import fedmsg
-
 from fedmsg.consumers import FedmsgConsumer
 
 import logging
@@ -40,5 +38,5 @@ class DummyConsumer(FedmsgConsumer):
 
     def consume(self, msg):
         # Do nothing.
-        log = logging.getLogger("moksha.hub")
+        log = logging.getLogger(__name__)
         log.debug("Duhhhh... got: %r" % msg)

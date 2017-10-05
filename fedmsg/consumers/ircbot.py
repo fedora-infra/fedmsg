@@ -66,6 +66,16 @@ mirc_colors = {
 }
 
 
+def _default_link_shortener(url):
+    dagd = 'http://da.gd/s'
+    try:
+        resp = requests.get(dagd, params=dict(url=url), timeout=3)
+        return resp.text.strip()
+    except:
+        log.exception("Failed to shorten %r" % url)
+        return url
+
+
 def ircprettify(title, subtitle, link="", config=None):
     def markup(s, color):
         return "\x03%i%s\x03" % (mirc_colors[color], s)
@@ -159,33 +169,33 @@ class Fedmsg2IRCFactory(protocol.ClientFactory):
         self.rate = rate
         self.parent_consumer = parent_consumer
         self.ready = ready
-        self.log = logging.getLogger("moksha.hub")
+        self.log = logging.getLogger(__name__)
 
     def startedConnecting(self, connector):
         if self.ready:
             # If we're joining 12 channels, join one of them first.  Once
             # joining, wait five seconds and start joining the second one.
             # That one should trigger joining the third one...
-            self.log.info("%s scheduling conn for next client" % self.nickname)
+            log.info("%s scheduling conn for next client" % self.nickname)
             reactor.callLater(5, self.ready)
             # Un set this so we don't trigger it again later on a reconnect...
             self.ready = None
 
     def clientConnectionLost(self, connector, reason):
         if self.parent_consumer.die:
-            self.log.info("Lost connection.  Not reconnecting to IRC.")
+            log.info("Lost connection.  Not reconnecting to IRC.")
             return
 
-        self.log.warning("Lost connection (%s), reconnecting." % (reason,))
+        log.warning("Lost connection (%s), reconnecting." % (reason,))
         self.parent_consumer.del_irc_clients(factory=self)
         connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
         if self.parent_consumer.die:
-            self.log.info("Failed connection.  Not reconnecting to IRC.")
+            log.info("Failed connection.  Not reconnecting to IRC.")
             return
 
-        self.log.error("Could not connect: %s, retry in 60s" % (reason,))
+        log.error("Could not connect: %s, retry in 60s" % (reason,))
         self.parent_consumer.del_irc_clients(factory=self)
         reactor.callLater(60, connector.connect)
 
@@ -215,7 +225,7 @@ class IRCBotConsumer(FedmsgConsumer):
             use_ssl = settings.get('ssl', False)
             channel = settings.get('channel', None)
             if not channel:
-                self.log.error("No channel specified.  Ignoring entry.")
+                log.error("No channel specified.  Ignoring entry.")
                 continue
 
             if not channel.startswith("#"):
@@ -229,7 +239,6 @@ class IRCBotConsumer(FedmsgConsumer):
             timeout = settings.get('timeout', 120)
 
             filters = self.compile_filters(settings.get('filters', None))
-
 
             factory = Fedmsg2IRCFactory(
                 channel, nickname, filters,
@@ -254,6 +263,7 @@ class IRCBotConsumer(FedmsgConsumer):
         # Call only the very last one.
         # When it is done, it will call the second to last one, which when it
         # is done will call the third to last one, etc..
+        log.info("Scheduling connection: %r" % callback)
         callback()
 
     def add_irc_client(self, client):
@@ -308,9 +318,10 @@ class IRCBotConsumer(FedmsgConsumer):
                     link = fedmsg.meta.msg2link(msg, **self.hub.config)
 
                 if link and short:
-                    dagd = 'http://da.gd/s'
-                    resp = requests.get(dagd, params=dict(url=link))
-                    link = resp.text.strip()
+                    if callable(short):
+                        link = short(link)
+                    else:
+                        link = _default_link_shortener(link)
 
                 return ircprettify(
                     title=title,
@@ -361,7 +372,7 @@ class IRCBotConsumer(FedmsgConsumer):
                 backlog = self.incoming.qsize()
                 if backlog and (backlog % 20) == 0:
                     warning = "* backlogged by %i messages" % backlog
-                    self.log.warning(warning)
+                    log.warning(warning)
                     send(client.factory.channel, warning.encode('utf-8'))
 
     def stop(self):

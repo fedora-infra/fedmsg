@@ -59,7 +59,7 @@ class FedMsgContext(object):
 
     def __init__(self, **config):
         super(FedMsgContext, self).__init__()
-        self.log = logging.getLogger("fedmsg")
+        self.log = logging.getLogger(__name__)
 
         self.c = config
         self.hostname = socket.gethostname().split('.', 1)[0]
@@ -75,12 +75,12 @@ class FedMsgContext(object):
             module_name = guess_calling_module(default="fedmsg")
             config["name"] = module_name + '.' + self.hostname
 
-            if any(map(config["name"].startswith, ['fedmsg'])):
+            if config["name"].startswith('fedmsg'):
                 config["name"] = None
 
         # Do a little special-case mangling.  We never want to "listen" to the
         # relay_inbound address, but in the special case that we want to emit
-        # our messages there, we add it to the :term:`endpoints` dict so that
+        # our messages there, we add it to the :ref:`conf-endpoints` dict so that
         # the code below where we "Actually set up our publisher" can be
         # simplified.  See Issue #37 - https://bit.ly/KN6dEK
         if config.get('active', False):
@@ -89,7 +89,7 @@ class FedMsgContext(object):
                 config['endpoints'][name] = config[name]
             except KeyError:
                 raise KeyError("Could not find endpoint for fedmsg-relay."
-                              " Try installing fedmsg-relay.")
+                               " Try installing fedmsg-relay.")
 
         # Actually set up our publisher, but only if we're configured for zmq.
         if (
@@ -163,6 +163,7 @@ class FedMsgContext(object):
             pass
 
         # Cleanup.  See https://bit.ly/SaGeOr for discussion.
+        # arg signature - weakref.ref(object [, callback])
         weakref.ref(threading.current_thread(), self.destroy)
 
         # Sleep just to make sure that the socket gets set up before anyone
@@ -174,6 +175,7 @@ class FedMsgContext(object):
 
         if getattr(self, 'publisher', None):
             self.log.debug("closing fedmsg publisher")
+            self.log.debug("sent %i messages" % self._i)
             self.publisher.close()
             self.publisher = None
 
@@ -182,43 +184,32 @@ class FedMsgContext(object):
             self.context = None
 
     def send_message(self, topic=None, msg=None, modname=None):
-        warnings.warn(".send_message is deprecated.", DeprecationWarning)
+        warnings.warn(
+            ".send_message is deprecated. Use .publish", DeprecationWarning)
 
         return self.publish(topic, msg, modname)
 
     def publish(self, topic=None, msg=None, modname=None,
                 pre_fire_hook=None, **kw):
-        """ Send a message over the publishing zeromq socket.
+        """
+        Send a message over the publishing zeromq socket.
 
-          >>> import fedmsg
-          >>> fedmsg.publish(topic='testing', modname='test', msg={
-          ...     'test': "Hello World",
-          ... })
+            >>> import fedmsg
+            >>> fedmsg.publish(topic='testing', modname='test', msg={
+            ...     'test': "Hello World",
+            ... })
 
         The above snippet will send the message ``'{test: "Hello World"}'``
-        over the ``<topic_prefix>.dev.test.testing`` topic.
+        over the ``<topic_prefix>.dev.test.testing`` topic. The fully qualified
+        topic of a message is constructed out of the following pieces:
+
+            <:ref:`conf-topic-prefix`>.<:ref:`conf-environment`>.<``modname``>.<``topic``>
 
         This function (and other API functions) do a little bit more
         heavy lifting than they let on.  If the "zeromq context" is not yet
         initialized, :func:`fedmsg.init` is called to construct it and
         store it as :data:`fedmsg.__local.__context` before anything else is
         done.
-
-        The ``modname`` argument will be omitted in most use cases.  By
-        default, ``fedmsg`` will try to guess the name of the module that
-        called it and use that to produce an intelligent topic.  Specifying
-        ``modname`` explicitly overrides this behavior.
-
-        The ``pre_fire_hook`` argument may be a callable that will be called
-        with a single argument -- the dict of the constructed message -- just
-        before it is handed off to ZeroMQ for publication.
-
-        The fully qualified topic of a message is constructed out of the
-        following pieces:
-
-         <:term:`topic_prefix`>.<:term:`environment`>.<``modname``>.<``topic``>
-
-        ----
 
         **An example from Fedora Tagger -- SQLAlchemy encoding**
 
@@ -246,8 +237,6 @@ class FedMsgContext(object):
         stripped it down to just ``fedoratagger`` for the final topic of
         ``org.fedoraproject.{dev,stg,prod}.fedoratagger.tag.update``.
 
-        ----
-
         **Shell Usage**
 
         You could also use the ``fedmsg-logger`` from a shell script like so::
@@ -255,6 +244,24 @@ class FedMsgContext(object):
             $ echo "Hello, world." | fedmsg-logger --topic testing
             $ echo '{"foo": "bar"}' | fedmsg-logger --json-input
 
+        :param topic: The message topic suffix. This suffix is joined to the
+            configured topic prefix (e.g. ``org.fedoraproject``), environment
+            (e.g. ``prod``, ``dev``, etc.), and modname.
+        :type topic: unicode
+        :param msg: A message to publish. This message will be JSON-encoded
+            prior to being sent, so the object must be composed of JSON-
+            serializable data types. Please note that if this is already a
+            string JSON serialization will be applied to that string.
+        :type msg: dict
+        :param modname: The module name that is publishing the message. If this
+            is omitted, ``fedmsg`` will try to guess the name of the module
+            that called it and use that to produce an intelligent topic.
+            Specifying ``modname`` explicitly overrides this behavior.
+        :type modname: unicode
+        :param pre_fire_hook: A callable that will be called with a single
+            argument -- the dict of the constructed message -- just before it
+            is handed off to ZeroMQ for publication.
+        :type pre_fire_hook: function
         """
 
         topic = topic or 'unspecified'
@@ -325,8 +332,8 @@ class FedMsgContext(object):
             # Perhaps we're using STOMP or AMQP?  Let moksha handle it.
             import moksha.hub
             # First, a quick sanity check.
-            if not moksha.hub._hub:
-                raise AttributeError("Unable to publish non-zeromq msg"
+            if not getattr(moksha.hub, '_hub', None):
+                raise AttributeError("Unable to publish non-zeromq msg "
                                      "without moksha-hub initialization.")
             # Let moksha.hub do our work.
             moksha.hub._hub.send_message(
@@ -335,12 +342,19 @@ class FedMsgContext(object):
                 jsonify=False,
             )
 
-
     def tail_messages(self, topic="", passive=False, **kw):
-        """ Tail messages on the bus.
+        """
+        Subscribe to messages published on the sockets listed in :ref:`conf-endpoints`.
 
-        Generator that yields tuples of the form:
-        ``(name, endpoint, topic, message)``
+        Args:
+            topic (six.text_type): The topic to subscribe to. The default is to
+                subscribe to all topics.
+            passive (bool): If ``True``, bind to the :ref:`conf-endpoints` sockets
+                instead of connecting to them. Defaults to ``False``.
+            **kw: Additional keyword arguments. Currently none are used.
+
+        Yields:
+            tuple: A 4-tuple in the form (name, endpoint, topic, message).
         """
 
         if not self.c.get('zmq_enabled', True):
@@ -362,7 +376,7 @@ class FedMsgContext(object):
 
         # TODO -- the 'passive' here and the 'active' are ambiguous.  They
         # don't actually mean the same thing.  This should be resolved.
-        method = passive and 'bind' or 'connect'
+        method = (passive and 'bind') or 'connect'
 
         failed_hostnames = []
         subs = {}
@@ -456,7 +470,7 @@ class FedMsgContext(object):
                     else:
                         raise ValidationError(msg)
             else:
-                return name, ep, _topic, msg
+                return (name, ep, _topic, msg)
         else:
             raise ValidationError(msg)
 

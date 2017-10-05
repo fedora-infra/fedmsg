@@ -1,9 +1,9 @@
 import unittest
-
+import mock
 import warnings
+
 from fedmsg.core import FedMsgContext
 from fedmsg.tests.common import load_config
-from fedmsg.tests.test_utils import mock
 
 
 class TestCore(unittest.TestCase):
@@ -26,7 +26,7 @@ class TestCore(unittest.TestCase):
             warnings.simplefilter("always")
             self.ctx.send_message(topic=fake_topic, msg=fake_msg)
             assert len(w) == 1
-            assert str(w[0].message) == ".send_message is deprecated."
+            assert str(w[0].message) == ".send_message is deprecated. Use .publish"
             assert self.ctx.publish.called
             topic, msg, modname = self.ctx.publish.call_args[0]
             assert topic == fake_topic

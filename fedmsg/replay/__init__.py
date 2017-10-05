@@ -87,6 +87,39 @@ class ReplayContext(object):
 
 
 def get_replay(name, query, config, context=None):
+    """
+    Query the replay endpoint for missed messages.
+
+    Args:
+        name (str): The replay endpoint name.
+        query (dict): A dictionary used to query the replay endpoint for messages.
+            Queries are dictionaries with the following any of the following keys:
+
+            * 'seq_ids': A ``list`` of ``int``, matching the seq_id attributes
+              of the messages. It should return at most as many messages as the
+              length of the list, assuming no duplicate.
+
+            * 'seq_id': A single ``int`` matching the seq_id attribute of the message.
+              Should return a single message. It is intended as a shorthand for
+              singleton ``seq_ids`` queries.
+
+            * 'seq_id_range': A two-tuple of ``int`` defining a range of seq_id to check.
+
+            * 'msg_ids': A ``list`` of UUIDs matching the msg_id attribute of the messages.
+
+            * 'msg_id': A single UUID for the msg_id attribute.
+
+            * 'time': A tuple of two timestamps. It will return all messages emitted in between.
+        config (dict): A configuration dictionary. This dictionary should contain, at a
+            minimum, two keys. The first key, 'replay_endpoints', should be a dictionary
+            that maps ``name`` to a ZeroMQ socket. The second key, 'io_threads', is an
+            integer used to initialize the ZeroMQ context.
+        context (zmq.Context): The ZeroMQ context to use. If a context is not provided,
+            one will be created.
+
+    Returns:
+        generator: A generator that yields message dictionaries.
+    """
     endpoint = config.get('replay_endpoints', {}).get(name, None)
     if not endpoint:
         raise IOError("No appropriate replay endpoint "
@@ -118,6 +151,23 @@ def get_replay(name, query, config, context=None):
 
 
 def check_for_replay(name, names_to_seq_id, msg, config, context=None):
+    """
+    Check to see if messages need to be replayed.
+
+    Args:
+        name (str): The consumer's name.
+        names_to_seq_id (dict): A dictionary that maps names to the last seen sequence ID.
+        msg (dict): The latest message that has arrived.
+        config (dict): A configuration dictionary. This dictionary should contain, at a
+            minimum, two keys. The first key, 'replay_endpoints', should be a dictionary
+            that maps ``name`` to a ZeroMQ socket. The second key, 'io_threads', is an
+            integer used to initialize the ZeroMQ context.
+        context (zmq.Context): The ZeroMQ context to use. If a context is not provided,
+            one will be created.
+
+    Returns:
+        list: A list of message dictionaries.
+    """
     prev_seq_id = names_to_seq_id.get(name, None)
     cur_seq_id = msg.get("seq_id", None)
 
@@ -129,7 +179,7 @@ def check_for_replay(name, names_to_seq_id, msg, config, context=None):
         # we assume the replay has already been asked for and we dismiss it
         return []
 
-    if cur_seq_id == prev_seq_id+1 or prev_seq_id < 0:
+    if cur_seq_id == prev_seq_id + 1 or prev_seq_id < 0:
         ret = [msg]
     else:
         ret = list(get_replay(name, {

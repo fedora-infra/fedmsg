@@ -21,6 +21,7 @@
 
 import inspect
 import threading
+import functools
 
 import fedmsg.core
 import fedmsg.config
@@ -31,8 +32,8 @@ __all__ = [
     'init',
     'send_message',
     'publish',
-    'subscribe',
     'destroy',
+    'tail_messages',
     '__local',
 ]
 
@@ -65,6 +66,7 @@ def API_function(doc=None):
     def api_function(func):
         scrub = inspect.getargspec(func).args
 
+        @functools.wraps(func)
         def _wrapper(*args, **kw):
             if not hasattr(__local, '__context'):
                 config_overrides = kw.copy()
@@ -82,16 +84,14 @@ def API_function(doc=None):
             _wrapper.__doc__ = func.__doc__
         else:
             _wrapper.__doc__ = doc
-
-        _wrapper.__name__ = func.__name__
         return _wrapper
-
     return api_function
 
 
 @API_function(doc=fedmsg.core.FedMsgContext.publish.__doc__)
 def publish(topic=None, msg=None, **kw):
     return __local.__context.publish(topic, msg, **kw)
+
 
 # This is old-school, and deprecated.
 send_message = publish
