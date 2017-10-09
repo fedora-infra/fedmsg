@@ -1,7 +1,6 @@
 import os
 import shutil
 import tempfile
-import time
 import unittest
 
 import mock
@@ -105,43 +104,48 @@ class ValidatePolicyTests(unittest.TestCase):
         self.assertTrue(result)
 
 
-class LoadRemoteCertTests(base.FedmsgTestCase):
+class LoadCertificateTests(base.FedmsgTestCase):
     """Tests for :func:`utils._load_remote_cert`."""
 
     def setUp(self):
-        super(LoadRemoteCertTests, self).setUp()
+        super(LoadCertificateTests, self).setUp()
 
         self.cache_dir = tempfile.mkdtemp()
         self.cache_file = os.path.join(self.cache_dir, 'ca.crt')
         self.addCleanup(shutil.rmtree, self.cache_dir, True)
 
     def test_remote_cert(self):
-        """Assert downloading a certificate to a cache location works."""
+        """Assert requesting a remote certificate works and is cached."""
+        location = 'https://fedoraproject.org/fedmsg/ca.crt'
         with open(os.path.join(base.SSLDIR, 'fedora_ca.crt'), 'r') as fd:
             expected_cert = fd.read()
-        utils._load_remote_cert('https://fedoraproject.org/fedmsg/ca.crt', self.cache_file, 0)
 
-        self.assertTrue(os.path.exists(self.cache_file))
-        with open(self.cache_file, 'r') as fd:
-            actual_cert = fd.read()
-        self.assertEqual(expected_cert, actual_cert)
+        with mock.patch.dict('fedmsg.crypto.utils._cached_certificates', clear=True):
+            ca, crl = utils.load_certificates(location)
+            self.assertEqual((expected_cert, None), utils._cached_certificates[location])
+        self.assertEqual(expected_cert, ca)
+        self.assertTrue(crl is None)
 
-    @mock.patch('fedmsg.crypto.utils.os.stat')
-    def test_valid_cache(self, mock_stat):
-        """Assert when the primary cache is valid it's used."""
-        mock_stat.return_value.st_mtime = time.time()
-        cache = utils._load_remote_cert('https://example.com/ca.crt', '/my/ca.crt', 60)
+    @mock.patch('fedmsg.crypto.utils._load_certificate')
+    def test_valid_cache(self, mock_load_cert):
+        """Assert when the cache is present it is used."""
+        location = '/crt'
 
-        self.assertEqual('/my/ca.crt', cache)
-        mock_stat.assert_called_once_with('/my/ca.crt')
+        with mock.patch.dict('fedmsg.crypto.utils._cached_certificates', {'/crt': ('crt', None)}):
+            ca, crl = utils.load_certificates(location)
+        self.assertEqual('crt', ca)
+        self.assertTrue(crl is None)
+        self.assertEqual(0, mock_load_cert.call_count)
 
-    @mock.patch('fedmsg.crypto.utils.os.stat')
-    def test_valid_alternate_cache(self, mock_stat):
-        """Assert when the alternate cache is valid it's used."""
-        mock_stat.side_effect = [OSError, mock.Mock(st_mtime=time.time())]
-        cache = utils._load_remote_cert('https://example.com/ca.crt', '/my/ca.crt', 60)
+    @mock.patch('fedmsg.crypto.utils._load_certificate')
+    def test_invalidate_cache(self, mock_load_cert):
+        """Assert when the cache is present it is used."""
+        location = '/crt'
+        mock_load_cert.return_value = 'fresh_ca'
 
-        self.assertEqual(os.path.expanduser('~/.local/my/ca.crt'), cache)
-        self.assertEqual('/my/ca.crt', mock_stat.call_args_list[0][0][0])
-        self.assertEqual(
-            os.path.expanduser('~/.local/my/ca.crt'), mock_stat.call_args_list[1][0][0])
+        with mock.patch.dict('fedmsg.crypto.utils._cached_certificates', {'/crt': ('crt', None)}):
+            ca, crl = utils.load_certificates(location, invalidate_cache=True)
+            self.assertEqual(('fresh_ca', None), utils._cached_certificates[location])
+        self.assertEqual('fresh_ca', ca)
+        self.assertTrue(crl is None)
+        mock_load_cert.called_once_with('/crt')

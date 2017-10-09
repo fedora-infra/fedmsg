@@ -20,8 +20,11 @@
 """ ``fedmsg.crypto.x509`` - X.509 backend for :mod:`fedmsg.crypto`.  """
 
 import logging
+import os
+import tempfile
 import warnings
 
+from requests.exceptions import RequestException
 import six
 try:
     # Else we need M2Crypto and m2ext
@@ -31,7 +34,7 @@ try:
 except ImportError:
     _m2crypto = False
 
-from .utils import _load_remote_cert, validate_policy
+from . import utils
 from .x509_ng import _cryptography, sign as _crypto_sign, validate as _crypto_validate
 import fedmsg.crypto  # noqa: E402
 import fedmsg.encoding  # noqa: E402
@@ -136,28 +139,40 @@ def _m2crypto_validate(message, ssldir=None, **config):
     #   validate_certificate will one day be a part of M2Crypto.SSL.Context
     #   https://bugzilla.osafoundation.org/show_bug.cgi?id=11690
 
-    default_ca_cert_loc = 'https://fedoraproject.org/fedmsg/ca.crt'
-    cafile = _load_remote_cert(
-        config.get('ca_cert_location', default_ca_cert_loc),
-        config.get('ca_cert_cache', '/etc/pki/fedmsg/ca.crt'),
-        config.get('ca_cert_cache_expiry', 0),
-        **config)
+    ca_location = config.get('ca_cert_location', 'https://fedoraproject.org/fedmsg/ca.crt')
+    crl_location = config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem')
+    fd, cafile = tempfile.mkstemp()
+    try:
+        ca_certificate, crl = utils.load_certificates(ca_location, crl_location)
+        os.write(fd, ca_certificate.encode('ascii'))
+        os.fsync(fd)
+        ctx = m2ext.SSL.Context()
+        ctx.load_verify_locations(cafile=cafile)
+        if not ctx.validate_certificate(cert):
+            ca_certificate, crl = utils.load_certificates(
+                ca_location, crl_location, invalidate_cache=True)
+            with open(cafile, 'w') as f:
+                f.write(ca_certificate)
+            ctx = m2ext.SSL.Context()
+            ctx.load_verify_locations(cafile=cafile)
+            if not ctx.validate_certificate(cert):
+                return fail("X509 certificate is not valid.")
+    except (IOError, RequestException) as e:
+        _log.error(str(e))
+        return False
+    finally:
+        os.close(fd)
+        os.remove(cafile)
 
-    ctx = m2ext.SSL.Context()
-    ctx.load_verify_locations(cafile=cafile)
-    if not ctx.validate_certificate(cert):
-        return fail("X509 certificate is not valid.")
-
-    # Load and check against the CRL
-    crl = None
-    if 'crl_location' in config and 'crl_cache' in config:
-        crl = _load_remote_cert(
-            config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem'),
-            config.get('crl_cache', '/var/cache/fedmsg/crl.pem'),
-            config.get('crl_cache_expiry', 1800),
-            **config)
     if crl:
-        crl = M2Crypto.X509.load_crl(crl)
+        try:
+            fd, crlfile = tempfile.mkstemp(text=True)
+            os.write(fd, crl.encode('ascii'))
+            os.fsync(fd)
+            crl = M2Crypto.X509.load_crl(crlfile)
+        finally:
+            os.close(fd)
+            os.remove(crlfile)
         # FIXME -- We need to check that the CRL is signed by our own CA.
         # See https://bugzilla.osafoundation.org/show_bug.cgi?id=12954#c2
         # if not ctx.validate_certificate(crl):
@@ -206,7 +221,7 @@ def _m2crypto_validate(message, ssldir=None, **config):
     signer = subject.get_entries_by_nid(subject.nid['CN'])[0]\
         .get_data().as_text()
 
-    return validate_policy(
+    return utils.validate_policy(
         message.get('topic'), signer, routing_policy, config.get('routing_nitpicky', False))
 
 

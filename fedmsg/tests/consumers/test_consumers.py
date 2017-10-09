@@ -76,12 +76,8 @@ class FedmsgConsumerValidateTests(unittest.TestCase):
             'dummy': True,
             'ssldir': SSLDIR,
             'certname': 'shell-app01.phx2.fedoraproject.org',
-            'ca_cert_cache': os.path.join(SSLDIR, 'ca.crt'),
-            'ca_cert_cache_expiry': 1497618475,  # Stop fedmsg overwriting my CA, See Issue 420
-
-            'crl_location': "http://threebean.org/fedmsg-tests/crl.pem",
-            'crl_cache': os.path.join(SSLDIR, 'crl.pem'),
-            'crl_cache_expiry': 1497618475,
+            'ca_cert_location': os.path.join(SSLDIR, 'ca.crt'),
+            'crl_location': os.path.join(SSLDIR, 'crl.pem'),
             'crypto_validate_backends': ['x509'],
         }
         self.hub = mock.Mock(config=self.config)

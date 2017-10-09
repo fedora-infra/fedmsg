@@ -1,8 +1,9 @@
 import logging
-import os
 import requests
-import time
 
+
+# A simple dictionary to cache certificates in
+_cached_certificates = dict()
 
 _log = logging.getLogger(__name__)
 
@@ -98,56 +99,75 @@ def validate_policy(topic, signer, routing_policy, nitpicky=False):
             return True
 
 
-def _load_remote_cert(location, cache, cache_expiry, tries=3, **config):
-    """Get a fresh copy from fp.o/fedmsg/crl.pem if ours is getting stale.
+def load_certificates(ca_location, crl_location=None, invalidate_cache=False):
+    """
+    Load the CA certificate and CRL, caching it for future use.
 
-    Return the local filename.
-
-    .. note:: This is not a public API and is subject to change.
+    .. note::
+        Providing the location of the CA and CRL as an HTTPS URL is deprecated
+        and will be removed in a future release.
 
     Args:
-        location (str): The URL where the certificate is hosted.
-        cache (str): The absolute path where the certificate should be stored.
-        cache_expiry (int): How long the cache should be considered fresh, in seconds.
-        tries (int): The number of times to attempt to retry downloading the certificate.
+        ca_location (str): The location of the Certificate Authority certificate. This should
+            be the absolute path to a PEM-encoded file. It can also be an HTTPS url, but this
+            is deprecated and will be removed in a future release.
+        crl_location (str): The location of the Certificate Revocation List. This should
+            be the absolute path to a PEM-encoded file. It can also be an HTTPS url, but
+            this is deprecated and will be removed in a future release.
+        invalidate_cache (bool): Whether or not to invalidate the certificate cache.
 
+    Returns:
+        tuple: A tuple of the (CA certificate, CRL) as unicode strings.
+
+    Raises:
+        requests.exception.RequestException: Any exception requests could raise.
+        IOError: If the location provided could not be opened and read.
     """
-    alternative_cache = os.path.expanduser("~/.local" + cache)
+    if crl_location is None:
+        crl_location = ''
 
     try:
-        modtime = os.stat(cache).st_mtime
-    except OSError:
-        # File does not exist yet.
-        try:
-            # Try alternative location.
-            modtime = os.stat(alternative_cache).st_mtime
-            # It worked!  Use the alternative location
-            cache = alternative_cache
-        except OSError:
-            # Neither file exists
-            modtime = 0
+        if invalidate_cache:
+            del _cached_certificates[ca_location + crl_location]
+        else:
+            return _cached_certificates[ca_location + crl_location]
+    except KeyError:
+        pass
 
-    if (
-        (not modtime and not cache_expiry) or
-        (cache_expiry and time.time() - modtime > cache_expiry)
-    ):
-        try:
-            with requests.Session() as session:
-                session.mount('http://', requests.adapters.HTTPAdapter(max_retries=tries))
-                session.mount('https://', requests.adapters.HTTPAdapter(max_retries=tries))
-                response = session.get(location, timeout=30)
-            with open(cache, 'w') as f:
-                f.write(response.text)
-        except IOError:
-            # If we couldn't write to the specified cache location, try a
-            # similar place but inside our home directory instead.
-            cache = alternative_cache
-            usr_dir = '/'.join(cache.split('/')[:-1])
+    ca, crl = None, None
+    if ca_location:
+        ca = _load_certificate(ca_location)
+    if crl_location:
+        crl = _load_certificate(crl_location)
 
-            if not os.path.isdir(usr_dir):
-                os.makedirs(usr_dir)
+    _cached_certificates[ca_location + crl_location] = ca, crl
+    return ca, crl
 
-            with open(cache, 'w') as f:
-                f.write(response.text)
 
-    return cache
+def _load_certificate(location):
+    """
+    Load a certificate from the given location.
+
+    Args:
+        location (str): The location to load. This can either be an HTTPS URL or an absolute file
+            path. This is intended to be used with PEM-encoded certificates and therefore assumes
+            ASCII encoding.
+
+    Returns:
+        str: The PEM-encoded certificate as a unicode string.
+
+    Raises:
+        requests.exception.RequestException: Any exception requests could raise.
+        IOError: If the location provided could not be opened and read.
+    """
+    if location.startswith('https://'):
+        _log.info('Downloading x509 certificate from %s', location)
+        with requests.Session() as session:
+            session.mount('https://', requests.adapters.HTTPAdapter(max_retries=3))
+            response = session.get(location, timeout=30)
+            response.raise_for_status()
+            return response.text
+    else:
+        _log.info('Loading local x509 certificate from %s', location)
+        with open(location, 'rb') as fd:
+            return fd.read().decode('ascii')

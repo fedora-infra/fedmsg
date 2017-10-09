@@ -39,6 +39,7 @@ try:
     _cryptography = True
 except ImportError:  # pragma: no cover
     _cryptography = False
+from requests.exceptions import RequestException
 import six
 
 from . import utils
@@ -164,35 +165,22 @@ def validate(message, ssldir=None, **config):
     certificate = base64.b64decode(message['certificate'])
     message = fedmsg.crypto.strip_credentials(message)
 
-    crl_file = None
-    if 'crl_location' in config and 'crl_cache' in config:
-        crl_file = utils._load_remote_cert(
-            config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem'),
-            config.get('crl_cache', '/var/cache/fedmsg/crl.pem'),
-            config.get('crl_cache_expiry', 1800),
-            **config
-        )
-
-    ca_file = utils._load_remote_cert(
-        config.get('ca_cert_location', 'https://fedoraproject.org/fedmsg/ca.crt'),
-        config.get('ca_cert_cache', '/etc/pki/fedmsg/ca.crt'),
-        config.get('ca_cert_cache_expiry', 0),
-        **config
-    )
-
-    with open(ca_file, 'rb') as fd:
-        ca_certificate = fd.read()
-
-    crl = None
-    if crl_file:
-        with open(crl_file, 'rb') as fd:
-            crl = fd.read()
-
+    # Unfortunately we can't change this defaulting to Fedora behavior until
+    # fedmsg-2.0
+    ca_location = config.get('ca_cert_location', 'https://fedoraproject.org/fedmsg/ca.crt')
+    crl_location = config.get('crl_location', 'https://fedoraproject.org/fedmsg/crl.pem')
     try:
+        ca_certificate, crl = utils.load_certificates(ca_location, crl_location)
         _validate_signing_cert(ca_certificate, certificate, crl)
-    except X509StoreContextError as e:
-        _log.error(str(e))
-        return False
+    except (IOError, RequestException, X509StoreContextError) as e:
+        # Maybe the CA/CRL is expired or just rotated, so invalidate the cache and try again
+        try:
+            ca_certificate, crl = utils.load_certificates(
+                ca_location, crl_location, invalidate_cache=True)
+            _validate_signing_cert(ca_certificate, certificate, crl)
+        except (IOError, RequestException, X509StoreContextError) as e:
+            _log.error(str(e))
+            return False
 
     # Validate the signature of the message itself
     try:
