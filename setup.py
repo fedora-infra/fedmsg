@@ -61,7 +61,6 @@ install_requires = [
     'requests',
     'six',
     'arrow',           # not *necessarily* required
-    'cryptography',    # for message signing
 ]
 extras_require = {
     'crypto': [
