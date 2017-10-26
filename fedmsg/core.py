@@ -400,7 +400,7 @@ class FedMsgContext(object):
                 if hostname != '*':
                     try:
                         socket.gethostbyname_ex(hostname)
-                    except:
+                    except:  # noqa: E722
                         failed_hostnames.append(hostname)
                         self.log.warn("Couldn't resolve %r" % hostname)
                         continue

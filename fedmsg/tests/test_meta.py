@@ -181,7 +181,7 @@ class Base(unittest.TestCase):
                 self.assertMultiLineEqual(actual, expected)
             else:
                 self.assertEquals(actual, expected)
-        except:
+        except:  # noqa: E722
             print("Failed at:")
             print(" ", self)
             print(" ", os.path.relpath(inspect.getfile(type(self))[:-1]))
@@ -428,7 +428,7 @@ class ConglomerateBase(unittest.TestCase):
 
         try:
             self.assertEquals(actual, self.expected)
-        except:
+        except:  # noqa: E722
             print("Failed at:")
             print(" ", self)
             print(" ", os.path.relpath(inspect.getfile(type(self))[:-1]))
