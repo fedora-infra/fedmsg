@@ -71,7 +71,7 @@ def _default_link_shortener(url):
     try:
         resp = requests.get(dagd, params=dict(url=url), timeout=3)
         return resp.text.strip()
-    except:
+    except:  # noqa: E722
         log.exception("Failed to shorten %r" % url)
         return url
 
