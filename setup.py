@@ -56,6 +56,7 @@ long_description = long_description.split('split here', 1)[1]
 f.close()
 
 install_requires = [
+    'appdirs',
     'pyzmq',
     'kitchen',
     'requests',
@@ -174,6 +175,7 @@ setup(
             "fedmsg-signing-relay=fedmsg.commands.relay:signing_relay [consumers]",
             "fedmsg-gateway=fedmsg.commands.gateway:gateway [consumers]",
             "fedmsg-irc=fedmsg.commands.ircbot:ircbot [consumers]",
+            "fedmsg=fedmsg.cli:cli",
         ],
         'moksha.consumer': [
             "fedmsg-dummy=fedmsg.consumers.dummy:DummyConsumer [consumers]",

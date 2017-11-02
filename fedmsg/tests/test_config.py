@@ -21,6 +21,7 @@
 import os
 import unittest
 
+import appdirs
 import mock
 
 import fedmsg.config
@@ -127,6 +128,12 @@ class FedmsgConfigTests(unittest.TestCase):
     """Tests for :func:`fedmsg.config.FedmsgConfig`."""
 
     defaults = {
+        'submission_endpoint': 'ipc://' + os.path.join(
+            appdirs.user_data_dir('fedmsg', 'fedmsg'), 'submission.socket'),
+        'publishers': {
+            'zmq': {'publish_endpoint': u'tcp://*:9941'},
+            'legacy_zmq': {'publish_endpoint': u'tcp://*:9940'},
+        },
         'topic_prefix': 'com.example',
         'environment': 'dev',
         'io_threads': 1,
