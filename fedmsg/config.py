@@ -41,16 +41,464 @@ You can print the runtime configuration to the terminal by using the
 
 import argparse
 import copy
+import logging
 import os
 import sys
 import textwrap
 import warnings
 
+import six
+
 from kitchen.iterutils import iterate
 from fedmsg.encoding import pretty_dumps
 
 
+_log = logging.getLogger(__name__)
+
+
 bare_format = "[%(asctime)s][%(name)10s %(levelname)7s] %(message)s"
+
+
+def _get_config_files():
+    """
+    Load the list of file paths for fedmsg configuration files.
+
+    Returns:
+        list: List of files containing fedmsg configuration.
+    """
+    config_paths = []
+    if os.environ.get('FEDMSG_CONFIG'):
+        config_location = os.environ['FEDMSG_CONFIG']
+    else:
+        config_location = '/etc/fedmsg.d'
+
+    if os.path.isfile(config_location):
+        config_paths.append(config_location)
+    elif os.path.isdir(config_location):
+        # list dir and add valid files
+        possible_config_files = [os.path.join(config_location, p)
+                                 for p in os.listdir(config_location) if p.endswith('.py')]
+        for p in possible_config_files:
+            if os.path.isfile(p):
+                config_paths.append(p)
+    if not config_paths:
+        _log.info('No configuration files found in %s', config_location)
+    return config_paths
+
+
+def _validate_non_negative_int(value):
+    """
+    Assert a value is a non-negative integer.
+
+    Returns:
+        int: A non-negative integer number.
+
+    Raises:
+        ValueError: if the value can't be cast to an integer or is less than 0.
+    """
+    value = int(value)
+    if value < 0:
+        raise ValueError('Integer must be greater than or equal to zero')
+    return value
+
+
+def _validate_non_negative_float(value):
+    """
+    Assert a value is a non-negative float.
+
+    Returns:
+        float: A non-negative floating point number.
+
+    Raises:
+        ValueError: if the value can't be cast to an float or is less than 0.
+    """
+    value = float(value)
+    if value < 0:
+        raise ValueError('Floating point number must be greater than or equal to zero')
+    return value
+
+
+def _validate_none_or_type(t):
+    """
+    Create a validator that checks if a setting is either None or a given type.
+
+    Args:
+        t: The type to assert.
+
+    Returns:
+        callable: A callable that will validate a setting for that type.
+    """
+    def _validate(setting):
+        """
+        Check the setting to make sure it's the right type.
+
+        Args:
+            setting (object): The setting to check.
+
+        Returns:
+            object: The unmodified object if it's the proper type.
+
+        Raises:
+            ValueError: If the setting is the wrong type.
+        """
+        if setting is not None and not isinstance(setting, t):
+            raise ValueError('"{}" is not "{}"'.format(setting, t))
+        return setting
+    return _validate
+
+
+def _validate_bool(value):
+    """
+    Validate a setting is a bool.
+
+    Returns:
+        bool: The value as a boolean.
+
+    Raises:
+        ValueError: If the value can't be parsed as a bool string or isn't already bool.
+    """
+    if isinstance(value, six.text_type):
+        if value.strip().lower() == 'true':
+            value = True
+        elif value.strip().lower() == 'false':
+            value = False
+        else:
+            raise ValueError('"{}" must be a boolean ("True" or "False")'.format(value))
+
+    if not isinstance(value, bool):
+        raise ValueError('"{}" is not a boolean value.'.format(value))
+
+    return value
+
+
+class FedmsgConfig(dict):
+    """
+    The fedmsg configuration dictionary.
+
+    To access the actual configuration, use the :data:`conf` instance of this
+    class.
+    """
+    _loaded = False
+    _defaults = {
+        'topic_prefix': {
+            'default': u'com.example',
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'environment': {
+            'default': u'dev',
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'io_threads': {
+            'default': 1,
+            'validator': _validate_non_negative_int,
+        },
+        'post_init_sleep': {
+            'default': 0.5,
+            'validator': _validate_non_negative_float,
+        },
+        'timeout': {
+            'default': 2,
+            'validator': _validate_non_negative_int,
+        },
+        'print_config': {
+            'default': False,
+            'validator': _validate_bool,
+        },
+        'high_water_mark': {
+            'default': 0,
+            'validator': _validate_non_negative_int,
+        },
+        # milliseconds
+        'zmq_linger': {
+            'default': 1000,
+            'validator': _validate_non_negative_int,
+        },
+        'zmq_enabled': {
+            'default': True,
+            'validator': _validate_bool,
+        },
+        'zmq_strict': {
+            'default': False,
+            'validator': _validate_bool,
+        },
+        'zmq_tcp_keepalive': {
+            'default': 1,
+            'validator': _validate_non_negative_int,
+        },
+        'zmq_tcp_keepalive_cnt': {
+            'default': 3,
+            'validator': _validate_non_negative_int,
+        },
+        'zmq_tcp_keepalive_idle': {
+            'default': 60,
+            'validator': _validate_non_negative_int,
+        },
+        'zmq_tcp_keepalive_intvl': {
+            'default': 5,
+            'validator': _validate_non_negative_int,
+        },
+        'zmq_reconnect_ivl': {
+            'default': 100,
+            'validator': _validate_non_negative_int,
+        },
+        'zmq_reconnect_ivl_max': {
+            'default': 1000,
+            'validator': _validate_non_negative_int,
+        },
+        'endpoints': {
+            'default': {
+                'relay_outbound': [
+                    'tcp://127.0.0.1:4001',
+                ]
+            },
+            'validator': None,
+        },
+        'relay_inbound': {
+            'default': u'tcp://127.0.0.1:2001',
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'fedmsg.consumers.gateway.port': {
+            'default': 9940,
+            'validator': _validate_non_negative_int,
+        },
+        'fedmsg.consumers.gateway.high_water_mark': {
+            'default': 1000,
+            'validator': _validate_non_negative_int,
+        },
+        'sign_messages': {
+            'default': False,
+            'validator': _validate_bool,
+        },
+        'validate_signatures': {
+            'default': True,
+            'validator': _validate_bool,
+        },
+        'crypto_backend': {
+            'default': u'x509',
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'crypto_validate_backends': {
+            'default': ['x509'],
+            'validator': _validate_none_or_type(list),
+        },
+        'ssldir': {
+            'default': u'/etc/pki/fedmsg',
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'crl_location': {
+            'default': None,
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'crl_cache': {
+            'default': None,
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'crl_cache_expiry': {
+            'default': None,
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'ca_cert_location': {
+            'default': u'/etc/pki/fedmsg/ca.crt',
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'ca_cert_cache': {
+            'default': None,
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'ca_cert_cache_expiry': {
+            'default': None,
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'certnames': {
+            'default': {},
+            'validator': _validate_none_or_type(dict),
+        },
+        'routing_policy': {
+            'default': {},
+            'validator': _validate_none_or_type(dict),
+        },
+        'routing_nitpicky': {
+            'default': False,
+            'validator': _validate_bool,
+        },
+        'irc': {
+            'default': [
+                {
+                    'network': 'irc.freenode.net',
+                    'port': 6667,
+                    'ssl': False,
+                    'nickname': 'fedmsg-dev',
+                    'channel': 'my-fedmsg-channel',
+                    'timeout': 120,
+                    'make_pretty': True,
+                    'make_terse': True,
+                    'make_short': True,
+                    'line_rate': 0.9,
+                    'filters': {
+                        'topic': [],
+                        'body': ['lub-dub'],
+                    },
+                },
+            ],
+            'validator': _validate_none_or_type(list),
+        },
+        'irc_color_lookup': {
+            'default': {
+                'fas': 'light blue',
+                'bodhi': 'green',
+                'git': 'red',
+                'tagger': 'brown',
+                'wiki': 'purple',
+                'logger': 'orange',
+                'pkgdb': 'teal',
+                'buildsys': 'yellow',
+                'planet': 'light green',
+            },
+            'validator': _validate_none_or_type(dict),
+        },
+        'irc_default_color': {
+            'default': u'light grey',
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'irc_method': {
+            'default': u'notice',
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'active': {
+            'default': False,
+            'validator': _validate_bool,
+        },
+        'persistent_store': {
+            'default': None,
+            'validator': None,
+        },
+        'logging': {
+            'default': {
+                'version': 1,
+                'formatters': {
+                    'bare': {
+                        "datefmt": "%Y-%m-%d %H:%M:%S",
+                        "format": bare_format
+                    },
+                },
+                'handlers': {
+                    'console': {
+                        "class": "logging.StreamHandler",
+                        "formatter": "bare",
+                        "level": "INFO",
+                        "stream": "ext://sys.stdout",
+                    }
+                },
+                'loggers': {
+                    'fedmsg': {
+                        "level": "INFO",
+                        "propagate": False,
+                        "handlers": ["console"],
+                    },
+                    'moksha': {
+                        "level": "INFO",
+                        "propagate": False,
+                        "handlers": ["console"],
+                    },
+                },
+            },
+            'validator': _validate_none_or_type(dict),
+        },
+        'stomp_uri': {
+            'default': None,
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'stomp_user': {
+            'default': None,
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'stomp_pass': {
+            'default': None,
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'stomp_ssl_crt': {
+            'default': None,
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'stomp_ssl_key': {
+            'default': None,
+            'validator': _validate_none_or_type(six.text_type),
+        },
+        'datagrepper_url': {
+            'default': None,
+            'validator': _validate_none_or_type(six.text_type),
+        },
+    }
+
+    def __getitem__(self, *args, **kw):
+        """Load the configuration if necessary and forward the call to the parent."""
+        if not self._loaded:
+            self.load_config()
+        return super(FedmsgConfig, self).__getitem__(*args, **kw)
+
+    def get(self, *args, **kw):
+        """Load the configuration if necessary and forward the call to the parent."""
+        if not self._loaded:
+            self.load_config()
+        return super(FedmsgConfig, self).get(*args, **kw)
+
+    def copy(self, *args, **kw):
+        """Load the configuration if necessary and forward the call to the parent."""
+        if not self._loaded:
+            self.load_config()
+        return super(FedmsgConfig, self).copy(*args, **kw)
+
+    def load_config(self, settings=None):
+        """
+        Load the configuration either from the config file, or from the given settings.
+
+        Args:
+            settings (dict): If given, the settings are pulled from this dictionary. Otherwise, the
+                config file is used.
+        """
+        self._load_defaults()
+        if settings:
+            self.update(settings)
+        else:
+            config_paths = _get_config_files()
+            for p in config_paths:
+                conf = _process_config_file([p])
+                self.update(conf)
+        self._loaded = True
+        self._validate()
+
+    def _load_defaults(self):
+        """Iterate over self._defaults and set all default values on self."""
+        for k, v in self._defaults.items():
+            self[k] = v['default']
+
+    def _validate(self):
+        """
+        Run the validators found in self._defaults on all the corresponding values.
+
+        Raises:
+            ValueError: If the configuration contains an invalid configuration value.
+        """
+        errors = []
+        for k in self._defaults.keys():
+            try:
+                validator = self._defaults[k]['validator']
+                if validator is not None:
+                    self[k] = validator(self[k])
+            except ValueError as e:
+                errors.append('\t{}: {}'.format(k, six.text_type(e)))
+
+        if errors:
+            raise ValueError(
+                'Invalid configuration values were set: \n{}'.format('\n'.join(errors)))
+
+
+#: The fedmsg configuration dictionary. All valid configuration keys are
+#: guaranteed to be in the dictionary and to have a valid value. This dictionary
+#: should not be mutated. This is meant to replace the old :func:`load_config`
+#: API, but is not backwards-compatible with it.
+conf = FedmsgConfig()
+
 
 defaults = dict(
     topic_prefix="org.fedoraproject",
@@ -115,6 +563,8 @@ def load_config(extra_args=None,
     checked.
 
     """
+    warnings.warn('Using "load_config" is deprecated and will be removed in a future release;'
+                  ' use the "fedmsg.config.conf" dictionary instead.', DeprecationWarning)
     global __cache
 
     if invalidate_cache:
