@@ -213,14 +213,13 @@ the tables.  It will read in that connection url from
 
 Start the ``fedmsg-hub`` daemon, which will pick up the datanommer plugin,
 which will in turn read in that connection string, start listening for
-messages, and store them all in the db.
-
-::
+messages, and store them all in the db.::
 
     $ sudo systemctl start fedmsg-hub
     $ sudo systemctl enable fedmsg-hub
 
 You can check ``journalctl --follow`` for logs.
+
 
 Try testing again with ``fedmsg-logger``.  After publishing a message, you
 should see it in the datanommer stats if you run ``datanommer-stats``::
