@@ -92,8 +92,8 @@ def sign(message, ssldir=None, certname=None, **config):
         cert_pem = cert.public_bytes(serialization.Encoding.PEM)
 
     return _prep_crypto_msg(dict(list(message.items()) + [
-        ('signature', base64.b64encode(signature)),
-        ('certificate', base64.b64encode(cert_pem)),
+        ('signature', base64.b64encode(signature).decode('ascii')),
+        ('certificate', base64.b64encode(cert_pem).decode('ascii')),
     ]))
 
 
@@ -119,8 +119,8 @@ def _prep_crypto_msg(message):
     for x in range(0, len(certificate), 76):
         sliced_certificate.append(certificate[x:x+76])
 
-    message['signature'] = b'\n'.join(sliced_signature) + b'\n'
-    message['certificate'] = b'\n'.join(sliced_certificate) + b'\n'
+    message['signature'] = u'\n'.join(sliced_signature) + u'\n'
+    message['certificate'] = u'\n'.join(sliced_certificate) + u'\n'
     return message
 
 

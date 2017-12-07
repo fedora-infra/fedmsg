@@ -29,7 +29,7 @@ try:
 except ImportError:
     from unittest2 import skipIf, expectedFailure
 
-from fedmsg import crypto  # noqa: E402
+from fedmsg import crypto, encoding as fedmsg_encoding  # noqa: E402
 from fedmsg.crypto.x509 import _m2crypto
 from fedmsg.crypto.x509_ng import _cryptography
 from fedmsg.tests.base import SSLDIR, FedmsgTestCase
@@ -69,13 +69,11 @@ class X509BaseTests(FedmsgTestCase):
         self.assertTrue('signature' in signed)
         self.assertTrue('certificate' in signed)
 
-    @expectedFailure
     def test_signature_text(self):
         """Assert signature fields are unicode text."""
         signed = self.sign({'my': 'message'}, **self.config)
         self.assertTrue(isinstance(signed['signature'], six.text_type))
 
-    @expectedFailure
     def test_certificate_text(self):
         """Assert signing a message inserts the certificate and a signature."""
         signed = self.sign({'my': 'message'}, **self.config)
@@ -212,11 +210,6 @@ class X509BaseTests(FedmsgTestCase):
         """Assert un-decodable signatures/certificates fails validation."""
         signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
 
-        # This assertion will fail when the sign API changes to return text types, at
-        # which point this test should encode the signature to bytes.
-        self.assertTrue(isinstance(signed['signature'], six.binary_type))
-        self.assertTrue(isinstance(signed['certificate'], six.binary_type))
-
         # This is a non-ascii character that encodes to a bytestring in latin-1
         # that won't decode in UTF-8
         signed['signature'] = u'Ö'.encode('latin-1')
@@ -228,14 +221,15 @@ class X509BaseTests(FedmsgTestCase):
         """Assert unicode-type signatures/certificates work."""
         signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
 
-        # This assertion will fail when the sign API changes to return text types, at
-        # which point this test should drop the decode step.
-        self.assertTrue(isinstance(signed['signature'], six.binary_type))
-        self.assertTrue(isinstance(signed['certificate'], six.binary_type))
-        signed['signature'] = signed['signature'].decode('utf-8')
-        signed['certificate'] = signed['certificate'].decode('utf-8')
-
+        self.assertTrue(isinstance(signed['signature'], six.text_type))
+        self.assertTrue(isinstance(signed['certificate'], six.text_type))
         self.assertTrue(self.validate(signed, **self.config))
+
+    def test_serializeable(self):
+        """Assert signed messages are serializable."""
+        signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
+
+        fedmsg_encoding.dumps(signed)
 
 
 @skipIf(not _cryptography, "cryptography/pyOpenSSL are missing.")
@@ -271,10 +265,10 @@ class X509CryptographyTests(X509BaseTests):
         """Assert calling validate with byte signature/certificate logs an error."""
         signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
 
-        # This assertion will fail when the sign API changes to return text types, at
-        # which point this test should encode the signature to bytes.
-        self.assertTrue(isinstance(signed['signature'], six.binary_type))
-        self.assertTrue(isinstance(signed['certificate'], six.binary_type))
+        self.assertTrue(isinstance(signed['signature'], six.text_type))
+        self.assertTrue(isinstance(signed['certificate'], six.text_type))
+        signed['signature'] = signed['signature'].encode('utf-8')
+        signed['certificate'] = signed['certificate'].encode('utf-8')
 
         self.assertTrue(self.validate(signed, **self.config))
         mock_log.error.assert_any_call("msg['signature'] is not a unicode string")
@@ -316,10 +310,10 @@ class X509M2CryptoTests(X509BaseTests):
         """Assert calling validate with byte signature/certificate logs an error."""
         signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
 
-        # This assertion will fail when the sign API changes to return text types, at
-        # which point this test should encode the signature to bytes.
-        self.assertTrue(isinstance(signed['signature'], six.binary_type))
-        self.assertTrue(isinstance(signed['certificate'], six.binary_type))
+        self.assertTrue(isinstance(signed['signature'], six.text_type))
+        self.assertTrue(isinstance(signed['certificate'], six.text_type))
+        signed['signature'] = signed['signature'].encode('utf-8')
+        signed['certificate'] = signed['certificate'].encode('utf-8')
 
         self.assertTrue(self.validate(signed, **self.config))
         mock_log.error.assert_any_call("msg['signature'] is not a unicode string")
