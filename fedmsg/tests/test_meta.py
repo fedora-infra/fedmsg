@@ -468,5 +468,29 @@ class TestConglomeratorExtras(unittest.TestCase):
         self.assertEqual(result, expected)
 
 
+class TestMetaExtras(unittest.TestCase):
+    def test_graceful_keyerror(self):
+        """ Ensure that the graceful decorator handles KeyErrors """
+
+        expected = "default value"
+
+        @fedmsg.meta.graceful(lambda: expected)
+        def f(msg, **config):
+            raise KeyError("Who changed the API!?")
+
+        actual = f({})
+        self.assertEquals(actual, expected)
+
+    def test_graceful_other_error(self):
+        """ Ensure that the graceful decorator doesn't handle non-KeyErrors """
+
+        @fedmsg.meta.graceful(lambda: "default value")
+        def f(msg, **config):
+            raise Exception("This is worse than we thought.")
+
+        with self.assertRaises(Exception):
+            f({})
+
+
 if __name__ == '__main__':
     unittest.main()
