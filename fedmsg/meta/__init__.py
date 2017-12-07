@@ -158,6 +158,10 @@ def graceful(cls):
     return _wrapper
 
 
+# Deprecated!
+legacy_condition = graceful
+
+
 def with_processor():
     def _wrapper(f):
         def __wrapper(msg, processor=None, **config):
