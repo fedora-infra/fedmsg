@@ -2,6 +2,46 @@
 Changelog
 =========
 
+v1.1.0
+======
+
+Deprecations
+------------
+
+* Using URLs for the CA and CRL settings (``ca_cert_location`` and ``crl_location``
+  respectively) is now deprecated and will be removed in a future release. Please
+  use filesystem paths instead.
+
+Features
+--------
+
+* Allow the CA and CRL configuration options to be file paths
+  (`#484 <https://github.com/fedora-infra/fedmsg/pull/484>`_).
+
+* All configuration settings now have defaults and validators
+  (`#488 <https://github.com/fedora-infra/fedmsg/pull/488>`_).
+
+* Strengthen "legacy protection" in fedmsg.meta by catching KeyErrors
+  (`#493 <https://github.com/fedora-infra/fedmsg/pull/493>`_).
+
+
+Bug fixes
+---------
+
+* Remove the duplicate dependency on ``cryptography`` from the main install
+  requires (`#486 <https://github.com/fedora-infra/fedmsg/pull/486>`_).
+
+* Adjust the x509 signing API to return text instead of bytes
+  (`#495 <https://github.com/fedora-infra/fedmsg/issues/495>`_).
+
+Development improvements
+------------------------
+
+* Alter how the tests determine if cryptography is available to work better
+  with old versions of pyOpenSSL
+  (`#482 <https://github.com/fedora-infra/fedmsg/pull/482>`_).
+
+
 1.0.1
 =====
 
