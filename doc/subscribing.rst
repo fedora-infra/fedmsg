@@ -55,7 +55,7 @@ on disk in ``/var/run/fedmsg/status/fedmsg-hub/`` which it uses to replay messag
 missed from the datagrepper service. To disable this functionality:
 
 #. Stop fedmsg-hub
-#. Remove the file at on disk at ``/var/run/fedmsg/status/fedmsg-hub/*``
+#. Remove the file on disk at ``/var/run/fedmsg/status/fedmsg-hub/*``
 #. Start fedmsg-hub
 
 
