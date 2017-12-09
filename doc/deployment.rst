@@ -222,7 +222,6 @@ messages, and store them all in the db.
 
 You can check ``journalctl --follow`` for logs.
 
-
 Try testing again with ``fedmsg-logger``.  After publishing a message, you
 should see it in the datanommer stats if you run ``datanommer-stats``::
 
