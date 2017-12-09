@@ -49,6 +49,8 @@ entry-point, your new class will need to be added to the
 End users can have multiple plugin sets installed simultaneously.
 
 """
+
+import functools
 import logging
 
 import six
@@ -135,21 +137,29 @@ def msg2processor(msg, **config):
         return processors[-1]  # DefaultProcessor
 
 
-def legacy_condition(cls):
+def graceful(cls):
+    """ A decorator to protect against message structure changes.
+
+    Many of our processors expect messages to be in a certain format.  If the
+    format changes, they may start to fail and raise exceptions.  This decorator
+    is in place to catch and log those exceptions and to gracefully return
+    default values.
+    """
     def _wrapper(f):
-        def __wrapper(msg, legacy=False, **config):
+        @functools.wraps(f)
+        def __wrapper(msg, **config):
             try:
                 return f(msg, **config)
             except KeyError:
-                if legacy:
-                    return cls()
-                else:
-                    raise
+                log.exception("%r failed on %r" % (f, msg.get('msg_id')))
+                return cls()
 
-        __wrapper.__doc__ = f.__doc__
-        __wrapper.__name__ = f.__name__
         return __wrapper
     return _wrapper
+
+
+# Deprecated!
+legacy_condition = graceful
 
 
 def with_processor():
@@ -207,7 +217,7 @@ def conglomerate(messages, subject=None, lexers=False, **config):
     return messages
 
 
-@legacy_condition(six.text_type)
+@graceful(six.text_type)
 @with_processor()
 def msg2repr(msg, processor, **config):
     """ Return a human-readable or "natural language" representation of a
@@ -222,21 +232,21 @@ def msg2repr(msg, processor, **config):
     return fmt.format(**locals())
 
 
-@legacy_condition(six.text_type)
+@graceful(six.text_type)
 @with_processor()
 def msg2title(msg, processor, **config):
     """ Return a 'title' or primary text associated with a message. """
     return processor.title(msg, **config)
 
 
-@legacy_condition(six.text_type)
+@graceful(six.text_type)
 @with_processor()
 def msg2subtitle(msg, processor, **config):
     """ Return a 'subtitle' or secondary text associated with a message. """
     return processor.subtitle(msg, **config)
 
 
-@legacy_condition(six.text_type)
+@graceful(six.text_type)
 @with_processor()
 def msg2long_form(msg, processor, **config):
     """ Return a 'long form' text representation of a message.
@@ -257,28 +267,28 @@ def msg2lexer(msg, processor, **config):
     return processor.lexer(msg, **config)
 
 
-@legacy_condition(six.text_type)
+@graceful(six.text_type)
 @with_processor()
 def msg2link(msg, processor, **config):
     """ Return a URL associated with a message. """
     return processor.link(msg, **config)
 
 
-@legacy_condition(six.text_type)
+@graceful(six.text_type)
 @with_processor()
 def msg2icon(msg, processor, **config):
     """ Return a primary icon associated with a message. """
     return processor.icon(msg, **config)
 
 
-@legacy_condition(six.text_type)
+@graceful(six.text_type)
 @with_processor()
 def msg2secondary_icon(msg, processor, **config):
     """ Return a secondary icon associated with a message. """
     return processor.secondary_icon(msg, **config)
 
 
-@legacy_condition(set)
+@graceful(set)
 @with_processor()
 def msg2usernames(msg, processor=None, legacy=False, **config):
     """ Return a set of FAS usernames associated with a message. """
@@ -315,14 +325,14 @@ def msg2agent(msg, processor=None, legacy=False, **config):
     return None
 
 
-@legacy_condition(set)
+@graceful(set)
 @with_processor()
 def msg2packages(msg, processor, **config):
     """ Return a set of package names associated with a message. """
     return processor.packages(msg, **config)
 
 
-@legacy_condition(set)
+@graceful(set)
 @with_processor()
 def msg2objects(msg, processor, **config):
     """ Return a set of objects associated with a message.
@@ -337,21 +347,21 @@ def msg2objects(msg, processor, **config):
     return processor.objects(msg, **config)
 
 
-@legacy_condition(dict)
+@graceful(dict)
 @with_processor()
 def msg2emails(msg, processor, **config):
     """ Return a dict mapping of usernames to email addresses. """
     return processor.emails(msg, **config)
 
 
-@legacy_condition(dict)
+@graceful(dict)
 @with_processor()
 def msg2avatars(msg, processor, **config):
     """ Return a dict mapping of usernames to avatar URLs. """
     return processor.avatars(msg, **config)
 
 
-@legacy_condition(six.text_type)
+@graceful(six.text_type)
 @with_processor()
 def msg2subjective(msg, processor, subject, **config):
     """ Return a human-readable text representation of a dict-like

@@ -86,8 +86,8 @@ def _m2crypto_sign(message, ssldir=None, certname=None, **config):
     # Return a new dict containing the pairs in the original message as well
     # as the new authn fields.
     return dict(message.items() + [
-        ('signature', signature.encode('base64')),
-        ('certificate', certificate.encode('base64')),
+        ('signature', signature.encode('base64').decode('ascii')),
+        ('certificate', certificate.encode('base64').decode('ascii')),
     ])
 
 
