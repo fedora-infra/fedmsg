@@ -45,8 +45,8 @@ class FedmsgConsumerReplayTests(unittest.TestCase):
         self.config = {
             'dummy': True,
             'ssldir': SSLDIR,
-            'ca_cert_cache': os.path.join(SSLDIR, 'fedora_ca.crt'),
-            'ca_cert_cache_expiry': 1497618475,  # Stop fedmsg overwriting my CA, See Issue 420
+            'ca_cert_location': os.path.join(SSLDIR, 'fedora_ca.crt'),
+            'crl_location': None,
             'crypto_validate_backends': ['x509'],
         }
         self.hub = mock.Mock(config=self.config)
