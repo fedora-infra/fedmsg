@@ -294,7 +294,7 @@ class FedmsgConfig(dict):
             'validator': _validate_none_or_type(six.text_type),
         },
         'crl_cache_expiry': {
-            'default': None,
+            'default': 10,
             'validator': _validate_non_negative_int,
         },
         'ca_cert_location': {
@@ -306,7 +306,7 @@ class FedmsgConfig(dict):
             'validator': _validate_none_or_type(six.text_type),
         },
         'ca_cert_cache_expiry': {
-            'default': None,
+            'default': 0,
             'validator': _validate_non_negative_int,
         },
         'certnames': {
