@@ -54,12 +54,7 @@ def init(**kw):
 
     # Read config from CLI args and a config file
     config = fedmsg.config.conf
-
-    settings = {}
-    if kw:
-        settings['settings'] = kw
-
-    config.load_config(**settings)
+    config.load_config(kw)
 
     __local.__context = fedmsg.core.FedMsgContext(**config)
     return __local.__context
