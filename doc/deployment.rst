@@ -116,9 +116,7 @@ that it looks something like this:
                 "tcp://hostA:4001",
             ],
         },
-        relay_inbound=[
-            "tcp://hostA:2003",
-        ],
+        relay_inbound = "tcp://hostA:2003",
     )
 
 To confirm that something's not immediately broken, you can go through the
