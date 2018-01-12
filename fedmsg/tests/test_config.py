@@ -159,7 +159,7 @@ class FedmsgConfigTests(unittest.TestCase):
         'ssldir': '/etc/pki/fedmsg',
         'crl_location': None,
         'crl_cache': None,
-        'crl_cache_expiry': 10,
+        'crl_cache_expiry': 3600,
         'ca_cert_location': '/etc/pki/fedmsg/ca.crt',
         'ca_cert_cache': None,
         'ca_cert_cache_expiry': 0,

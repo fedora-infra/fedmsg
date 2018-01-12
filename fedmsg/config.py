@@ -294,7 +294,7 @@ class FedmsgConfig(dict):
             'validator': _validate_none_or_type(six.text_type),
         },
         'crl_cache_expiry': {
-            'default': 10,
+            'default': 3600,
             'validator': _validate_non_negative_int,
         },
         'ca_cert_location': {
