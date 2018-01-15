@@ -65,7 +65,7 @@ config = dict(
         # Guarantee that we don't fall over with a bogus endpoint.
         "blah.%s": "tcp://www.flugle.horn:88",
     },
-    relay_inbound=["tcp://127.0.0.1:%i" % (port - 1)],
+    relay_inbound="tcp://127.0.0.1:%i" % (port - 1),
     replay_endpoints={
         'unittest.%s' % hostname: "tcp://127.0.0.1:%i" % (port + 1),
         'unittest2.%s' % hostname: "tcp://127.0.0.1:%i" % (port + 2),
@@ -88,7 +88,7 @@ config = dict(
 
     crl_location="http://threebean.org/fedmsg-tests/crl.pem",
     crl_cache="/tmp/crl.pem",
-    crl_cache_expiry=10,
+    crl_cache_expiry=3600,
 
     certnames={
         "unittest.%s" % hostname: "shell-app01.phx2.fedoraproject.org",

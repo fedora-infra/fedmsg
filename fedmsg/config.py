@@ -294,8 +294,8 @@ class FedmsgConfig(dict):
             'validator': _validate_none_or_type(six.text_type),
         },
         'crl_cache_expiry': {
-            'default': None,
-            'validator': _validate_none_or_type(six.text_type),
+            'default': 3600,
+            'validator': _validate_non_negative_int,
         },
         'ca_cert_location': {
             'default': u'/etc/pki/fedmsg/ca.crt',
@@ -306,8 +306,8 @@ class FedmsgConfig(dict):
             'validator': _validate_none_or_type(six.text_type),
         },
         'ca_cert_cache_expiry': {
-            'default': None,
-            'validator': _validate_none_or_type(six.text_type),
+            'default': 0,
+            'validator': _validate_non_negative_int,
         },
         'certnames': {
             'default': {},

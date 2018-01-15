@@ -44,7 +44,7 @@ class TestCryptoSwitching(unittest.TestCase):
             'certname': 'shell-app01.phx2.fedoraproject.org',
             'crl_location': "http://threebean.org/fedmsg-tests/crl.pem",
             'crl_cache': "/tmp/crl.pem",
-            'crl_cache_expiry': 10,
+            'crl_cache_expiry': 3600,
 
             # But *not* x509
             'crypto_validate_backends': ['gpg'],
