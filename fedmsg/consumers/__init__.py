@@ -290,11 +290,11 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
                 try:
                     self.validate(m)
-                    super(FedmsgConsumer, self)._consume(m)
+                    return super(FedmsgConsumer, self)._consume(m)
                 except RuntimeWarning as e:
                     self.log.warn("Received invalid message {}".format(e))
         else:
-            super(FedmsgConsumer, self)._consume(message)
+            return super(FedmsgConsumer, self)._consume(message)
 
     def pre_consume(self, message):
         self.save_status(dict(
