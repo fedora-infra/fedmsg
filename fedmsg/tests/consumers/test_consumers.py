@@ -129,3 +129,36 @@ class FedmsgConsumerValidateTests(unittest.TestCase):
         self.consumer.validate(message)
         mock_crypto_validate.assert_called_once_with({'topic': u't1', 'msg': {'some': 'stuff'}})
         mock_warn.assert_any_call('Message body is not unicode', DeprecationWarning)
+
+
+class FedmsgConsumerHandleTests(unittest.TestCase):
+    """Tests for the :meth:`FedmsgConsumer._consume` method."""
+
+    def setUp(self):
+        self.config = {
+            'dummy': True,
+        }
+        self.hub = mock.Mock(config=self.config)
+        self.consumer = DummyConsumer(self.hub)
+
+    def test_return_value_positive(self):
+        self.consumer.validate_signatures = False
+        self.consumer.blocking_mode = True
+        self.consumer.hub.config = {}
+        message = ZMQMessage(u't1', u'{"some": "stuff"}')
+
+        # Consumer does nothing, no exception, returns True : handled.
+        with mock.patch.object(self.consumer, 'consume'):
+            handled = self.consumer._consume(message)
+        assert handled is True
+
+    def test_return_value_negative(self):
+        self.consumer.validate_signatures = False
+        self.consumer.blocking_mode = True
+        self.consumer.hub.config = {}
+        message = ZMQMessage(u't1', u'{"some": "stuff"}')
+
+        # Consumer is unimplemented, and so raises and exception,
+        # returning False : unhandled.
+        handled = self.consumer._consume(message)
+        assert handled is False
