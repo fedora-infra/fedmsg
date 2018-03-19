@@ -271,6 +271,32 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
             raise RuntimeWarning("Failed to authn message.")
 
     def _consume(self, message):
+        """ Called when a message is consumed.
+
+        This private method handles some administrative setup and teardown
+        before calling the public interface `consume` typically implemented
+        by a subclass.
+
+        When `moksha.blocking_mode` is set to `False` in the config, this
+        method always returns `None`.  The argued message is stored in an
+        internal queue where the consumer's worker threads should eventually
+        pick it up.
+
+        When `moksha.blocking_mode` is set to `True` in the config, this
+        method should return True or False, indicating whether the message
+        was handled or not.  Specifically, in the event that the inner
+        `consume` method raises an exception of any kind, this method
+        should return `False` indicating that the message was not
+        successfully handled.
+
+        Args:
+            message (dict): The message as a dictionary.
+
+        Returns:
+            bool: Should be interpreted as whether or not the message was
+            handled by the consumer, or `None` if `moksha.blocking_mode` is
+            set to False.
+        """
 
         try:
             self.validate(message)
@@ -290,11 +316,11 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
                 try:
                     self.validate(m)
-                    super(FedmsgConsumer, self)._consume(m)
+                    return super(FedmsgConsumer, self)._consume(m)
                 except RuntimeWarning as e:
                     self.log.warn("Received invalid message {}".format(e))
         else:
-            super(FedmsgConsumer, self)._consume(message)
+            return super(FedmsgConsumer, self)._consume(message)
 
     def pre_consume(self, message):
         self.save_status(dict(
