@@ -2,6 +2,35 @@
 Changelog
 =========
 
+v1.1.1
+======
+
+Bug fixes
+---------
+
+* Fix a bug in the configuration validation for ``crl_cache_expiry`` and
+  ``ca_cert_cache_expiry`` (`#500 <https://github.com/fedora-infra/fedmsg/pull/500>`_).
+
+Developer improvements
+----------------------
+
+* Fix tests using the ``ca_cert_cache`` configuration as it is deprecated
+  (`#498 <https://github.com/fedora-infra/fedmsg/pull/498>`_).
+
+* Adjust the internal ``_consume`` API for fedmsg consumers to return the
+  Return any return value from the parent class's ``_consume``
+  (`#507 <https://github.com/fedora-infra/fedmsg/pull/507>`_).
+
+Contributors
+------------
+
+Thanks to all the contributors for this release:
+
+* Sijis Aviles
+* Ralph Bean
+* Jeremy Cline
+
+
 v1.1.0
 ======
 
