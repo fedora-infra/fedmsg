@@ -1,0 +1,12 @@
+[Unit]
+Description=The fedmsg broker
+After=network.target
+Documentation=https://fedmsg.readthedocs.org/
+
+[Service]
+ExecStart=/usr/bin/fedmsg broker
+Type=simple
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

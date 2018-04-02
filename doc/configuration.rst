@@ -681,3 +681,37 @@ consumers. If it is not specified, the Moksha hub will listen to all topics decl
 fedmsg consumers.
 
 There is no default for this setting.
+
+
+.. _broker-config:
+
+Broker Configuration
+====================
+
+The broker is configured with the following keys
+
+.. _conf-submission_endpoint:
+
+submission_endpoint
+-------------------
+
+The ZeroMQ endpoint to assign to the submission socket. This is in the format
+``<transport>://<address>``. The transport should either be ``ipc`` or ``tcp``.
+
+Default: An IPC socket in the user's data directory. On UNIX platforms this is
+``~/.local/share/fedmsg/submission.socket``.
+
+.. _conf-publishers:
+
+publishers
+----------
+
+A dictionary of configuration values where the key is a publisher's name and the
+value is a dictionary of keyword arguments for that publisher.
+
+For example::
+
+    'publishers': {
+        'zmq': {'publish_endpoint': 'tcp://*:9941'},
+        'legacy_zmq': {'publish_endpoint': 'tcp://*:9940'},
+    }

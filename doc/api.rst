@@ -11,10 +11,17 @@ on is not documented here, it may change without warning in a minor release.
 Python
 ======
 
+.. note:: This API is intended to replace the old fedmsg API (found below) and
+        is still experimental. As such, it may change without a major release of
+        fedmsg. However, all changes will be clearly noted in the release notes.
+        Please provide any feedback you have!
+
+.. automodule:: fedmsg.api
+
 .. _api-send-receive:
 
 Sending and Receiving Messages
-------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: fedmsg
     :members: init, destroy, publish, tail_messages
