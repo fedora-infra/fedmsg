@@ -41,7 +41,7 @@ gpg_key_main = 'FBDA 92E4 338D FFD9 EB83  F8F6 3FBD B725 DA19 B4EC'
 
 config = dict(
     topic_prefix="org.fedoraproject",
-    topic_prefix_re="^org\.fedoraproject\.(dev|stg|prod)",
+    topic_prefix_re="^org\\.fedoraproject\\.(dev|stg|prod)",
     endpoints={
         "unittest.%s" % hostname: [
             "tcp://*:%i" % (port + 1),
