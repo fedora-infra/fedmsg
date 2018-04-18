@@ -27,8 +27,17 @@ Sending and Receiving Messages
 Configuration
 -------------
 
-.. automodule:: fedmsg.config
-    :members: load_config, build_parser, execfile
+For the list of configuration options, see the :ref:`conf` documentation.
+
+.. autoclass:: fedmsg.config.FedmsgConfig
+
+.. autodata:: fedmsg.config.conf
+
+.. autofunction:: fedmsg.config.load_config
+
+.. autofunction:: fedmsg.config.build_parser
+
+.. autofunction:: fedmsg.config.execfile
 
 
 .. _api-crypto:
