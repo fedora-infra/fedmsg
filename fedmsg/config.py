@@ -27,6 +27,8 @@ the following order:
     - All Python files in the current working directory's fedmsg.d/ directory
     - Command line arguments
 
+Within each directory, files are loaded in lexicographical order.
+
 For example, if a config value does not appear in either the config file or on
 the command line, then the built-in default is used.  If a value appears in
 both the config file and as a command line argument, then the command line
