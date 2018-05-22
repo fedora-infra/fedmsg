@@ -110,6 +110,22 @@ class FedmsgConsumerValidateTests(unittest.TestCase):
         self.consumer.validate(message)
         self.assertEqual({'body': {'topic': None, 'msg': {'some': 'stuff'}}}, message)
 
+    def test_none_body(self):
+        """Assert that a message body of None is replaced with an empty dict."""
+        self.consumer.validate_signatures = False
+        message = {'body': None}
+
+        self.consumer.validate(message)
+        self.assertEqual({'body': {'topic': None, 'msg': None}}, message)
+
+    def test_string_body(self):
+        """Assert that a message body that is a string is replaced with a dict."""
+        self.consumer.validate_signatures = False
+        message = {'body': 'this is the body'}
+
+        self.consumer.validate(message)
+        self.assertEqual({'body': {'topic': None, 'msg': 'this is the body'}}, message)
+
     @mock.patch('fedmsg.consumers.fedmsg.crypto.validate')
     def test_zmqmessage_text_body(self, mock_crypto_validate):
         self.consumer.validate_signatures = True
