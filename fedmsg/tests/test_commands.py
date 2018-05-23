@@ -341,8 +341,10 @@ class CheckTests(unittest.TestCase):
         thread = threading.Thread(target=report_in_thread)
         thread.start()
 
-    def test_no_monitor_endpoint(self):
+    @mock.patch('fedmsg.commands.check.load_config')
+    def test_no_monitor_endpoint(self, mock_load_config):
         """Assert that when no endpoint for monitoring is configured, users are informed."""
+        mock_load_config.return_value = {}
         expected_error = (
             u'Error: No monitoring endpoint has been configured: please set '
             u'"moksha.monitoring.socket"\n'
