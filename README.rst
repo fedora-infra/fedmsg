@@ -29,5 +29,7 @@ fedmsg (Federated Message Bus) is a library built on ZeroMQ using the PyZMQ Pyth
 fedmsg aims to make it easy to connect services together using ZeroMQ publishers and
 subscribers.
 
+Note that this library is deprecated in favor of https://github.com/fedora-infra/fedora-messaging
+
 Check out the `documentation <https://fedmsg.readthedocs.io/en/stable/>`_ for installation and
 configuration instructions.
