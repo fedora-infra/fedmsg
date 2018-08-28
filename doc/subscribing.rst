@@ -47,6 +47,17 @@ Consuming Non-ZeroMQ Messages
 In order to consume messages with STOMP, you will need to set the :ref:`conf-stomp`
 options.
 
+Changing the Message Replay Mechanism
+-------------------------------------
+
+fedmsg-hub stores the timestamp of the last message it has received 
+on disk in ``/var/run/fedmsg/status/fedmsg-hub/`` which it uses to replay messages it
+missed from the datagrepper service. To disable this functionality:
+
+#. Stop fedmsg-hub
+#. Remove the file on disk at ``/var/run/fedmsg/status/fedmsg-hub/*``
+#. Start fedmsg-hub
+
 
 Best Practices
 ==============
