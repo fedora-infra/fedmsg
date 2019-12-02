@@ -24,13 +24,6 @@ from fedmsg.utils import load_class
 from fedmsg.commands import BaseCommand
 
 
-# Since many services use fedmsg-hubs, processes can exceed their resource
-# limits on the number of open file descriptors. In the long term, apps should
-# stop listening to every service, but as a short term fix an attempt is made
-# to raise the resource limit here.
-MAX_NOFILE = 4096
-
-
 class HubCommand(BaseCommand):
     """ Run the fedmsg hub.
 
@@ -86,7 +79,7 @@ class HubCommand(BaseCommand):
             )
             self.config.update(moksha_options)
 
-        self.set_rlimit_nofiles()
+        self.set_rlimit_nofiles(self.config['max_open_files'])
 
         # Note that the hub we kick off here cannot send any message.  You
         # should use fedmsg.publish(...) still for that.
@@ -100,7 +93,7 @@ class HubCommand(BaseCommand):
             framework=False,
         )
 
-    def set_rlimit_nofiles(self, limit=MAX_NOFILE):
+    def set_rlimit_nofiles(self, limit):
         try:
             msg = _(u'Setting RLIMIT_NOFILE to '
                     u'{max_files}').format(max_files=limit)

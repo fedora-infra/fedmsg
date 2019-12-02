@@ -199,6 +199,7 @@ class FedmsgConfigTests(unittest.TestCase):
         'irc_method': 'notice',
         'active': False,
         'persistent_store': None,
+        'max_open_files': 4096,
         'logging': {
             'version': 1,
             'formatters': {

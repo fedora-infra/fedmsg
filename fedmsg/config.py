@@ -215,6 +215,15 @@ posted by :func:`fedmsg.commands.gateway.gateway`.  The
 :doc:`commands`.
 
 
+.. _conf-max_open_files:
+
+max_open_files
+--------------
+``int`` - The maximum number of open files that are allowed for the fedmsg-hub
+process.  This defaults to ``4096``.
+
+
+
 Authentication and Authorization
 ================================
 
@@ -1107,6 +1116,10 @@ class FedmsgConfig(dict):
             'default': None,
             'validator': _validate_none_or_type(six.text_type),
         },
+        'max_open_files': {
+            'default': 4096,
+            'validator': _validate_non_negative_int,
+        }
     }
 
     def __getitem__(self, *args, **kw):
