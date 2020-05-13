@@ -162,3 +162,22 @@ class FedmsgConsumerHandleTests(unittest.TestCase):
         # returning False : unhandled.
         handled = self.consumer._consume(message)
         assert handled is False
+
+    def test_message_headers(self):
+        """
+        Don't assume message body is dict.
+
+        E.g. following code would have unexpected consequences if message body
+        is just a string:
+
+            'topic' in message['body']
+            message['body']['headers'] = message['headers']
+        """
+        self.consumer.validate_signatures = False
+        self.consumer.blocking_mode = True
+        self.consumer.hub.config = {}
+        message = {'topic': 'testtopic', 'body': 'topic', 'headers': 'awesome'}
+        self.consumer._consume(message)
+        with mock.patch.object(self.consumer, 'consume'):
+            handled = self.consumer._consume(message)
+        assert handled is True

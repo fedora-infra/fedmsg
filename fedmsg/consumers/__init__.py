@@ -252,7 +252,8 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
                 message['body'] = json.loads(message['body'].decode('utf-8'))
 
         # Massage STOMP messages into a more compatible format.
-        if 'topic' not in message['body']:
+        if (not isinstance(message['body'], dict)
+                or 'topic' not in message['body']):
             message['body'] = {
                 'topic': message.get('topic'),
                 'msg': message['body'],
@@ -306,7 +307,9 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
         # Pass along headers if present.  May be useful to filters or
         # fedmsg.meta routines.
-        if isinstance(message, dict) and 'headers' in message and 'body' in message:
+        if (isinstance(message, dict)
+                and 'headers' in message
+                and isinstance(message.get('body'), dict)):
             message['body']['headers'] = message['headers']
 
         if hasattr(self, "replay_name"):
