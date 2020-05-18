@@ -89,7 +89,7 @@ class BaseProcessor(object):
         # hardcode a topic_prefix, then the global one is taken from config.
         if not self.topic_prefix_re:
             self.topic_prefix_re = config['topic_prefix_re']
-        self.__prefix__ = re.compile('^%s\.(%s)(\.(.*))?$' % (
+        self.__prefix__ = re.compile(r'^%s\.(%s)(\.(.*))?$' % (
             self.topic_prefix_re, self.__name__.lower()))
 
         if self.conglomerators is None:
