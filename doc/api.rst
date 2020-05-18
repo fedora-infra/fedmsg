@@ -58,10 +58,6 @@ Message Encoding
     :undoc-members:
     :show-inheritance:
 
-.. autofunction:: fedmsg.encoding.dumps
-
-.. autofunction:: fedmsg.encoding.pretty_dumps
-
 SQLAlchemy Encoding Utilities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
