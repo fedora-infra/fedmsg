@@ -1323,8 +1323,8 @@ def load_config(extra_args=None,
 
     if 'topic_prefix_re' not in config and 'topic_prefix' in config:
         # Turn "org.fedoraproject" into "org\.fedoraproject\.[^\W\d_]+"
-        config['topic_prefix_re'] = config['topic_prefix'].replace('.', '\.')\
-            + '\.[^\W\d_]+'
+        config['topic_prefix_re'] = config['topic_prefix'].replace('.', r'\.')\
+            + r'\.[^\W\d_]+'
 
     __cache = config
     return config

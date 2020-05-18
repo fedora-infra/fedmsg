@@ -172,7 +172,7 @@ def validate(message, ssldir=None, **config):
     try:
         ca_certificate, crl = utils.load_certificates(ca_location, crl_location)
         _validate_signing_cert(ca_certificate, certificate, crl)
-    except (IOError, RequestException, X509StoreContextError) as e:
+    except (IOError, RequestException, X509StoreContextError):
         # Maybe the CA/CRL is expired or just rotated, so invalidate the cache and try again
         try:
             ca_certificate, crl = utils.load_certificates(

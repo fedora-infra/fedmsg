@@ -475,5 +475,5 @@ class FedMsgContext(object):
             raise ValidationError(msg)
 
     def _close_subs(self, subs):
-            for subscriber in subs:
-                subscriber.close()
+        for subscriber in subs:
+            subscriber.close()
