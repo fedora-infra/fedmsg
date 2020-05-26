@@ -2,6 +2,15 @@
 Changelog
 =========
 
+v1.1.2
+======
+
+Bug fixes
+---------
+
+* Fix a DOS bug when consuming non-dict JSON messages
+  (`#514 <https://github.com/fedora-infra/fedmsg/pull/514>`_).
+
 v1.1.1
 ======
 
