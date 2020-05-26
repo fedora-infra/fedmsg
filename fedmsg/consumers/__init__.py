@@ -252,7 +252,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
                 message['body'] = json.loads(message['body'].decode('utf-8'))
 
         # Massage STOMP messages into a more compatible format.
-        if 'topic' not in message['body']:
+        if not isinstance(message['body'], dict) or 'topic' not in message['body']:
             message['body'] = {
                 'topic': message.get('topic'),
                 'msg': message['body'],
