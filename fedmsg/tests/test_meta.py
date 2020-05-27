@@ -79,7 +79,7 @@ class TestForWarning(unittest.TestCase):
             invalidate_cache=True,
         )
         self.config['topic_prefix'] = 'org.fedoraproject'
-        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+        self.config['topic_prefix_re'] = r'^org\.fedoraproject\.(dev|stg|prod)'
 
     @skip_if_fedmsg_meta_FI_is_present
     def test_for_no_plugins(self):
@@ -108,7 +108,7 @@ class TestProcessorRegex(unittest.TestCase):
             invalidate_cache=True,
         )
         self.config['topic_prefix'] = 'org.fedoraproject'
-        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+        self.config['topic_prefix_re'] = r'^org\.fedoraproject\.(dev|stg|prod)'
 
         class MyGitProcessor(fedmsg.meta.base.BaseProcessor):
             __name__ = 'git'
@@ -141,7 +141,7 @@ class TestProcessorRegex(unittest.TestCase):
             'topic': 'org.fedoraproject.dev.git',
         }
         result = self.proc.handle_msg(fake_message, **self.config)
-        assert result is "", "Proc said it couldn't handle the msg."
+        assert result == "", "Proc said it couldn't handle the msg."
 
 
 class Base(unittest.TestCase):
@@ -167,7 +167,7 @@ class Base(unittest.TestCase):
             invalidate_cache=True,
         )
         self.config['topic_prefix'] = 'org.fedoraproject'
-        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+        self.config['topic_prefix_re'] = r'^org\.fedoraproject\.(dev|stg|prod)'
         fedmsg.meta.make_processors(**self.config)
 
         self.maxDiff = None
@@ -402,7 +402,7 @@ class ConglomerateBase(unittest.TestCase):
             invalidate_cache=True,
         )
         self.config['topic_prefix'] = 'org.fedoraproject'
-        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+        self.config['topic_prefix_re'] = r'^org\.fedoraproject\.(dev|stg|prod)'
         fedmsg.meta.make_processors(**self.config)
 
         # Delete the msg_ids field because it is bulky and I don't want to
@@ -443,7 +443,7 @@ class TestConglomeratorExtras(unittest.TestCase):
             invalidate_cache=True,
         )
         self.config['topic_prefix'] = 'org.fedoraproject'
-        self.config['topic_prefix_re'] = '^org\.fedoraproject\.(dev|stg|prod)'
+        self.config['topic_prefix_re'] = r'^org\.fedoraproject\.(dev|stg|prod)'
 
         self.conglomerator = fedmsg.meta.base.BaseConglomerator
 

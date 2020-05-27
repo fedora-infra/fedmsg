@@ -104,7 +104,7 @@ if sys.version_info[0] == 2:
 
 setup(
     name='fedmsg',
-    version='1.1.1',
+    version='1.1.2',
     description="Fedora Messaging Client API",
     long_description=long_description,
     author='Ralph Bean',
@@ -120,7 +120,6 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Topic :: System :: Networking',
