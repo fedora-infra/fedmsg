@@ -61,6 +61,7 @@ install_requires = [
     'requests',
     'six',
     'arrow',           # not *necessarily* required
+    'setuptools',
 ]
 extras_require = {
     'crypto': [
