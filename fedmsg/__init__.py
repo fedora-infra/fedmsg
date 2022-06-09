@@ -64,7 +64,7 @@ def init(**kw):
 
 def API_function(doc=None):
     def api_function(func):
-        scrub = inspect.getargspec(func).args
+        scrub = inspect.getfullargspec(func).args
 
         @functools.wraps(func)
         def _wrapper(*args, **kw):
