@@ -57,7 +57,7 @@ class GatewayConsumer(FedmsgConsumer):
         # we can serve.  To be effective, also increase nofile for fedmsg in
         # /etc/security/limits.conf to near fs.file-limit.  Try 160000.
         hwm = self.hub.config['fedmsg.consumers.gateway.high_water_mark']
-        if hasattr(zmq, 'HWM'):
+        if zmq.zmq_version().startswith("2."):
             # zeromq2
             self.gateway_socket.setsockopt(zmq.HWM, hwm)
         else:
