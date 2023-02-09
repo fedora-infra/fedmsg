@@ -135,7 +135,7 @@ class TestCommands(unittest.TestCase):
 
         output = stdout.getvalue()
         expected = "{'topic': 'topic'}\n"
-        assert(output.endswith(expected))
+        assert output.endswith(expected)
 
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--pretty"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
@@ -160,7 +160,7 @@ class TestCommands(unittest.TestCase):
 
         output = stdout.getvalue()
         expected = "{'msg': {'hello': 'world'},"
-        assert(expected in output)
+        assert expected in output
 
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-tail", "--really-pretty"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)
@@ -186,7 +186,7 @@ class TestCommands(unittest.TestCase):
 
         output = stdout.getvalue()
         expected = '\x1b[33m"hello"\x1b[39;49;00m'
-        assert(expected in output)
+        assert expected in output
 
     @mock.patch("sys.argv", new_callable=lambda: ["fedmsg-config"])
     @mock.patch("sys.stdout", new_callable=six.StringIO)

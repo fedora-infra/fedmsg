@@ -148,4 +148,4 @@ class LoadCertificateTests(base.FedmsgTestCase):
             self.assertEqual(('fresh_ca', None), utils._cached_certificates[location])
         self.assertEqual('fresh_ca', ca)
         self.assertTrue(crl is None)
-        mock_load_cert.called_once_with('/crt')
+        mock_load_cert.assert_called_once_with('/crt')
