@@ -67,7 +67,7 @@ mirc_colors = {
 
 
 def _default_link_shortener(url):
-    dagd = 'http://da.gd/s'
+    dagd = 'https://da.gd/s'
     try:
         resp = requests.get(dagd, params=dict(url=url), timeout=3)
         return resp.text.strip()
