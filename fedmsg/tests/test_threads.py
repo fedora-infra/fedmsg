@@ -140,7 +140,7 @@ class TestHub(unittest.TestCase):
         thread.start()
         thread.join()
 
-        assert(self.test_reinit_success)
+        assert self.test_reinit_success
 
 
 if __name__ == '__main__':
