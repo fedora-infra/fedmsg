@@ -2,6 +2,40 @@
 Changelog
 =========
 
+v1.1.3
+======
+
+Bug fixes
+---------
+
+* Fix the Invalid argument error
+  (`#532 <https://github.com/fedora-infra/fedmsg/pull/532>`_).
+
+* Update da.gd URL to HTTPS
+  (`#528 <https://github.com/fedora-infra/fedmsg/pull/528>`_).
+
+* Fix fedmsg-hub --with-consumers option
+  (`#520 <https://github.com/fedora-infra/fedmsg/pull/520>`_)
+
+* Require setuptools, fedmsg/meta/__init__.py imports pkg_resources
+  (`#529 <https://github.com/fedora-infra/fedmsg/pull/529>`_)
+
+* Fix compatiblity with Python 3.11+
+  (`#530 <https://github.com/fedora-infra/fedmsg/pull/530>`_)
+
+Developer improvements
+----------------------
+
+* Fix docs and lint tests
+  (`#533 <https://github.com/fedora-infra/fedmsg/pull/533>`_).
+
+Many thanks to all our contributors for this release:
+
+* larchunix
+* phuzion
+* Tomáš Hrnčiar
+* Miro Hrončok
+
 v1.1.2
 ======
 
