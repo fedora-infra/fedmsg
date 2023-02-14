@@ -72,7 +72,7 @@ class HubCommand(BaseCommand):
         consumers = None
         if self.config['explicit_hub_consumers']:
             locations = self.config['explicit_hub_consumers'].split(',')
-            locations = [load_class(location) for location in locations]
+            consumers = [load_class(location) for location in locations]
 
         # Rephrase the fedmsg-config.py config as moksha *.ini format for
         # zeromq. If we're not using zeromq (say, we're using STOMP), then just
