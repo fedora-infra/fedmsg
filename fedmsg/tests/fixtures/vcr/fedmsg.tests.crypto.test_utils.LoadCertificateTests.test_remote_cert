@@ -2,42 +2,74 @@ interactions:
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
     method: GET
     uri: https://fedoraproject.org/fedmsg/ca.crt
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6WUy5KiShCG9/UUZ290NCioLOvG1QKLq7BTaEFpRe3WAp5+UKOnZ86Z1ZnaVEQG
-        +Wfy5V/58jIcRA3L/QdTP7R0C8OQ3oMvgFkW6XqMYR+UUFgIlpYNPZebdbHUW1VnUDJwcDYCazMh
-        nCLEI8gso2T8Q2CeEhBzblBhx1FPFwzWBpQjihHDYc1aSqCHSjdGMA+RbFcbIz5l47LVexg/400I
-        SJ29Z4bWpQHi+UE7Z4krMT4XZFAfxBdUZIcs8T/zcd6SHrrPRBaiwz1P7kHW0+W9zXtlx2dGdojr
-        zco9siAVNkxtp8ms6pa7kNdIr4pqSDptanQXveUHXYCvqouD1mU9fNOF1LI9nLAw6oZbuCRbD7Hu
-        GWM/Y18cAH62+r85gDuIv+EA7iD+hgO4g/idA0bHR5X6XNU7QxMSgpzqcPiTPYeiTGtcphR+FrJN
-        PusJmE/G4xM+LdBieRXXbWrURTmVlqv9O7nZ7eUsNWFOm6XCZTFauWRaK6NR2W877ey+RyFNgXeS
-        J+7H2uj223rqONcg3ozGK0W77W0rfSVFPJ1F/Saq0/SsNotTTw6zTJNaxboJiJZBClw+qqp1s/DE
-        cRooTrEtfCyNosYithOPbNh0EoaCQrj28MBAlCXVGXrwKkjJE4CQf+H6RaXlzk7eikzlKxlWkhMe
-        5xEkGMn3SfjSHlmmyyzTKf/1PfgtwTHQ6RygZgDZkG9PoIrhOGYt7qH9HGEZwlolzIcCkPIxa5OK
-        IkiT9n2dFA3zc6E/PeBQoRpP29IyMu3b+hDvC/I9doDbX+b+bR7yR/Pg+ucjGrxzYJgb4Je3bkM/
-        XaVD0jpR4UN0Ylf5V1WsDl28YczJPkKqGbb5mx9CBu7Kps8oCiGB3Hz90wKBioGgs4+81cWA1kku
-        t9dNcfBo0W0YGC9YoLl6DpXJfHJ0ikpJ0cUbK03mjXsoa0kQxJzOtriTXnf6PGiVmafttrVpWqTO
-        bzPg2yOVRNMPv44IuShaVM50vfPn8cqzQyWKZvGucmOZ1eV7gpfKpdtbSS6uqqoYYV9qCDDzYiTa
-        FQVuqLfS6yls+yN4rEvqkv+u0B/hSo9jXwUAAA==
+        H4sIAAAAAAAAA41UTZOqOhDd51e8/dSUgjrq4i4SEiJowPClsBMdwhgQVBTk1z906s7z3lc1NanK
+        JpXuPud0n3597Q4i1LD+0YjjGbqhQY/cH18BMwzcepoG242AtYGgMExoW3wmd0u9GekM9qnmHqlr
+        xAPMCdJqHzKDCsbPtcZDDALOKanNwG/JgkFJoeITDTHNk6whGNpIWAGCWw8pZhrToIxU0egtDD7f
+        Cw9gGWURnd5CF/FtPj1GK6vP+KTGXfYu+YLUUR6tnGqrbhvcQuszkHkov8cpLYhasrzDvFeeO4xG
+        eSDjtXVgblibMDTnRWSk160FuUR6uku7oDKW6J70us31Gvyuusint6iFQq/7N7aHA+bxxsJcsTxz
+        Q+HkxjzjxnDYXdK3sK+wrKjFBjZAa6H5CSv0YBZ4v8Xp4BudNjZvCWdw+ECIGjbzc/0crbLDBpM1
+        Qz4FD9FSZjt36AMzNXR0i9UyCwf8ifP5i/MzZdgwCr44/ydc+SycuYcSCXlM5Qed1n2kcbLSVV3G
+        q+zCaZSBRwfWX1UvHYpD1+fk7/5D7sOOiQWxhj74HAmuKQNf2kD1kjaJN3Iuz+T8MtZGU7FxVHzi
+        03fbtycHejm5qVW7opfiNR5t+8ujtx+/Yau3UAs1cABzxNthvVWbIp5bL15RHEdmcB1HyV59YTLd
+        Tyxlfao8q3Kd9OOUi8uB2XF1GHgz8dGDkICpKRT8RvWjOI+1pFyIUpkqZOGNXCGYLNdDqe0X3MCQ
+        Q1QMDaTdx5779eyul9O3AUIh0WkFV1fpakYWjZRDhhJfm/HSThrezf3sMbYzlxGx7ddie4TP/8Hf
+        AUVI89Kg+2fDfOcX8BPDfOcX8BPDfOcX8BPD/OGX4Z/7AjBY3zPvSM275cEQTB7QnpKSBeIQi5DA
+        fDKgi716qrPlxFCc9BZOJ8CriiA8xadcpuOKlmFopmI1X+KP7DL1U394ydsg7wdDB15OyXhZKcLx
+        EH+ZS+Lq17ZRwZ70PEUUhQOHlbW+UQPlt01stO911y8Dy3YcjHvNKQ+bOL8E6JwsRlU3GGKXLu1w
+        vcNgsPOTtHQH74Oq5y6vH9ZYqkd/+As8Viax8P/X6L8U/vHnYwUAAA==
     headers:
-      Accept-Ranges: [bytes]
-      AppServer: [proxy08.fedoraproject.org]
-      AppTime: [D=917]
-      Connection: [Keep-Alive]
-      Content-Encoding: [gzip]
-      Content-Length: ['826']
-      Date: ['Wed, 06 Sep 2017 14:35:42 GMT']
-      ETag: ['"55f-52243d9164097-gzip"']
-      Keep-Alive: ['timeout=15, max=500']
-      Last-Modified: ['Sat, 17 Oct 2015 02:41:23 GMT']
-      Server: [Apache/2.4.6 (Red Hat Enterprise Linux)]
-      Vary: ['Accept-Encoding,User-Agent']
-    status: {code: 200, message: OK}
+      Accept-Ranges:
+      - bytes
+      AppTime:
+      - D=663
+      Connection:
+      - Upgrade, Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '838'
+      Date:
+      - Mon, 20 Feb 2023 14:07:19 GMT
+      ETag:
+      - '"563-5e3c64852a0f0-gzip"'
+      Keep-Alive:
+      - timeout=15, max=500
+      Last-Modified:
+      - Thu, 14 Jul 2022 16:20:39 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Upgrade:
+      - h2
+      Vary:
+      - Accept-Encoding,User-Agent
+      X-Content-Type-Options:
+      - nosniff
+      X-Fedora-ProxyServer:
+      - proxy13.fedoraproject.org
+      X-Fedora-RequestID:
+      - Y_N-lzSAqcsdH56BgKUvJAAAAIg
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

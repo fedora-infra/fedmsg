@@ -12,34 +12,40 @@ class TestSigningRelayConsumer(unittest.TestCase):
     def setUp(self):
         self.hub = mock.Mock()
         self.signing_cert = (
-            u'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVVekNDQTd5Z0F3SUJBZ0lCRHpBTkJna3Fo\n'
-            u'a2lHOXcwQkFRVUZBRENCb0RFTE1Ba0dBMVVFQmhNQ1ZWTXgKQ3pBSkJnTlZCQWdUQWs1RE1SQXdE\n'
-            u'Z1lEVlFRSEV3ZFNZV3hsYVdkb01SY3dGUVlEVlFRS0V3NUdaV1J2Y21FZwpVSEp2YW1WamRERVBN\n'
-            u'QTBHQTFVRUN4TUdabVZrYlhObk1ROHdEUVlEVlFRREV3Wm1aV1J0YzJjeER6QU5CZ05WCkJDa1RC\n'
-            u'bVpsWkcxelp6RW1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmhjSEp2YW1WamRD\n'
-            u'NXYKY21jd0hoY05NVEl3TnpFMU1qRXhPRFV5V2hjTk1qSXdOekV6TWpFeE9EVXlXakNCNGpFTE1B\n'
-            u'a0dBMVVFQmhNQwpWVk14Q3pBSkJnTlZCQWdUQWs1RE1SQXdEZ1lEVlFRSEV3ZFNZV3hsYVdkb01S\n'
-            u'Y3dGUVlEVlFRS0V3NUdaV1J2CmNtRWdVSEp2YW1WamRERVBNQTBHQTFVRUN4TUdabVZrYlhObk1U\n'
-            u'QXdMZ1lEVlFRREV5ZHphR1ZzYkMxd1lXTnIKWVdkbGN6QXhMbkJvZURJdVptVmtiM0poY0hKdmFt\n'
-            u'VmpkQzV2Y21jeE1EQXVCZ05WQkNrVEozTm9aV3hzTFhCaApZMnRoWjJWek1ERXVjR2g0TWk1bVpX\n'
-            u'UnZjbUZ3Y205cVpXTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYCllXUnRhVzVBWm1Wa2Iz\n'
-            u'SmhjSEp2YW1WamRDNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJCUUFEZ1kwQU1JR0oKQW9HQkFN\n'
-            u'RUlKNURzZ0VsaG5XMENLcnNpc1UvV0svUFBrSkNST0N0WnBwQXZha0dDVHhVU1RoWDhpZmVsVjVa\n'
-            u'dwp1T1dCWDlxTHg2cGJzNHhodnVrVDkwUHphYUlKR24xeUpjVnZLTDYzS1I1SCtZNXdOamJLREhY\n'
-            u'ZlBuM0J1Z0hSCmRzdnV0Yi9Fa3hNM3NYbnRpZWY0K2ZWVGsyanZiTXFsYmEvWHc4cXBsRWxqMXFm\n'
-            u'aEFnTUJBQUdqZ2dGWE1JSUIKVXpBSkJnTlZIUk1FQWpBQU1DMEdDV0NHU0FHRytFSUJEUVFnRmg1\n'
-            u'RllYTjVMVkpUUVNCSFpXNWxjbUYwWldRZwpRMlZ5ZEdsbWFXTmhkR1V3SFFZRFZSME9CQllFRkUw\n'
-            u'Zmh6czZhWjViVDJVNjZzUjNrUG1LdzBGYk1JSFZCZ05WCkhTTUVnYzB3Z2NxQUZBQ1lwZFhueEZV\n'
-            u'T2hLTm4vbVpLRnVBRUZkMGhvWUdtcElHak1JR2dNUXN3Q1FZRFZRUUcKRXdKVlV6RUxNQWtHQTFV\n'
-            u'RUNCTUNUa014RURBT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabApaRzl5WVNC\n'
-            u'UWNtOXFaV04wTVE4d0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1abFpHMXpaekVQ\n'
-            u'Ck1BMEdBMVVFS1JNR1ptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFRa0JGaGRoWkcxcGJrQm1aV1J2\n'
-            u'Y21Gd2NtOXEKWldOMExtOXlaNElKQUk3cktOaXBFNTE4TUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVG\n'
-            u'QndNQ01Bc0dBMVVkRHdRRQpBd0lIZ0RBTkJna3Foa2lHOXcwQkFRVUZBQU9CZ1FCK3RlWFNCV0pQ\n'
-            u'VWlLMDBEYWl4RmF6ZThSUW01S1ZBQjBRCkRSdDdqcDdRcVViZHd2ZWhvU3NKODVDYnZLazhYZ0Ey\n'
-            u'UW16RFdhRzRhcklrQUVCWGFkNjlyMkZmMTMzTmQxQlEKeGZGRGRWdXFyeE9HeXJwazhyOFAxYmJJ\n'
-            u'YjRNb09aUVQxbGFGTFUzZjNJUVNIYW93RkRuZ0V0azlZUzRpSEhrWQora3FlRnczYmhRPT0KLS0t\n'
-            u'LS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=\n'
+            u'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVYakNDQThlZ0F3SUJBZ0lCR'
+            u'HpBTkJna3Fo\na2lHOXcwQkFRc0ZBRENCb0RFTE1Ba0dBMVVFQmhNQ1ZWTXgKQ3pB'
+            u'SkJnTlZCQWdUQWs1RE1SQXdE\nZ1lEVlFRSEV3ZFNZV3hsYVdkb01SY3dGUVlEVlF'
+            u'RS0V3NUdaV1J2Y21FZwpVSEp2YW1WamRERVBN\nQTBHQTFVRUN4TUdabVZrYlhObk'
+            u'1ROHdEUVlEVlFRREV3Wm1aV1J0YzJjeER6QU5CZ05WCkJDa1RC\nbVpsWkcxelp6R'
+            u'W1NQ1FHQ1NxR1NJYjNEUUVKQVJZWFlXUnRhVzVBWm1Wa2IzSmhjSEp2YW1WamRD\n'
+            u'NXYKY21jd0hoY05Nak13TWpJd01URTBNekV5V2hjTk16TXdNakUzTVRFME16RXlXa'
+            u'kNCNGpFTE1B\na0dBMVVFQmhNQwpWVk14Q3pBSkJnTlZCQWdUQWs1RE1SQXdEZ1lE'
+            u'VlFRSEV3ZFNZV3hsYVdkb01S\nY3dGUVlEVlFRS0V3NUdaV1J2CmNtRWdVSEp2YW1'
+            u'WamRERVBNQTBHQTFVRUN4TUdabVZrYlhObk1U\nQXdMZ1lEVlFRREV5ZHphR1ZzYk'
+            u'Mxd1lXTnIKWVdkbGN6QXhMbkJvZURJdVptVmtiM0poY0hKdmFt\nVmpkQzV2Y21je'
+            u'E1EQXVCZ05WQkNrVEozTm9aV3hzTFhCaApZMnRoWjJWek1ERXVjR2g0TWk1bVpX\n'
+            u'UnZjbUZ3Y205cVpXTjBMbTl5WnpFbU1DUUdDU3FHU0liM0RRRUpBUllYCllXUnRhV'
+            u'zVBWm1Wa2Iz\nSmhjSEp2YW1WamRDNXZjbWN3Z1o4d0RRWUpLb1pJaHZjTkFRRUJC'
+            u'UUFEZ1kwQU1JR0oKQW9HQkFL\nWUhDV1VhaWo4YlFub25ZVVYwOEdnWWYvWnRSRlB'
+            u'IVG9vYnkzQ3Z0Tk5Nc2JETkxnZEhxRUU2WHFs\nSApXM3FWaDNFaktJRHZDdmtzOU'
+            u't0endRY0pXZVdXLy9qMVozR1ZZMzZ1WS9vUDAvMEl0dmtaRTZZ\ndHkxNFZ5clI5C'
+            u'nZmL3NIVlllTFc2N2FIdW0xYVc3VElMZWxHVE1VUDJQWnNPdk0vNjlLNWpEMzhv\n'
+            u'RkFnTUJBQUdqZ2dGaU1JSUIKWGpBSkJnTlZIUk1FQWpBQU1DMEdDV0NHU0FHRytFS'
+            u'UJEUVFnRmg1\nRllYTjVMVkpUUVNCSFpXNWxjbUYwWldRZwpRMlZ5ZEdsbWFXTmhk'
+            u'R1V3SFFZRFZSME9CQllFRkFz\nZWpLMG9SanVuOWREL0pCZHlZRzJ2VmRJZk1JSGd'
+            u'CZ05WCkhTTUVnZGd3Z2RXQUZJVTdDN1dHSWpM\nZHZmamhmSW5ESUszS1JMVTRvWU'
+            u'dtcElHak1JR2dNUXN3Q1FZRFZRUUcKRXdKVlV6RUxNQWtHQTFV\nRUNCTUNUa014R'
+            u'URBT0JnTlZCQWNUQjFKaGJHVnBaMmd4RnpBVkJnTlZCQW9URGtabApaRzl5WVNC\n'
+            u'UWNtOXFaV04wTVE4d0RRWURWUVFMRXdabVpXUnRjMmN4RHpBTkJnTlZCQU1UQm1ab'
+            u'FpHMXpaekVQ\nCk1BMEdBMVVFS1JNR1ptVmtiWE5uTVNZd0pBWUpLb1pJaHZjTkFR'
+            u'a0JGaGRoWkcxcGJrQm1aV1J2\nY21Gd2NtOXEKWldOMExtOXlaNElVTVJoZm1seSt'
+            u'4bVFlL1NDek43S3lGdnZnd1BZd0V3WURWUjBs\nQkF3d0NnWUlLd1lCQlFVSApBd0'
+            u'l3Q3dZRFZSMFBCQVFEQWdlQU1BMEdDU3FHU0liM0RRRUJDd1VB\nQTRHQkFGVkVEa'
+            u'U93U2k2aWxEMTRiRCtZCmxjT3Rxc0FLY1o2cEpzalRiYVlacDdFRVpUd1NhZEJs\n'
+            u'cmtrZThTRkZzQUtnKzREVXU3ejF2Q0NVSHhSeEI1Z0oKYytNM1lrdW9OQXlOZThHY'
+            u'VZBbGNBSHo5\ndm95TW05cWhSbHlFa2pIaWNYcWRsK00wOXJlYmJBK1YyNVcyYzk0'
+            u'aApETXA1ZWUvalRFSkI3eEpj\nNjdNNW5KbWkKLS0tLS1FTkQgQ0VSVElGSUNBVEU'
+            u'tLS0tLQo=\n'
         )
         self.hub.config = {
             'fedmsg.consumers.relay.enabled': True,
@@ -63,9 +69,12 @@ class TestSigningRelayConsumer(unittest.TestCase):
         expected_msg = {
             'my': 'msg',
             'crypto': 'x509',
-            'signature': (u'kyZ496SD+qgufonX9lqV/4L/o3s0+j4j5RaeMzhRIIGhfk6/RIEtl1DW73xbo+'
-                          u'Xs2STbidFyz7Yt\n6IUb3/U+8Io0CTTbIyQvcvtof/a3EdmbnZtOQ93VfnXXkn'
-                          u'6m76yVcFnQDicagY/600KmfNCDAwve\nI6+B9va/q10CBloMLkE=\n'),
+            'signature': (
+                u'cM41fBCf5vWoYQvI9mlVofIJZ/djKXAk+4s8EltzSeW+xWCqJ/EnCTHj'
+                u'ZcNGY09CeJRoDcq0Yc1y\nc8QR6IT7JCSlwkc1Iqj+5SKE/REm6AN5Xd'
+                u'3jqJHZSWMqKqhxvlzwaWEFI1nNp3qhxWDJNmUKEqIU\nUwl+6CntIulR'
+                u'f/5fiO8=\n'
+            ),
             'certificate': self.signing_cert,
         }
         consumer = relay.SigningRelayConsumer(self.hub)

@@ -178,7 +178,6 @@ class X509BaseTests(FedmsgTestCase):
     def test_no_crl(self):
         """Assert that it's okay to not use a CRL."""
         self.config['crl_location'] = None
-
         signed = self.sign({'message': 'so secure'}, **self.config)
         self.assertTrue(self.validate(signed, **self.config))
 

@@ -2,25 +2,25 @@ Certificate:
     Data:
         Version: 3 (0x2)
         Serial Number: 18 (0x12)
-        Signature Algorithm: sha1WithRSAEncryption
+        Signature Algorithm: sha256WithRSAEncryption
         Issuer: C=US, ST=NC, L=Raleigh, O=Fedora Project, OU=fedmsg, CN=fedmsg/name=fedmsg/emailAddress=admin@fedoraproject.org
         Validity
-            Not Before: Jul 15 21:18:53 2012 GMT
-            Not After : Jul 13 21:18:53 2022 GMT
+            Not Before: Feb 20 11:43:12 2023 GMT
+            Not After : Feb 17 11:43:12 2033 GMT
         Subject: C=US, ST=NC, L=Raleigh, O=Fedora Project, OU=fedmsg, CN=shell-pkgs01.phx2.fedoraproject.org/name=shell-pkgs01.phx2.fedoraproject.org/emailAddress=admin@fedoraproject.org
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 Public-Key: (1024 bit)
                 Modulus:
-                    00:d5:37:fb:d4:8a:a5:30:40:11:25:eb:66:ba:8d:
-                    55:31:68:a3:e0:1a:77:db:c7:37:a3:84:44:ed:93:
-                    3f:d4:32:8b:59:a1:fb:8b:64:6f:2f:54:f6:69:aa:
-                    fa:b0:88:ff:bb:b5:1d:4b:18:a7:1b:ec:54:c2:d0:
-                    56:a5:da:78:4b:17:13:3b:8b:93:f3:7c:df:3d:16:
-                    21:c4:90:7e:1d:6b:ef:13:31:be:41:4e:21:a7:97:
-                    9c:2b:7b:9b:32:7e:62:44:5f:59:ac:31:74:12:ba:
-                    d5:cf:14:0d:58:42:1a:49:b9:c6:2a:53:e8:87:77:
-                    12:3e:2e:ea:e3:4d:40:ff:8b
+                    00:ca:a9:0c:85:8e:aa:35:63:aa:9b:33:be:b4:c3:
+                    38:08:91:87:05:1f:63:b4:1f:5a:42:05:29:52:75:
+                    4b:d4:af:fb:64:ca:4e:e0:d2:f7:e1:3f:78:a4:21:
+                    fb:a3:1a:3b:74:34:49:99:00:d2:77:ed:3c:9f:33:
+                    11:75:f3:19:5c:b2:b9:1f:40:63:50:74:37:a4:55:
+                    88:0d:22:32:a2:50:bc:e5:98:7c:53:36:2b:15:70:
+                    1b:48:e4:8d:66:47:e1:b7:a6:ab:36:58:7b:4a:93:
+                    a5:61:22:2a:82:ce:25:eb:1f:1a:c8:9b:7c:c6:85:
+                    66:55:09:15:ab:ae:a7:0c:f1
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
             X509v3 Basic Constraints: 
@@ -28,47 +28,48 @@ Certificate:
             Netscape Comment: 
                 Easy-RSA Generated Certificate
             X509v3 Subject Key Identifier: 
-                A5:8B:A6:2A:28:0E:3C:4E:6C:81:45:A4:4E:B9:3C:38:15:9F:58:DE
+                43:85:96:60:70:6C:E3:00:5F:C3:D6:6D:28:AA:0B:0C:AD:EB:40:24
             X509v3 Authority Key Identifier: 
-                keyid:00:98:A5:D5:E7:C4:55:0E:84:A3:67:FE:66:4A:16:E0:04:15:DD:21
+                keyid:85:3B:0B:B5:86:22:32:DD:BD:F8:E1:7C:89:C3:20:AD:CA:44:B5:38
                 DirName:/C=US/ST=NC/L=Raleigh/O=Fedora Project/OU=fedmsg/CN=fedmsg/name=fedmsg/emailAddress=admin@fedoraproject.org
-                serial:8E:EB:28:D8:A9:13:9D:7C
-
+                serial:31:18:5F:9A:5C:BE:C6:64:1E:FD:20:B3:37:B2:B2:16:FB:E0:C0:F6
             X509v3 Extended Key Usage: 
                 TLS Web Client Authentication
             X509v3 Key Usage: 
                 Digital Signature
-    Signature Algorithm: sha1WithRSAEncryption
-        56:40:ad:61:bd:82:0a:e8:f7:6c:59:cf:2b:08:65:69:72:d2:
-        6d:28:b5:d4:fd:2a:88:11:45:ac:93:52:92:fd:1f:05:94:d2:
-        bb:d5:3b:0f:79:cb:0d:f3:00:60:9d:e8:7d:2c:15:cf:b3:d8:
-        a0:e5:60:d3:d9:bf:45:fb:f0:10:92:ce:bd:eb:30:da:70:45:
-        06:1e:c2:71:83:f0:7c:92:e5:43:01:63:f4:2e:4d:60:ec:70:
-        93:40:6d:d1:00:46:7c:a9:2d:2c:00:df:56:44:38:60:88:4a:
-        b7:df:79:6e:2d:d9:3d:d3:f7:e7:31:66:b4:37:0d:85:52:76:
-        ec:27
+    Signature Algorithm: sha256WithRSAEncryption
+    Signature Value:
+        10:2c:b3:0a:90:cd:0c:90:32:5e:e8:2c:26:4c:0d:20:86:aa:
+        fc:a3:4c:4b:a7:de:96:0c:65:d2:d3:68:ad:c4:45:7b:d5:2a:
+        97:c5:dc:90:f4:a0:aa:0c:9c:7a:0e:90:99:f2:c5:23:46:e4:
+        90:d1:f0:b2:ec:e2:b1:2d:ac:64:ea:6f:0c:6e:a2:f8:c3:c8:
+        55:74:ca:f4:cb:dd:ee:28:e6:0f:e4:5e:78:ff:cd:7d:0f:3a:
+        83:50:fc:4c:6d:4a:0e:6b:6f:d2:62:fa:80:b8:c0:a9:f9:7a:
+        79:39:ed:30:ed:44:95:3b:ee:5e:49:52:1f:3a:e3:3c:c5:3f:
+        40:64
 -----BEGIN CERTIFICATE-----
-MIIESzCCA7SgAwIBAgIBEjANBgkqhkiG9w0BAQUFADCBoDELMAkGA1UEBhMCVVMx
+MIIEVjCCA7+gAwIBAgIBEjANBgkqhkiG9w0BAQsFADCBoDELMAkGA1UEBhMCVVMx
 CzAJBgNVBAgTAk5DMRAwDgYDVQQHEwdSYWxlaWdoMRcwFQYDVQQKEw5GZWRvcmEg
 UHJvamVjdDEPMA0GA1UECxMGZmVkbXNnMQ8wDQYDVQQDEwZmZWRtc2cxDzANBgNV
 BCkTBmZlZG1zZzEmMCQGCSqGSIb3DQEJARYXYWRtaW5AZmVkb3JhcHJvamVjdC5v
-cmcwHhcNMTIwNzE1MjExODUzWhcNMjIwNzEzMjExODUzWjCB2jELMAkGA1UEBhMC
+cmcwHhcNMjMwMjIwMTE0MzEyWhcNMzMwMjE3MTE0MzEyWjCB2jELMAkGA1UEBhMC
 VVMxCzAJBgNVBAgTAk5DMRAwDgYDVQQHEwdSYWxlaWdoMRcwFQYDVQQKEw5GZWRv
 cmEgUHJvamVjdDEPMA0GA1UECxMGZmVkbXNnMSwwKgYDVQQDEyNzaGVsbC1wa2dz
 MDEucGh4Mi5mZWRvcmFwcm9qZWN0Lm9yZzEsMCoGA1UEKRMjc2hlbGwtcGtnczAx
 LnBoeDIuZmVkb3JhcHJvamVjdC5vcmcxJjAkBgkqhkiG9w0BCQEWF2FkbWluQGZl
-ZG9yYXByb2plY3Qub3JnMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDVN/vU
-iqUwQBEl62a6jVUxaKPgGnfbxzejhETtkz/UMotZofuLZG8vVPZpqvqwiP+7tR1L
-GKcb7FTC0Fal2nhLFxM7i5PzfN89FiHEkH4da+8TMb5BTiGnl5wre5syfmJEX1ms
-MXQSutXPFA1YQhpJucYqU+iHdxI+LurjTUD/iwIDAQABo4IBVzCCAVMwCQYDVR0T
+ZG9yYXByb2plY3Qub3JnMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDKqQyF
+jqo1Y6qbM760wzgIkYcFH2O0H1pCBSlSdUvUr/tkyk7g0vfhP3ikIfujGjt0NEmZ
+ANJ37TyfMxF18xlcsrkfQGNQdDekVYgNIjKiULzlmHxTNisVcBtI5I1mR+G3pqs2
+WHtKk6VhIiqCziXrHxrIm3zGhWZVCRWrrqcM8QIDAQABo4IBYjCCAV4wCQYDVR0T
 BAIwADAtBglghkgBhvhCAQ0EIBYeRWFzeS1SU0EgR2VuZXJhdGVkIENlcnRpZmlj
-YXRlMB0GA1UdDgQWBBSli6YqKA48TmyBRaROuTw4FZ9Y3jCB1QYDVR0jBIHNMIHK
-gBQAmKXV58RVDoSjZ/5mShbgBBXdIaGBpqSBozCBoDELMAkGA1UEBhMCVVMxCzAJ
+YXRlMB0GA1UdDgQWBBRDhZZgcGzjAF/D1m0oqgsMretAJDCB4AYDVR0jBIHYMIHV
+gBSFOwu1hiIy3b344XyJwyCtykS1OKGBpqSBozCBoDELMAkGA1UEBhMCVVMxCzAJ
 BgNVBAgTAk5DMRAwDgYDVQQHEwdSYWxlaWdoMRcwFQYDVQQKEw5GZWRvcmEgUHJv
 amVjdDEPMA0GA1UECxMGZmVkbXNnMQ8wDQYDVQQDEwZmZWRtc2cxDzANBgNVBCkT
 BmZlZG1zZzEmMCQGCSqGSIb3DQEJARYXYWRtaW5AZmVkb3JhcHJvamVjdC5vcmeC
-CQCO6yjYqROdfDATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ
-KoZIhvcNAQEFBQADgYEAVkCtYb2CCuj3bFnPKwhlaXLSbSi11P0qiBFFrJNSkv0f
-BZTSu9U7D3nLDfMAYJ3ofSwVz7PYoOVg09m/RfvwEJLOvesw2nBFBh7CcYPwfJLl
-QwFj9C5NYOxwk0Bt0QBGfKktLADfVkQ4YIhKt995bi3ZPdP35zFmtDcNhVJ27Cc=
+FDEYX5pcvsZkHv0gszeyshb74MD2MBMGA1UdJQQMMAoGCCsGAQUFBwMCMAsGA1Ud
+DwQEAwIHgDANBgkqhkiG9w0BAQsFAAOBgQAQLLMKkM0MkDJe6CwmTA0ghqr8o0xL
+p96WDGXS02itxEV71SqXxdyQ9KCqDJx6DpCZ8sUjRuSQ0fCy7OKxLaxk6m8MbqL4
+w8hVdMr0y93uKOYP5F54/819DzqDUPxMbUoOa2/SYvqAuMCp+Xp5Oe0w7USVO+5e
+SVIfOuM8xT9AZA==
 -----END CERTIFICATE-----
