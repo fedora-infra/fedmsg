@@ -76,7 +76,7 @@ def API_function(doc=None):
                         del config_overrides[arg]
 
                 init(**config_overrides)
-                assert(__local.__context)
+                assert __local.__context
 
             return func(*args, **kw)
 
