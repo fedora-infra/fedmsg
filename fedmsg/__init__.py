@@ -26,6 +26,14 @@ import functools
 import fedmsg.core
 import fedmsg.config
 
+# The python3.11 doesn't have getargspec anymore
+# getarcspec is deprecated till python 3.0
+# Let's try to first import one otherwise the other
+try:
+    from inspect import getfullargspec as inspect_getargs
+except ImportError:
+    from inspect import getargspec as inspect_getargs
+
 __local = threading.local()
 
 __all__ = [
@@ -64,7 +72,7 @@ def init(**kw):
 
 def API_function(doc=None):
     def api_function(func):
-        scrub = inspect.getfullargspec(func).args
+        scrub = inspect_getargs(func).args
 
         @functools.wraps(func)
         def _wrapper(*args, **kw):
