@@ -141,6 +141,7 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
                 os.makedirs(topmost_directory)
 
         self.datagrepper_url = self.hub.config.get('datagrepper_url')
+        self.skip_last_message = self.hub.config.get('skip_last_message')
         if self.status_filename and self.datagrepper_url:
             # First, try to read in the status from a previous run and fire off
             # a thread to set up our workload.
@@ -190,7 +191,10 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
 
             if message['msg_id'] != last['msg_id']:
                 retrieved = retrieved + 1
-                self.incoming.put(dict(body=message, topic=message['topic']))
+                if (self.skip_last_message and retrieved <= 1):
+                    self.log.info("Skipping %r (as requested by skip_last_message)" % last['msg_id'])
+                else:
+                    self.incoming.put(dict(body=message, topic=message['topic']))
             else:
                 self.log.warning("Already seen %r; Skipping." % last['msg_id'])
 
