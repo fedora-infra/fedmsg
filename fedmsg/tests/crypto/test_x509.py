@@ -25,17 +25,16 @@ import mock
 import six
 
 try:
-    from unittest import skipIf, expectedFailure
+    from unittest import skipIf
 except ImportError:
-    from unittest2 import skipIf, expectedFailure
+    from unittest2 import skipIf
 
 from fedmsg import crypto, encoding as fedmsg_encoding  # noqa: E402
-from fedmsg.crypto.x509 import _m2crypto
 from fedmsg.crypto.x509_ng import _cryptography
 from fedmsg.tests.base import SSLDIR, FedmsgTestCase
 
 
-@skipIf(not (_m2crypto or _cryptography), "Neither M2Crypto nor Cryptography available")
+@skipIf(not (_cryptography), "Cryptography not available")
 class X509BaseTests(FedmsgTestCase):
 
     def setUp(self):
@@ -178,7 +177,6 @@ class X509BaseTests(FedmsgTestCase):
     def test_no_crl(self):
         """Assert that it's okay to not use a CRL."""
         self.config['crl_location'] = None
-
         signed = self.sign({'message': 'so secure'}, **self.config)
         self.assertTrue(self.validate(signed, **self.config))
 
@@ -273,114 +271,3 @@ class X509CryptographyTests(X509BaseTests):
         self.assertTrue(self.validate(signed, **self.config))
         mock_log.error.assert_any_call("msg['signature'] is not a unicode string")
         mock_log.error.assert_any_call("msg['certificate'] is not a unicode string")
-
-
-@skipIf(not _m2crypto, "M2Crypto/m2ext are missing.")
-class X509M2CryptoTests(X509BaseTests):
-    """Tests that explicitly use the m2crypto-based sign/verify."""
-
-    def setUp(self):
-        super(X509M2CryptoTests, self).setUp()
-        self.sign = crypto.x509._m2crypto_sign
-        self.validate = crypto.x509._m2crypto_validate
-
-    @expectedFailure
-    def test_old_crl(self):
-        """Assert when an old CRL is used, validation fails."""
-        signed = self.sign({'my': 'message'}, **self.config)
-        self.config['crl_location'] = os.path.join(SSLDIR, 'expired_crl.pem')
-
-        self.assertFalse(self.validate(signed, **self.config))
-
-    @expectedFailure
-    @mock.patch('fedmsg.crypto.utils.load_certificates')
-    def test_refreshing_crl_cache_invalid(self, mock_load_certificates):
-        """Assert that when the refreshed CRL is still bad, the message is considered invalid."""
-        with open(os.path.join(SSLDIR, 'ca.crt')) as fd:
-            good_ca = fd.read()
-        with open(os.path.join(SSLDIR, 'expired_crl.pem')) as fd:
-            bad_crl = fd.read()
-        mock_load_certificates.side_effect = [(good_ca, bad_crl), (good_ca, bad_crl)]
-
-        signed = self.sign({'my': 'message'}, **self.config)
-        self.assertFalse(self.validate(signed, **self.config))
-
-    @mock.patch('fedmsg.crypto.x509._log')
-    def test_bytes_logs_error(self, mock_log):
-        """Assert calling validate with byte signature/certificate logs an error."""
-        signed = self.sign({'topic': 'mytopic', 'message': 'so secure'}, **self.config)
-
-        self.assertTrue(isinstance(signed['signature'], six.text_type))
-        self.assertTrue(isinstance(signed['certificate'], six.text_type))
-        signed['signature'] = signed['signature'].encode('utf-8')
-        signed['certificate'] = signed['certificate'].encode('utf-8')
-
-        self.assertTrue(self.validate(signed, **self.config))
-        mock_log.error.assert_any_call("msg['signature'] is not a unicode string")
-        mock_log.error.assert_any_call("msg['certificate'] is not a unicode string")
-
-
-@skipIf(not (_cryptography and _m2crypto), 'M2Crypto and cryptography required.')
-class M2CryptoWithCryptoTests(X509BaseTests):
-    """Tests that use m2crypto for signing and validate with cryptography."""
-
-    def setUp(self):
-        super(M2CryptoWithCryptoTests, self).setUp()
-        self.sign = crypto.x509._m2crypto_sign
-        self.validate = crypto.x509._crypto_validate
-
-    @mock.patch('fedmsg.crypto.utils.load_certificates')
-    def test_refreshing_crl_cache_invalid(self, mock_load_certificates):
-        """Assert that when the refreshed CRL is still bad, the message is considered invalid."""
-        with open(os.path.join(SSLDIR, 'ca.crt')) as fd:
-            good_ca = fd.read()
-        with open(os.path.join(SSLDIR, 'expired_crl.pem')) as fd:
-            bad_crl = fd.read()
-        mock_load_certificates.side_effect = [(good_ca, bad_crl), (good_ca, bad_crl)]
-
-        signed = self.sign({'my': 'message'}, **self.config)
-        self.assertFalse(self.validate(signed, **self.config))
-
-
-@skipIf(not (_cryptography and _m2crypto), 'M2Crypto and cryptography required.')
-class CryptoWithM2CryptoTests(X509BaseTests):
-    """Tests that use cryptography for signing and validate with m2crypto."""
-
-    def setUp(self):
-        super(CryptoWithM2CryptoTests, self).setUp()
-        self.sign = crypto.x509._crypto_sign
-        self.validate = crypto.x509._m2crypto_validate
-
-    @expectedFailure
-    @mock.patch('fedmsg.crypto.utils.load_certificates')
-    def test_refreshing_crl_cache_invalid(self, mock_load_certificates):
-        """Assert that when the refreshed CRL is still bad, the message is considered invalid."""
-        with open(os.path.join(SSLDIR, 'ca.crt')) as fd:
-            good_ca = fd.read()
-        with open(os.path.join(SSLDIR, 'expired_crl.pem')) as fd:
-            bad_crl = fd.read()
-        mock_load_certificates.side_effect = [(good_ca, bad_crl), (good_ca, bad_crl)]
-
-        signed = self.sign({'my': 'message'}, **self.config)
-        self.assertFalse(self.validate(signed, **self.config))
-
-
-@skipIf(not (_cryptography and _m2crypto), 'M2Crypto and cryptography required.')
-class CompatibleFormatTests(FedmsgTestCase):
-    """Tests that use cryptography for signing and validate with m2crypto."""
-
-    def setUp(self):
-        self.config = {
-            'ssldir': SSLDIR,
-            'certname': 'shell-app01.phx2.fedoraproject.org',
-            'ca_cert_location': os.path.join(SSLDIR, 'ca.crt'),
-            'crl_location': os.path.join(SSLDIR, 'crl.pem'),
-            'crypto_validate_backends': ['x509'],
-        }
-
-    def test_sign(self):
-        """Assert signed messages are identical with cryptography and m2crypto."""
-        crypto_signed = crypto.x509._crypto_sign({'my': 'message'}, **self.config)
-        m2crypto_signed = crypto.x509._m2crypto_sign({'my': 'message'}, **self.config)
-
-        self.assertDictEqual(crypto_signed, m2crypto_signed)

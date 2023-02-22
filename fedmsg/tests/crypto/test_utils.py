@@ -122,7 +122,7 @@ class LoadCertificateTests(base.FedmsgTestCase):
 
         with mock.patch.dict('fedmsg.crypto.utils._cached_certificates', clear=True):
             ca, crl = utils.load_certificates(location)
-            self.assertEqual((expected_cert, None), utils._cached_certificates[location])
+            self.assertEqual((str(expected_cert), None), utils._cached_certificates[location])
         self.assertEqual(expected_cert, ca)
         self.assertTrue(crl is None)
 

@@ -64,11 +64,6 @@ install_requires = [
     'setuptools',
 ]
 extras_require = {
-    'crypto': [
-        # These are "optional" for now to make installation from pypi easier.
-        'M2Crypto',    # for message validation
-        'm2ext',       # for message validation
-    ],
     'crypto_ng': [
         'cryptography>=1.6',
         'pyOpenSSL>=16.1.0',
