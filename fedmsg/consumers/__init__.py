@@ -192,7 +192,9 @@ class FedmsgConsumer(moksha.hub.api.consumer.Consumer):
             if message['msg_id'] != last['msg_id']:
                 retrieved = retrieved + 1
                 if (self.skip_last_message and retrieved <= 1):
-                    self.log.info("Skipping %r (as requested by skip_last_message)" % last['msg_id'])
+                    self.log.info(
+                        "Skipping %r (as requested by skip_last_message)" % last['msg_id']
+                    )
                 else:
                     self.incoming.put(dict(body=message, topic=message['topic']))
             else:
