@@ -19,6 +19,7 @@
 #
 """ Federated Message Bus Client API """
 
+import inspect
 import threading
 import functools
 
