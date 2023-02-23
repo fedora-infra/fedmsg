@@ -91,6 +91,14 @@ https://apps.fedoraproject.org/datagrepper/raw.  Can be used in conjunction with
 startup.
 
 
+.. _conf-skip_last_message:
+
+skip_last_message
+-----------------
+Upon restart skip the message that we worked on previously.
+This is an attempt to have the processing of the queue resume at
+the expense of droppin a message and possibly not awarding a badge.
+
 .. _conf-endpoints:
 
 endpoints
@@ -1106,6 +1114,10 @@ class FedmsgConfig(dict):
         'datagrepper_url': {
             'default': None,
             'validator': _validate_none_or_type(six.text_type),
+        },
+        'skip_last_message': {
+            'default': None,
+            'validator': _validate_bool,
         },
     }
 
