@@ -15,7 +15,7 @@ Developer improvements
 ----------------------
 
 * Revert 'Remove m2crypto' commit - the package can't be build for EPEL7
-  (`#6f8b256 https://github.com/fedora-infra/fedmsg/commit/6f8b2569c07bc8eeab0cf15791fee941b6860f83`_)
+  (`#6f8b256 <https://github.com/fedora-infra/fedmsg/commit/6f8b2569c07bc8eeab0cf15791fee941b6860f83>`_)
 
 Many thanks to all our contributors for this release:
 
