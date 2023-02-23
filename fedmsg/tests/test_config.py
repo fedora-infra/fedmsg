@@ -234,6 +234,7 @@ class FedmsgConfigTests(unittest.TestCase):
         'stomp_ssl_crt': None,
         'stomp_ssl_key': None,
         'datagrepper_url': None,
+        'skip_last_message': False,
     }
 
     def test_defaults(self):

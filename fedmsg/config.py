@@ -1116,7 +1116,7 @@ class FedmsgConfig(dict):
             'validator': _validate_none_or_type(six.text_type),
         },
         'skip_last_message': {
-            'default': None,
+            'default': False,
             'validator': _validate_bool,
         },
     }
