@@ -2,6 +2,18 @@
 Changelog
 =========
 
+v1.1.4
+======
+
+Developer improvements
+----------------------
+
+* Fix all tests to make the rpm build work
+  (`#535 <https://github.com/fedora-infra/fedmsg/pull/535>`_)
+
+* Remove m2crypto - it wasn't possible to build m2ext with newer OpenSSL
+  (`#535 <https://github.com/fedora-infra/fedmsg/pull/535>`_)
+
 v1.1.3
 ======
 
