@@ -2,6 +2,15 @@
 Changelog
 =========
 
+v1.1.6
+======
+
+Developer improvements
+----------------------
+
+* Fix tests
+  (`#536 <https://github.com/fedora-infra/fedmsg/pull/536>`_).
+
 v1.1.5
 ======
 
