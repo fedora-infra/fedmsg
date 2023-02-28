@@ -3,7 +3,11 @@ import shutil
 import tempfile
 import unittest
 
-import mock
+# In Python 3 the mock is part of unittest
+try:
+    import mock
+except ImportError:
+    from unittest import mock
 
 from fedmsg.crypto import utils
 from fedmsg.tests import base

@@ -25,7 +25,11 @@ import os
 import unittest
 
 from moksha.hub.zeromq.zeromq import ZMQMessage
-import mock
+# In Python 3 the mock is part of unittest
+try:
+    import mock
+except ImportError:
+    from unittest import mock
 
 from fedmsg import crypto
 from fedmsg.consumers import FedmsgConsumer

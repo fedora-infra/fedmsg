@@ -3,7 +3,6 @@ moksha.hub
 pygments
 psutil
 sqlalchemy
-mock
 vcrpy
 flake8
 click
