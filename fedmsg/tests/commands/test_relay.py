@@ -23,7 +23,11 @@ from __future__ import absolute_import
 import unittest
 
 from moksha.hub import monitoring
-import mock
+# In Python 3 the mock is part of unittest
+try:
+    import mock
+except ImportError:
+    from unittest import mock
 
 from fedmsg.commands import relay
 

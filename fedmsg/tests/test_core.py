@@ -1,5 +1,9 @@
 import unittest
-import mock
+# In Python 3 the mock is part of unittest
+try:
+    import mock
+except ImportError:
+    from unittest import mock
 import warnings
 
 from fedmsg.core import FedMsgContext

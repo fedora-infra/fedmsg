@@ -24,7 +24,11 @@ try:
 except ImportError:
     import unittest
 
-import mock
+# In Python 3 the mock is part of unittest
+try:
+    import mock
+except ImportError:
+    from unittest import mock
 import json
 from datetime import datetime
 import zmq

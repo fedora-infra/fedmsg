@@ -27,7 +27,11 @@ import unittest
 import time
 import json
 import os
-import mock
+# In Python 3 the mock is part of unittest
+try:
+    import mock
+except ImportError:
+    from unittest import mock
 
 from click.testing import CliRunner
 import six
