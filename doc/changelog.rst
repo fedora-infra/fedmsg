@@ -2,6 +2,15 @@
 Changelog
 =========
 
+v1.1.7
+======
+
+Developer improvements
+----------------------
+
+* Regenerate expired test cert and set the expiry to 10 years
+  (`#538 <https://github.com/fedora-infra/fedmsg/pull/538>`_).
+
 v1.1.6
 ======
 
