@@ -180,7 +180,7 @@ class Base(unittest.TestCase):
             if multiline:
                 self.assertMultiLineEqual(actual, expected)
             else:
-                self.assertEquals(actual, expected)
+                self.assertEqual(actual, expected)
         except:  # noqa: E722
             print("Failed at:")
             print(" ", self)
@@ -427,7 +427,7 @@ class ConglomerateBase(unittest.TestCase):
                     del item['msg_ids']
 
         try:
-            self.assertEquals(actual, self.expected)
+            self.assertEqual(actual, self.expected)
         except:  # noqa: E722
             print("Failed at:")
             print(" ", self)
@@ -479,7 +479,7 @@ class TestMetaExtras(unittest.TestCase):
             raise KeyError("Who changed the API!?")
 
         actual = f({})
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
 
     def test_graceful_other_error(self):
         """ Ensure that the graceful decorator doesn't handle non-KeyErrors """
