@@ -60,10 +60,8 @@ def init(**kw):
         raise ValueError("fedmsg already initialized")
 
     # Read config from CLI args and a config file
-    config = fedmsg.config.load_config([], None)
-
-    # Override the defaults with whatever the user explicitly passes in.
-    config.update(kw)
+    config = fedmsg.config.conf
+    config.load_config(kw)
 
     __local.__context = fedmsg.core.FedMsgContext(**config)
     return __local.__context
